@@ -1,0 +1,18 @@
+#this is a meta-date file for rice. This data wil be loaded into 
+#organismprop table. Notice that SGN uses 'organism_id' as a foreign key to sgn.common_name_common_name_id!
+#For now it contains only 2 types: linkage_group and lg_arm (chromosome_arm)
+ 
+rice	linkage_group	1	1
+rice	linkage_group	2	2
+rice	linkage_group	3	3
+rice	linkage_group	4	4
+rice	linkage_group	5	5
+rice	linkage_group	6	6
+rice	linkage_group	7	7
+rice	linkage_group	8	8
+rice	linkage_group	9	9
+rice	linkage_group	10	10
+rice	linkage_group	11	11
+rice	linkage_group	12	12
+rice	chromosome_arm	short	1
+rice	chromosome_arm	long	2

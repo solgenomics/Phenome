@@ -1,0 +1,1615 @@
+insert into phenome.locus (population_id, locus_name, locus_symbol, locus_synonym, original_symbol) values ((select population_id from phenome.population where phenome.population.population_name like 'tgrc'), 'anthocyaninless', 'a', '{a1,a}', 'a');										
+locus_id	population_id	locus_name	locus_symbol	locus_synonym	original_symbol	gene_activity	gi_list	pubmed_list	unigene_id	notes
+	ncbi	(1-4)-beta-mannan endohydrolase precursor	Man2				9836825	10938343		
+	ncbi	1,4-alpha-glucan-maltohydrolase	bmy3			1,4-alpha-glucan-maltohydrolase	56562178			
+	ncbi	1-aminocyclopropane-1-carboxylate oxidase	aco5			1-aminocyclopropane-1-carboxylate oxidase	50830974	16040352		
+	ncbi	1-aminocyclopropane-1-carboxylate synthase	ACS8			1-aminocyclopropane-1-carboxylate synthase	9719036|14715589			
+	ncbi	1-aminocyclopropane-1-carboxylate synthase 1B	ACS1B			1-aminocyclopropane-1-carboxylate synthase	1814261	9207843		
+	ncbi	1-aminocyclopropane-1-carboxylate synthase 3	ACS3			1-aminocyclopropane-1-carboxylate synthase	170508|1561693	1549612		
+	ncbi	1-aminocyclopropane-1-carboxylate synthase 6	ACS6			1-aminocyclopropane-1-carboxylate synthase	14715593|1814265|3986116|3107928	9207843		
+	ncbi	1-aminocyclopropane-1-carboxylate synthase 1A	ACS1A	ACS1B		1-aminocyclopropane-1-carboxylate synthase	9719034|1814260|1621640|1621642	9207843		
+	ncbi	1-aminocyclopropane-1-carboxylate synthase 5	ACS5			1-aminocyclopropane-1-carboxylate synthase	295351|14715587	1549612|9207843		
+	ncbi	1-aminocyclopropane-1-carboxylate synthase 7	ACS7			1-aminocyclopropane-1-carboxylate synthase	14715591			
+	ncbi	1-aminocyclopropane-1-carboxylic acid synthase-2	ACC2	ACS2,acs		1-aminocyclopropane-1-carboxylic acid synthase	170505|34481844|33149674|19163|19167|170363	8120053|1762159|2191304|1549612		
+	ncbi	1-aminocyclopropane-1-carboxylic acid synthase-4	ACC4			1-aminocyclopropane-1-carboxylic acid synthase	170365|170510|19169|170359	1549612|1711229|1762159|2191304		
+	ncbi	1-D-deoxyxylulose 5-phosphate synthase	dxs			1-D-deoxyxylulose 5-phosphate synthase	5059159	10886770		
+	ncbi	1-deoxy-D-xylulose-5-phosphate reductoisomerase	DXR			1-deoxy-D-xylulose-5-phosphate reductoisomerase	15679907	11532167		
+	ncbi	12-oxophytodienoate reductase	opr			12-oxophytodienoate reductase	4894181	10574986		
+	ncbi	12-oxophytodienoate reductase 2	opr2			12-oxophytodienoate reductase	12056504	12445129		
+	ncbi	12-oxophytodienoate reductase 3	opr3			12-oxophytodienoate reductase	47105783|12056506	12445129		
+	ncbi	tft4	tft4			14-3-3 protein 	22217851|466335	7632735|10198082		
+	ncbi	tft8	tft8			14-3-3 protein 	22138735	10198082		
+	ncbi	tft9	tft9			14-3-3 protein 	22138737	10198082		
+	ncbi	tft10	tft10			14-3-3 protein 	22138741|47104482	10198082		
+	ncbi	17.6 kD class I small heat shock protein	HSP17.6				4836472			
+	ncbi	17.7 kD class I small heat shock protein	HSP17.7				19261|4836468|24954800	2263483		
+	ncbi	17.8 kD class I small heat shock protein	HSP17.8				4836470			
+	ncbi	2-oxoglutarate-dependent dioxygenase	ODD				47104106|66730857			
+	ncbi	2-oxoglutarate-dependent dioxygenase 2	GAD2				47105769|924633|717139	7647301|8580773		
+	ncbi	3,4-dihydroxy-2-butanone kinase	dhbK			3,4-dihydroxy-2-butanone kinase	1929055|47105090			
+	ncbi	3-phosphoinositide-dependent protein kinase-1	Pdk1				57168304			
+	ncbi	4-diphosphocytidyl-2-C-methyl-D-erythritol kinase	ispE				9454220	10880567		
+	ncbi	40S ribosomal protein S17	Gi1				603569|5758303			
+n	tgrc	6-Phosphogluconate dehydrogenase-1	Pgdh1		Pgdh-1					
+	tgrc	6-Phosphogluconate dehydrogenase-2	pgdh2	Pgdh-2	Pgdh-2					
+	tgrc	6-Phosphogluconate dehydrogenase-3	pgdh3	Pgdh-3	Pgdh-3					
+	ncbi	60S ribosomal protein L10	ACI29			60S ribosomal protein L10 (ACI29)	47104174|68449755			
+	ncbi	ABI3	ABI3				59323617			
+	tgrc	aborted inflorescence	abi		abi					
+	ncbi	abscission polygalacturonase 2	TAPG2				924649|1575704	7647297|9112778		
+	ncbi	ACI112	ACI112				68449765			
+	ncbi	ACI13	ACI13				68449751			
+	ncbi	ACI14	ACI14				68449769			
+	ncbi	ACI19	ACI19				68449767			
+	ncbi	ACI49	ACI49				68449763			
+	tgrc	Acid phosphatase-2	aps2	Aps-2	Aps-2					
+	tgrc	Aconitase-1	aco1	Aco-1	Aco-1					
+	tgrc	Aconitase-2	aco2	Aco-2	Aco-2					
+	tgrc	acroxantha	acr	acr1	acr1					
+	ncbi	actin	ACT				57834203|47105122			
+n	tgrc	acumbens-2	acu2		acu-2					
+	ncbi	ADP-glucose pyrophosphorylase large subunit 1	AGPS1	AGP-S1agpL1			1947083|1778433	9469935		
+	ncbi	ADP-glucose pyrophosphorylase large subunit 2	AGPS2	AGP-S2,agpL2			47105227|1840113|1778435	9469935		
+	ncbi	ADP-glucose pyrophosphorylase large subunit 3	agpL3				1840115	9469935		
+	tgrc	adpressa	adp		adp					
+n	tgrc	adpressa-2	adp2		adp-2					
+	tgrc	adusta	adu	adu1	adu					
+n	tgrc	adusta-2	adu2		adu-2					
+n	tgrc	adusta-3	adu3		adu-3					
+n	tgrc	aegrescens-2	ags2		ags-2					
+	tgrc	aegrota	aeg		aeg					
+n	tgrc	aegrota-2	aeg2		aeg-2					
+	tgrc	aerial roots	aer		aer					
+	tgrc	aerial roots-2	aer2	aer-2	aer-2					
+	ncbi	resistance complex protein I2C-3	I2C3	I2C-3		fusarium resistance	2258318	9144960		
+	ncbi	resistance complex protein I2C-4	I2C4	I2C-4		fusarium resistance	2318004	9144960		
+	ncbi	E8 protein homolog	E86	E8-6			2218140			
+	ncbi	gamma-glutamylcysteine synthetase 1	GSH1				2407614			
+	ncbi	glutathione synthetase 2	GSH2				2407616			
+	ncbi	auxin-regulated IAA1	IAA1				3043892	7480327|11094981		
+	ncbi	auxin-regulated IAA2	IAA2				3043894	11094981		
+	ncbi	auxin-regulated IAA3	IAA3				3043896	11094981		
+	ncbi	auxin-regulated IAA5	IAA5				304390	11094981		
+	ncbi	auxin-regulated IAA6	IAA6				3043902	11094981		
+	ncbi	auxin-regulated IAA7	IAA7				3043904	11094981		
+	ncbi	auxin-regulated IAA9	IAA9				3043908	11094981		
+	ncbi	auxin-regulated IAA10	IAA10				3043910	11094981		
+	ncbi	auxin-regulated IAA11	IAA11				3043912	11094981		
+	ncbi	COP1 homolog	COP1				4090942			
+	ncbi	phantastica	phan				5230655	8012051		w3 - ask Yuval fro permission
+	ncbi	cystatin (LTC)	LTC				6671191			
+	ncbi	ripening regulated protein DDTFR8	DDTFR8				12231291			
+	ncbi	ripening regulated protein DDTFR10/A	DDTFR10A	DDTFR10/A			12231293			
+	ncbi	ripening regulated protein DDTFR19	DDTFR19				12231297			
+	ncbi	ripening regulated protein DDTFR10	DDTFR10				12231299			
+	ncbi	ripening regulated protein (DDTFR5)	DDTFR5				12231301			
+	ncbi	ripening regulated protein (DDTFR20)	DDTFR20				12231302			
+	ncbi	ripening regulated protein (DDTFR6)	DDTFR6				12231304			
+	ncbi	ripening regulated protein (DDTFR7)	DDTFR7				12231305			
+	ncbi	ripening regulated protein (DDTFR14)	DDTFR14				12231306			
+	ncbi	ripening regulated protein (DDTFR17)	DDTFR17				12231307			
+	ncbi	aldehyde oxidase 2	AO2			aldehyde oxidase	10764215	11018259		
+	ncbi	aldehyde oxidase 3	AO3			aldehyde oxidase	10764217	11018259		
+	ncbi	aldehyde oxidase 4 pseudogene	AO4			aldehyde oxidase	10764219	11018259		
+	ncbi	aldehyde oxidase 5pseudogene	AO5				10764220	11018259		
+	ncbi	plasma membrane proton ATPase	LHA8				9716647			
+	ncbi	plasma membrane H+-ATPase	LHA2			ATPase	9789538	7991683		
+	ncbi	leucine-zipper transcription factor	NITF				14600165			
+	tgrc	afertilis	afe	afe1	afe					
+	tgrc	albescent	alb		alb					
+	tgrc	albifolium	afl	af	afl					
+n	tgrc	albifolium-2	afl2		afl-2					
+n	tgrc	albina	ala		ala					
+n	tgrc	albina-2	ala2		ala-2					
+n	tgrc	albina-3	ala3		ala-3					
+n	tgrc	albina-4	ala4		ala-4					
+	tgrc	albo-punctata	apn		apn					
+n	tgrc	albomarginata	ama		ama					
+	tgrc	albovirens	avi	avi1	avi					
+	tgrc	alcobaca	alc		alc					
+	ncbi	alcohol dehydrogenase-3	GAD3	yfe37			7981381|717141	8580773		
+	tgrc	Alcohol dehydrogenase-1	adh1	Adh-1	Adh-1					
+	tgrc	alcohol dehydrogenase-2	adh2		Adh-2		19171|170367	1765164|8428654		
+	ncbi	aldehyde oxidase 1	AO1	TAO1			10764213|1813703	11018259		
+n	tgrc	Alfalfa mosaic	Am		Am					
+	ncbi	alkaline alpha-galactosidase seed imbibition	SIP				23452225			
+	ncbi	allene oxide cyclase	aoc			allene oxide cyclase	40643244|40643242|14423350|924631|47104611|8977960	7647301|10764787		
+	ncbi	allene oxide synthase	AOS			allene oxide synthase	7677375|7581988	10859201		
+	ncbi	alpha glucosidase II	gluII				38322938			
+	ncbi	alpha-1,4-fucosyltransferase	FUT13			fucosyltransferase	18477219	12084979		
+	ncbi	alpha-galactosidase	aGal				6164943	11432942		
+	ncbi	alpha-L-arabinofuranosidase	ARF1				37777012|16417957			
+	tgrc	Alternaria alternata resistance	ad		ad					
+	tgrc	Alternaria stem canker resistance	asc	Asc,asc-1	Asc	ceramide metabolism, AAL-toxin	16974105|16974113|7688741	12445127|10781105|10071209		
+	tgrc	alutacea	alu	alu1	alu					
+n	tgrc	alvoviridis	alv		alv					
+	ncbi	amino acid transporter 1	AAP1			amino acid transporter 	27447654			
+	ncbi	amino acid transporter 2	AAP2			amino acid transporter 	27447656			
+	ncbi	amino acid transporter 3	AAP3			amino acid transporter 	27447652			
+	ncbi	ammonium transporter	AMT2			ammonium transporter	47104570|2065193			
+	ncbi	anaerobic basic leucine zipper protein	abz1				50830970			
+	tgrc	anantha	an	an^1,an^2,ca	an					
+n	tgrc	anantha-2	an2		an-2					
+n	tgrc	anantha-3	an3		an-3					
+n	tgrc	angusta	anu		anu					
+n	tgrc	angustata	ana		ana					
+n	tgrc	angustifolia-2	ang2		ang-2					
+	ncbi	annexin p34	AN34				3378207	9857021		
+	ncbi	annexin p35	AN35				47104390|3378203	9857021		
+	ncbi	anthocyanin 1	ANT1				33867692	12897245		
+	tgrc	anthocyanin absent	aa		aa					
+	tgrc	anthocyanin free	af	a325	af					
+	tgrc	Anthocyanin fruit	aft	Af	Af.					
+	tgrc	anthocyanin gainer	ag		ag					
+	tgrc	anthocyanin gainer-2	ag2	ag-2	ag-2					
+	tgrc	anthocyanin loser	al	a2	al					
+n	tgrc	anthocyanin loser-2	al2		al-2					
+	tgrc	anthocyanin reduced	are		are					
+SERIAL	tgrc	anthocyaninless	a	a,a1	a					
+n	tgrc	antirrhinum	anr		anr					
+	tgrc	apetalous	ap		ap					
+n	tgrc	apocarpous	ac		ac					
+	tgrc	applanata	apl		apl					
+	tgrc	apricot	at		at					
+	ncbi	arabinogalactan	AGP1c	AGP-1c			1430841|872126|47105864	7599320|8980516		
+	ncbi	arachidonic acid-induced DEA1	Dea1	ctd5			6491765|46095206	11430427		
+	ncbi	arginase 1	ARG1				54648779|47104701	15322128		
+	ncbi	arginase 2	ARG2				54648781	15322128		
+	ncbi	arginine decarboxylase	adc1			arginine decarboxylase	59668403			
+n	tgrc	aridifolia	ari		ari					
+n	tgrc	arrecta	ar		ar					
+	ncbi	ascorbate oxidase	AO			ascorbate oxidase	66475039			
+	ncbi	ascorbate peroxidase	apx2	APX2		cytosolic ascorbate peroxidase 2	73761752|62526497			
+	ncbi	ascorbate peroxidase 6	apx6	APX6		thylakoid-bound ascorbate peroxidase 6 (APX6); chloroplast	68300917|21039133			
+	ncbi	asparagine synthetase 1	AS1				30385426	15215512		
+	ncbi	asparaginyl-tRNA synthetase	ats1				20269118			
+n	tgrc	asynaptic	as		as					
+n	tgrc	asynaptic-2	as2		as-2					
+n	tgrc	asynaptic-3	as3		as-3					
+n	tgrc	asynaptic-4	as4		as-4					
+n	tgrc	asynaptic-5	as5		as-5					
+n	tgrc	asynaptic-6	as6		as-6					
+	tgrc	atroviolacium	atv		atv					
+	tgrc	attenuata	atn	at	atn					
+	tgrc	Aubergine	abg	Abg	Abg					
+n	tgrc	aucta	auc		auc					
+n	tgrc	aurantia	ant		ant					
+n	tgrc	aurantiaca	aur		aur					
+	tgrc	aurea	au		au					
+	ncbi	AUREA phytochromobilin synthase	AUREA				62149355	15695440		
+n	tgrc	aureata	aut		aut					
+	tgrc	aureate virescent	auv		auv					
+	tgrc	austera	aus		aus					
+	ncbi	auxin-regulated AUX/IAA protein	IAA4	ctd1,iaa9		auxin-regulated IAA4	3043898|47104982|6491759|71040801|62242122	11094981|11430427|16126837		
+	ncbi	auxin-regulated IAA8	IAA8				3043906|47105827	11094981		
+	ncbi	AvrPto-dependent Pto-interacting protein 3	Adi3				57168302			
+	ncbi	B-type cyclin	cycB1d1	cycB1.1			6434202	11113158		
+	ncbi	B1-type cyclin dependent kinase	cdkB1				11125682	11500540		
+	ncbi	B2-type cyclin dependent kinase	cdkB2				11125684	11500540		
+	tgrc	baby lea syndrome	bls	alm	bls					
+	ncbi	bacterial spot disease resistance protein 4	bsr4	bs4	GenBank: bs4	TIR-NB-LRR resistance protein	38489220|38489218	14675431		is this cf4 gene?
+	ncbi	Bax inhibitor	BI1	BI-1			39579115			
+	tgrc	beaked	bk		bk					
+	tgrc	Beaked-2	bk2	Bk-2	Bk-2					
+	ncbi	beclin 1	atg6				73587477			
+	ncbi	bell-like homeodomain protein 1	BL1				31323444			
+	ncbi	bell-like homeodomain protein 2	BL2				47104874|31323446			
+	ncbi	bell-like homeodomain protein 3	BL3				31323442			
+	ncbi	bell-like homeodomain protein 4	BL4				31323448			
+	ncbi	beta-1,3-glucanase	bga2	ga2	GenBank: ga2		11558183			
+	tgrc	Beta-carotene	b	B	B	chromoplast specific lycopene beta cyclase	8249884|10644118	11029576|10995464		
+	ncbi	beta-carotene hydroxylase-1	CrtRb1	CrtR-b1		beta-carotene hydroxylase	5870597			
+	ncbi	beta-carotene hydroxylase-2	CrtRb2	CrtR-b2		beta-carotene hydroxylase	5870599			
+	ncbi	beta-galactosidase 6	TBG6			beta-galactosidase	7939624|47105193	10889266		
+	ncbi	beta-galactosidase 7	TBG7			beta-galactosidase	7939620	10889266		
+	ncbi	beta-galactosidase 2	TBG2			beta-galactosidase	7939616	10889266		
+	ncbi	beta-galactosidase 5	TBG5			beta-galactosidase	7939622	10889266		
+	tgrc	Beta-N-acetyl-D-glucosaminidase-1	bnag1	Bnag-1	Bnag-1					
+	ncbi	beta-tubulin	TUB				77963734|47104480			
+	ncbi	beta3-glucuronyltransferase	pglcat1				32968171			
+	tgrc	bicolor	bc	bi	bc					
+	tgrc	bifurcate inflorescence	bi		bi					
+	ncbi	biotin carboxylase carrier	BCCP1				29169308			
+	tgrc	bipinnata	bip		bip					
+n	tgrc	bipinnata-2	bip2		bip-2					
+	tgrc	blind	bl		bl	MYB transcription factor	18419455	11805344		
+n	tgrc	Blossom-end rot resistance	Ber		Ber					
+n	tgrc	blue-green	be		be					
+n	tgrc	blunt	bn		bn					
+	tgrc	brachytic	br		br					
+	tgrc	Brilliant corolla	bco	Bco	Bco					
+	tgrc	brittle stem	btl		btl					
+	tgrc	brown seed	bs		bs					
+	tgrc	brown seed-2	bs2	bs-2	bs-2					
+n	tgrc	brown seed-3	bs3		bs-3					
+	tgrc	brown seed-4	bs4	bs-4	bs-4					
+	tgrc	bullata	bul		bul					
+	tgrc	bullosa	buo	buo1	buo					
+n	tgrc	bursting digenic inheritance	Bt		Bt					
+n	tgrc	bursting resistance	bg		bg					
+	tgrc	bushy	bu	fru	bu					
+	tgrc	bushy root	brt		brt					
+	tgrc	bushy root-2	brt2	brt-2	brt-2					
+	tgrc	cabbage	cb		cb					
+	tgrc	cabbage leaf-2	cb2	cb-2	cb-2					
+	tgrc	cactiflora	ccf		ccf					
+	ncbi	calcineurin B-like interacting protein kinase	cipk				66765940			
+	ncbi	calcium sensor calcineurin B	cbl				66765938			
+	ncbi	calcium-dependent protein kinase	cpk1				19171501	12011347		
+	ncbi	calmodulin	CALM1LE				170395			
+	ncbi	calmodulin TOMCALM2LE	calm2	N6	GenBank: TOMCALM2LE		2388890|2388888|47105956			
+	ncbi	calmodulin-binding diacylglycerol kinase	DGK1				10798889|10798889	11069705		
+	ncbi	calnexin-like protein	CNX	CNX61			67077849|47105096			
+	tgrc	cana	cn	ca	cn					
+	ncbi	carbonic anhydrase	ca1			carbonic anhydrase	47104406|56562174			
+	tgrc	carinata	car		car					
+	tgrc	carinata-2	car2	car2,car-2	car-2					
+	ncbi	carotenoid cleavage dioxygenase 1A	CCD1A				49659725	15584954		
+	ncbi	carotenoid cleavage dioxygenase 1B	CCD1B				49659727	15584954		
+	tgrc	carotenoid isomerase	crtiso	tangerine	t	carotenoid isomerase	19550436	11884678		
+	ncbi	catalase	cat1				170397			
+n	tgrc	cernua	ce		ce					
+	ncbi	CGI-144	cgi1				20269114			
+	ncbi	chalcone isomerase	CHI			chalcone isomerase	33867694	12897245		
+	tgrc	chartreuse	ch		ch					
+	ncbi	chitinase	Chi2	Chi2;1		class II chitinase	1144306|19185	8400122|8639749		
+n	tgrc	chloronerva	chln		chln					
+	ncbi	chloroplast carbonic anhydrase	ca2			chloroplast carbonic anhydrase	56562176			
+	ncbi	chloroplast glutamine synthetase	cgs		GenBank: gs	chloroplast glutamine synthetase	555969|47104680			
+	ncbi	chloroplast malate dehydrogenase	chMDH			chloroplast malate dehydrogenase	52139821	15665243		
+	ncbi	chloroplast malate dehydrogenase (mdh)	mdh			chloroplast malate dehydrogenase	47105303|56562182			
+n	tgrc	chrysanthemum sterile	chrs		chrs					
+	tgrc	cincta	ci	ci1	ci					
+	ncbi	cinnamoyl-CoA reductase	CCR1			cinnamoyl-CoA reductase	65306611|47104455			
+	ncbi	cinnamoyl-CoA reductase 2	CCR2			cinnamoyl-CoA reductase	65306613			
+n	tgrc	circumsaepta	cir		cir					
+n	tgrc	citrate concentration	ctr		ctr					
+	tgrc	citriformis	cit		cit					
+n	tgrc	citrina	cna		cna					
+n	tgrc	Cladosporium fulvum resistance	Cf?		Cf-?					
+	tgrc	Cladosporium fulvum resistance-1	cf1	cf1,Cf,Cf1,Cfsc	cf-1					
+n	tgrc	Cladosporium fulvum resistance-10	Cf10		Cf-10					
+n	tgrc	Cladosporium fulvum resistance-12	Cf12		Cf-12					
+n	tgrc	Cladosporium fulvum resistance-19	Cf19		Cf-19					
+	tgrc	Cladosporium fulvum resistance-2	cf2	Cf-2,Cf2,Cfp1	cf-2					
+	tgrc	Cladosporium fulvum resistance-3	cf3	Cf-3,Cf3,Cfp2	cf-3					
+	tgrc	Cladosporium fulvum resistance-4	cf4	Cf-4,Cf-1^2,Cf4	cf-5					
+n	tgrc	Cladosporium fulvum resistance-5	Cf5		Cf-5	LRR	3894382	9811798		
+	tgrc	Cladosporium fulvum resistance-6	cf6	Cf-6	cf-6					
+	tgrc	Cladosporium fulvum resistance-7	cf7	Cf-7	cf-7					
+	tgrc	Cladosporium fulvum resistance-9	cf9	Cf-9	cf-9	leucine-rich repeat	563232|2792183	7973631|98074802		
+	tgrc	clara	cla		cla					
+	tgrc	clarescens	cls		cls					
+	ncbi	class II knotted-like homeodomain protein	T12	THox1			47105629|2529702|4098243	9484482		
+	tgrc	clausa	clau	ff,vc,ics	clau					
+n	tgrc	Clavibacter michiganensis resistance	Cmm		Cmm					
+n	tgrc	Cleistogamous	Cl		Cl					
+	tgrc	cleistogamous-2	cl2	cl-2,cl2	cl-2					
+	ncbi	Clp protease 2 proteolytic subunit	clpP2				15485609|47104609			
+	tgrc	coalita	clt		clt					
+n	tgrc	coalita-2	clt2		clt-2					
+	tgrc	cochlearis	co		co					
+n	tgrc	cochlearis-2	co2		co-2					
+	ncbi	coiled-coil protein	FPP				22652088			
+n	tgrc	collecta	cle		cle					
+	tgrc	colorless fruit epidermis	y		y					
+	tgrc	commutata	cma		cma					
+	tgrc	compact	cpt		cpt					
+n	tgrc	compact inflorescence-2	cin2		cin-2					
+n	tgrc	compacta	cp		cp					
+n	tgrc	compactilis	cps		cps					
+	tgrc	complicata	com	in	com					
+n	tgrc	complicata-2	com2		com-2					
+	tgrc	composita	cpa	cpa1	cpa					
+	tgrc	compound inflorescence	s		s					
+n	tgrc	condensata	cd		cd					
+n	tgrc	conferta	cfa		cfa					
+	tgrc	confunctiflora	cjf		cjf					
+	tgrc	congesta	cg	cg1	cg					
+n	tgrc	constricting corolla	cc		cc					
+	tgrc	contaminata	cta	cta1	cta					
+n	tgrc	contaminata-2	cta2		cta-2					
+	tgrc	contracta	ctt		ctt					
+n	tgrc	contracta-2	ctt2		ctt-2					
+	tgrc	convalescens	con		con					
+n	tgrc	convalescens-2	con2		con-2					
+	tgrc	conversa	cva		cva					
+n	tgrc	conversa-2	cva2		cva-2					
+	tgrc	Convexa	cvx	Cvx	cvx					
+	tgrc	convoluta	cvl	cvl1	cvl					
+	ncbi	copalyl diphosphate synthase	CPS1		GenBank: CPS	GA biosynthesis	6009477			
+	ncbi	copper chaperone	CCH				30039179			
+	ncbi	copper/zinc superoxide dismutase copper chaperone precursor	CCS				5759319			
+	ncbi	copz1 nonclathrin coat protein zeta1-COP	copz1				7259351			
+	ncbi	copz2 nonclathrin coat protein zeta2-COP	copz2				7259353			
+	tgrc	coriacea	cor		cor					
+	tgrc	corky fruit	ck		ck					
+n	tgrc	corollaless-2	cs2		cs-2					
+	ncbi	coronatine-insensitive 1	Coi1				40218004	14688297		
+	tgrc	corrotundata	coa	coa1	coa					
+n	tgrc	corrupta	cru		cru					
+n	tgrc	Corynebacterium resistance-1	Cor1		Cor-1					
+n	tgrc	Corynebacterium resistance-2	Cor2		Cor-2					
+	tgrc	cottony-root	crt		crt					
+n	tgrc	cotyledon tops bifurcation	ctb		ctb					
+	tgrc	Crinkled	crk	Crk	Crk					
+	tgrc	Crispa	cri	Cri	cri					
+	ncbi	cryptochrome 1b	Cry1b				15559007|47105102			
+	ncbi	CTR1-like protein kinase-3	CTR3				40781627|47105945	15284494		
+	ncbi	CTR1-like protein kinase-4	CTR4				40781631	15284494		
+	ncbi	ctu2	ctu2				6651244|6580546	11430427|11485202		
+	tgrc	Cucumber mosaic resistance	cmr	Cmr	cmr					
+	tgrc	culcitula	cul		cul					
+	ncbi	cullin	cullin				3687388			
+	ncbi	cultivar Rio Grande ELI3	Eli3				8099339|399633	8012051		
+n	tgrc	cupida	cup		cup					
+n	tgrc	cupuliformis	cpf		cpf					
+n	tgrc	cupuliformis-2	cpf2		cpf-2					
+n	tgrc	cupuliformis-3	cpf3		cpf-3					
+	tgrc	curl-2	cu2	cu-2,cu2	cu-2					
+	tgrc	curl-3	cu3	cu-3	cu-3	Leucine-Rich Repeat Receptor Kinase tBRI1/SR160	27085392	12468734	182282	similar to bri1
+	tgrc	curly mottled	cm		cm					
+n	tgrc	curta	cua		cua					
+	tgrc	curvata	cv	cu,acu	cv					
+n	tgrc	curvata-2	cv2		cv-2					
+	tgrc	curvifolia	cur		cur					
+n	tgrc	cyathiformis	cy		cy					
+	ncbi	cyclin A1	CycA1				5420273	10987563		
+	ncbi	cyclin A2	CycA2				5420275	10987563		
+	ncbi	cyclin A3	CycA3				5420277|47105010	10987563		
+	ncbi	cyclin B1	CycB1				5420279	10987563		
+	ncbi	cyclin B2	CycB2				5420281	10987563		
+	ncbi	cyclin D3.1	cycD3	CycD3;1			6434196|5679621	10987563|11113158		
+	ncbi	cyclin dependent kinase C	CDKC				47105490|15215943	11500540		
+	ncbi	cyclophilin	CyP				170439|47104493	1702215		
+	ncbi	cyclophilin-like protein	pi2.1		GenBank: pi2		20269122			
+	ncbi	cystatin (STC)	STC				399640|6671193	8012051		
+	ncbi	cysteine protease CYP1	C14	tdi-65			5726640|170465|2828251	11444695		
+	ncbi	cysteine proteinase	Cyp3	Cyp-3			1235544	8624407		
+	ncbi	cytochrome b559 beta chain	ACI37				68449759			
+	ncbi	cytochrome P450	P450				6688557			
+	ncbi	cytoplasmic ribosomal protein S13	ACI39				68449761			
+	ncbi	cytosolic ascorbate peroxidase 1	APX1				73761750			
+	ncbi	cytosolic class II small heat shock protein HCT2	HSP17.4				3639074			
+	ncbi	cytosolic malate dehydrogenase	cMDH				52139817	15665243		
+	ncbi	cytosolic NADP-malic enzyme	ME2				804816|2150028			
+	ncbi	D-type cyclin-2	CycD3;2				6434198	11113158		
+	ncbi	D-type cyclin-3	CycD3;3				643420	11113158		
+	tgrc	debilis	deb		deb					
+	tgrc	declinata	de		de					
+	tgrc	decomposita	dc	dc1	dc					
+	tgrc	decumbens	dec		dec					
+n	tgrc	decumbens-2	dec2		dec-2					
+	ncbi	defective chloroplasts and leaves	DCL				1305530	8861949		
+	ncbi	Defender Against apoptotic Death	dad1	dad-1			6491796	11430427		
+	tgrc	Defoliator	df	Df	Df					
+	tgrc	deformis	def		def					
+	ncbi	dehydration responsive element binding protein 1	DREB1				25992099			
+	ncbi	dehydration responsive element binding protein 2	DREB2				25992101			
+	ncbi	dehydration-responsive element binding protein 3	DREB3				27436377			
+	ncbi	dehydroascorbate reductase 1	DHAR1				66475035			
+	ncbi	dehydroascorbate reductase 2	DHAR2				47104412|66475037			
+	tgrc	deliquescens	deli		deli					
+n	tgrc	deliquescens-2	deli2		deli-2					
+	tgrc	Delta	del	Del	Del					
+	ncbi	delta 1-pyrroline-5-carboxylate synthetase	PRO2	P5CS			58802474|1480669			
+	ncbi	DEM2	Dem2				37223343	9634577		
+n	tgrc	densa	den		den					
+n	tgrc	densipinnata	dpi		dpi					
+n	tgrc	deparca	dpa		dpa					
+	tgrc	depauperata	depa		depa					
+n	tgrc	depravata	dpr		dpr					
+	tgrc	deprimata	dep		dep					
+	tgrc	detorta	dtt		dtt					
+	tgrc	detrimentosa	det		det					
+n	tgrc	detrimentosa-2	det2		det-2					
+	tgrc	diageotropica	dgt	lz-3	lz-3					
+	tgrc	dialytic	dl		dl					
+n	tgrc	Diaphorase-1	Dia1		Dia-1					
+	tgrc	Diaphorase-2	dia2	Dia-2	Dia-2					
+	tgrc	Diaphorase-3	dia3	Dia-3	Dia-3					
+n	tgrc	Diaphorase-4	Dia4		Dia-4					
+	tgrc	dilabens	dlb	dlb1	dlb					
+	tgrc	dilatata	dt	dt1	dt					
+n	tgrc	dilucida	dlu		dlu					
+	tgrc	diluta	dil		dil					
+n	tgrc	diluta-2	dil2		dil-2					
+	tgrc	dimidiata	dmd		dmd					
+	tgrc	diminuta	dim		dim					
+	tgrc	diminuta-2	dim2	dim-2,dim2	dim-2					
+	tgrc	diminutiva	dmt		dmt					
+	tgrc	diospyros	dps		dps					
+	tgrc	discolor	dis		dis					
+n	tgrc	discolor-2	dis2		dis-2					
+	tgrc	divaricata	div		div					
+n	tgrc	divergens	di		di					
+	ncbi	divinyl ether synthase	DES				11991244	11060314		
+	tgrc	double dwarf	dd	d^xx	dd					
+	tgrc	drooping leaf	dp		dp					
+	tgrc	dumpy	dpy		dpy					
+	tgrc	dupla	du		du					
+	tgrc	dwarf	d	rob^imm	d	cytochrome P450 homolog	1421740	8672892	155829	
+	tgrc	dwarf modifier	dm	d2	dm					
+	tgrc	dwarf root	drt		drt					
+	tgrc	dwarf sterile	ds		ds					
+	tgrc	dwarf virescent	dv		dv					
+	tgrc	dwarf-2	d2	d-2,rob2,robII,d2	d-2					
+n	tgrc	dwarf-3	d3		d-3					
+n	tgrc	dwarf-4	d4		d-4					
+n	tgrc	dwarf-5	d5		d-5					
+n	tgrc	dwarf-6	d6		d-6					
+n	tgrc	dwarf-7	d7		d-7					
+n	tgrc	dwarf-8	d8		d-8					
+	ncbi	DWARF1/DIMINUTO	DWF1				50952900			
+n	tgrc	earliness	er12.1		er12.1					
+	tgrc	easy peeling	ep		ep					
+	tgrc	echinata	eca		eca					
+	ncbi	EIL-EIN3/EIL	EIL	EIL2			31790768|47105198|14280041	11359609		
+	ncbi	EIL1	EIL1				47105744|14280039	11359609		
+	ncbi	EIL3	EIL3				47105105|14280043	11359609		
+	ncbi	EIX receptor 1	Eix1				39577519	15155877		
+n	tgrc	elata	ela		ela					
+	tgrc	elegans	ele		ele					
+n	tgrc	elegans-2	ele2		ele-2					
+n	tgrc	elongata	elo		elo					
+	tgrc	elongated	el	e	el					
+	tgrc	eluta	elu		elu					
+n	tgrc	eluta-2	elu2		elu-2					
+	tgrc	emortua	em	em1	em					
+	ncbi	endo-1,4-beta-glucanase (Cel3)	Cel3				47104907|2065530	9114071		
+	ncbi	endo-1,4-beta-glucanase (cel5)	cel5				3687886	10555309		
+	ncbi	endo-1,4-beta-glucanase precursor (Cel2)	Cel2	cel			34481834|531904	7994180		
+	ncbi	endo-beta-1,4-D-glucanase (Cel8)	Cel8				4165131|47105142			
+	ncbi	endo-xyloglucan transferase	ext				457570|47104763	8244968		
+	ncbi	enolase	ER28			ethylene-responsive enolase (ER28)	5669647|19280|47104509	1841726|10417710		
+	tgrc	ensiform	en		en					
+	tgrc	entire	e	b	e					is tkn1/
+n	tgrc	entire leaflet	ent		ent					
+	tgrc	entirely anthocyaninless	ae	a332	ae					
+	tgrc	Epinastic	epi	Epi	Epi					
+	ncbi	ER auxin binding 1	ERabp1				3819675			
+	ncbi	ER66	ER66				47104896|5669649	10417710		
+	tgrc	eramosa	era	era1	era					
+	tgrc	erecta	er		er					
+n	tgrc	erecta-2	er2		er-2					
+n	tgrc	Erectoid leaf	Erl		Erl					
+	tgrc	Esterase-1	est1	Est-1	Est-1					
+	tgrc	Esterase-2	est2	Est-2	Est-2					
+	tgrc	Esterase-3	est3	Est-3	Est-3					
+	tgrc	Esterase-4	est4	Est-4	Est-4					
+	tgrc	Esterase-5	est5	Est-5	Est-5					
+	tgrc	Esterase-6	est6	Est-6	Est-6					
+	tgrc	Esterase-7	est7	Est-7	Est-7					
+	tgrc	Esterase-8	est8	Est-8	Est-8					
+	ncbi	ethylene overproducer-like 1	EOL1				70780054			
+	ncbi	ethylene receptor 1	ETR1				1163080|2852990	8704141|9721682		
+	ncbi	ethylene receptor 2	ETR2	ETR1			1272245|2852992	9721682		
+	ncbi	ethylene receptor homolog (ETR4)	ETR4				4877650	10318694		
+	ncbi	ethylene receptor homolog (ETR5)	ETR5				4877652	10318694		
+	ncbi	ethylene receptor-like protein (ETR6)	ETR6				19421762			
+	ncbi	ethylene response factor 1	ERF1				47104566|28274827	12935902		
+	ncbi	ethylene response factor 1b	ERF1b		GenBank: ERF1		18650661	15834808		
+	ncbi	ethylene response factor 2	ERF2				40557188|28274829	12935902		
+	ncbi	ethylene response factor 3	ERF3				28274831|45642987|47105541	12935902		
+	ncbi	ethylene response factor 4	ERF4				28274833	12935902		
+	ncbi	ethylene response factor 5	ERF5				45642989			
+	ncbi	ethylene responsive element binding protein	EREB	TSRF1			23452023|25992125	15604719		
+	ncbi	ethylene responsive proteinase inhibitor 1	ER1				170483|623593	3472237|2903499		
+	ncbi	ethylene signaling protein	EIN2				77747169|74099705			
+	ncbi	ethylene-forming enzyme	EFE			ethylene-forming enzyme	233722|19208|47105405	1714605|3029690		
+	ncbi	ethylene-induced P1 (p14)	pTE28d1	pTE28.1P6,PR1b1			19284|170489|2529164	8108502|1421154|9204567		
+	ncbi	ethylene-inducible CTR1-like protein kinase	CTR1	CTR-1ER50		ethylene-inducible CTR1-like protein kinase	4193949|4193947|2370252|5669641	9289746|10417710		
+	ncbi	ethylene-responsive catalase	ER60				5669645|47104380|5257184	10417710		
+	ncbi	ethylene-responsive elongation factor EF-Ts precursor	ER49				5669635	10417710		
+	ncbi	ethylene-responsive factor 1	ERF1a		GenBank: ERF1		22074049	15327984		
+	ncbi	ethylene-responsive heat shock protein cognate 70	ER21				5669643	10417710		
+	ncbi	ethylene-responsive late embryogenesis	ER5				1684829	9426604|10417710		
+	ncbi	ethylene-responsive methionine synthase	ER69			methionine synthase	5669651	10417710		
+	ncbi	ethylene-responsive nuclear protein	ERN1				77963736			
+	ncbi	ethylene-responsive RNA helicase	ER68			RNA helicase	47104376|5669637	10417710		
+	ncbi	ethylene-responsive small GTP-binding protein	ER43				47104427|5669639	10417710		
+	ncbi	ethylene-responsive transcriptional coactivator	ER24				5669633	10417710		
+n	tgrc	eugenol concentration	eu		eu					
+	tgrc	excedens	exs	exs1	exs					
+	tgrc	exilis	exl	ex	exl					
+	ncbi	expansin 10	EXPA10				1119200	11080302		
+	ncbi	expansin 6	EXPA6				4138917	10080718		
+	ncbi	expansin 7	EXPA7				4138919	10080718		
+	ncbi	expansin 8	EXPA8				11191998	11080302		
+	ncbi	expansin  1	EXP1				33334358|2062420	9159182		
+	ncbi	expansin 2	EXP2				3747131	10677445		
+	ncbi	expansin precursor 11	Exp11				7263071|30519751			
+	ncbi	expansin precursor 3	EXPA3				4138911	10080718		
+	ncbi	expansin precursor 4	EXPA4				47105506|4138913	10080718		
+	ncbi	expansin precursor 5	EXPA5				4138915	10080718		
+	ncbi	expansin12	exp12				30519753			
+	ncbi	expansin18	exp18				6688555|47104416|4886514			
+	ncbi	expansin9	exp9				5419926			
+n	tgrc	expassa	exa		exa					
+n	tgrc	exserted carpels	ec		ec					
+	tgrc	exserted stigma	ex		ex					
+	ncbi	extensin-like	ext1				18138037	11891247		
+	tgrc	extenuata	ete	ete1	ete					
+n	tgrc	extreme dwarf-2	dx2		dx-2					
+n	tgrc	extreme miniature	mnx		mnx					
+	tgrc	falsiflora	fa	fa1	fa	FLORICAULA/LEAFY-like protein	7658234|7658232	10652140		
+	tgrc	far red light insensitive	fri		fri					
+n	tgrc	farinosa	far		far					
+	ncbi	farnesyl protein transferase subunit A	FTA				1815665	9121446		
+	ncbi	farnesyl protein transferase subunit B	FTB				1815667	9121446		
+	ncbi	farnesyl pyrophosphate synthase	FPS1				47105325|2935458			
+	tgrc	fasciated fruit	f		f					
+	tgrc	fe inefficient	fer		fer	bHLH transcriptional regulator	23600382	12370409		
+n	tgrc	female-sterile	fms		fms					
+n	tgrc	Fenthion sensitivity	Fen		Fen					
+	ncbi	ferredoxin	ferredoxin				6688559			
+	ncbi	ferric-chelate reductase	FRO1				37903682	15159639		
+	tgrc	fertilis	fe		fe					
+	tgrc	field yellow	fy		fy					
+n	tgrc	filaris	fil		fil					
+n	tgrc	filiform inflorescence	fli		fli					
+n	tgrc	filiforme-2	fi2		fi-2					
+	tgrc	fimbriate gold virescent	fgv		fgv					
+	tgrc	finely-netted	fn		fn					
+	tgrc	firma	fir		fir					
+n	tgrc	firma-2	fir2		fir-2					
+n	tgrc	firma-3	fir3		fir-3					
+n	tgrc	fistulosiflora	fis		fis					
+	tgrc	flacca	flc		flc	molybdenum cofactor sulfurase (FLACCA)	22128582	12164810		
+n	tgrc	flaccescens	fc		fc					
+	tgrc	flaccida	fld	fld1	fld					
+n	tgrc	flaveola	fv		fv					
+	tgrc	flavescens	fla		fla					
+	tgrc	flavida	flav		flav					
+n	tgrc	flavida-2	flav2		flav-2					
+	tgrc	flecked dwarf	fd		fd					
+	tgrc	fleshy calyx	fl		fl					
+	tgrc	flexa	fx		fx					
+	tgrc	flexifolia	fle	fle1	fle					
+	tgrc	FORL resistance	fr1	Frl,Fr1,Fr-1	frl					
+	ncbi	formate dehydrogenase	fdh			formate dehydrogenase	56562180			
+	tgrc	formate dehydrogenase-1	fdh1	Fdh-1	Fdh-1	formate dehydrogenase				
+	tgrc	fracta	frt		frt					
+	tgrc	fragilis	frg	frg1	frg					
+n	tgrc	fragosa	fra		fra					
+n	tgrc	Frilly	Frly		Frly					
+n	tgrc	frondea	fro		fro					
+	tgrc	Frosty spot	frs	Frs,Nec	frs					
+	ncbi	fructokinase	Frk1				2102690	9112782		
+	ncbi	fructokinase 2	Frk2	FK			2102692|1915973	9112782		
+n	tgrc	Fructose to glucose ratio	Fgr		Fgr					
+	tgrc	frugalis	fr		fr					
+n	tgrc	fruit pox	fp		fp					
+n	tgrc	Fruit stripe	Fs		Fs					
+	ncbi	FRUITFULL-like MADS-box 1	fruitfull1	FUL1	GenBank: FUL1		32478034|23428886|47104639	13677468|14573491		
+	ncbi	FRUITFULL-like MADS-box 2	fruitfull2	FUL2	GenBank: FUL2		32478036|47105472	14573491		
+	tgrc	fruiting temperature	ft		ft					
+	tgrc	fucata	fua	fua1	fua					
+	tgrc	fucatifolia	fcf	fcf1	fcf					
+	tgrc	fulgens	ful		ful					
+n	tgrc	fulgens-2	ful2		ful-2					
+	tgrc	fulgens-3	ful3	ful-3	ful-3					
+	tgrc	fulgescens	fus		fus					
+	tgrc	fulgida	fug	fug1	fug					
+	tgrc	Furrowed	fw	Fw	Fw					
+	tgrc	fuscatinervis	fsc	dkv	fsc					
+	tgrc	fusiformis	fu		fu					
+	ncbi	fw2.2 gene and ORF44	fw2.2				27414000|27413998|27413996|27413994	12242247|10884229		
+	ncbi	G-box binding	GBF12			G-box binding protein	47105288|456750	8127687		
+	ncbi	galactinol synthase 1	GolS1	GolS-1			16588447	12644684		
+	tgrc	galapagos light green	glg		glg					
+	tgrc	galbina	ga	ga1	ga					
+n	tgrc	galbina-2	ga2		ga-2					
+	tgrc	Gamete eliminator	ge	Ge	Ge					
+n	tgrc	Gamete promoter	Gp		Gp					
+	tgrc	gametophytic factor	x		x					
+n	tgrc	gametophytic factor-2	x2		x-2					
+	tgrc	gamosepala	gas	gas1	gas					
+	tgrc	gamosepalous	gm		gm					
+	ncbi	GBF9G-box binding	GBF9				47105395|456754	8127687		
+	ncbi	GcpE	GcpE				27462473|47106044			
+	ncbi	GDP dissociation inhibitor	GDI1				8439464			
+	ncbi	GDP-mannose pyrophosphorylase	KPP				57869093	15860008		
+	ncbi	germin	Mdip1				2979493			
+	tgrc	ghost-2	gh2	gh-2	gh-2					
+	tgrc	gibberellin deficient-1	gib1	gib-1	gib-1					
+	tgrc	gibberellin deficient-2	gib2	gib-2	gib-2					
+	tgrc	gibberellin-deficient-3	gib3	gib-3	gib-3					
+n	tgrc	Gibberellin-exserted	Gx		Gx					
+	tgrc	gibberosa	gi		gi					
+n	tgrc	gilva	gil		gil					
+	tgrc	glauca	gl		gl					
+n	tgrc	glauca-2	gl2		gl-2					
+	tgrc	glaucescens	glau		glau					
+n	tgrc	glaucescens-2	glau2		glau-2					
+n	tgrc	glaucicolor	gla		gla					
+	tgrc	glaucophylla	glc		glc					
+n	tgrc	glaucophylla-2	glc2		glc-2					
+n	tgrc	glaucophylla-3	glc3		glc-3					
+	ncbi	gldhL-galactono-1,4-lactone dehydrogenase	gldh				7800635|22761942			
+	tgrc	globiformis	glf	glf1	glf					
+	tgrc	globosa	glo	inx,intro	glo					
+n	tgrc	globosa-2	glo2		glo-2					
+n	tgrc	globosa-3	glo3		glo-3					
+	tgrc	globula	gbl		gbl					
+	tgrc	globular flower	gfl		gfl					
+	tgrc	globularis	glb		glb					
+n	tgrc	globularis-2	glb2		glb-2					
+	tgrc	glomerata	glm		glm					
+	ncbi	glucose-6-phosphate isomerase	GPI			glucose-6-phosphate isomerase	47104886|51340061			
+	ncbi	glutamate dehydrogenase	gdh1			glutamate dehydrogenase	1762147			
+	tgrc	Glutamate oxaloacetate transaminase-1	got1	Got-1	Got-1	Glutamate oxaloacetate transaminase				
+	tgrc	Glutamate oxaloacetate transaminase-2	got2	Got-2	Got-2	Glutamate oxaloacetate transaminase				
+	tgrc	Glutamate oxaloacetate transaminase-3	got3	Got-3	Got-3	Glutamate oxaloacetate transaminase				
+	tgrc	Glutamate oxaloacetate transaminase-4	got4	Got-4	Got-4	Glutamate oxaloacetate transaminase				
+	ncbi	glutamine synthase	gts1			glutamine synthase	20269120			
+	ncbi	glutathione S-transferase/peroxidase	BIGST/GPX	BI-GST/GPX		glutathione S-transferase/peroxidase	6653232	10859306		
+	ncbi	Glutation-S-transferase	ctu1	GST		Glutation-S-transferase	10567805|6491767	11430427|15037622		
+	tgrc	glutinosa	glu	glu1	glu					
+	ncbi	glyceraldehyde 3-phosphate dehydrogenase	GAPDH			phosphate dehydrogenase	2078297|47104108|1931618			
+	ncbi	glycerol-3-phosphate acyltransferase	GPAT				46981927			
+	ncbi	glycolate oxidase	GLO2.1		GenBank: GLO2	glycolate oxidase	66730859|47104892			
+	ncbi	glycosyltransferase	pglcat8				63087745			
+	ncbi	glyoxisomal malate dehydrogenase	gMDH				52139819|47104243	15665243		
+n	tgrc	Gold fleck	Gdf		Gdf					
+	tgrc	gracilenta	grl	grl1	grl					
+n	tgrc	gracilenta-2	grl2		grl-2					
+	tgrc	gracilis	gra		gra					
+n	tgrc	gracilis-2	gra2		gra-2					
+n	tgrc	gracilis-3	gra3		gra-3					
+	tgrc	gracillama	grc	grc1	grc					
+n	tgrc	grandifolia	gfo		gfo					
+	tgrc	grandifructa	grf	grf1	grf					
+	tgrc	granulosa	grn		grn					
+	tgrc	green flesh	gf		gf					
+	tgrc	Green ripe	gr	Gr,gr	gr					
+	tgrc	green stripe	gs		gs					
+n	tgrc	grisea	grs		grs					
+n	tgrc	grooved	g		g					
+	tgrc	grossa	gro		gro					
+	tgrc	grotesque	gq		gq					
+	ncbi	GTP-binding protein	ypt2			GTP-binding protein	47104987|313028	8467223		
+	ncbi	H2B-1histone H2B	H2B1	H2B-1	GenBank: H2B-1		3021488|47105975	10344194		
+	ncbi	H2B-3histone H2B	H2B3	H2B-3			3021484|47105131	10344194		
+	tgrc	hairless	hl	cal,cal1	hl					
+n	tgrc	hairless style	hs		hs					
+	tgrc	hairless-2	hl2	hl-2,hl^prov6	hl2					
+	tgrc	hairs absent	h	H	H					
+	ncbi	harpin binding protein 1	HrBP1				38679318			
+n	tgrc	hastata	ha		ha					
+	tgrc	hastate	ht		ht					
+	ncbi	HD-ZIP	THOM1			HD-ZIP protein	992597|47105028	7766050		
+	ncbi	heat shock protein 21	HSP21	pTOM111,HCIT2		heat shock protein	1885357|2618619|1518138	15879560|9049268|9520284		
+	ncbi	heat shock protein 70 kD	hsc1	hsc-1hsc70		heat shock protein	19255|47105001	1893113		
+	ncbi	heat shock protein 90	HSP90			heat shock protein	4836476			
+	ncbi	heat-induced chilling tolreance	HCT6				4836474|47105688			
+	ncbi	heme oxygenase 2	HO2			heme oxygenase	14485576	11402195		
+	ncbi	hero resistance 2	help2				26190253			
+	ncbi	hero resistance 3	help3				26190255			
+	ncbi	heterochromatin protein 1-like protein	HP1L	HP1-L			47105551|66854106			
+	tgrc	Heterodera rostochiensis resistance	hero	Hero	hero	cyst nematode resistance protein	26190257|23095860	12121443		
+	tgrc	heterogemma	hg	hg1	hg					
+	tgrc	heteroidea	he		he					
+n	tgrc	heteroidea-2	he2		he-2					
+	ncbi	hexokinase	hxk1				23477116			
+	ncbi	hexokinase 2	Hxk2				11494009	11164592		
+	ncbi	hexokinase 3	HXK3				67003899			
+	ncbi	hexose transporter 2	ht2				47104384|5734439|3581999	11198428		
+	ncbi	hexose transporter 1	ht1				5734437	11198428		
+	ncbi	hexose transporter 3	ht3				5734441	11198428		
+	tgrc	hilara	hi		hi					
+	tgrc	Hirsute	hr	Hr	Hr					
+	tgrc	Hirtum	hrt	Hrt	Hrt					
+	ncbi	histidine decarboxylase	hdc				416533	8219096		
+	ncbi	histone H1	H1				3021486|47104149	10344194		
+	tgrc	Hoffman's anthocyaninless	ah	ao,a337	ah					
+	tgrc	homogeneous yellow	hy		hy					
+	ncbi	homogentisate 1,2-dioxygenase	HGO				8131904			
+	ncbi	HSC2-like	HSC2				47105897|31095604			
+	ncbi	hydroperoxide lyase	hpl			hydroperoxide lyase	4850213|13506708|7677377	10859201		
+	ncbi	hydroxycinnamoyl CoA quinate transferase	hqt			quinate transferase	40644083	15107863		
+	ncbi	I-box binding factor	MYBI				6688528	10652136		
+	tgrc	icana	ica		ica					
+	ncbi	IDS4-like	ail	ctd4			50830972|6491764	11430427|16040352		
+	tgrc	ignava	ig		ig					
+n	tgrc	ignava-2	ig2		ig-2					
+n	tgrc	ignava-3	ig3		ig-3					
+	tgrc	imbecilla	imb		imb					
+n	tgrc	imbecilla-2	imb2		imb-2					
+	tgrc	Immunity to Fusarium wilt race 0	i	I	I					
+	tgrc	Immunity to Fusarium wilt race 2	i2	I-2	I-2	NBS-LRR	4689222	9634592		
+	tgrc	Immunity to Fusarium wilt race 3	i3	I-3	I-3					
+	tgrc	impatiens	im	im1	im					
+n	tgrc	impatiens-2	im2		im-2					
+	tgrc	impedita	imp		imp					
+	ncbi	importin alpha	KAP				47105944|3228369			
+	tgrc	incana	icn		icn					
+	tgrc	inclinata	ic		ic					
+n	tgrc	inclinata-2	ic2		ic-2					
+	tgrc	incomplete anthocyanin	ai	a342	ai					
+	tgrc	inconstans	ins	ins1	ins					
+	tgrc	incurva	inc		inc					
+n	tgrc	incurva-2	inc2		inc-2					
+	tgrc	indehiscens	id		id					
+n	tgrc	indiga-2	in2		in-2					
+n	tgrc	indiga-3	in3		in-3					
+	tgrc	inflexa	ina	ina1	ina					
+	tgrc	informa	inf		inf					
+	ncbi	initiation factor IF1	infA				13774422	11251102		
+	tgrc	inordinata	ida		ida					
+	ncbi	inorganic phosphate transporter 2	PT2			phosphate transporter	2570524	9449838		
+	tgrc	inquieta	ini	ini1	ini					
+	tgrc	inquinata	ita	ita1	ita					
+	ncbi	insulin degrading enzyme	ide			insulin degradation	21998671			
+n	tgrc	integer	inr		inr					
+n	tgrc	integrifolia	inta		inta					
+	tgrc	Intense pigment	ip	Ip	Ip					
+n	tgrc	introflexa-2	inx2		inx-2					
+n	tgrc	Intumescences	Itm		Itm					
+	tgrc	invalida	inv		inv					
+	tgrc	involuta	ino	ino1	ino					
+	ncbi	iron superoxide dismutase	FESOD	sodb		iron superoxide dismutase	33439119|33413302	15344817		
+	tgrc	irregularis	irr		irr					
+	tgrc	Isocitrate dehydrogenase-1	idh1	Idh-1	Idh-1					
+	ncbi	jasmonic acid 1	JA1				6175247			
+	ncbi	jasmonic acid 2	JA2				6175245			
+	ncbi	jasmonic acid 3	LA3				6175251			
+	tgrc	Jaundiced	jau	Jau	jau					
+	tgrc	jointless	j	lf	j	MADS box transcription factor	83629189	10972295|11457984		
+	tgrc	jointless-2	j2	j-2,j2	j-2					
+	tgrc	jugata	jug		jug					
+n	tgrc	k	k		(K)					
+	ncbi	kinesin related protein	TKR				27462171			
+	ncbi	knotted 4	tkn4			homeodomain protein	28195121|31323450			
+	ncbi	knox-like 1 	KD1			homeodomain protein	31323452			
+	ncbi	invertase 5	LIN5	IL9-2-5		beta-fructofuranosidase	1771149|20372845	9306701|10781077		
+	ncbi	invertase 6	LIN6	Wiv-1		invertase	1771151|20467110|3608172	9306701|9794080|12586884		
+	ncbi	invertase 7	LIN7			invertase	1771153|20467112	9306701|12586884		
+	ncbi	invertase 8	LIN8			invertase	1771155|20467114	9306701|12586884		
+	ncbi	pr p23 pathogenesis-related protein	prp23	pr p23tpm 1			22628|19314	8278538|1463856|8278538		
+	ncbi	pTOM5	pTOM5				170415|512395|47104127	1544888		
+	ncbi	twi1	twi1				1359904|47105610			
+	ncbi	vsf-1	vsf1	vsf-1			47104248|1838975	8919907		
+	ncbi	lactate dehydrogenase	LDH1			L-lactate dehydrogenase	1620969|47105328	9426593		
+	tgrc	laesa	lae		lae					
+	tgrc	laeta	lt	lt1	lt					
+n	tgrc	laeta-2	lt2		lt-2					
+	tgrc	lamprochlora	lap	lap1	lap					
+	tgrc	Lanata	ln	Ln	Ln					
+	tgrc	Lanceolate	la	La	La					
+	tgrc	languida	lan		lan					
+	tgrc	Lapageria	lpg	Lpg	lpg					
+	tgrc	lata	lat		lat					
+	tgrc	lateral suppresser	ls		ls	VHIID protein	4160440	9874811		
+	tgrc	latifolia	ltf		ltf					
+	tgrc	Lax	lx		lx					
+n	tgrc	laxus	lax		lax					
+	tgrc	lazy	lz		lz					
+	tgrc	lazy-2	lz2	lz-2	lz-2					
+	ncbi	LE-ACO41-aminocyclopropane-1-carboxylate oxidase	ACO4			aminocyclopropane-1-carboxylate oxidase	3986118|47105189	9847103		
+	ncbi	Le3OH-13b-hydroxylase	3OH1	3OH-1		hydroxylase	3834349			
+	ncbi	Le3OH-23b-hydroxylase	3OH2	3OH-2		hydroxylase	3834351			
+	ncbi	histone H2B	H2B2	H2B-2			3021482	10344194		
+	ncbi	class I knotted-like homeodomain protein 6	T6			homeodomain protein	252970	9484482		
+	ncbi	GTP cyclohydrolase II/3,4-dihydroxy-2-butanone 4-phosphate synthase	ribA				2578364			
+	ncbi	LEAJ5077 protein kinase	TCTR2				3201540			
+	ncbi	LEAPSAA2 L.esculentum APS-AA2	APSAA2	APS-AA2			28375521			
+	ncbi	LeArcA1 protein containing 7 WD40 repeats	ArcA1				4589833|47104094	10348696		
+	ncbi	LeArcA2 protein containing 7 WD40 repeats	ArcA2				4589835|47104382	10348696		
+	ncbi	LECEVI16G peroxidase precursor	cevi16				1161565	8672818		
+	ncbi	LECEVI1A	CEVI1	CEVI-1			296909	8118059		
+	ncbi	LECEVI57G protein inhibitor II	cevi57				1161571	8672818		
+	tgrc	de-etiolated 1	det1	hp-2,hp2,dg,tdet1	hp-2	LEDET1 Solanum lycopersicon tDET1 protein	4038593	9927635|12589545		
+	ncbi	extensin-like 10	Dif10				1491719	9349272		
+	ncbi	extensin-like 54	Dif54				2125817	9349272		
+	ncbi	LEE14BDGL L.esculentum endo-1,4-beta-D-glucanase	cel7				2230954			
+	ncbi	LeEIL4EIN3-like	EIL4				37777030			
+	ncbi	leer-sHSP small heat shock protein	sHSP				8918493			
+	ncbi	LeftsH6FtsH protease	ftsH6				66954651			
+	ncbi	LEGBF4G L.esculentum GBF4G-box binding protein	GBF4				456752	8127687		
+	ncbi	LEHSC270  hsc-2heat shock protein cognate 70	hsc70				19257	1893113		
+	ncbi	LeHSP110/ClpB heat shock protein	HSP110	ClpB			68989119			
+	ncbi	LELDH2 L-lactate dehydrogenase	ldh				1620971	9426593		
+	ncbi	LELKT1GEN L.esculentum potassium channel	LKT1				8980431	10805443		
+	ncbi	LELYCOCYC lycopene epsilon-cyclase	CrtLe1	CrtL-e-1			3005982	10205893		
+	ncbi	LeMA-1 putatve Mg-dependent ATPase 1	MA1	MA-1			732814	7766893		
+	tgrc	lembiformis	le	le1	le					
+	ncbi	LEMFP1	MFP1				1771157	8953774		
+	ncbi	LePCL1	PCL1				71067057	16164597		
+	ncbi	LEPR1A1A	PR1a1	PR-1a1			296911	8190070		
+	tgrc	leprosa	lep	lep1	lep					
+	ncbi	LEQA L.esculentum TomQ'a beta(1,3)glucanase	tomQa	tomQ`a			498923	8193297		
+	ncbi	LEQB L.esculentum TomQ'b beta(1,3)glucanase	tomQb	tomQ`b			498925	8193297		
+	ncbi	LERNALE L.esculentum ribonuclease le	rnale				895854	7894013		
+	ncbi	LERNALX L.esculentum ribonuclease lx	rnalx				895856	7894013		
+	ncbi	LERPL38A L.esculentum rpl38 ribosomal protein L38	rpl38				313026	8467223		
+	ncbi	LES012717 SUMO protein	sumo				6433949			
+	ncbi	LES17306 homeodomain protein	h52				6723678	10652131		
+	ncbi	LES245570 Rab11 GTPase	Rab11a				6688534	11487695		
+	ncbi	LES277944 SANT/MYB domain	fsm1				7981379	15599593		
+	ncbi	LES294902 3-desoxy-D-manno octulosonic acid-8-phosphate synthase	kdsA				13509332			
+	ncbi	LES441249 p27KIP1-related-protein 1	krp1				23899377			
+	ncbi	LES457048 hero resistance protein 1 homologue	help1				26190251			
+	ncbi	LES459816 putative phosphatase 14B	psi14B				26986117	12702022		
+	ncbi	LES459817 putative phosphatase 14A	psi14A				26986119	12702022		
+	ncbi	LESBT1 L.esculentum serine protease, SBT1	SBT1				1771159	10671566		
+	ncbi	LESUBENDO L.esculentum subtilisin-like endoprotease	PRP69	PR-P69			1524114	8692815		
+	ncbi	LETDR3	TDR3				19379	1688249		
+	ncbi	LETDR4	TDR4				19381	1688249		
+	ncbi	LETDR8	TDR8				19387	1688249		
+	ncbi	LeTH1tobamovirus multiplication 1 homolog	TH1				74038608			
+	ncbi	LeTH2tobamovirus multiplication 1 homolog 2	TH2				74038610			
+	ncbi	LETHM1	THM1			myb-related transcription factor	1167485	8639738		
+	ncbi	LETHM16 L.esculentum myb-related transcription factor	THM16			myb-related transcription factor	1430845			
+	ncbi	LETHM27 L.esculentum THM27 protein	THM27			myb-related transcription factor	1167483	8639738		
+	ncbi	LETHM6 L.esculentum myb-related transcription factor, THM6	THM6				1430847			
+	ncbi	LETSI1	TSI1	TSI-1			2887309			
+	ncbi	LETSW12	TSW12				19391	1558948		
+	ncbi	LEU13054  endo-1,4-beta-glucanase precursor	Cel1				531902	7994180		
+	ncbi	LEU22441  LeRAD51	RAD51				1143809	9021132		
+	ncbi	LEU27454  gamma-glutamyl kinase and gamma-glutamyl phosphate reductase	PRO1				2078446			
+	ncbi	LEU70481  abscission polygalacturonase	TAPG4				1575706	9112778		
+	ncbi	LEU76407  knotted 2	TKn2	Me,Cu		knotted	4098239	9437860		
+	ncbi	LEU76408  knotted 3	TKn3			knotted	4098241			
+	ncbi	LEU76410  homeobox 2	THox2			homeobox protein	4098245			
+	ncbi	LEU86662  VPS41	tVPS41				1835787	9159129		
+	ncbi	leucine aminopeptidase 2	lap2	lap2			924627|1236651|1236653	7647301|8824220		
+	ncbi	leucine aminopeptidase 1	LapN				27463708|924629	7647301|12746529		
+	ncbi	leucine rich repeat protein	Shy				38731665	15255864		
+	ncbi	LEVAHOX1G L.esculentum homeobox	VAHOX1			homeobox protein	1161574	8653114|8672818		
+	tgrc	Leveillula taurica resistance	lv	v	lv					
+	ncbi	LEXYL1	XYL1				37359705	14585820		
+	ncbi	LEXYL2	XYL2				37359707	14585820		
+	ncbi	LEY13632 Dem protein	dem				2190418			
+	ncbi	LEY14339 proteasome, alpha subunit	PSR5				2315210			
+	ncbi	LEY14762 glutathione peroxidase	GPXle1	GPXle-1		glutathione peroxidase	2388884	9654095		
+	ncbi	LEY14763 glutathione peroxidase	GPXle2	GPXle-2		glutathione peroxidase	2388886	9654095		
+	ncbi	LEY17225 cyclin-dependent protein kinase A-1	cdc2A1	cdc2A-1		protein kinase	3123613	10557234		
+	ncbi	LEY17226 cyclin-dependent protein kinase 2A-2	cdc2A2	cdc2A-2		protein kinase	3123615	10557234		
+	ncbi	LEYFGTOM5 GTOM5 mutant phytoene synthase	GTOM5	r,yellow flesh, ry		phytoene syntase	19346|19398	8343597		
+n	tgrc	light green-2	lg2		lg-2					
+n	tgrc	light green-3	lg3		lg-3					
+n	tgrc	light green-4	lg4		lg-4					
+	tgrc	light green-5	lg5	lg-5,lg5,lm,fy,yt	lg-5					
+	tgrc	light-green	lg	lme	lg					
+	tgrc	limbrata	li		li					
+	ncbi	lipid desaturase	cevi19				1161567|47104450	8672818		
+	ncbi	lipid transfer protein	ltpg2	le16		non-specific lipid transfer protein (ltpg2 gene)	71360929|1816534			
+	ncbi	lipoxygenase	cevi34			lipoxygenase	1161569|10764844	8672818		
+	ncbi	lipoxygenase B	LOX	loxB		lipoxygenase	575431|47105351|534845	7724686|7972514		
+	ncbi	lipoxygenase C	loxC			lipoxygenase	1654137	9232884		
+	ncbi	lipoxygenase D	loxD			lipoxygenase	1654139	9232884		
+	ncbi	lipoxygenase A	loxA			lipoxygenase	575432	7972514		
+n	tgrc	livida	liv		liv					
+n	tgrc	Locule number	Lc		Lc					
+n	tgrc	locule number increased	loc		loc					
+n	tgrc	locule number reduced	lo		lo					
+	tgrc	longipes	lop	lop1	lop					
+n	tgrc	low acid	loa		loa					
+n	tgrc	lower leaves albino fruit not ripening	lanr		lanr					
+	ncbi	LSLESME DNA (cytosine-5)-methyltransferase	sMET			methyltransferase	2887279			
+	tgrc	lucida	luc		luc					
+n	tgrc	lucida-2	luc2		luc-2					
+n	tgrc	lucida-3	luc3		luc-3					
+	tgrc	lurida	lur	lur1	lur					
+	tgrc	lutea	lut		lut					
+n	tgrc	lutea-2	lut2		lut-2					
+n	tgrc	lutea-3	lut3		lut-3					
+	tgrc	luteola	lu		lu					
+	tgrc	lutescent	l	g	l					
+	tgrc	lutescent-2	l2	l-2,l-3,l2	l-2					
+n	tgrc	luxurians	lux		lux					
+	ncbi	lycopene beta-cyclase	CrtL1	CrtL-1		lycopene beta-cyclase	1006672	8837512		
+	tgrc	lyrate	lyr		lyr					
+	ncbi	lysyl-tRNA synthetase	LysRS			tRNA synthetase	1147584	9118995		
+n	tgrc	macra	maa		maa					
+	tgrc	macrocalyx	mc		mc	APETALA1-like MADS box	32478032|20219013	11951045|14573491		
+	tgrc	macrocarpa	ma		ma					
+	tgrc	macrosepala	mcs		mcs					
+	tgrc	maculata	mac	mac1	mac					
+	tgrc	maculonecrotic	mcn		mcn					
+n	tgrc	maculosa	mal		mal					
+n	tgrc	malate concentration	mlt		mlt					
+	tgrc	Malate dehydrogenase-1	mdh1	Mdh-1	Mdh-1	Malate dehydrogenase				
+n	tgrc	Malate dehydrogenase-2	Mdh2		Mdh-2	Malate dehydrogenase				
+n	tgrc	Malate dehydrogenase-3	Mdh3		Mdh-3	Malate dehydrogenase				
+	tgrc	Malate dehydrogenase-4	mdh4	Mdh-4	Mdh-4	Malate dehydrogenase				
+n	tgrc	male sterile	ms		ms					
+n	tgrc	male sterile-19	ms19		ms-19					
+n	tgrc	male sterile-20	ms20		ms-20					
+n	tgrc	male sterile-21	ms21		ms-21					
+n	tgrc	male sterile-22	ms22		ms-22					
+n	tgrc	male sterile-36	ms36		ms-36					
+n	tgrc	male sterile-37	ms37		ms-37					
+n	tgrc	male sterile-41	ms41		ms-41					
+n	tgrc	male sterile-43	ms43		ms-43					
+n	tgrc	male sterile-50	ms50		ms-50					
+	tgrc	male-sterile-10	ms10	ms-10,ms10	ms-10					
+	tgrc	male-sterile-11	ms11	ms-11,ms11	ms-11					
+	tgrc	male-sterile-12	ms12	ms-12,ms12	ms-12					
+	tgrc	male-sterile-13	ms13	ms-13,ms13	ms-13					
+	tgrc	male-sterile-14	ms14	ms-14,ms14	ms-14					
+	tgrc	male-sterile-15	ms15	ms-15,ms15	ms-15					
+	tgrc	male-sterile-16	ms16	ms-16,ms16	ms-16					
+	tgrc	male-sterile-17	ms17	ms-17,ms17	ms-17					
+	tgrc	male-sterile-18	ms18	ms-18,ms18	ms-18					
+n	tgrc	male-sterile-2	ms02		ms-02					
+	tgrc	male-sterile-23	ms23	ms-23,ms23	ms-23					
+	tgrc	male-sterile-24	ms24	ms-24,ms24	ms-24					
+	tgrc	male-sterile-25	ms25	ms-25,ms25	ms-25					
+	tgrc	male-sterile-27	ms27	ms-27,ms27	ms-27					
+	tgrc	male-sterile-28	ms28	ms-28,ms28	ms-28					
+	tgrc	male-sterile-29	ms29	ms-29,ms29	ms-29					
+n	tgrc	male-sterile-3	ms03		ms-03					
+	tgrc	male-sterile-30	ms30	ms-30,ms30	ms-30					
+	tgrc	male-sterile-31	ms31	ms-31,ms31	ms-31					
+	tgrc	male-sterile-32	ms32	ms-32,ms32	ms-32					
+	tgrc	male-sterile-33	ms33	ms-33,ms33	ms-33					
+	tgrc	male-sterile-34	ms34	ms-34,ms34	ms-34					
+	tgrc	male-sterile-38	ms38	ms-38,ms38	ms-38					
+	tgrc	male-sterile-39	ms39	ms-39	ms-39					
+n	tgrc	male-sterile-4	ms04		ms-04					
+	tgrc	male-sterile-44	ms44	ms-44	ms-44					
+	tgrc	male-sterile-45	ms45	ms-45	ms-45					
+	tgrc	male-sterile-46	ms46	ms-46	ms-46					
+	tgrc	Male-sterile-48	ms48	Ms-48	ms-48					
+	tgrc	male-sterile-49	ms49	ms-49	ms-49					
+n	tgrc	male-sterile-5	ms05		ms-05					
+n	tgrc	Male-sterile-51	Ms51		Ms-51					
+n	tgrc	male-sterile-6	ms06		ms-06					
+n	tgrc	male-sterile-7	ms07		ms-07					
+n	tgrc	male-sterile-8	ms08		ms-08					
+n	tgrc	male-sterile-9	ms09		ms-09					
+n	tgrc	Malic enzyme-1	Mae1		Mae-1					
+	ncbi	mannan endo-1,4-beta-mannosidase	Man4				22382039|15529112|21307618	12427992		
+	ncbi	MAP kinase phosphatase	MKP1			MAP kinase phosphatase	13540265	11274055		
+	ncbi	MAPKK (LeMKK1)	MKK1	mek1			51471925|9843770	15371431		
+	ncbi	MAPKK (LeMKK2)	MKK2				51471927	15371431		
+	ncbi	MAPKK (LeMKK3)	MKK3				51471929	15371431		
+	ncbi	MAPKK (LeMKK4)	MKK4				51471931	15371431		
+	tgrc	marcescens	mar		mar					
+	tgrc	marcida	mad	mad1	mad					
+	tgrc	marginal necrotic	mgn		mgn					
+	tgrc	marmorata	marm		marm					
+n	tgrc	marmorata-2	marm2		marm-2					
+n	tgrc	matura	mat		mat					
+	tgrc	mediocris	med	med1	med					
+	ncbi	meiotic serine proteinase	TMP				6468324	1155090		
+	tgrc	Meloidogyne incognita resistance-3	mi3	Mi-3	Mi-3					
+n	tgrc	Meloidogyne incognita-4	Mi4		Mi-4					
+	tgrc	melongenoida	mel	mel1	mel					
+n	tgrc	mendosa	men		men					
+	ncbi	metacaspase 1	MCA1				23343884|47105029	12783227		
+	ncbi	metallocarboxypeptidase inhibitor	mcpi				19278	1715974		
+n	tgrc	methyl salicylate concentration	mes		mes					
+	ncbi	MFP1 attachment factor 1	MAF1				7546724	10488241		
+	tgrc	microcarpa	mic	mic1	mic					
+	tgrc	midget	mt		mt					
+n	tgrc	miniature	mnt		mnt					
+n	tgrc	miniature phosphorus syndrome	mps		mps					
+n	tgrc	minuscula	mia		mia					
+	tgrc	minuta	mn	mi	mn					
+n	tgrc	minuta-2	mn2		mn-2					
+n	tgrc	minutula	min		min					
+	ncbi	mitochondrial malate dehydrogenase	mMDH			malate dehydrogenase	52139815	15665243		
+	ncbi	mitochondrial small heat shock protein	MTSHP				3492853	10682350		
+	ncbi	mitogen-activated protein kinase 1	MPK1	mpka1;1		protein kinase	30962144|30171838|47105457	12913131		
+	ncbi	mitogen-activated protein kinase 2	MPK2			protein kinase	30171842	12913131		
+	ncbi	mitogen-activated protein kinase 3	MPK3			protein kinase	30171844	12913131		
+	ncbi	MLO1	MLO1				62208138	16235112		
+n	tgrc	Modifier inducer	Moi		Moi					
+n	tgrc	modifier of B	mob		mo-B					
+n	tgrc	Modifier of I	modi		Mo(I)					
+n	tgrc	Modifier-2 of I	modi2		Mo(I)-2					
+	ncbi	monodehydroascorbate reductase	MDHAR				72011374			
+	tgrc	monstrosa	mon		mon					
+	tgrc	morata	mor	mor1	mor					
+	tgrc	mortalis	mts	mts1	mts					
+	tgrc	mottled	m		m					
+	tgrc	mottled-2	m2	m-2,m2,mo,md	m-2					
+n	tgrc	Mottled-3	M3		M-3					
+	tgrc	multicolor	mcr		mcr					
+	ncbi	multicystatin	TMC				6671195|3452386			
+n	tgrc	multiflora	mult		mult					
+	tgrc	multifolia	muf		muf					
+n	tgrc	multiformis	mf		mf					
+	tgrc	multifurcata	mua	mua1	mua					
+n	tgrc	multinata	mun		mun					
+	tgrc	multinervis	mu		mu					
+	tgrc	multiplex	mux	mux1	mux					
+	tgrc	multiplicata	mup	mup1	mup					
+n	tgrc	multivalens	muv		muv					
+	tgrc	multivalens-2	muv2	muv-2,mus1	muv-2					
+	tgrc	mutabilia	mut	mut1	mut					
+	tgrc	mutata	mta	mta1	mta					
+	ncbi	MYB transcription factor	MYB	THM18		MYB transcription factor	22900938|22900936|1370139	8639738		
+	ncbi	mycorrhiza-inducible inorganic phosphate transporter	PT5	PT4			62529832|62529834	15807785		
+	ncbi	myo-inositol monophosphatase 1	IMP1				1098976	8718627		
+	ncbi	myo-inositol monophosphatase 2	IMP2				1098974	8718627		
+	ncbi	myo-inositol-1-phosphate synthase	Inps				10185841|47105174			
+	ncbi	N-hydroxycinnamoyl-CoA:tyramine N-hydroxycinnamoyl transferase	THT1.3	THT7-1,THT1-4			19908258|19908256|19908262	12900412		
+	ncbi	N-hydroxycinnamoyl-CoA:tyramine N-hydroxycinnamoyl transferase THT7-8	THT7.8				19908260	12900412		
+	ncbi	Na+/H+ antiporter 1	NHX1				15982203			
+	ncbi	Na+/H+ antiporter 2	NHX2				15982205			
+	ncbi	NAC domain protein	NACNOR	NAC-NOR			52353035			
+	ncbi	NADP-malic enzyme	ME1				440844|2150026			
+	ncbi	NADPH oxidase	RBOH1				4585141			
+	tgrc	nana	na		na					
+n	tgrc	nana-2	na2		na-2					
+	tgrc	narrow cotyledons	nc		nc					
+n	tgrc	necrodeformis	ned		ned					
+	tgrc	necrotic	ne		ne					
+	tgrc	necrotic dwarf	ndw		ndw					
+	tgrc	neglecta	neg		neg					
+n	tgrc	neglecta-2	neg2		neg-2					
+n	tgrc	neglecta-3	neg3		neg-3					
+	tgrc	netted	nd	m-4	nd					
+	tgrc	netted virescent	nv		nv					
+	tgrc	Never ripe	nr	Nr,tETR	Nr	ethylene receptor	1122444|984156|47105156	8525371		
+	tgrc	Never ripe-2	nr2	Nr-2	Nr-2					
+	ncbi	nii1 nitrite reductase	nii1			nitrite reductase	77627621			
+	ncbi	NIM1-like protein 1	NML1				49182275			
+	ncbi	NIM1-like protein 2	NML2				49182277			
+n	tgrc	nipple tip-2	n2		n-2					
+n	tgrc	nipple tip-3	n3		n-3					
+n	tgrc	nipple tip-4	n4		n-4					
+	tgrc	nipple-tip	n	nt	n					
+n	tgrc	nitens	nt		nt					
+n	tgrc	nitida	ni		ni					
+n	tgrc	nitida-2	ni2		ni-2					
+n	tgrc	nitidula	nit		nit					
+	tgrc	Nitrate reductase-1	nir1	Nir-1	Nir-1	nitrite reductase				
+	ncbi	nitrate transporter 1	NRT2c1	NRT2;1			600260			
+	ncbi	nitrate transporter 2	NRT2c2	NRT2;2			6002602			
+	ncbi	nitrite reductase 2	nii2			nitrite reductase	77627623|47106002			
+n	tgrc	no flowers	nf		nf					
+	ncbi	non-inducible immunity 1	NIM1				49182273			
+	tgrc	non-ripening	nor		nor					
+	ncbi	non-specific lipid transfer protein	ltpg1				71360927			
+	ncbi	non-symbiotic hemoglobin class 1	Glb1				12963874			
+	ncbi	non-symbiotic hemoglobin class 2	Glb2.1		GenBank: Glb2		15809397			
+	tgrc	notabilis	not		not					
+	ncbi	nuclear matrix protein 1	NMP1				15077143			
+	ncbi	obamovirus multiplication 1	TH3			tobamovirus multiplication	74038612|47105353			
+	tgrc	oblate fruit	obl		obl					
+	tgrc	obscura	ob		ob					
+n	tgrc	obscura-2	ob2		ob-2					
+n	tgrc	obscuravenosa	obv		obv					
+n	tgrc	obtusa	ot		ot					
+	tgrc	ochroleuca	oc		oc					
+	tgrc	Odorless	od	Od	Od					
+n	tgrc	Oidium lycopersicum resistance-3	Ol3		Ol-3					
+n	tgrc	Oidium lycopersicum-1	Ol1		Ol-1					
+	ncbi	oligopeptide transporter 1	OPT1				4102838			
+	tgrc	oligosperma	os	os1	os					
+	tgrc	olivacea	oli		oli					
+	ncbi	omega-3 fatty acid desaturase	FAD			omega-3 fatty acid desaturase	32479365|63204684	12837953		
+	tgrc	opaca	op		op					
+n	tgrc	opaca-2	op2		op-2					
+	tgrc	opacata	opa	opa1	opa					
+	tgrc	ordinata	or		or					
+	ncbi	ornithine aminotransferase	OAT			ornithine aminotransferase	58802472			
+	ncbi	ornithine decarboxylase	ODC			ornithine decarboxylase	10937975|3668353	9733552		
+	tgrc	Orobanche aegyptica resistance	ora	Ora	ora					
+	tgrc	Oval	ol	O.,ol	O.					
+n	tgrc	ovata	ova		ova					
+	tgrc	ovate	o		o	fruit shape regulatory gene	23429648	12242331		
+	tgrc	oviformis	ovi	ovi1	ovi					
+	ncbi	oxoglutarate/malate translocator	ACI36			oxoglutarate/malate translocator (ACI36)	47104423|68449757			
+	ncbi	p27KIP1-related-protein 2	krp2				31980328			
+	tgrc	pale dwarf	pdw		pdw					
+n	tgrc	pale green	pg		pg					
+n	tgrc	pale green-2	pg2		pg-2					
+n	tgrc	pale green-3	pg3		pg-3					
+	tgrc	pallescens	pas	pas1	pas					
+n	tgrc	pallescens-2	pas2		pas-2					
+	tgrc	pallida	pal		pal					
+n	tgrc	parca	par		par					
+	tgrc	parthenocarpic fruit	pat		pat					
+	tgrc	parthenocarpic fruit-2	pat2	pat-2,pat2	pat-2					
+	ncbi	partialaminoacylase-1	ctd3				6491762|47105489			
+	ncbi	partialcopper-containing amine oxidase	cuAO				59668405			
+	ncbi	partialDnaJ like protein	t19.8	t19-8			11863722|47105888			
+	ncbi	partialpolyphenol oxidase A	ppo				46275223			
+	tgrc	partiaria	pta		pta					
+n	tgrc	parva	pa		pa					
+	tgrc	parva-2	pa2	pa-2,pa1,pa2	pa-2					
+n	tgrc	parviflora	pf		pf					
+n	tgrc	parvistata	pvs		pvs					
+	ncbi	pathogen-induced protein	pi1				20269124			
+	ncbi	pathogenesis-related protein P2	PRP2	PR-P2			19975|47104770	1804403		
+n	tgrc	pauciflora	paf		paf					
+n	tgrc	paucipinnata	ppi		ppi					
+n	tgrc	paucisurcata	psu		psu					
+	tgrc	pauper	pau		pau					
+	tgrc	paupercula	pap		pap					
+	tgrc	peach	p		p					
+	ncbi	pectin methylesterase 1	PME1.9	PME1.9		pectin esterase	398715|1256266|47104779	8018878		
+	ncbi	pectin methylesterase 2	PME2.1	PME2.1		pectin esterase	19288|490041|398717|1256262	3371355|8018878		
+	tgrc	pendens	pen		pen					
+	tgrc	penetrabile	pet	pet-2,pet2	pet-2					
+	tgrc	perlucida	pl	pl1	pl					
+	ncbi	peroxidase (TPX1)	px1		GenBank: TPX1	peroxidase	678546|47104415	8029340		
+	tgrc	Peroxidase-1	prx1	Prx-1	Prx-1	peroxidase				=px1?
+	tgrc	Peroxidase-2	prx2	Prx-2	Prx-2	peroxidase				
+	tgrc	Peroxidase-3	prx3	Prx-3	Prx-3	peroxidase				
+n	tgrc	Peroxidase-3a	Prx3a		Prx-3a	peroxidase				
+	tgrc	Peroxidase-4	prx4	Prx-4	Prx-4	peroxidase				
+n	tgrc	Peroxidase-6	Prx6		Prx-6	peroxidase				
+	tgrc	Peroxidase-7	prx7	Prx-7	Prx-7	peroxidase				
+n	tgrc	Peroxidase-7a	Prx7a		Prx-7a	peroxidase				
+	ncbi	peroxisomal acyl-CoA oxidase 1A	Acx1A			peroxidase	58531947	15722469		
+	ncbi	peroxisomal acyl-CoA oxidase 1B	Acx1B				58531949	15722469		
+	tgrc	persistent style	pst		pst					
+	tgrc	perspicua	psa		psa					
+	tgrc	perviridis	per		per					
+	tgrc	petite	pt		pt					
+	tgrc	Petroselinum leaf	pts	Pts	Pts					
+	ncbi	phosphatase (psi14C gene)	psi14C				26986115|11837861	11161030|12702022		
+	ncbi	phosphate starvation inducible gene TPSI1	TPSI1				1009717			
+	ncbi	phosphate transporter 1	PT1				2570522|2266671|3687390	9449838|9737001		
+	ncbi	phosphoenolpyruvate carboxylase 1	ppc1				6688530			
+	ncbi	phosphoenolpyruvate carboxylase 2	ppc2			phosphoenolpyruvate carboxylase	399636|6688532	8012051		
+	ncbi	phosphoenolpyruvate carboxylase kinase 2	PPCK2			phosphoenolpyruvate carboxylase kinase	28207686	10571893		
+	tgrc	Phosphoglucoisomerase-1	pgi1	Pgi-1	Pgi-1	Phosphoglucoisomerase				
+	tgrc	Phosphoglucomutase-1	pgm1	Pgm-1	Pgm-1	Phosphoglucomutase				
+	tgrc	Phosphoglucomutase-2	pgm2	Pgm-2	Pgm-2	Phosphoglucomutase				
+	ncbi	phospholipase D	TPLD	PLDa3		phospholipase	12060549|13111658	11319019|11446372		
+	ncbi	phospholipase PLDa1	PLDa1			phospholipase	6573118|13111654|5758307	11446372		
+	ncbi	phospholipase PLDa2	PLDa2			phospholipase	13111656	11446372		
+	ncbi	phospholipase PLDb1	PLDb1			phospholipase	13111660	11446372		
+	ncbi	phospholipase PLDb2	PLDb2			phospholipase	13111662	11446372		
+	tgrc	phosphorus deficiency syndrome	pds	Ph-oid	pds					
+	ncbi	phosphosulfolactate synthase	PSR				54639894|47105528			
+n	tgrc	Photoperiodic chlorosis	Pch		Pch					
+	ncbi	photosystem II oxygen-evolving complex protein 3	PsbQ				51457943			
+	ncbi	phytochrome A, type 1	phyA1				3492796	9681030		
+	ncbi	phytochrome A, type 2	phyA2				3492800|3492798	9681030|2011578		
+	ncbi	phytochrome B1	PHYB1				4038601|4038603|4038605|4038607|4038609	9869419		
+	ncbi	phytoene desaturase	pds1	pds	GenBank: pds	phytoene desaturase	19286|249664|387886	1594600|8485401		
+	ncbi	phytoene synthase	PSY2			phytoene synthase	437019	8245008		
+n	tgrc	Phytophthora infestans field resistance	Phf		Phf					
+n	tgrc	Phytophthora infestans field resistance2	Phf2		Phf-2					
+	tgrc	Phytophthora infestans resistance	ph	Ph,PiT,TR1	ph					
+n	tgrc	Phytophthora infestans resistance 2	Ph2		Ph-2					
+n	tgrc	Phytophthora infestans resistance 3	Ph3		Ph-3					
+	tgrc	picta	pic		pic					
+n	tgrc	picta-2	pic2		pic-2					
+n	tgrc	picta-3	pic3		pic-3					
+n	tgrc	picta-4	pic4		pic-4					
+n	tgrc	pigment diluter	pd		pd					
+	ncbi	PII-like protein	PIIGLB1		GenBank: GLB1	similar to nitrogen regulatory protein PII	38231569			
+n	tgrc	pinnosa	pin		pin					
+	tgrc	pistillate	pi		pi					
+	tgrc	pistillate-2	pi2	pi-2	pi-2					
+	tgrc	plana	pla		pla					
+n	tgrc	plana-2	pla2		pla-2					
+	ncbi	plant resistance protein (Mi-1.1)	mi1.1	Mi-1.1		leucine zipper, nucleotide binding, leucine-rich repeat	3449377	9707531|9707547		
+	ncbi	plasmalemma Na+/H+ antiporter	sos1				66765936			
+	ncbi	plastid terminal oxidase	PTOX			terminal oxidase	9937100|10505365	10938359		ghost
+	ncbi	plastidic hexokinase	HXK4			hexokinase	67003901			
+	tgrc	plicata	pli		pli					
+n	tgrc	plicata-2	pli2		pli-2					
+	ncbi	pollen-specific kinase partner protein	GMP				57340415			
+	tgrc	polychrome variegated	pcv		pcv					
+	tgrc	polycot	pct		pct					
+	ncbi	polygalacturonase	PG2a	PG-2a	GenBank: PG	polygalacturonase	170470|34481842|19291|19297|490039|687982|1683407|687983	1859845|3786135|7803691		
+	ncbi	polygalacturonase (XOPG1)	XOPG1				7381226	10517833		
+	tgrc	polylopha	pol		pol					
+n	tgrc	polyopha-2	pol2		pol-2					
+	tgrc	polyphylla	pp	pp1	pp					
+	tgrc	positional sterile	ps	va	ps					
+	tgrc	positional sterile-2	ps2	ps-2	ps-2					
+	tgrc	potato leaf	c		c					
+	tgrc	potato virus Y resistance	rt		rt					
+	tgrc	Poxed fruit	pox	Pox	Pox					
+	ncbi	PR-5x	PR5	PR-5			20750096	12376655		
+n	tgrc	praeclusa	pra		pra					
+n	tgrc	praeclusa-2	pra2		pra-2					
+	tgrc	praecox	px	px1	px					
+	tgrc	praematura	pm	pm1	pm					
+n	tgrc	praematura-2	pm2		pm-2					
+n	tgrc	praemortua	pma		pma					
+n	tgrc	precocious centromere division	pc		pc					
+	tgrc	pressa	pre		pre					
+	tgrc	procera	pro		pro					
+n	tgrc	proclinata-2	pca2		pca-2					
+	tgrc	procumbens	prc		prc					
+n	tgrc	procumbens-2	prc2		prc-2					
+n	tgrc	procumbens-3	prc3		prc-3					
+	ncbi	profilin	profilin1	pro1			16555786|1399495	12915767		
+	ncbi	proliferating cell nuclear antigen	pcna				25005274			
+	ncbi	proline dehydrogenase	PDH			proline dehydrogenase	58802476|47104150			
+	ncbi	proline transporter 1 	ProT1			proline transporter	4584847	10072398		
+	ncbi	proline transporter 2	ProT2			proline transporter	4584849	10072398		
+	ncbi	proline transporter 3	ProT3			proline transporter	4584851	10072398		
+	ncbi	proline-rich protein	TPRPF1	TPRP-F1			19520|47104467	1868217		
+	tgrc	propeller	pr		pr					
+	tgrc	protea	prt	prt1	prt					
+	ncbi	protein kinase WEE1	wee1				55859437	15821985		
+	ncbi	protein phosphatase 2A catalytic subunit 1	PP2Ac1				34398260|47105582	15125764		
+	ncbi	protein phosphatase 2A catalytic subunit 2	PP2Ac2				34398262	15125764		
+	ncbi	protein tyrosine phosphatase	ptpkis1			protein tyrosine phosphatase	14970761	12148529		
+	tgrc	protuberant	ptb		ptb					
+	tgrc	prunoidea	prun		prun					
+n	tgrc	prunoidea-2	prun2		prun-2					
+	ncbi	psbXphotosystem II 23 kDa protein	psbX				19316	1581578		
+n	tgrc	pseudo-triplo-4	pt4		pt-4					
+n	tgrc	pseudoanthocyanin incomplete	pai		pai					
+n	tgrc	Pseudomonas resistance	Prf		Prf					
+	tgrc	Pseudomonas syringae pv tomato resis.	pto	Pto,Pto-2	Pto		430991	7902614		
+	ncbi	Pto kinase interactor 1	Pti1				3668068	8521516		
+	ncbi	Pto-responsive gene 1	Prg1				8099337			
+	tgrc	pudica	pdc		pdc					
+	tgrc	pulvinata	pu	pul	pu					
+n	tgrc	pulviniformis	pv		pv					
+	tgrc	pumila	pum		pum					
+	tgrc	punctata	pun	pun1	pun					
+n	tgrc	punctata-2	pun2		pun-2					
+	tgrc	Punctate	pn	Pn	pn					
+n	tgrc	punctulata	ptu		ptu					
+	tgrc	purilla	pur		pur					
+	tgrc	purpurea	ppa		ppa					
+n	tgrc	pustulata	pus		pus					
+	ncbi	putative dehydrogenase	PYD1A				24850452|47105779			
+	ncbi	putative high-affinity nitrate transporter	NRT2c3	NRT2;3		nitrate transporter	14860985	12010476		
+	ncbi	putative myo-inositol-1-phosphatase	INS1P	INS-1P		myo-inositol-1-phosphatase	10946508|47104920			
+	ncbi	putative phosphatidylinositol monophosphate kinase	pipk1			phosphatidylinositol monophosphate kinase	20269116			
+	ncbi	putative spermine synthase	spe4			spermine synthase	40788038			
+	tgrc	pyramidalis	py		py					
+	tgrc	Pyrenochaeta lycopersici resistance	pyl	py,py-1	pyl					
+	ncbi	RAD23 homolog	rad23				5640110|6688551|47105703			
+n	tgrc	radial crack resistance	cr		cr					
+	tgrc	radial cracking resistance	rl	ra	rl					
+n	tgrc	ramosissima	ram		ram					
+	ncbi	Ran binding protein-1	RanBP1				14091664|47105548			
+n	tgrc	ranificans	ran		ran					
+	tgrc	rava	ra		ra					
+n	tgrc	rava-2	ra2		ra-2					
+	ncbi	receptor-like protein kinase 4	PRK4				13924729	12139002		
+	ncbi	receptor-like protein kinase 3	PRK3				13506809|47104364	12139002		
+	tgrc	red vascular tissue	rvt		rvt					
+	tgrc	reduced	rd		rd					
+n	tgrc	refrenata	ref		ref					
+	tgrc	Regeneration-1	rg1	Rg-1	Rg-1					
+n	tgrc	Regeneration-2	Rg2		Rg-2					
+	tgrc	relaxata	rela		rela					
+	ncbi	remorin 1	rem1	rem-1			4731572|47104678			
+	ncbi	remorin 2	rem2	rem-2			4883529			
+	tgrc	repens	rep		rep					
+	tgrc	repens-2	rep2	rep-2	rep-2					
+n	tgrc	repens-3	rep3		rep-3					
+n	tgrc	repetita	rpa		rpa					
+n	tgrc	repleta	rea		rea					
+	tgrc	reptans	re		re					
+n	tgrc	Resistant to skin cracking	Rsc		Rsc					
+	tgrc	restricta	res	res1	res					
+	tgrc	retarded dwarf	rtd		rtd					
+n	tgrc	reticulate virescent	rv		rv					
+	tgrc	reticulate virescent-2	rv2	rv-2	rv2					
+n	tgrc	reticulate virescent-4	rv4		rv-4					
+	ncbi	ribosomal protein L17	l17				6491769	11430427		
+	ncbi	ribosomal protein L2	rpl2				19342	8467223		
+	ncbi	ribosomal protein L3	RPL3				38327503			
+	tgrc	ridged	ri	rl	ri					
+	tgrc	rigida	rig		rig					
+	tgrc	rigida-2	rig2	rig-2	rig-2					
+	tgrc	rigidula	ria	ria1	ria					
+	tgrc	ripening inhibitor	rin		rin	MADS-box transcription factor	73762196|73762194|20219015	11951045		
+	ncbi	ripening regulated protein (DDTFR6/A)	DDTFR6A	DDTFR6/A			12231303|47105796			
+	ncbi	ripening regulated protein DDTFR18	DDTFR18				47105337|12231295			
+	ncbi	ripening-related mRNA 13	ERT13	ERT 13			47105675|414673	8219049		
+	ncbi	ripening-related mRNA 1b	ERT1b	ERT 1b			47105700|414677	8219049		
+	ncbi	RNA polymerase II subunit 2	rpb2				1049067	8616257		
+	ncbi	RNA-directed RNA polymerase	RdRP				4038591	9836747		
+n	tgrc	rolled cotyledons	rc		rc					
+	tgrc	Root suppressed	rs	Rs	Rs					
+	ncbi	root-knot nematode resistance	mi1.2	Mi-1.2		leucine zipper, nucleotide binding, leucine-rich repeat	3449379	9707531|9707547		
+	tgrc	rosette	ro		ro					
+	tgrc	rotundata	roa	roa1	roa					
+n	tgrc	rotundata-2	roa2		roa-2					
+	tgrc	rotundifolia	rot		rot					
+n	tgrc	rotundifolia-2	rot2		rot-2					
+	ncbi	RSI-1	RSI1	RSI-1,ctd2			405584|6491761	8177211|11430427		
+	ncbi	RUB1 conjugating enzyme	RCE1				10946510|47104410			
+	tgrc	ruptilis	ru		ru					
+	tgrc	rustica	rust		rust					
+n	tgrc	rustica-2	rust2		rust-2					
+	ncbi	S-adenosyl-l-homocysteine hydrolase	SAHH				5758305			
+	ncbi	S-protein homologue	sph1				13016737			
+n	tgrc	scopulina	sco		sco					
+	tgrc	scurfy	scf		scf					
+	tgrc	seasonal chlorotic lethal	scl		scl					
+n	tgrc	Self-incompatibility	sin		S.					
+	tgrc	self-pruning	sp		sp		3319211	9570763		
+	tgrc	semiglobosa	sem		sem					
+n	tgrc	semiglobosa-2	sem2		sem-2					
+	tgrc	semisterilis	ses	ses1	ses					
+n	tgrc	Sepal extender	Sx		Sx					
+	ncbi	SEPALLATA1-like MADS-box	SEP1	TAGL2,TM29		MADS-box	32478028|17432173|24967142	12376628|13677468|14573491		
+	ncbi	SEPALLATA3	SEP3	TDR5		MADS-box	32478030|19383|31747209|19357	1688249|14573491		
+	tgrc	Septoria lycopersici resistance	se	Se	se					
+	ncbi	serine protease SBT3	sbt3			serine protease 	368730	10350089		
+	ncbi	serine protease SBT4A	sbt4a			serine protease 	3687302	10350089		
+n	tgrc	serpentina	ser		ser					
+n	tgrc	serpentina-2	ser2		ser-2					
+	tgrc	serrate lax leaf	slx		slx					
+	ncbi	sesquiterpene synthase 1	SSTLE1			sesquiterpene synthase	2967686|11934930|11934932|2967688	9482865|11090225		
+	tgrc	sherry	sh		sh					
+	tgrc	Shikimic acid dehydrogenase-1	skdh1	Skdh-1	Skdh-1					
+	tgrc	short anthers	sha		sha					
+	ncbi	sialyltransferase-like	stv3				70663495			
+	tgrc	signal transduction-1	sig1	sig-1,JL1	sig-1					
+	tgrc	signal transduction-2	sig2	sig-2,JL5	sig-2					
+	tgrc	singed	sn		sn					
+	tgrc	single flower truss	sft		sft					
+	tgrc	sinuata	si		si					
+	tgrc	sitiens	sit		sit					
+	tgrc	slender stem	sr	sm	sr					
+	ncbi	SLU58473  receptor-like protein kinase 2	PRK2				3015485	9501107		
+	ncbi	SLU58474  receptor-like protein kinase 1	PRK1				3015487	9501107		
+	ncbi	SLY011914 Solanum lycopersicum THY5	thy5				6018698			
+	ncbi	small GTP-binding protein C	Rab1C				1053066			
+	ncbi	small GTP-binding protein A	Rab1A				1053062			
+	ncbi	small GTP-binding protein B	Rab1B				1053064			
+	ncbi	small heat shock protein 1	vis1				22530879	12586896		
+n	tgrc	small seed	sms		sms					
+	ncbi	SNF1	SNF1				7672781	12857836		
+	ncbi	SNF1 kinase complex anchoring protein	GAL83				29725557	12857836		
+	ncbi	SNF4	SNF4				7672779	12857836		
+n	tgrc	Snout	snt		snt					
+	tgrc	solanifolia	sf	wl,wr	sf					
+	ncbi	Solanum lycopersicum feebly	feebly	alpha-DOX2		alpha-dioxygenase	38201498|47104935|54400095|1019931	8676869		
+	ncbi	Solanum lycopersicum heat shock protein	TFHS1				170506|47104742|1172166			
+	ncbi	pectin methylesterase pmeu1	PMEU1			pectin methylesterase	47106014|1222551			
+	tgrc	soluta	so		so					
+	ncbi	sorbitol related enzyme	SDH			sorbitol related enzyme	47105798|78183415			
+	tgrc	sparsa	spa		spa					
+	ncbi	spermidine synthase	spdsyn			spermidine synthase	4138108			
+	ncbi	spermine synthase	SPM1			spermine synthase	33150480			
+	tgrc	sphacelata	sa	sa1	sa					
+	tgrc	sphaerica	sph		sph					
+	ncbi	SPINDLY	spy				19913116			
+	tgrc	splendens	spl	spl1	spl					
+n	tgrc	splendens-2	spl2		spl-2					
+n	tgrc	splendens-3	spl3		spl-3					
+n	tgrc	splendens-4	spl4		spl-4					
+	tgrc	splendida	spe	spe1	spe					
+	tgrc	spongy seed	ss		ss					
+n	tgrc	Spotted wilt resistance	Sw		Sw					
+n	tgrc	spotted wilt resistance-2	sw2		sw-2					
+n	tgrc	spotted wilt resistance-3	sw3		sw-3					
+n	tgrc	spotted wilt resistance-4	sw4		sw-4					
+	tgrc	Spotted wilt resistance-5	sw5	Sw-5	sw5	LRR	15418708	11043474		
+	tgrc	spotted yellow virescent	syv		syv					
+n	tgrc	spuarrosa-2	squa2		squa-2					
+	tgrc	squarrosa	squa		squa					
+	tgrc	squarrulosa	sar	sar1	sar					
+	ncbi	ss-galactosidase	teg1A	TBG3			7939618|4138136	10889266		
+	ncbi	ss-galactosidase, clone tEG1B	tEG1B	TBG1			4138138|7923934|971484	9625694|10889266|7630937		
+	ncbi	ss-galactosidase, clone tEG3	tEG3	TBG4			7923928|4138140	9625694|10889266		
+	tgrc	stabilis	sta		sta					
+	tgrc	stamenless	sl		sl					
+	tgrc	stamenless-2	sl2	sl-2,sl2	sl-2					
+n	tgrc	staminodea	stam		stam					
+	ncbi	stay-green 1	SGR1				68510417			
+	tgrc	Stemphyllium resistance	sm	Sm	Sm					
+n	tgrc	sterile	st		st					
+	tgrc	sterilis	ste		ste					
+	ncbi	steroid 5 alpha reductase DET2	det2.1		GenBank: det2		57335415	15993049		
+	tgrc	sticky peel	pe		pe					
+	ncbi	STIG1	Stig1				38731657	15255864		
+n	tgrc	striata	str		str					
+	tgrc	stricta	stri		stri					
+n	tgrc	stricta-2	stri2		stri-2					
+n	tgrc	stricta-3	stri3		stri-3					
+n	tgrc	stricta-4	stri4		stri-4					
+	tgrc	stunted	stu		stu					
+n	tgrc	suberosa-2	sur2		sur-2					
+n	tgrc	subristica	sru		sru					
+n	tgrc	subrotunda	suo		suo					
+n	tgrc	Subsistens	Sus		Sus					
+	tgrc	subtilis	sub		sub					
+	ncbi	subtilisin	P69B			subtilisin-like protein	2230958|73698148	9162080		
+	tgrc	succedanea	suc		suc					
+	ncbi	succinate dehydrogenase subunit 3	sdh3				15004509	11454775		
+	ncbi	succinate dehydrogenase subunit 4	sdh4				15021577	11454775		
+	ncbi	succinyl-CoA ligase alpha 1 subunit	SCOA1		GenBank: SCOA		27357174	16270230		
+	ncbi	succinyl-CoA ligase alpha 2 subunit	SCOA2		GenBank: SCOA	succinyl-CoA ligase alpha 2 subunit	47104224|49617538	16270230		
+n	tgrc	suckerless	sul		sul					
+	tgrc	sucrose accumulator	sucr	TIV1	sucr					
+	ncbi	sucrose synthase	sus3			sucrose synthase	3758872			
+	ncbi	sucrose transporter 1	SUT1			sucrose transporter	575298|47104128			
+	ncbi	sucrose transporter 4	SUT4			sucrose transporter	9957217	10948254		
+	ncbi	sucrose transporter 2	SUT2			sucrose transporter	10119907	10899981		
+	ncbi	sucrose-phosphate synthase	sps			sucrose-phosphate synthase	12232569|52139813|11231163			
+	tgrc	sufflaminata	sfa	sfa1,par	sfa					
+	tgrc	sufflava	suf		suf					
+n	tgrc	sufflava-2	suf2		suf-2					
+	tgrc	suffulta	su	exa,di,ni	su					
+	tgrc	suffusa	sua		sua					
+n	tgrc	suffusa-2	sua2		sua-2					
+	ncbi	sugar transporter 3	st3			sugar transporter	23504384			
+n	tgrc	sulfurea	sulf		sulf					
+n	tgrc	sun dwarf-2	sd2		sd-2					
+n	tgrc	sun dwarf-3	sd3		sd-3					
+n	tgrc	Sun1642 fruit shape	sun		sun					
+	tgrc	sundwarf	sd		sd					
+	tgrc	sunny	sy	ye	sy					
+	tgrc	superba	sup		sup					
+	ncbi	superoxidase dismutase	SOD3		GenBank: SOD	Cu-Zn superoxide dismutase (SOD)	33327348|19192|170513			
+	ncbi	superoxide dismutase	sod	sod1	GenBank: SOD	Cu-Zn superoxide dismutase (EC 1.15.1.1)	19196|170511			
+	tgrc	Superoxide dismutase-1	sod1	Sod-1	Sod-1	Superoxide dismutase				
+	tgrc	Superoxide dismutase-2	sod2	Sod-2	Sod-2	Superoxide dismutase				
+n	tgrc	Superpuff	Spf		Spf					
+n	tgrc	Superpuff-2	Spf2		Spf-2					
+	tgrc	Sympodial index	spi	Spi	Spi					
+	tgrc	tabescens	tab		tab					
+	tgrc	tarda	ta		ta					
+	ncbi	TDR6 transcription factor	TDR6			transcription factor	19385|24967131	1688249|13677468		
+	ncbi	temperature-induced lipocalin	TIL				77744872|47104517|77744858			
+	tgrc	tempestiva	tem	tem1	tem					
+	tgrc	temporarily red light insensitive	tri		tri					
+	tgrc	tenera	tn		tn					
+	tgrc	tenuis	ten		ten					
+	tgrc	terminata	te	te1	te					
+	tgrc	terminating flower	tmf		tmf					
+	ncbi	tft3 14-3-3	tft3				6688553|466333	7632735		
+	tgrc	thiaminless	tl		tl					
+	ncbi	thioredoxin peroxidase 1	TPx1				30841937			
+	ncbi	thiosulfate sulfurtransferase	tst				19571830			
+	ncbi	threonine deaminase	Td			threonine deaminase	695268|170457	2011578		
+	tgrc	tiny plant	ti		ti					
+	tgrc	Tobacco mosaic virus resistance	tm	Tm	Tm					
+	tgrc	Tobacco mosaic virus resistance-2	tm2	Tm-2,Tm2	tm-2	CC-NBS-LRR	33621254	14558663		
+	ncbi	TOMARPIX  proteinase inhibitor	ARPI				405581	7903168		
+	ncbi	tomato acid invertase	TIV1	Aiv-1,ai,AI		invertase	287473|18542112|19849289|18542114|452399|22716|170361|546936	1304771|7515313|8095164		
+	ncbi	Tomato acid phosphatase	aps1	APS-1		phosphatese	250101|28375515|170371	1368210		
+	ncbi	Tomato G protein alpha-subunit	TGA1				455375	1748292		
+	ncbi	Tomato RuBP carboxylase small subunit	SS5				170497|170503|47104438	3012537|3557127		
+	ncbi	TOMBIPGRBC Tomato BiP (binding protein)/grp78	bipgrp78	BiP/grp78		glucose-regulated protein, 78 kD	170383			
+	ncbi	TOMGTPASE  Mill. GTPase	SAR2				473683	8123794		
+	ncbi	TOMLHA1 H+-ATPase	LHA1			ATPase	170463			
+	ncbi	TOMMTA  metallothionein II	TOMMTA		GenBank: MTA		1449135	9049270		
+	ncbi	TOMPRORNA  prosystemin	prosystemin				170485	1549783		
+	ncbi	TOMPRP4  PR (pathogenesis related) protein 4	P4				170487	1421154		
+	ncbi	TOMTPX2A  peroxidase	TPX2			peroxidase	295354	8029340		
+n	tgrc	Tortilis	Tor		Tor					
+	ncbi	transaldolase	TAL				47104534|10441271			
+	ncbi	transcription factor JERF1	JERF1				22074045	15300440		
+n	tgrc	Trialeurodes vaporariorum resistance-1	Tv1		Tv-1					
+n	tgrc	Trialeurodes vaporariorum resistance-2	Tv2		Tv-2					
+	tgrc	trifoliate	tf	ct,tri	tf					
+	tgrc	Triosephosphate isomerase-2	tpi2	Tpi-2	Tpi-2					
+	tgrc	tripinnate leaf	tp		tp					
+	tgrc	tristis	trs		trs					
+	tgrc	truncata	tr	tr1	tr					
+n	tgrc	truncata-2	tr2		tr-2					
+n	tgrc	tumida	tu		tu					
+	tgrc	turbinate corolla	tc		tc					
+n	tgrc	turgida	tur		tur					
+	ncbi	xyloglucan endo-transglycosylase B1	tXETB1	tXET-B1			577065	7632911		
+	ncbi	xyloglucan endo-transglycosylase B2	tXETB2	tXET-B2			577067	7632911		
+	tgrc	TYLCV resistance	ty1	Ty-1	Ty-1					
+	ncbi	type 5 protein serine/threonine phosphatase 62 kDa isoform	PP5				28141003|47104998|27820118	12972652		
+	ncbi	ubiquitin carrier	Ubca		GenBank: ubc		399620|388206|47105182	8012051		
+	ncbi	ubiquitin conjugating enzyme	Ubc				886678	9202147		
+	ncbi	ubiquitin conjugating enzyme E2	UBC2		GenBank: UBC		441456	8290646		
+	ncbi	UDP-xylose phenolic glycosyltransferase	gtsatom				60649934			
+	tgrc	umbraculiformis	ub		ub					
+	tgrc	umbrosa	um		um					
+n	tgrc	umbrosa-2	um2		um-2					
+n	tgrc	umbrosa-3	um3		um-3					
+n	tgrc	undulatifolia	und		und					
+	tgrc	unicaulis	uni		uni					
+n	tgrc	unicaulis-2	uni2		uni-2					
+n	tgrc	unicaulis-3	uni3		uni-3					
+n	tgrc	unicaulis-4	uni4		uni-4					
+	tgrc	uniflora	uf		uf					
+	tgrc	uniform gray-green	ug	u2	ug					
+	tgrc	uniform ripening	u	u1	u					
+n	tgrc	unijuga	un		un					
+	tgrc	upright growth	upg		upg					
+	tgrc	upright leaf	ul		ul					
+	tgrc	upright pedicel	up		up					
+	ncbi	urease accessory protein D	ureD				31096384|31096386			
+	ncbi	urease accessory protein F	ureF				31096388			
+	ncbi	UV damaged DNA binding protein 1	DDB1	hp1			38455767|42602164	14968305|15178762		
+	ncbi	vacuolar processing enzyme	vpe				5640112			
+	ncbi	vacuolar-type H+-pyrophosphatase	vp1d1	vp1.1			14149006			
+n	tgrc	valida	val		val					
+	tgrc	varia	va		va					
+n	tgrc	varia-2	va2		va-2					
+	tgrc	variabilis	var		var					
+n	tgrc	variabilis-2	var2		var-2					
+	tgrc	variable male-sterile	vms		vms					
+	tgrc	vegetative	vg		vg					
+	tgrc	venosa	ven		ven					
+	tgrc	versicolor	ver	yv-4,ver1	ver					
+n	tgrc	versicolor-2	ver2		ver-2					
+n	tgrc	versiformis	ves		ves					
+	tgrc	versiformis-2	ves2	ves-2,vf	ves-2					
+	tgrc	Verticillium resistance	ve	Ve	ve	LRR				is ve1 or ve2 gene?
+	ncbi	verticillium wilt disease resistance	Ve1			LRR	14279667	11331751		is ve gene?
+	ncbi	verticillium wilt disease resistance 2	Ve2			LRR	14269078	11331751		is ve gene?
+	ncbi	vicilin	vicilin				6688563			
+	tgrc	vieta	vt		vt					
+	tgrc	villous	vi		vi					
+	tgrc	violacea	vio		vio					
+n	tgrc	violacea-2	vio2		vio-2					
+n	tgrc	virescent	v		v					
+	tgrc	virescent light green	vlg		vlg					
+	tgrc	virescent orange	vo		vo					
+	tgrc	virescent-2	v2	v-2,v2	v-2					
+	tgrc	virescent-3	v3	v-3,V3	v-3					
+n	tgrc	virgatula	vta		vta					
+	tgrc	virgulta	vga	vga1	vga					
+n	tgrc	virgulta-2	vga2		vga-2					
+	tgrc	viridis	vir		vir					
+	tgrc	viridula	vra	vra1	vra					
+n	tgrc	viridula-2	vra2		vra-2					
+n	tgrc	viroid	vrd		vrd					
+	ncbi	viroid RNA-binding protein	Virp2				19171206|33339153	9380503		
+n	tgrc	vitiosa	vit		vit					
+	ncbi	water channel protein	Aqp2				7263069	11556787		
+n	tgrc	Waxy	Wx		Wx					
+	ncbi	WD-40 repeat protein	MSI1				2394226|47105599			
+	tgrc	White anthers	wa	Wa	wa					
+	tgrc	white flower	wf		wf					
+	tgrc	white virescent	wv		wv					
+	tgrc	white virescent-2	wv2	wv-2	wv-2					
+	tgrc	white virescent-3	wv3	wv-3	wv-3					
+	ncbi	whitefly-induced gp91-phox	Wfi1				8131889			
+	tgrc	Wilty	wlt	Wlt	Wlt					
+	tgrc	wilty	wt		wt					
+	tgrc	wilty dwarf	wd		wd					
+n	tgrc	wilty-2	wt2		wt-2					
+	tgrc	wiry	w		w					
+n	tgrc	wiry-2	w2		w-2					
+	tgrc	wiry-3	w3	w-3,w3,w2	w-3					
+	tgrc	wiry-4	w4	w-4,w4	w-4					
+n	tgrc	wiry-5	w5		w-5					
+	tgrc	wiry-6	w6	w-6,w6	w-6					
+n	tgrc	wiry-7	w7		w-7					
+n	tgrc	wiry-8	w8		w-8					
+	tgrc	without anthocyanin	aw	aba,ab,a179	aw					
+n	tgrc	without anthocyanin-2	aw2		aw-2					
+	tgrc	Wooly	wo	Wo	Wo					
+	ncbi	wuschel	wus				28070967			
+	ncbi	Xaa-Pro aminopeptidase 1	app1				15384988	11423553		
+	ncbi	Xaa-Pro aminopeptidase 2	app2				15384990|47105229	11423553		
+n	tgrc	xantha	xan		xan					
+	tgrc	xantha-2	xan2	xan-2,xan2	xan-2					
+n	tgrc	xantha-3	xan3		xan-3					
+	tgrc	xantha-4	xan4	xan-4,xan4	xan-4					
+n	tgrc	xantha-5	xan5		xan-5					
+n	tgrc	Xanthomonas campestris resistance	Xv3		Xv-3					
+	tgrc	Xanthophyllic	xa	Xa	xa					
+	tgrc	Xanthophyllic-2	xa2	Xa-2,Xa2,A	xa-2					
+	tgrc	Xanthophyllic-3	xa3	Xa-3,Xa3	xa-3					
+	ncbi	xyloglucan endoglucanase inhibitor	Xegip	ACI25		xyloglucan-specific fungal endoglucanase inhibitor protein precursor (ACI25)	68449753|27372526			
+	ncbi	xyloglucan endotransglucosylase-hydrolase 3	XTH3				42795461|47105496			
+	ncbi	xyloglucan endotransglucosylase-hydrolase 5	XTH5				42795459			
+	ncbi	xyloglucan endotransglucosylase-hydrolase 6	XTH6				42795463			
+	ncbi	xyloglucan endotransglucosylase-hydrolase 7	XTH7				42795465			
+	ncbi	xyloglucan endotransglucosylase-hydrolase 9	XTH9				42795467			
+	ncbi	xyloglucan endotransglycosylase	BR1				6573240	10631252		
+	ncbi	xyloglucan endotransglycosylase 4	XET4				12003048			
+	ncbi	xyloglucan endotransglycosylase 2	XET2				9857711	11706197		
+	ncbi	xyloglucan endotransglycosylase/hydrolase 16	XTH16				70780050			
+n	tgrc	yellow calyx	yc		yc					
+	tgrc	yellow flesh	r	GTOM5,yellow flesh, ry	r	phytoene syntase	19346|19398	8343597		
+n	tgrc	yellow seedlings	ys		ys					
+	tgrc	yellow virescent	yv		yv					
+	tgrc	yellow virescent-2	yv2	yv-2	yv-2					
+	tgrc	yellow virescent-4	yv4	yv-4	yv-4					
+n	tgrc	yellow-green	yg		yg					
+	tgrc	yellow-green-2	yg2	yg-2,yc,yg282,yg2	yg-2					
+	tgrc	yellow-green-3	yg3	yg-3,yg3,yg330,ye	yg-3					
+	tgrc	yellow-green-4	yg4	yg-4,yg4,yl,yg333	yg-4					
+	tgrc	yellow-green-5	yg5	yg-5,yw,yg388,yg5	yg-5					
+n	tgrc	yellow-green-7	yg7		yg-7					
+n	tgrc	yellow-green-8	yg8		yg-8					
+	tgrc	yellow-green-9	yg9	yg-9	yg-9					
+	ncbi	zeta-carotene desaturase	zds			zeta-carotene desaturase	6470254			
+	ncbi	zinc finger	TIM10				5107179			

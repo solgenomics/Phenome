@@ -1,0 +1,94 @@
+mysql> select  code,  allelic_to_tgrc, similar_to_tgrc, allelic_to_gmt from mutant04 where allelic_to_gmt is not null 
+    -> order by allelic_to_gmt ;
++---------+-----------------+-----------------+----------------+
+| code    | allelic_to_tgrc | similar_to_tgrc | allelic_to_gmt |
++---------+-----------------+-----------------+----------------+
+| e1444m1 | NULL            | an              | anantha        |
+| e1546m1 | NULL            | an              | anantha        |
+| e3430m1 | NULL            | an              | anantha        |
+| e1043m1 | y               | w-3             | AS2            |
+| n5613m1 | y               | w-3             | AS2            |
+| e1655m1 | NULL            | NULL            | bp1            |
+| e2142m1 | NULL            | NULL            | bp1            |
+| n6663m1 | NULL            | NULL            | bp1            |
+| e1225m2 | NULL            | w               | dw             |
+| e1756m1 | NULL            | w               | dw             |
+| e1925m1 | NULL            | w               | dw             |
+| e2396m2 | NULL            | w               | dw             |
+| e2851m1 | NULL            | w               | dw             |
+| e3153m1 | NULL            | w               | dw             |
+| e3662m1 | NULL            | w               | dw             |
+| n2162m1 | NULL            | w               | dw             |
+| n4693m2 | NULL            | w               | dw             |
+| n7074m1 | NULL            | w               | dw             |
+| e0444m1 | y               | e               | e              |
+| e0880m1 | y               | e               | e              |
+| e2978m1 | y               | e               | e              |
+| e2986m1 | y               | e               | e              |
+| e3335m1 | y               | e               | e              |
+| n0741m1 | y               | e               | e              |
+| e2011m1 | NULL            | NULL            | expelled shoot |
+| n5661m1 | NULL            | NULL            | expelled shoot |
+| n6518m1 | NULL            | NULL            | expelled shoot |
+| e0803m1 | y               | gh              | gh             |
+| n7430m1 | y               | gh              | gh             |
+| e1976m1 | NULL            | NULL            | goblet         |
+| e3883m1 | NULL            | NULL            | goblet         |
+| n5126m1 | NULL            | NULL            | goblet         |
+| e1472m1 | NULL            | NULL            | high z         |
+| e3452m1 | NULL            | NULL            | high z         |
+| e0067m1 | y               | La              | La             |
+| e3628m1 | y               | La              | La             |
+| e9208m1 | y               | La              | La             |
+| e0686m2 | NULL            | NULL            | low total      |
+| e1480m2 | NULL            | NULL            | low total      |
+| e4805m1 | NULL            | NULL            | low total      |
+| e2008m1 | NULL            | NULL            | me             |
+| e9019m1 | NULL            | NULL            | me             |
+| e9718m1 | NULL            | NULL            | me             |
+| n6408m1 | NULL            | NULL            | me             |
+| e1692m1 | NULL            | NULL            | Nxs            |
+| e9778m1 | NULL            | NULL            | Nxs            |
+| e0423m1 | NULL            | w-3             | phan           |
+| e0848m1 | NULL            | w-3             | phan           |
+| e1383m2 | NULL            | w-3             | phan           |
+| e2707m1 | NULL            | w-3             | phan           |
+| e3474m1 | NULL            | w-3             | phan           |
+| n6580m1 | NULL            | w-3             | phan           |
+| e0652m1 | NULL            | pts             | pts            |
+| e1444m2 | NULL            | pts             | pts            |
+| e2268m1 | NULL            | pts             | pts            |
+| e4274m1 | NULL            | pts             | pts            |
+| n4596m1 | NULL            | pts             | pts            |
+| n5448m1 | NULL            | NULL            | pts            |
+| e4537m1 | y               | sft             | sft            |
+| n7187m1 | y               | sft             | sft            |
+| e3406m2 | y               | t               | t              |
+| e4838m3 | y               | t               | t              |
+| e9776m1 | y               | t               | t              |
+| n6771m1 | y               | t               | t              |
+| e0873m1 | y               | w               | w              |
+| e1573m1 | y               | w               | w              |
+| e1862m1 | y               | w               | w              |
+| e4747m1 | y               | w               | w              |
+| e9167m1 | y               | w               | w              |
+| e0815m1 | NULL            | w               | w-1            |
+| e0934m1 | NULL            | w               | w-1            |
+| e1338m1 | NULL            | w               | w-1            |
+| e3072m1 | NULL            | w               | w-1            |
+| e3074m1 | NULL            | w               | w-1            |
+| e3376m1 | NULL            | w               | w-1            |
+| e4324m1 | NULL            | w               | w-1            |
+| e4714m1 | NULL            | w               | w-1            |
+| e9598m1 | NULL            | w               | w-1            |
+| n1840m1 | NULL            | w               | w-1            |
+| n4764m1 | NULL            | w               | w-1            |
+| n5035m1 | NULL            | w               | w-1            |
+| n7426m1 | NULL            | w               | w-1            |
+| e0434m1 | y               | w-4             | w-4            |
+| e1206m1 | y               | w-4             | w-4            |
+| n5767m1 | y               | w-4             | w-4            |
+| e1827m1 | y               | wf              | wf             |
+| n5681m1 | y               | wf              | wf             |
+| e0089m1 | NULL            | NULL            | zds            |
+| e2083m1 | NULL            | NULL            | zds            |
