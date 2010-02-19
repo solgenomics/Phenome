@@ -1,13 +1,16 @@
 
-
-
 =head1 NAME
 
-CXGN::Phenome::Population - a class that deals with populations, such as mapping populations, mutant populations, inbred lines etc in the SGN database.
+CXGN::Phenome::Population - a class that deals with populations, 
+such as mapping populations, mutant populations, 
+inbred lines etc in the SGN database.
 
 =head1 DESCRIPTION
 
-This class inherits from CXGN::DB::ModifiableI and can therefore be used to implement user-modifiable pages easily. It also inherits (wow, multiple inheritance) from CXGN::Phenome::Main, which handles the database connection.
+This class inherits from CXGN::DB::ModifiableI and can therefore be
+used to implement user-modifiable pages easily. It also inherits (wow,
+multiple inheritance) from CXGN::Phenome::Main, which handles the
+database connection.
 
 =head1 AUTHOR(S)
 
@@ -25,6 +28,7 @@ use strict;
 use CXGN::DB::Connection;
 use CXGN::People::Person;
 use CXGN::Chado::Cvterm;
+use CXGN::Phenome::UserTrait;
 use CXGN::Phenome::PopulationDbxref;
 use List::Compare;
 use Cache::File;
@@ -90,16 +94,24 @@ sub new_with_name {
 
 sub fetch { 
     my $self= shift;
-    my $query = "SELECT population.population_id, population.name, population.description, population.background_accession_id, population.sp_person_id, population.create_date, population.modified_date, population.obsolete FROM phenome.population 
-LEFT JOIN sgn.accession ON (population.background_accession_id= sgn.accession.accession_id)
-LEFT JOIN phenome.individual USING (population_id)
-LEFT JOIN sgn.common_name ON (individual.common_name_id = common_name.common_name_id)
-WHERE population_id=? and population.obsolete='f'";
-  
+    my $query = "SELECT population_id, population.name, description, 
+                        background_accession_id, population.sp_person_id, 
+                        population.create_date, population.modified_date, population.obsolete, 
+                        cross_type_id, female_parent_id, male_parent_id, recurrent_parent_id, 
+                        donor_parent_id, comment, web_uploaded,
+                        population.common_name_id, sgn.common_name.common_name 
+                  FROM phenome.population 
+                  LEFT JOIN sgn.accession ON (population.background_accession_id = sgn.accession.accession_id)                  
+                  LEFT JOIN sgn.common_name ON (population.common_name_id = common_name.common_name_id)
+                  WHERE population_id=? and population.obsolete='f'";
+#LEFT JOIN phenome.individual USING (population_id)    
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_population_id());
 
-    my ($population_id, $name, $description, $background_accession_id, $sp_person_id, $create_date, $modified_date, $obsolete) = $sth->fetchrow_array();
+    my ($population_id, $name, $description, $background_accession_id, 
+	$sp_person_id, $create_date, $modified_date, $obsolete, $cross_type_id,
+	$female_parent_id, $male_parent_id, $recurrent_parent_id, 
+	$donor_parent_id, $comment, $web_uploaded, $common_name_id, $common_name) = $sth->fetchrow_array();
 
     $self->set_population_id($population_id);
     $self->set_name($name);
@@ -109,6 +121,15 @@ WHERE population_id=? and population.obsolete='f'";
     $self->set_create_date($create_date);
     $self->set_modification_date($modified_date);
     $self->set_obsolete($obsolete);
+    $self->set_cross_type_id($cross_type_id);
+    $self->set_female_parent_id($female_parent_id);
+    $self->set_male_parent_id($male_parent_id);
+    $self->set_recurrent_parent_id($recurrent_parent_id);
+    $self->set_donor_parent_id($donor_parent_id);   
+    $self->set_comment($comment);
+    $self->set_web_uploaded($web_uploaded);
+    $self->set_common_name_id($common_name_id);
+    $self->set_common_name($common_name);
     
     return $population_id;
 
@@ -132,22 +153,59 @@ sub store {
                        description = ?,
                        background_accession_id=?,
                        sp_person_id=?,
-                       modified_date = now()
+                       modified_date = now(),
+                       cross_type_id = ?,
+                       female_parent_id = ?,
+                       male_parent_id = ?,
+                       recurrent_parent_id = ?,
+                       donor_parent_id = ?,                      
+                       comment = ?,
+                       web_uploaded = ?,
+                       common_name_id = ?
                      WHERE
                        population_id = ?
                      ";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), $self->get_description(), $self->get_background_accession_id(), $self->get_sp_person_id(), $self->get_population_id());
+	$sth->execute($self->get_name(), 
+		      $self->get_description(), 
+		      $self->get_background_accession_id(), 
+		      $self->get_sp_person_id(),
+		      $self->get_cross_type_id(), 
+		      $self->get_female_parent_id(), 
+		      $self->get_male_parent_id(), 
+		      $self->get_recurrent_parent_id(), 
+		      $self->get_donor_parent_id(), 		      
+		      $self->get_comment(),
+		      $self->get_web_uploaded(),
+		      $self->get_population_id(),
+		      $self->get_common_name_id()
+	             );
+	
 	return $self->get_population_id();
     }
     else { 
 	my $query = "INSERT INTO phenome.population
-                      (name, description, background_accession_id, sp_person_id, create_date)
+                      (name, description, background_accession_id, 
+                       sp_person_id, modified_date, cross_type_id, female_parent_id, 
+                       male_parent_id, recurrent_parent_id, 
+                       donor_parent_id, comment, web_uploaded, common_name_id)
                      VALUES 
-                      (?, ?, ?, ?, now())";
+                      (?, ?, ?, ?, now(), ?, ?, ?, ?, ?, ?,?, ?)";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), $self->get_description(), $self->get_background_accession_id(), 
-                      $self->get_sp_person_id());
+	$sth->execute($self->get_name(), 
+		      $self->get_description(), 
+		      $self->get_background_accession_id(), 
+                      $self->get_sp_person_id(),
+		      $self->get_cross_type_id(), 
+		      $self->get_female_parent_id(),
+		      $self->get_male_parent_id(), 
+		      $self->get_recurrent_parent_id(), 
+		      $self->get_donor_parent_id(), 	
+		      $self->get_comment(),
+		      $self->get_web_uploaded(),
+		      $self->get_common_name_id()
+                    );
+
 	return $self->get_dbh()->last_insert_id("population", "phenome");
     }
 }
@@ -305,7 +363,244 @@ sub set_sp_person_id {
 
 =cut
 
-   
+sub get_common_name_id {
+  my $self=shift;
+  return $self->{common_name_id};
+
+}
+
+=head2 set_common_name_id
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub set_common_name_id {
+  my $self=shift;
+  $self->{common_name_id}=shift;
+}
+
+sub get_common_name_id {
+  my $self=shift;
+  return $self->{common_name_id};
+
+}
+
+=head2 set_common_name, get_common_name
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub set_common_name {
+  my $self=shift;
+  $self->{common_name}=shift;
+}
+
+sub get_common_name {
+  my $self=shift;
+  return $self->{common_name};
+}
+=head2 get_sp_person_id
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_sp_person_id {
+  my $self=shift;
+  return $self->{sp_person_id};
+
+}
+
+=head2 set_sp_person_id
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub set_sp_person_id {
+  my $self=shift;
+  $self->{sp_person_id}=shift;
+}
+
+
+=head2 function set_female_parent_id, get_female_parent_id
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_female_parent_id { 
+    my $self=shift;
+    return $self->{female_parent_id};
+}
+
+
+
+sub set_female_parent_id { 
+    my $self=shift;
+    $self->{female_parent_id}=shift;
+}
+
+
+=head2 function set_male_parent_id, get_male_parent_id
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_male_parent_id { 
+    my $self=shift;
+    return $self->{male_parent_id};
+}
+
+
+
+sub set_male_parent_id { 
+    my $self=shift;
+    $self->{male_parent_id}=shift;
+}
+
+=head2 function set_recurrent_parent_id, get_recurrent_parent_id
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_recurrent_parent_id { 
+    my $self=shift;
+    return $self->{recurrent_parent_id};
+}
+
+
+
+sub set_recurrent_parent_id { 
+    my $self=shift;
+    $self->{recurrent_parent_id}=shift;
+}
+
+=head2 function set_donor_parent_id, get_donor_parent_id
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_donor_parent_id { 
+    my $self=shift;
+    return $self->{donor_parent_id};
+}
+
+
+
+sub set_donor_parent_id { 
+    my $self=shift;
+    $self->{donor_parent_id}=shift;
+}
+
+=head2 function set_cross_type_id, get_cross_type_id
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_cross_type_id { 
+    my $self=shift;
+    return $self->{cross_type_id};
+}
+
+
+
+sub set_cross_type_id { 
+    my $self=shift;
+    $self->{cross_type_id}=shift;
+}
+
+=head2 function set_comment, get_comment
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_comment { 
+    my $self=shift;
+    return $self->{comment};
+}
+
+
+
+sub set_comment { 
+    my $self=shift;
+    $self->{comment}=shift;
+}
+
+=head2 function set_comment, get_comment
+
+  Synopsis:	
+  Arguments:	
+  Returns:	
+  Side effects:	
+  Description:	
+
+=cut
+
+sub get_web_uploaded { 
+    my $self=shift;
+    return $self->{web_uploaded};
+}
+
+
+
+sub set_web_uploaded { 
+    my $self=shift;
+    $self->{web_uploaded}=shift;
+}
+
+    
 sub get_owners {
     my $self=shift;
     my $query = "SELECT sp_person_id FROM phenome.population
@@ -335,17 +630,30 @@ sub get_owners {
 
 sub get_pop_data_summary {
     my $self=shift;
-    my $cvterm_id=shift;
-    my $population_id=$self->get_population_id();   
-    my $query = "SELECT  MIN(cast(value as numeric)), MAX(cast(value as numeric)), ROUND(AVG(cast(value as numeric)), 2), ROUND(STDDEV(cast(value as numeric)), 2), count(distinct individual_id)
-                      FROM public.phenotype 
-                      LEFT JOIN phenome.individual USING (individual_id)              
-                      LEFT JOIN public.cvterm ON (phenotype.observable_id = cvterm.cvterm_id)  
-                      WHERE individual.population_id =? AND cvterm_id =? AND cast(value as numeric) is not null
-                      GROUP BY population_id";
+    my $term_id=shift;
+    my $population_id=$self->get_population_id();
+    my ($table, $table_id);
+    if ($self->get_web_uploaded()) {
+	$table = 'phenome.user_trait';
+	$table_id = 'user_trait.user_trait_id';
+	
+    } else {
+	$table = 'public.cvterm';
+	$table_id = 'cvterm.cvterm_id';
+    }
+    #print STDERR "table: $table\n Table id: $table_id\n";	
+
+    my $query = "SELECT  MIN(cast(value as numeric)), MAX(cast(value as numeric)), 
+                         ROUND(AVG(cast(value as numeric)), 2), ROUND(STDDEV(cast(value as numeric)), 2), 
+                         count(distinct individual_id)
+                            FROM public.phenotype 
+                            LEFT JOIN phenome.individual USING (individual_id)              
+                            LEFT JOIN $table  ON (phenotype.observable_id = $table_id)  
+                            WHERE individual.population_id =? AND $table_id =? AND cast(value as numeric) is not null
+                            GROUP BY population_id";
     my $sth = $self->get_dbh()->prepare($query);
     
-    $sth->execute($population_id, $cvterm_id);
+    $sth->execute($population_id, $term_id);
    
     my ($min, $max, $ave, $std, $count) =$sth->fetchrow_array() ;
     
@@ -375,24 +683,43 @@ sub get_pop_data_summary {
 sub get_cvterms {
     my $self=shift;
     my $population_id= $self->get_population_id();
-    my $query = "SELECT distinct(observable_id), cvterm.name  FROM public.phenotype 
-                 JOIN phenome.individual USING (individual_id) JOIN phenome.population using (population_id) JOIN public.cvterm ON (observable_id = cvterm_id)
-                 WHERE population_id = ?
-                 ORDER BY cvterm.name";
-    my $sth=$self->get_dbh()->prepare($query);
-    $sth->execute($population_id);
-    my @cvterms;
     
-
-    while (my ($cvterm_id, $cvterm_name) = $sth->fetchrow_array() ) {
-	my $cvterm= CXGN::Chado::Cvterm->new($self->get_dbh(), $cvterm_id);
-
-	push @cvterms, $cvterm;
-
-	
+    my ($table, $table_id, $object, $name);
+    if ($self->get_web_uploaded()) {
+	$table = 'phenome.user_trait';
+	$table_id = 'user_trait.user_trait_id';
+	$object = 'CXGN::Phenome::UserTrait';
+	$name = 'user_trait.name';
+    } else {
+	$table = 'public.cvterm';
+	$table_id = 'cvterm.cvterm_id';
+	$object = 'CXGN::Chado::Cvterm';
+	$name  = 'cvterm.name';
     }
     
-    return @cvterms;
+    #print STDERR "table: $table\n Table id: $table_id\n object: $object\n name: $name\n";
+	my $query = "SELECT distinct(observable_id), $name 
+                        FROM public.phenotype 
+                       JOIN phenome.individual USING (individual_id) 
+                       JOIN phenome.population using (population_id) 
+                       JOIN $table ON (observable_id = $table_id)
+                       WHERE population.population_id = ?
+                       ORDER BY $name";
+
+
+	my $sth=$self->get_dbh()->prepare($query);
+	$sth->execute($population_id);
+	my @traits;
+    
+
+	while (my ($trait_id, $trait_name) = $sth->fetchrow_array() ) {
+	    my $trait= $object->new($self->get_dbh(), $trait_id);
+	   	    push @traits, $trait;
+
+	
+	}
+    
+	return @traits;
 }
 
 
@@ -410,15 +737,30 @@ sub get_cvterms {
 
 sub get_pop_raw_data {
     my $self=shift;
-    my $population_id=shift;
+    my $population_id= $self->get_population_id();
+
+    my ($table, $table_id, $object, $name, $definition);
+    if ($self->get_web_uploaded()) {
+	$table = 'phenome.user_trait';
+	$table_id = 'user_trait.user_trait_id';
+	#$object = 'CXGN::Phenome::UserTrait';
+	$name = 'user_trait.name';
+	$definition = 'user_trait.definition';
+    } else {
+	$table = 'public.cvterm';
+	$table_id = 'cvterm.cvterm_id';
+	#$object = 'CXGN::Chado::Cvterm';
+	$name  = 'cvterm.name';
+	$definition = 'cvterm.definition';
+    }
    
-    my $query = "SELECT individual.population_id, population.name, individual.individual_id, individual.name, observable_id, cvterm.name, cvterm.definition, phenotype.value  
+    my $query = "SELECT individual.population_id, population.name, individual.individual_id, individual.name, observable_id, $name, $definition, phenotype.value  
                       FROM public.phenotype 
                       LEFT JOIN phenome.individual USING (individual_id)  
                       LEFT JOIN phenome.population USING (population_id)
-                      LEFT JOIN public.cvterm ON (phenotype.observable_id = cvterm.cvterm_id)  
+                      LEFT JOIN $table ON (phenotype.observable_id = $table_id)  
                       WHERE individual.population_id =? 
-                      ORDER BY individual.name, cvterm.name";
+                      ORDER BY individual.name, $name";
 
     my $sth = $self->get_dbh()->prepare($query);
    
@@ -544,12 +886,23 @@ sub get_all_indls_cvterm {
     my $pop_id = $self->get_population_id();
     my $observable_id = shift;
 
+    my ($table, $table_id, $object, $name);
+    if ($self->get_web_uploaded()) {
+	$table = 'phenome.user_trait';
+	$table_id = 'user_trait.user_trait_id';
+	#$object = 'CXGN::Phenome::UserTrait';
+	$name = 'user_trait.name';
+    } else {
+	$table = 'public.cvterm';
+	$table_id = 'cvterm.cvterm_id';
+	#$object = 'CXGN::Chado::Cvterm';
+	$name  = 'cvterm.name';
+    }
     my $query = "SELECT phenotype.individual_id, individual.name, phenotype.value 
                  FROM public.phenotype 
                  LEFT JOIN phenome.individual USING (individual_id)
-                 LEFT JOIN public.cvterm ON (observable_id = cvterm_id)
-                 WHERE individual.population_id =? AND observable_id = ? 
-                 ORDER BY CAST(value AS NUMERIC)";
+                 LEFT JOIN $table ON (observable_id = $table_id)
+                 WHERE individual.population_id =? AND observable_id = ? ORDER BY CAST(value AS NUMERIC)";
     
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($pop_id, $observable_id);
@@ -586,11 +939,26 @@ sub plot_cvterm {
     my $self = shift;
     my $pop_id = $self->get_population_id();
     my $observable_id = shift;
+ 
+    my ($table, $table_id);
+    
+    if ($self->get_web_uploaded()) {
+	 $table = 'phenome.user_trait';
+	 $table_id  = 'user_trait_id';
+	 #$name = 'user_trait.name';
+	 #$definition = 'user_trait.definition';
+    } else {
+	$table = 'public.cvterm';
+	$table_id  = 'cvterm_id';
+	#$name = 'cvterm.name';
+	#$definition = 'cvterm.definition';
 
+
+    }
     my $query = "SELECT phenotype.individual_id, individual.name, ROUND(CAST(value AS NUMERIC), 2)
                  FROM public.phenotype 
                  LEFT JOIN phenome.individual USING (individual_id)
-                 LEFT JOIN public.cvterm ON (observable_id = cvterm_id)
+                 LEFT JOIN $table  ON (observable_id = $table_id)
                  WHERE individual.population_id =? AND observable_id = ?";
     
     my $sth = $self->get_dbh()->prepare($query);
@@ -617,10 +985,10 @@ sub plot_cvterm {
 
 =head2 indls_range_cvterm
 
- Usage: ($indl_id, $indl_name, $value)= $population->indls_range_cvterm($cvterm_id, $lower, $upper);
- Desc: returns individuals with phenotypic values within a given range 
- Ret: array refs for individual id, individual name, and the corresponding phenotypic values
- Args: cvterm_id, lower and upper limits of the range
+ Usage:
+ Desc:
+ Ret:
+ Args:
  Side Effects:
  Example:
 
@@ -628,48 +996,46 @@ sub plot_cvterm {
 
 
 sub indls_range_cvterm {
-my $self=shift;
-my $cvterm_id = shift;
-my $lower = shift;
-my $upper = shift;
-my $pop_id = $self->get_population_id();
-my $query;
-if ($lower == 0) {
-    #my $lower_lowest = $lower;
+    my $self=shift;
+    my $cvterm_id = shift;
+    my $lower = shift;
+    my $upper = shift;
+    my $pop_id = $self->get_population_id();
+    my $query;
+    if ($lower == 0) {
 
-    $query = "SELECT individual_id, individual.name, value 
-                     FROM public.phenotype 
-                     LEFT JOIN phenome.individual USING (individual_id) 
-                     WHERE individual.population_id = $pop_id AND observable_id = $cvterm_id 
-                           AND (CAST (value AS NUMERIC) <=$upper) 
-                     ORDER BY CAST(value AS NUMERIC)";
-} else {
-    $query = "SELECT individual_id, individual.name, value 
-                     FROM public.phenotype 
-                     LEFT JOIN phenome.individual USING (individual_id) 
-                     WHERE individual.population_id = $pop_id AND observable_id = $cvterm_id 
-                           AND (CAST(value AS NUMERIC) > $lower AND CAST(value AS NUMERIC) <= $upper) 
-                     ORDER BY CAST (value AS NUMERIC)";
-}
+	$query = "SELECT individual_id, individual.name, value 
+                         FROM public.phenotype 
+                         LEFT JOIN phenome.individual USING (individual_id) 
+                         WHERE individual.population_id = $pop_id AND observable_id = $cvterm_id 
+                                AND (CAST (value AS NUMERIC) <=$upper) 
+                         ORDER BY CAST(value as NUMERIC)";
+    } else {
+	$query = "SELECT individual_id, individual.name, value 
+                         FROM public.phenotype 
+                         LEFT JOIN phenome.individual USING (individual_id) 
+                         WHERE individual.population_id = $pop_id AND observable_id = $cvterm_id 
+                               AND (CAST(value AS NUMERIC) > $lower AND Cast(value AS NUMERIC) <= $upper) 
+                         ORDER BY CAST(value AS NUMERIC)";
+    }
 
-my $sth = $self->get_dbh()->prepare($query);
-$sth->execute();
+    my $sth = $self->get_dbh()->prepare($query);
+    $sth->execute();
 
-my ($indl_id, $indl_name, $value);
-my (@indl_id, @indl_name, @value);
+    my ($indl_id, $indl_name, $value);
+    my (@indl_id, @indl_name, @value);
 
-while (my ($indl_id, $indl_name, $value ) = $sth->fetchrow_array()) {
-    if ($value eq 'null') {$value = 'NA';}
-    if ($value == 0 ) {$value = '0.0';}
+    while (my ($indl_id, $indl_name, $value ) = $sth->fetchrow_array()) {
+	if ($value eq 'null') {$value = 'NA';}
+	if ($value == 0 ) {$value = '0.0';}
 
-    push @indl_id, $indl_id;
-    push @indl_name, $indl_name;
-    push @value, $value;
+	push @indl_id, $indl_id;
+	push @indl_name, $indl_name;
+	push @value, $value;
 	
     }
     
-return \@indl_id,  \@indl_name, \@value;  
-
+    return \@indl_id,  \@indl_name, \@value;  
 
 }
 
@@ -687,13 +1053,27 @@ sub get_cvterm_acronyms {
     my $self=shift;
     my $population_id=$self->get_population_id();
     
-    my $query = "SELECT DISTINCT(observable_id), cvterm.name  
+    my ($table, $table_id, $name);
+    if ($self->get_web_uploaded()) {
+	 $table = 'phenome.user_trait';
+	 $table_id  = 'user_trait_id';
+	 $name = 'user_trait.name';
+	 #$definition = 'user_trait.definition';
+    } else {
+	$table = 'public.cvterm';
+	$table_id  = 'cvterm_id';
+	$name = 'cvterm.name';
+	#$definition = 'cvterm.definition';
+
+
+    }
+    my $query = "SELECT DISTINCT(observable_id), $name  
                       FROM public.phenotype
                       LEFT JOIN phenome.individual USING (individual_id)  
                       LEFT JOIN phenome.population USING (population_id)
-                      LEFT JOIN public.cvterm ON (phenotype.observable_id = cvterm.cvterm_id)  
+                      LEFT JOIN $table ON (phenotype.observable_id = $table_id)  
                       WHERE individual.population_id =?
-                      ORDER BY cvterm.name";
+                      ORDER BY $name";
 
     my $sth = $self->get_dbh()->prepare($query);
    
@@ -897,7 +1277,9 @@ sub get_all_markers {
 =head2 get_genotyped_indls
 
  Usage:my ($indls_id, $indl_name)=$pop_obj->get_genotyped_indls()
- Desc: useful for retrieving markers all individual accessions genotyped for one or more markers in a population. Not all markers are genotyped on every individual. 
+ Desc: useful for retrieving markers all individual accessions 
+       genotyped for one or more markers in a population. 
+       Not all markers are genotyped on every individual. 
  Ret: array references for individual ids and names.
  Args:none
  Side Effects:
@@ -988,70 +1370,11 @@ sub get_ind_marker_genotype {
 
 
     ($ind_id, $marker, $map_version, $genotype) = $sth->fetchrow_array();
-	
-#	push @ind_id, $ind_id;
-#	push @marker_id, $marker_id;	
-#	push @map_version, $map_version;
-#	if (!defined($genotype)) {
-#	    $genotype = 'NA';
-#	}
-#	    push @genotype, $genotype;
-#	}else {push @genotype, $genotype;}
-#	push @lg_name, $lg_name;
-#	push @position, $position;
-#    }
 
     return $ind_id, $marker, $map_version, $genotype;
 
 }
-# sub get_marker_genotype {
-#     my $self = shift;
-#     my $pop_id = $self->get_population_id();
-#     my $marker_id = shift;
-#     my $query = "SELECT genotype.individual_id, marker_alias.marker_id, map_version.map_version_id,
-#                         genotype_region.zygocity_code, lg_name, position  
-#                         FROM phenome.genotype 
-#                         JOIN phenome.individual ON (genotype.individual_id = individual.individual_id)
-#                         JOIN phenome.genotype_region ON (genotype.genotype_id = genotype_region.genotype_id) 
-#                         JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
-#                         JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
-#                         JOIN sgn.marker_location USING(location_id) 
-#                         JOIN sgn.linkage_group ON (linkage_group.lg_id=marker_location.lg_id) 
-#                         JOIN sgn.map_version ON (marker_location.map_version_id=map_version.map_version_id) 
-#                         WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
-#                                    FROM phenome.genotype_experiment 
-#                                    JOIN phenome.genotype USING (genotype_experiment_id) 
-#                                    JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
-#                                    WHERE individual.population_id = $pop_id)  
-#                         AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) FROM sgn.map_version 
-#                                    JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                                      JOIN phenome.genotype USING (genotype_experiment_id) 
-#                                    JOIN phenome.individual USING (individual_id) 
-#                                    WHERE map_version.current_version = 't' and individual.population_id = $pop_id) 
-#                        AND marker_alias.marker_id = ? 
-#                        ";
 
-
-#     my  $sth = $self->get_dbh()->prepare($query);
-#     $sth->execute($marker_id);
-
-#     my (@ind_id, @marker_id, @map_version, @genotype, @lg_name, @position);
-
-#     while (my ($ind_id, $marker,$map_version, $genotype, $lg_name, $position) = $sth->fetchrow_array()) {
-	
-# 	push @ind_id, $ind_id;
-# 	push @marker_id, $marker_id;	
-# 	push @map_version, $map_version;
-# 	if ($genotype == 'null') {
-# 	    $genotype = 'NA';
-# 	}
-# 	push @genotype, $genotype;
-# 	push @lg_name, $lg_name;
-# 	push @position, $position;
-#     }
-
-#     return \@ind_id, \@marker_id, \@map_version, \@genotype, \@lg_name, \@position;
-
-# }
 
 sub get_marker_chr_position {
     my $self = shift;
@@ -1298,7 +1621,7 @@ sub genotype_dataset {
 
  Usage: my @pop_objs = $pop_obj->has_qtl_data();
  Desc: returns a list of population (objects)  with genetic and phenotypic data (qtl data). 
-       The assumption is if a trait genetic and phenotype data, it is from qtl study.
+       The assumption is if a trait has genetic and phenotype data, it is from a qtl study.
  Ret: an array of population objects
  Args: none
  Side Effects: accesses the database
@@ -1309,7 +1632,9 @@ sub genotype_dataset {
 sub has_qtl_data {
     my $self = shift;    
     my $dbh = CXGN::DB::Connection->new();
-    my $query = "SELECT DISTINCT (population_id) FROM public.phenotype LEFT JOIN phenome.individual USING (individual_id)";
+    my $query = "SELECT DISTINCT (population_id) 
+                        FROM public.phenotype 
+                        LEFT JOIN phenome.individual USING (individual_id)";
 
     my $sth = $dbh->prepare($query);
     $sth->execute();
@@ -1322,7 +1647,11 @@ sub has_qtl_data {
 
     foreach my $pop_id2 (@pop_ids) {
 
-	my $query2 = "SELECT DISTINCT (population_id) FROM phenome.genotype LEFT JOIN phenome.individual USING (individual_id) WHERE individual.population_id = ?";
+	my $query2 = "SELECT DISTINCT (population_id) 
+                             FROM phenome.genotype 
+                             LEFT JOIN phenome.individual USING (individual_id) 
+                             WHERE individual.population_id = ?";
+
 	my $sth2 = $dbh->prepare($query2);
 	$sth2->execute($pop_id2);
 	
@@ -1406,6 +1735,92 @@ sub linkage_groups {
 
     return @lg_names;
 	
+}
+
+=head2 store_data_privacy
+
+ Usage: $is_public = $pop->store_data_privacy($is_public);
+ Desc: sets the whether the population data is for public or private
+ Ret: undef if not given a population_id; otherwise, true or false value      
+ Args: true or false
+ Side Effects: accesseses db
+ Example:
+
+=cut
+
+sub store_data_privacy {
+    my $self = shift;
+    my $is_public  = shift;   
+    my $dbh = $self->get_dbh();
+    my $pop_id = $self->get_population_id();
+    my $owner_id = $self->get_sp_person_id();
+    my $sth;
+    if ($pop_id) {
+	$sth = $dbh->prepare("SELECT population_id 
+                                    FROM phenome.is_public
+                                    WHERE population_id = ?"
+                           );
+	
+	$sth->execute($pop_id);
+
+	if ($sth->fetchrow_array()) {
+	    $sth->prepare("UPDATE phenome.is_public 
+                               SET is_public = ?
+                               WHERE population_id = $pop_id"
+                      );
+	    $sth->execute($is_public);
+
+	} else {
+
+	    $sth = $dbh->prepare("INSERT INTO phenome.is_public 
+                                     (population_id, is_public, owner_id) 
+                                     VALUES (?, ?, ?)"
+                            );
+
+	    print STDERR "is_public: $is_public\n";
+
+	    $sth->execute($pop_id, $is_public, $owner_id);
+	}
+	return $is_public; 
+    }
+    return undef;
+      
+}
+
+
+=head2 get_privacy_status
+
+ Usage: my $status = $pop->get_privacy_status();
+ Desc: checks if the population data is set to be private or public
+ Ret: returns true value if the is_public.is_public is null or true,
+     otherwise it returns false value
+ Args: none
+ Side Effects: access db
+ Example:
+
+=cut
+
+sub get_privacy_status {
+    my $self = shift;    
+    my $dbh = $self->get_dbh();   
+ 
+    if ($self->get_population_id()) {
+	my $sth = $dbh->prepare("SELECT is_public 
+                                    FROM phenome.is_public
+                                    WHERE population_id = ?" 
+           
+                               );
+	$sth->execute($self->get_population_id());
+	my $status = $sth->fetchrow_array();
+	
+	if (!defined($status)) {$status = 't';}
+
+	print STDERR "privacy status: $status\n";
+
+	return $status;
+    }
+    else {return 0;}
+  
 }
 
 

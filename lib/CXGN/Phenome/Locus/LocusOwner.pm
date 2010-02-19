@@ -78,7 +78,7 @@ sub send_owners_email {
 	push @sent_emails, $sp_person_id;
 	my $user_link = qq |http://www.sgn.cornell.edu/solpeople/personal-info.pl?sp_person_id=$sp_person_id|;
 	
-	my $fdbk_body="Dear $user, \nYou are curently assigend as locus editor for the folowing loci in the Sol Genomics Network database:\n\n";
+	my $fdbk_body="Dear $user, \nYou are curently assigend as locus editor for the folowing loci in the SOL Genomics Network database:\n\n";
 	foreach my $locus_id( @{$owners{$sp_person_id} } ) {
 	    my $locus= CXGN::Phenome::Locus->new($dbh, $locus_id);
 	    my $locus_name= $locus->get_locus_name();
