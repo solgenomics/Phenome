@@ -158,7 +158,8 @@ sub organism {
 }
 
 sub data_provider {
-    'SGN'
+    my $self=shift;
+    return 'SGN';
 }
 
 
