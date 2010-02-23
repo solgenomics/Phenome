@@ -96,10 +96,14 @@ sub new_with_name {
 sub fetch { 
     my $self= shift;
     my $individual_id = $self->get_individual_id();
-    my $query = "SELECT individual.name, individual.description, population.name, individual.sp_person_id, individual.create_date, individual.modified_date, updated_by, population_id, common_name_id, common_name, individual.obsolete FROM phenome.individual 
-LEFT JOIN phenome.population using(population_id)  
-LEFT JOIN sgn.common_name USING (common_name_id)
-WHERE individual_id=? and individual.obsolete='f'";
+    my $query = "SELECT individual.name, individual.description, population.name, 
+                        individual.sp_person_id, individual.create_date, 
+                        individual.modified_date, updated_by, individual.population_id, 
+                        individual.common_name_id, common_name, individual.obsolete 
+                 FROM phenome.individual 
+                 LEFT JOIN phenome.population USING (population_id)  
+                 LEFT JOIN sgn.common_name ON (individual.common_name_id = common_name.common_name_id)
+                 WHERE individual_id=? and individual.obsolete='f'";
     
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_individual_id());
@@ -147,9 +151,15 @@ sub store {
                        individual_id = ?
                      ";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), $self->get_description(), $self->get_updated_by(), $self->get_individual_id());
+	$sth->execute($self->get_name(), 
+		      $self->get_description(), 
+		      $self->get_updated_by(), 
+		      $self->get_individual_id()
+	            );
+	
 	return $self->get_individual_id();
     }
+    
     else { 
 	my $query = "INSERT INTO phenome.individual
                       (name, description, population_id, sp_person_id, create_date, common_name_id)
@@ -157,7 +167,12 @@ sub store {
                       (?,?,?,?,now(), ?)";
 	
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), $self->get_description(), $self->get_population_id(), $self->get_sp_person_id(), $self->get_common_name_id()  );
+	$sth->execute($self->get_name(), 
+		      $self->get_description(), 
+		      $self->get_population_id(), 
+		      $self->get_sp_person_id(), 
+		      $self->get_common_name_id()  
+	             );
 	
 	my $id = $self->get_dbh()->last_insert_id("individual", "phenome");
 	$self->set_individual_id($id);
@@ -1084,12 +1099,29 @@ sub get_existing_organisms {
 
 sub get_phenotypes {
     my $self=shift;
+    my $pop = $self->get_population();
+    
+    my ($table, $table_id, $name, $definition);
+   
+    if ($pop->get_web_uploaded()) {
+	 $table = 'phenome.user_trait';
+	 $table_id  = 'user_trait_id';
+	 $name = 'user_trait.name';
+	 $definition = 'user_trait.definition';
+    } else {
+	$table = 'public.cvterm';
+	$table_id  = 'cvterm_id';
+	$name = 'cvterm.name';
+	$definition = 'cvterm.definition';
+    }
+
+
     my $query = "SELECT phenotype_id
                         FROM  public.phenotype 
                         LEFT JOIN phenome.individual using (individual_id) 
-                        LEFT JOIN  public.cvterm ON (observable_id = cvterm_id) 
+                        LEFT JOIN  $table ON (observable_id = $table_id) 
                         WHERE individual_id =? 
-                        ORDER BY cvterm.name";
+                        ORDER BY $name";
 
     my $sth = $self->get_dbh()->prepare($query);
     
@@ -1119,13 +1151,29 @@ sub get_phenotypes {
 sub get_phenotype_data {
     my $self=shift;
     my $individual_id=$self->get_individual_id();
+
+    my $pop = $self->get_population();
+    my ($table, $table_id, $name, $definition);
+    if ($pop->get_web_uploaded()) {
+	 $table = 'phenome.user_trait';
+	 $table_id  = 'user_trait_id';
+	 $name = 'user_trait.name';
+	 $definition = 'user_trait.definition';
+    } else {
+	$table = 'public.cvterm';
+	$table_id  = 'cvterm_id';
+	$name = 'cvterm.name';
+	$definition = 'cvterm.definition';
+
+
+    }
    
-    my $query = "SELECT observable_id, cvterm.name, cvterm.definition, value
+    my $query = "SELECT observable_id, $name, $definition, value
                         FROM  public.phenotype 
                         LEFT JOIN phenome.individual using (individual_id) 
-                        LEFT JOIN  public.cvterm ON (observable_id = cvterm_id) 
+                        LEFT JOIN $table  ON (observable_id = $table_id) 
                         WHERE individual_id =? 
-                        ORDER BY cvterm.name";
+                        ORDER BY $name";
 
     my $sth = $self->get_dbh()->prepare($query);
     
@@ -1161,19 +1209,34 @@ sub get_phenotype_data {
 sub get_unique_cvterms {
     my $self=shift;
     my $individual_id=shift;
-   
-    my $query = "SELECT DISTINCT cvterm.name, observable_id
+
+    my $pop = $self->get_population();
+    
+    my ($table, $table_id, $name);
+    if ($pop->get_web_uploaded()) {
+	 $table = 'phenome.user_trait';
+	 $table_id  = 'user_trait_id';
+	 $name = 'user_trait.name';
+       
+    } else {
+	$table = 'public.cvterm';
+	$table_id  = 'cvterm_id';
+	$name = 'cvterm.name';
+
+
+    }
+    
+    my $query = "SELECT DISTINCT $name, observable_id
                         FROM  public.phenotype
-                        LEFT JOIN  public.cvterm ON (observable_id = cvterm_id) 
+                        LEFT JOIN  $table ON (observable_id = $table_id) 
                         WHERE individual_id =?
-			ORDER BY cvterm.name"; 
+			ORDER BY $name"; 
                         
     my $sth = $self->get_dbh()->prepare($query);
     
     $sth->execute($individual_id);
-    my @name;
-    my @obs_id;
-
+    
+    my (@name, @obs_id);
     while (my ($name, $obs_id) =$sth->fetchrow_array()) {
 
 	push @name, $name;
@@ -1182,8 +1245,47 @@ sub get_unique_cvterms {
     return @name;
 }
 
-=head2 add_synonym
+=head2 get_markers
 
+ Usage:my ($marker_id, $marker_alias)=$ind_obj->get_markers()
+ Desc: useful for retrieving markers assayed on an individual accession
+ Ret: array references for marker ids and aliases.
+ Args:none
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_markers {
+    my $self=shift;
+    my $individual_id=$self->individual_id();
+   
+    my $query = "SELECT marker_alias.marker_id, marker_alias.alias 
+                        FROM phenome.genotype 
+                        JOIN phenome.genotype_region USING (genotype_id) 
+                        JOIN sgn.marker_alias ON (genotype_region.marker_id_nn = marker_alias.marker_id) 
+                        WHERE genotype.individual_id = ? 
+                        ORDER BY marker_alias.alias";
+
+                        
+    my $sth = $self->get_dbh()->prepare($query);
+    
+    $sth->execute($individual_id);
+    my (@marker_id, @marker_alias);
+
+    while (my ($marker_id, $marker_alias) =$sth->fetchrow_array()) {
+
+	
+        push @marker_id, $marker_id;
+	push @marker_alias, $marker_alias;
+    }
+   
+    return \@marker_id, \@marker_alias;
+}
+
+
+# =head2 add_population_id_by_name
+=head2  add_synonym
  Usage: $self->add_synonym('synonym1')
  Desc:  a list constructor for individual_synonyms 
  Ret:   nothing
@@ -1248,6 +1350,35 @@ sub get_aliases {
     }
     return @synonyms;
 }
+
+=head2 individual_in_population
+
+ Usage: $ind = CXGN::Phenome:Individual::individual_in_populalton($dbh, $pop_id, $ind_name);
+ Desc:  retreives an individual in a population
+ Ret:    an individual object
+ Args:   database handle, population id, and individual name
+ Side Effects: accesses database
+ Example:
+
+=cut
+
+sub individual_in_population {
+    my ($dbh, $pop_id, $ind_name) = @_;
+    my $sth = $dbh->prepare("SELECT individual_id 
+                                    FROM phenome.individual
+                                    WHERE name ilike ?
+                                    AND population_id ?"
+	                   );
+    $sth->execute($ind_name, $pop_id);
+    my $ind_id = $sth->fetchrow_array();
+    
+    if ($ind_id) {
+	return CXGN::Phenome::Individual->new($dbh, $ind_id);
+    }
+    else { return 0;
+    }
+}
+
 #######do not remove#    
 return 1; ###########
 ####################
