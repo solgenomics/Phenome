@@ -1824,6 +1824,38 @@ sub get_privacy_status {
 }
 
 
+=head2 my_populations
+
+ Usage: my @pops = CXGN::Phenome::Population->my_populations($sp_person_id);
+ Desc: returns a list of populations owned by a submitter
+ Ret: an array population objects
+ Args: sp_person_id
+ Side Effects: accesses db
+ Example:
+
+=cut
+
+sub my_populations { 
+    my $self = shift;
+    my $sp_person_id = shift;
+    my $dbh = CXGN::DB::Connection->new();
+    my $sth = $dbh->prepare("SELECT  population_id
+                                     FROM phenome.population
+                                     WHERE sp_person_id = ?"
+	                   );
+    $sth->execute($sp_person_id);
+
+    my @pops;
+    while (my $pop_id = $sth->fetchrow_array()) {
+	my $pop = $self->new($dbh, $pop_id);
+	push @pops, $pop;
+    }
+    
+    return @pops;
+
+}
+
+
 
 
 ############# 
