@@ -10,6 +10,7 @@ use CXGN::Marker;
 use CXGN::Cview::MapFactory;
 use CXGN::Chado::Organism;
 
+
 =head1 NAME
 
 CXGN::Phenome::GenericGenePage - implementation of Bio::GMOD::GenericGenePage for SGN
@@ -112,7 +113,7 @@ sub ontology_terms {
   my ($self) = @_;
 
   my $locus = $self->_locus;
-
+    
   return map {
       my $t = $_;
       $t->get_db_name.':'.$t->get_accession => $t->get_cvterm_name()
@@ -147,8 +148,11 @@ sub summary_text {
 sub organism {
     my ($self) = @_;
     my $locus=$self->_locus();
-    my $organism= CXGN::Chado::Organism->new_with_common_name($self->_dbh(), $locus->get_common_name() );
-    my $taxon_id=  $organism->get_genbank_taxon_id();
+    my $organism= CXGN::Chado::Organism->new_with_common_name($self->_dbh, $locus->get_common_name() );
+    if (!$organism) { 
+	warn "No organism found for common name '" . $locus->get_common_name() . "'. Please check your database.\nDefault common_name should be stored in organismprop, and point to only one scientific species name in the organism table\n"; 
+	return undef;
+    } 
     
     return
     {  ncbi_taxon_id => $organism->get_genbank_taxon_id(),
