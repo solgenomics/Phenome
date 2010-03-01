@@ -5,7 +5,6 @@ use English;
 use Carp;
 
 use CXGN::Phenome::Locus;
-use CXGN::Tools::Class qw/parricide/;
 use CXGN::Marker;
 use CXGN::Cview::MapFactory;
 use CXGN::Chado::Organism;
@@ -177,10 +176,6 @@ Robert Buels
 Naama Menda
 
 =cut
-
-sub DESTROY {
-  return parricide(shift,our @ISA);
-}
 
 ###
 1;#do not remove
