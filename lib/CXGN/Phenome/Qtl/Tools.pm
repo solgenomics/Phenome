@@ -205,6 +205,60 @@ sub set_dbh {
 }
 
 
+=head2 has_qtl_data
+
+ Usage: my @pop_objs = $qtl_tools->has_qtl_data();
+ Desc: returns a list of populations (objects)  with genetic and phenotypic data (qtl data). 
+       The assumption is if a trait has genetic and phenotype data, it is from a qtl study.
+ Ret: an array of population objects
+ Args: none
+ Side Effects: accesses the database
+ Example:
+
+=cut
+
+sub has_qtl_data {
+    my $self = shift;    
+    my $dbh = $self->get_dbh();
+    my $query = "SELECT DISTINCT (population_id) 
+                        FROM public.phenotype 
+                        LEFT JOIN phenome.individual USING (individual_id)";
+
+    my $sth = $dbh->prepare($query);
+    $sth->execute();
+    
+    my (@pop_objs, @pop_ids)=();
+    
+    while (my ($pop_id) = $sth->fetchrow_array()) {
+	push @pop_ids, $pop_id;
+    }
+
+    foreach my $pop_id2 (@pop_ids) {
+
+	my $query2 = "SELECT DISTINCT (population_id) 
+                             FROM phenome.genotype 
+                             LEFT JOIN phenome.individual USING (individual_id) 
+                             WHERE individual.population_id = ?";
+
+	my $sth2 = $dbh->prepare($query2);
+	$sth2->execute($pop_id2);
+	
+	my ($qtl_pop_id) = $sth2->fetchrow_array();
+	
+	if ($qtl_pop_id) {
+	    my $pop_obj = CXGN::Phenome::Population->new($dbh, $qtl_pop_id);
+	
+
+	    push @pop_objs, $pop_obj;
+	}
+    }
+
+        return  @pop_objs; 
+ 
+    
+
+}
+
 ########
 return 1;
 #######
