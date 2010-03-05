@@ -107,7 +107,7 @@ sub store {
     else { 
 
 	my $query = "INSERT INTO phenome.user_trait (cv_id, name, definition, dbxref_id, sp_person_id) 
-                            VALUES (?, ?, ?, ?, ?, ?)";
+                            VALUES (?, ?, ?, ?, ?)";
 
 	my $sth = $self->get_dbh()->prepare($query);
 
@@ -120,7 +120,7 @@ sub store {
 
 
 		      
-	my $trait_id=$self->get_currval("phenome.user_trait_user_trait_id_seq");
+	my $trait_id=$self->get_currval( "phenome.user_trait_user_trait_id_seq");
  	$self->set_user_trait_id($trait_id);
  	return $trait_id;
     }
@@ -259,39 +259,39 @@ sub get_definition {
     return $self->{definition};
 }
 
-=head2 set_unit_id
+# =head2 set_unit_id
 
- Usage:
- Desc:            
- Ret:
- Args:
- Side Effects:
- Example:
+#  Usage:
+#  Desc:            
+#  Ret:
+#  Args:
+#  Side Effects:
+#  Example:
 
-=cut
+# =cut
 
-sub set_unit_id {
-    my $self=shift;
-    $self->{unit_id}=shift;
+# sub set_unit_id {
+#     my $self=shift;
+#     $self->{unit_id}=shift;
 
-}
+# }
 
-=head2 get_unit_id
+# =head2 get_unit_id
 
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
+#  Usage:
+#  Desc:
+#  Ret:
+#  Args:
+#  Side Effects:
+#  Example:
 
-=cut
+# =cut
 
-sub get_unit_id {
-    my $self=shift;
-    return $self->{unit_id};
+# sub get_unit_id {
+#     my $self=shift;
+#     return $self->{unit_id};
 
-}
+# }
 
 =head2 set_dbxref_id
 
@@ -397,12 +397,16 @@ sub new_with_name {
     my $self = shift;
     my $dbh = shift;
     my $name = shift;
-    my $query = "SELECT user_trait_id FROM phenome.user_trait WHERE name ILIKE '$name%'";
+    my $query = "SELECT user_trait_id FROM phenome.user_trait WHERE name ILIKE '$name'";
     my $sth = $dbh->prepare($query);
     $sth->execute();
     
     my $id = $sth->fetchrow_array();  
-    return CXGN::Phenome::UserTrait->new($dbh, $id);
+   
+    if ($id) {
+	return CXGN::Phenome::UserTrait->new($dbh, $id);
+    } else {return 0;}
+ 
     
 }
 
@@ -435,6 +439,7 @@ sub insert_unit {
 	    print STDERR "STORED unit! \n";
 	    $unit_id = $self->get_currval("phenome.unit_unit_id_seq");	
 	}
+    
     return $unit_id;
 
 }
@@ -471,6 +476,7 @@ sub insert_user_trait_unit {
 	    	   
 	    $user_trait_unit_id = $self->get_currval("phenome.user_trait_unit_user_trait_unit_id_seq");
 	    print STDERR "STORED user_trait_unit: $user_trait_unit_id! \n";
+	    return $user_trait_unit_id;
     }
     else {
 	    print STDERR "No point in populating this table if there 
@@ -478,7 +484,7 @@ sub insert_user_trait_unit {
 	}
 
 
-    return $user_trait_unit_id;
+    
 
 }
 
@@ -515,6 +521,8 @@ sub get_unit_id {
     }
 
 }
+
+
 
 
 #####  DEPRECATED #######
