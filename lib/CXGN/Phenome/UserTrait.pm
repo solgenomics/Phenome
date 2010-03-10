@@ -523,42 +523,24 @@ sub get_unit_id {
 }
 
 
+sub get_all_populations_trait {
+    my $self=shift;
+    my $query = "SELECT DISTINCT(phenome.population.population_id) 
+                            FROM public.phenotype 
+                            LEFT JOIN phenome.individual USING (individual_id)
+                            LEFT JOIN phenome.population USING (population_id)
+                            WHERE observable_id = ?";
+    my $sth=$self->get_dbh->prepare($query);
+    $sth->execute($self->get_user_trait_id());
+    my @populations;
+    while (my ($pop_id) = $sth->fetchrow_array()) {
+	print STDERR "trait: populations; $pop_id\n";
+	my $pop = CXGN::Phenome::Population->new($self->get_dbh(), $pop_id);
+	push @populations, $pop;
+    }
+    return @populations;
 
-
-#####  DEPRECATED #######
-
-=head2 get_unit
-
- Usage: my $name = $trait_obj->get_unit($dbh, $unit_id);
- Desc: returns the unit of measurement associated with a trait
- Ret: unit name or undef
- Args: dbh and unit_id
- Side Effects: accesses database
- Example:
-
-=cut
-
-# sub get_unit {
-#     my $self = shift;
-#     my $dbh = $self->get_dbh();
-#     my $unit_id = shift;
-    
-
-#     my $sth = $dbh->prepare("SELECT name FROM phenome.unit WHERE unit_id = ?");
-#     $sth->execute($unit_id);
-
-#     my $name = $sth->fetchrow_array();
-
-#     if ($name) {
-# 	return $name;
-#     } else {
-# 	return 0;
-#     }
-
-# }
-
-######################
-
+}
 
 ##########
 return 1;
