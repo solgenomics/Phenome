@@ -50,11 +50,10 @@ sub initialize {
     return <<JAVASCRIPT;
 
     <script language="javascript" type="text/javascript">
-    
+	
     var locusPage = new CXGN.Phenome.Locus.LocusPage();
     locusPage.setLocusId($locus_id);
     
-  
     
 </script>
 
@@ -63,9 +62,9 @@ JAVASCRIPT
 }
 
 
-=head2 print_locus_form
+=head2 init_locus_form
 
- Usage:        CXGN::Phenome::Locus::LocusPage->print_locus_form()
+ Usage:        CXGN::Phenome::Locus::LocusPage->init_locus_form()
  Desc:         includes a locus details editable form on the respective page
                by including its javascript code
  Ret:          nothing
@@ -76,19 +75,21 @@ JAVASCRIPT
 =cut
 
 sub init_locus_form {
-    my $locus_id = shift;
-    
+    my $locus_id = shift || 0;
+    my $script= "/jsforms/locus_ajax_form.pl";
     return <<JAVASCRIPT;
-    
-    <script language="javascript" type="text/javascript">
-    var locusForm = new CXGN.Page.Form.JSFormPage();
-    locusForm.setObjectName('locus');
-    locusForm.setObjectId($locus_id);
-    locusForm.render(); 
+    <table><tr><td><div id=\"locus_details_buttons\" >\[loading edit links...\]</div>
+	</td></tr></table>
+    <table><tr><td><div id=\"locus_details\" >\[loading...\]</div>
+	</td></tr></table>
+	<script language="javascript" type="text/javascript">
+	var locusForm = new CXGN.Page.Form.JSFormPage($locus_id, 'locus', '/jsforms/locus_ajax_form.pl', 'locus_details', 'locusForm', '/phenome/locus_display.pl');
+    locusForm.render();
     
     </script>  
 	
 JAVASCRIPT
+
 
 }
 

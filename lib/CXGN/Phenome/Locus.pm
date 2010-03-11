@@ -86,7 +86,6 @@ sub new {
 	my @dbxrefs= $self->get_dbxrefs();
 	foreach my $d(@dbxrefs) { $self->add_dbxref(); } 
     }
-
     return $self;
 }
 
@@ -189,7 +188,6 @@ sub get_locus_ids_by_annotator {
 sub fetch {
     my $self=shift;
     my $dbh=$self->get_dbh();
-   # $dbh->trace(2, 'dbitrace.log');
     
     my $locus_query = "SELECT locus_id,locus_name, locus_symbol, original_symbol, gene_activity, description,  locus.sp_person_id, locus.create_date, locus.modified_date, linkage_group, lg_arm, common_name, common_name_id,  updated_by, locus.obsolete 
                     FROM phenome.locus 
@@ -1074,6 +1072,8 @@ sub get_dbxrefs_by_type {
     my $type = shift;
     my $locus_id=$self->get_locus_id();
     my $query;
+    my $dbh = $self->get_dbh();
+   
     if ($type eq 'ontology') {
 	$query="SELECT locus_dbxref.dbxref_id from phenome.locus_dbxref 
                JOIN public.dbxref USING(dbxref_id) 
