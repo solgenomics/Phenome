@@ -2046,7 +2046,10 @@ sub merge_locus {
 	}
 	#Add this locus to all the groups of the merged locus
 	my @groups=$m_locus->get_locusgroups();
-	my $schema= $groups[0]->get_schema();
+	
+	my $schema;
+	
+	if ($groups[0]) { $schema = $groups[0]->get_schema(); }
 	foreach my $group (@groups) {
 	    my $m_lgm=$group->get_object_row()->
 		find_related('locusgroup_members', { locus_id => $m_locus->get_locus_id() } ); 
