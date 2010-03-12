@@ -21,6 +21,8 @@ This class implements the following functions:
 package CXGN::Phenome::Individual;
 
 use strict;
+use Carp;
+
 use CXGN::DB::Connection;
 use CXGN::People::Person;
 use CXGN::Image;
@@ -139,7 +141,7 @@ sub store {
     my $self = shift;
 
     if ($self->get_individual_id()) { 
-	print STDERR "Individual.pm -> updating....\n\n"; 
+	$self->d( "Individual.pm -> updating....\n\n"); 
 	$self->store_history();
 	
 	my $query = "UPDATE phenome.individual SET
@@ -176,10 +178,7 @@ sub store {
 	
 	my $id = $self->get_dbh()->last_insert_id("individual", "phenome");
 	$self->set_individual_id($id);
-	print STDERR "getting last_insert_id...$id\n";
-	
 	return $id;
-	
     }
 }
 
@@ -760,7 +759,7 @@ sub delete {
  	$allele_sth->execute($self->get_individual_id());
 	
     }else { 
-	print STDERR  "trying to delete an individual that has not yet been stored to db.\n";
+	warn ("trying to delete an individual that has not yet been stored to db.\n");
     }    
 }		     
 
@@ -781,9 +780,9 @@ sub exists_in_database { ######check why this doesn't work for updates..
     my $self = shift;
     my $name = shift;
     my $individual_id= $self->get_individual_id();
-    my $name_query = "SELECT individual_id, obsolete 
+    my $name_query = "SELECT individual_id 
                         FROM phenome.individual
-                        WHERE name ILIKE ? ";
+                        WHERE name ILIKE ? AND obsolete = 'f' ";
     my $name_sth = $self->get_dbh()->prepare($name_query);
     $name_sth->execute($name );
     my ($name_id, $obsolete) = $name_sth->fetchrow_array();
