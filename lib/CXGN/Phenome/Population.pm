@@ -340,6 +340,17 @@ sub set_background_accession_id {
 }
 
 
+=head2 get/set_sp_person_id
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
 sub get_sp_person_id {
   my $self=shift;
   return $self->{sp_person_id};
@@ -352,24 +363,9 @@ sub set_sp_person_id {
 }
  
 
-=head2 get_owners
 
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
 
-=cut
-
-sub get_common_name_id {
-  my $self=shift;
-  return $self->{common_name_id};
-
-}
-
-=head2 set_common_name_id
+=head2 get/set_common_name_id
 
  Usage:
  Desc:
@@ -411,38 +407,8 @@ sub get_common_name {
   my $self=shift;
   return $self->{common_name};
 }
-=head2 get_sp_person_id
 
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
 
-=cut
-
-sub get_sp_person_id {
-  my $self=shift;
-  return $self->{sp_person_id};
-
-}
-
-=head2 set_sp_person_id
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub set_sp_person_id {
-  my $self=shift;
-  $self->{sp_person_id}=shift;
-}
 
 
 =head2 function set_female_parent_id, get_female_parent_id
@@ -601,6 +567,17 @@ sub set_web_uploaded {
 }
 
     
+=head2 get_owners
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
 sub get_owners {
     my $self=shift;
     my $query = "SELECT sp_person_id FROM phenome.population
