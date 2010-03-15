@@ -105,7 +105,7 @@ sub fetch {
                  FROM phenome.individual 
                  LEFT JOIN phenome.population USING (population_id)  
                  LEFT JOIN sgn.common_name ON (individual.common_name_id = common_name.common_name_id)
-                 WHERE individual_id=? and individual.obsolete='f'";
+                 WHERE individual_id=? ";
     
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_individual_id());
