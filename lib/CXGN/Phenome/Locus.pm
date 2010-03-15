@@ -445,12 +445,12 @@ sub update_locus_alias {
     foreach my $a ( @aliases) {
 	my $alias=$a->get_locus_alias();
 	if ($alias eq $symbol) {  
-	    print STDERR "alias = $alias , symbol =$symbol, preferred=" . $a->get_preferred() . " Setting prefrred = 't'\n";
+	    $self->d("alias = $alias , symbol =$symbol, preferred=" . $a->get_preferred() . " Setting prefrred = 't'\n");
 	    $a->set_preferred('t');
 	    $a->store();
 	}
 	elsif ($a->get_preferred() ==1) {
-	    print STDERR "alias = $alias , symbol =$symbol, preferred=" . $a->get_preferred() . " Setting prefrred = 'f'\n";
+	    $self->d( "alias = $alias , symbol =$symbol, preferred=" . $a->get_preferred() . " Setting prefrred = 'f'\n");
 	    $a->set_preferred('f'); 
 	    $a->store();
 	}
@@ -1312,7 +1312,7 @@ sub store_history {
 
     my $self=shift;
     my $locus=CXGN::Phenome::Locus->new($self->get_dbh(), $self->get_locus_id() );
-    print STDERR "Locus.pm:*Storing history for locus " . $self->get_locus_id() . "\n"; 
+    $self->d( "Locus.pm:*Storing history for locus " . $self->get_locus_id() . "\n"); 
     my $history_query = "INSERT INTO phenome.locus_history (locus_id, locus_name, locus_symbol, original_symbol,gene_activity,locus_description,linkage_group, lg_arm, sp_person_id, updated_by, obsolete, create_date) 
                              VALUES(?,?,?,?,?,?,?,?,?,?,?, now())";
     my $history_sth= $self->get_dbh()->prepare($history_query);
@@ -1766,7 +1766,7 @@ sub add_owner {
 	my $sth=$self->get_dbh()->prepare($query);
 	$sth->execute($owner_id, $self->get_locus_id(), $sp_person_id);
         my $id= $self->get_currval("phenome.locus_owner_locus_owner_id_seq");
-	print STDERR "Locus.pm:add_owner: added owner id: $owner_id, granted by: $sp_person_id\n";
+	$self->d( "Locus.pm:add_owner: added owner id: $owner_id, granted by: $sp_person_id\n");
 	return $id;
     }else { return undef; }
 }
@@ -1840,10 +1840,9 @@ sub get_associated_locus {
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($associated_locus_id, $self->get_locus_id());
     my ($l2l_id) = $sth->fetchrow_array();
-    print STDERR "get_associated locus found object_id $associated_locus_id and subject_id ". $self->get_locus_id . "\!#!#!#n returning $l2l_id ! \n";
+  
     if ($l2l_id) {
 	my $l2l=CXGN::Phenome::Locus2Locus->new($self->get_dbh(), $l2l_id);
-	print STDERR "returning " . $l2l->get_locus2locus_id() . "\n";
 	return $l2l;
     } else { return undef };
 }
@@ -1987,47 +1986,47 @@ sub merge_locus {
     my $merged_locus_id=shift;
     my $sp_person_id=shift;
     my $m_locus=CXGN::Phenome::Locus->new($self->get_dbh(), $merged_locus_id);
-    print STDERR "*****locus.pm: calling merge_locus...merging locus " . $m_locus->get_locus_id() . " with locus ". $self->get_locus_id() . " \n";
+    $self->( "*****locus.pm: calling merge_locus...merging locus " . $m_locus->get_locus_id() . " with locus ". $self->get_locus_id() . " \n");
     eval {
 	my @m_owners=$m_locus->get_owners();
 	foreach my $o (@m_owners) { 
 	    my $o_id= $self->add_owner($o, $sp_person_id);  
-	    print STDERR "merge_locus is adding owner $o to locus " . $self->get_locus_id() . "\n**" if $o_id;
+	    $self->d( "merge_locus is adding owner $o to locus " . $self->get_locus_id() . "\n**") if $o_id;
 	}
-	print STDERR "merge_locus checking for aliases ....\n";
+        $self->d( "merge_locus checking for aliases ....\n");
 	my @m_aliases=$m_locus->get_locus_aliases();
 	foreach my $alias(@m_aliases) {
 	    $self->add_locus_alias($alias);
-	    print STDERR "merge_locus is adding alias " . $alias->get_locus_alias() . " to locus " . $self->get_locus_id() . "\n**";
+	    $self->( "merge_locus is adding alias " . $alias->get_locus_alias() . " to locus " . $self->get_locus_id() . "\n**");
 	}
 	my @unigenes=$m_locus->get_unigenes();
 	foreach my $u(@unigenes) { 
 	    my $u_id= $u->get_unigene_id();
 	    $self->add_unigene($u_id, $sp_person_id); 
-	    print STDERR "merge_locus is adding unigene $u to locus" . $self->get_locus_id() . "\n**";
+	    $self->d( "merge_locus is adding unigene $u to locus" . $self->get_locus_id() . "\n**");
 	}
 	
 	my @alleles=$m_locus->get_alleles();
 	foreach my $allele(@alleles) { 
-	    print STDERR "adding allele ........\n";
+	    $self->d( "adding allele ........\n");
 	    #reset allele id for storing a new one for the current locus
 	    $allele->set_allele_id(undef);
 	    my $allele_id=$self->add_allele($allele);
-	    print STDERR "merge_locus is adding allele $allele_id " . $allele->get_allele_symbol() . "to locus" . $self->get_locus_id() . "\n**";
+	    $self->d( "merge_locus is adding allele $allele_id " . $allele->get_allele_symbol() . "to locus" . $self->get_locus_id() . "\n**");
 	   
 	    #find the individuals of the current allele
 	    my @individuals=$allele->get_individuals();
 	    #associated individuals with the newly inserted allele
 	    foreach my $i(@individuals) {
 		$i->associate_allele($allele_id, $sp_person_id); 
-		print STDERR "merge_locus is adding allele $allele_id to *individual* " . $i->get_individual_id() . "\n**";
+		$self->d( "merge_locus is adding allele $allele_id to *individual* " . $i->get_individual_id() . "\n**");
 	    }
 	}
 	
 	my @figures=$m_locus->get_figures();
 	foreach my $image(@figures) { 
 	    $self->add_figure($image->get_image_id(), $sp_person_id);
-	    print STDERR "merge_locus is adding figure" . $image->get_image_id() . " to locus " . $self->get_locus_id() . "\n**";
+	    $self->d( "merge_locus is adding figure" . $image->get_image_id() . " to locus " . $self->get_locus_id() . "\n**");
 	}
 	
 	my @dbxrefs=$m_locus->get_dbxrefs();
@@ -2035,7 +2034,7 @@ sub merge_locus {
 	    my $ldbxref=$m_locus->get_locus_dbxref($dbxref); #the old locusDbxref object
 	    my @ld_evs=$ldbxref->get_locus_dbxref_evidence(); #some have evidence codes
 	    my $ldbxref_id=$self->add_locus_dbxref($dbxref, undef, $ldbxref->get_sp_person_id()); #store the new locus_dbxref..
-	    print STDERR "merge_locus is adding dbxref " . $dbxref->get_dbxref_id() . "to locus " . $self->get_locus_id() . "\n";
+	    $self->d( "merge_locus is adding dbxref " . $dbxref->get_dbxref_id() . "to locus " . $self->get_locus_id() . "\n");
 	    foreach my $ld_ev ( @ld_evs) {
 		if ($ld_ev->get_object_dbxref_evidence_id() ) {
 		    $ld_ev->set_object_dbxref_evidence_id(undef);
@@ -2071,11 +2070,11 @@ sub merge_locus {
 		
 		my $lgm_id= $lgm->store();
 	    }
-	    print STDERR "obsoleting group member... \n";
+	    $self->d( "obsoleting group member... \n");
 	    $m_lgm->set_column(obsolete => 't');
 	    $m_lgm->update();
 	}
-	print STDERR "Obsoleting merged locus... \n";
+	$self->d( "Obsoleting merged locus... \n");
 	#last step is to obsolete the old locus. All associated objects (images, alleles, individuals..) should not display obsolete objects on the relevant pages! 
 	$m_locus->delete();
     };
@@ -2083,7 +2082,7 @@ sub merge_locus {
 	my $error = "Merge locus failed! \n $@\n\nCould not merge locus $merged_locus_id with locus " . $self->get_locus_id() . "\n";
 	return $error;
     } else {
-	print STDERR "merging locus succeded ! \n"; 
+	$self->d( "merging locus succeded ! \n"); 
 	return undef;
     } 
 }
