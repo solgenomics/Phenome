@@ -6,7 +6,8 @@ use Carp;
 
 use CXGN::Phenome::Locus;
 use CXGN::Marker;
-use CXGN::Cview::MapFactory;
+#use CXGN::Cview::MapFactory;
+use CXGN::Map;
 use CXGN::Chado::Organism;
 
 
@@ -86,37 +87,39 @@ sub map_locations {
 	unless ($map_version_id) {
 	  ()
 	} else {
-	  my $map_factory=CXGN::Cview::MapFactory->new( $self->_dbh );
-	  my $map = $map_factory->create({map_version_id=>$map_version_id});
-	  my $map_version_id=$map->get_id();
-	  my $map_name=$map->get_short_name();
-			
-	  {
-	    map_name   => $map_name,
-	    chromosome => $lg_name,
-	    marker     => $marker_name,
-	    position   => $loc->position,
-	    units      => 'cm',
-	  }
-	}
+	    #my $map_factory=CXGN::Cview::MapFactory->new( $self->_dbh );
+	    my $map=CXGN::Map->new( $self->_dbh, {map_version_id=>$map_version_id} );
+	    
+	    #my $map = $map_factory->create({map_version_id=>$map_version_id});
+	    my $map_version_id=$map->get_map_id();
+	    my $map_name=$map->get_short_name();
+	    
+	    {
+		map_name   => $map_name,
+		chromosome => $lg_name,
+		marker     => $marker_name,
+		position   => $loc->position,
+		units      => 'cm',
+	    }
+    }
       }
       grep $_->{location},
       @$experiments
     } else {
-      () #< if no experiments, then no locations
-    }
+	() #< if no experiments, then no locations
+}
   } $self->_locus->get_locus_markers;
 }
 
 sub ontology_terms {
-  my ($self) = @_;
-
-  my $locus = $self->_locus;
+    my ($self) = @_;
     
-  return map {
-      my $t = $_;
-      $t->get_db_name.':'.$t->get_accession => $t->get_cvterm_name()
-      } $locus->get_dbxrefs_by_type("ontology");
+    my $locus = $self->_locus;
+    
+    return map {
+	my $t = $_;
+	$t->get_db_name.':'.$t->get_accession => $t->get_cvterm_name()
+    } $locus->get_dbxrefs_by_type("ontology");
 }
 
 sub dbxrefs {
