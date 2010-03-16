@@ -90,7 +90,8 @@ sub check_pop_fields {
 	           pop_desc    => 'Population description',
 	           pop_type    => 'Cross type',
 	           pop_male_parent => 'Male parent',
-                   pop_female_parent => 'Female parent'
+                   pop_female_parent => 'Female parent',
+                   pop_common_name_id => 'Organism common name'
 	        );
                   # pop_donor_parent  => 'Donor parent',
                   # pop_recurrent_parent => 'Recurrent parent'
