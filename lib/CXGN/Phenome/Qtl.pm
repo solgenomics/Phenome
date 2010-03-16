@@ -22,10 +22,8 @@ use File::stat;
 #use CXGN::Tools::Text qw | sanitize_string |;
 use CXGN::People::Person;
 use CXGN::Phenome::Population;
-#use CXGN::Login;
 use File::Spec;
 use CXGN::VHost;
-use CXGN::Page;
 
 
 
