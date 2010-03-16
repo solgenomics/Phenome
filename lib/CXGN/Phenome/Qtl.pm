@@ -22,7 +22,7 @@ use File::stat;
 #use CXGN::Tools::Text qw | sanitize_string |;
 use CXGN::People::Person;
 use CXGN::Phenome::Population;
-use CXGN::Login;
+#use CXGN::Login;
 use File::Spec;
 use CXGN::VHost;
 use CXGN::Page;
@@ -365,10 +365,9 @@ sub make_table {
 
 sub get_user_qtl_dir {
     my $self = shift;
-   # my $pop = CXGN::Phenome::Population->new();
+   
     my $sp_person_id = $self->get_sp_person_id();
     
-    #print STDERR "temp_path: $sp_person_id\n";
     my $vh = CXGN::VHost->new();
     my $bdir = $vh->get_conf("basepath");
     my $tdir = $vh->get_conf("tempfiles_subdir");    
@@ -383,8 +382,6 @@ sub get_user_qtl_dir {
     $last_name =~ s/\s//g;
     $first_name =~ s/\s//g;
     my $temp_user = "$temp_qtl/user_" . $first_name . $last_name;
-
-   # print STDERR "get_temp_path: $temp_user\n";
     
     return $temp_qtl, $temp_user;
    
@@ -397,8 +394,6 @@ sub create_user_qtl_dir {
     my $sp_person_id = $self->get_sp_person_id();
    
     my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir();
-        
-    my $page = CXGN::Page->new();
    
     if ($sp_person_id) {
 	unless (-d $temp_qtl) {    
@@ -408,20 +403,15 @@ sub create_user_qtl_dir {
 	unless (-d $temp_user) {    
 	    mkdir ($temp_user, 0755);	    
 	}  
-    } 
-    else { 
-	$page->header();
-	print "Failed to created user directory! <br/>
-               Please go back to the previous page, 
-               login and try to upload your data again.\n";
 	
-	$page->footer();
+	return $temp_qtl, $temp_user;  
 
-	exit();
-    }
-    
-    print STDERR "created user qtl dir: $temp_user\n";
-    return $temp_qtl, $temp_user;  
+    } 
+     else { 
+	return 0;
+     }
+       
+   
 }
 
 
