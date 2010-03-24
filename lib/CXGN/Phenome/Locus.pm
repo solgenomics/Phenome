@@ -461,11 +461,13 @@ sub update_locus_alias {
 
 =head2 get_unigenes
 
- Usage: $self->get_unigenes(1)
+ Usage: $self->get_unigenes({full=>1, current=1})
  Desc:  find unigenes associated with the locus
  Ret:   list of (lite) unigene objects (without the sequences- much faster) 
- Args:  optional boolean - get a list of full unigene objects 
+ Args:  optional hashref with the following keys:
+    full (1) - get a list of full unigene objects 
         (much slower, but important if you want to access the sequences of the unigens) 
+    current(1) - fetch only current unigenes
  Side Effects: none
  Example:
 
@@ -473,8 +475,14 @@ sub update_locus_alias {
 
 sub get_unigenes {
     my $self=shift;
-    my $full = shift;
-    my $query = "SELECT unigene_id FROM phenome.locus_unigene WHERE locus_id=? AND obsolete = 'f'";
+    my $opts = shift;
+    my $full = $opts->{full};
+    my $current = $opts->{current};
+    my $query = "SELECT unigene_id FROM phenome.locus_unigene";
+    $query .= " JOIN sgn.unigene USING (unigene_id) JOIN sgn.unigene_build USING (unigene_build_id) ";
+    $query .= " WHERE locus_id=? AND obsolete = 'f' ";
+    $query .= " AND status = 'C' " if $current;
+    print STDERR "get_unigenes query = $query\n\n";
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_locus_id());
     my $unigene;
