@@ -23,7 +23,6 @@ use File::stat;
 use CXGN::People::Person;
 use CXGN::Phenome::Population;
 use File::Spec;
-use SGN::Context;
 
 
 
