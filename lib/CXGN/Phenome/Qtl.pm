@@ -23,7 +23,7 @@ use File::stat;
 use CXGN::People::Person;
 use CXGN::Phenome::Population;
 use File::Spec;
-use CXGN::VHost;
+use SGN::Context;
 
 
 
@@ -366,7 +366,7 @@ sub get_user_qtl_dir {
    
     my $sp_person_id = $self->get_sp_person_id();
     
-    my $vh = CXGN::VHost->new();
+    my $vh = SGN::Context->new();
     my $bdir = $vh->get_conf("basepath");
     my $tdir = $vh->get_conf("tempfiles_subdir");    
     my $temp = File::Spec->catfile($bdir, $tdir, "page_uploads");    
