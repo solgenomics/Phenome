@@ -47,7 +47,7 @@ sub new {
 
 =head2 apache_upload_file
 
- Usage:        my $temp_file_name = $image->apache_upload_files($apache_upload_objects);
+ Usage:        my $temp_file_name = $image->apache_upload_file($apache_upload_object, $c);
  Desc:
  Ret:          the name of the intermediate tempfile that can be 
                used to access down the road.
@@ -64,6 +64,7 @@ sub new {
 sub apache_upload_file { 
     my $self = shift;
     my $upload = shift;
+    my $c = shift;
     
     # Adjust File name if using Windows IE - it sends whole path; drive letter, path, and filename
     my ($upload_filename, $dir);
@@ -75,7 +76,8 @@ sub apache_upload_file {
 	$upload_filename = $upload->filename;
      }
     
-    my ($temp_qtl, $temp_user) = $self->create_user_qtl_dir();
+    
+    my ($temp_qtl, $temp_user) = $self->create_user_qtl_dir($c);
     
     my $temp_file = $temp_user . "/".$upload_filename;      
     my $upload_fh = $upload->fh;
@@ -225,7 +227,7 @@ sub user_stat_parameters {
 
 =head2 user_stat_file
 
- Usage: my $stat_file = $qtl->user_stat_file()
+ Usage: my $stat_file = $qtl->user_stat_file($c)
  Desc: converts user submitted statistical parameters from a hash
        to a tab delimited file and saves it in the users qtl directory.
  Ret: an abosolute path the user submitted statistics file or undef
@@ -237,11 +239,12 @@ sub user_stat_parameters {
 
 sub user_stat_file {
     my $self = shift;
+    my $c = shift;
     my $pop_id = $self->get_population_id();
     my $stat_ref = $self->user_stat_parameters();
  
     if ($stat_ref) {
-	my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir();
+	my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
 
 	my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
 	my $stat_table = $self->make_table($stat_ref);
@@ -260,13 +263,13 @@ sub user_stat_file {
 
 =head2 default_stat_file
 
- Usage: my $default_file = $qtl->default_stat_file()
+ Usage: my $default_file = $qtl->default_stat_file($c)
  Desc: creates a default statistical parameters for the qtl analysis
        saves it in the users qtl directory. Useful when there is a qtl 
        population in the db to which the submitter has not set statistical
        parameters.
  Ret: an abosolute path the default statistics file
- Args: None
+ Args: SGN::Context object
  Side Effects:
  Example:
 
@@ -274,7 +277,7 @@ sub user_stat_file {
 
 sub default_stat_file {
     my $self = shift;
-    
+    my $c = shift;
     my %default_stat = ( 
 	           stat_qtl_method  => 'Maximum Likelihood',
 	           stat_qtl_model   => 'Single-QTL Scan',
@@ -287,7 +290,7 @@ sub default_stat_file {
  
    
     my $stat_table = $self->make_table(\%default_stat);
-    my ($temp_qtl, $temp_user) = $self->create_user_qtl_dir();
+    my ($temp_qtl, $temp_user) = $self->create_user_qtl_dir($c);
 
     
     my $stat_file = "$temp_user/default_stat.txt";
@@ -301,12 +304,12 @@ sub default_stat_file {
 
 =head2 default_stat_file
 
- Usage: my $stat_file = $qtl->get_stat_file()
+ Usage: my $stat_file = $qtl->get_stat_file($c)
  Desc: Checks if a qtl population has a submitter defined statistical
        parameters or not. If yes, it returns the submitter defined statistical
        parameter file. Otherwise, it return the default statistical file.
  Ret: an abosolute path to either statistics file
- Args: None
+ Args: SGN::Context object
  Side Effects:
  Example:
 
@@ -314,14 +317,15 @@ sub default_stat_file {
 
 sub get_stat_file {
     my $self = shift;
+    my $c = shift;
     my $pop_id = $self->get_population_id();
-    my $user_stat = $self->user_stat_file($pop_id);
+    my $user_stat = $self->user_stat_file($c);
     
     if (-e $user_stat) {
 	return $user_stat;
     }
     else {
-	my $default_stat = $self->default_stat_file();
+	my $default_stat = $self->default_stat_file($c);
 	return $default_stat;
     }
 
@@ -363,10 +367,10 @@ sub make_table {
 
 sub get_user_qtl_dir {
     my $self = shift;
-   
+    my $vh = shift;
     my $sp_person_id = $self->get_sp_person_id();
     
-    my $vh = SGN::Context->new();
+    #my $vh = SGN::Context->new();
     my $bdir = $vh->get_conf("basepath");
     my $tdir = $vh->get_conf("tempfiles_subdir");    
     my $temp = File::Spec->catfile($bdir, $tdir, "page_uploads");    
@@ -389,9 +393,10 @@ sub get_user_qtl_dir {
 
 sub create_user_qtl_dir {
     my $self = shift;
+    my $c = shift;
     my $sp_person_id = $self->get_sp_person_id();
    
-    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir();
+    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
    
     if ($sp_person_id) {
 	unless (-d $temp_qtl) {    
