@@ -1283,7 +1283,7 @@ sub get_markers {
 }
 
 
-# =head2 add_population_id_by_name
+
 =head2  add_synonym
  Usage: $self->add_synonym('synonym1')
  Desc:  a list constructor for individual_synonyms 
@@ -1304,7 +1304,7 @@ sub add_synonym {
 =head2 add_individual_alias
 
  Usage: $self->add_individual_alias($synonym, $sp_person_id)
- Desc:  add an alias to the individual
+  Desc:  add an alias to the individual
  Ret:   an individual_alias id
  Args:  a synonym and sp_person_id
  Side Effects: stores the alias in the database
