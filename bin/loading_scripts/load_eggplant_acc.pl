@@ -42,6 +42,18 @@ eval {
    #skip the first line
    <$infile>;
    
+
+   my $population_name = "Eggplant accessions";
+   my $population = CXGN::Phenome::Population->new_with_name($dbh, $population_name);
+   if (!$population) {
+       $population = CXGN::Phenome::Population->new($dbh);
+       $population->set_name($population_name);
+       $population->set_description("Eggplant accessions.... ");
+       $population->set_common_name_id($common_name_id);
+       $population->set_sp_person_id($sp_person_id);
+       $population->store();
+   }
+   
    while (my $line=<$infile>) {
        my $common_name= 'Eggplant';
        my $org_query= "SELECT common_name_id FROM sgn.common_name WHERE common_name ilike ?";
@@ -72,17 +84,6 @@ eval {
        chomp $date;
        #print STDOUT "$common_name (id = $common_name_id),  $cname, $accession\n";
        
-              
-       my $population_name = "Eggplant accessions";
-       my $population = CXGN::Phenome::Population->new_with_name($dbh, $population_name);
-       if (!$population) {
-	   $population = CXGN::Phenome::Population->new($dbh);
-	   $population->set_name($population_name);
-	   $population->set_description("Eggplant accessions.... ");
-	   $population->set_common_name_id($common_name_id);
-	   $population->set_sp_person_id($sp_person_id);
-	   $population->store();
-       }
        
        my $ind= CXGN::Phenome::Individual->new($dbh);
        my @exists= CXGN::Phenome::Individual->new_with_name($dbh, $accession);
