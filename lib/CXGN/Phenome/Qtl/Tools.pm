@@ -395,7 +395,7 @@ sub is_from_qtl {
                         WHERE observable_id =?" ;
     
     my $sth = $self->get_dbh()->prepare($query);
-    $sth->execute($self->get_cvterm_id());
+    $sth->execute($id);
     
     my @pop_ids;
     while (my ($pop_id) = $sth->fetchrow_array()) {
