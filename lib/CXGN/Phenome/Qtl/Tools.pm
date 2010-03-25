@@ -23,6 +23,8 @@ use CXGN::Phenome::Population;
 use List::MoreUtils qw /uniq/;
 use CXGN::DB::Connection;
 
+use base qw /CXGN::DB::Object/ ;
+
 sub new { 
     my $class = shift;   
     my $self = bless {}, $class;
@@ -237,7 +239,7 @@ sub has_qtl_data {
     }
 
     foreach my $pop_id2 (@pop_ids) {
-	print STDERR "phenotype population id: $pop_id2\n";
+	$self->d("phenotype population id: $pop_id2\n");
 
 	my $query2 = "SELECT DISTINCT (population_id) 
                              FROM phenome.genotype 
@@ -250,7 +252,7 @@ sub has_qtl_data {
 	my ($qtl_pop_id) = $sth2->fetchrow_array();
 	
 	if ($qtl_pop_id) {
-	print STDERR "qtl population id: $qtl_pop_id\n";
+	$self->d("qtl population id: $qtl_pop_id\n");
 	    my $pop_obj = CXGN::Phenome::Population->new($dbh, $qtl_pop_id);
 	
 
@@ -288,7 +290,7 @@ sub all_traits_with_qtl_data {
     foreach my $pop (@pops) {
 	my ($table, $table_id, $name);
 	my $pop_id = $pop->get_population_id();
-	print STDERR "population_id: $pop_id \n";
+	$self->d( "population_id: $pop_id \n");
 	if ($pop->get_web_uploaded()) {
 	    $table = 'phenome.user_trait';
 	    $table_id  = 'user_trait_id';
@@ -308,7 +310,7 @@ sub all_traits_with_qtl_data {
 
 	$sth->execute($pop_id);
 	while (my ($trait, $trait_id) = $sth->fetchrow_array()) {
-	    print STDERR "pop id: $pop_id trait: $trait\n";
+	    $self->d( "pop id: $pop_id trait: $trait\n");
 	    push @all_traits, $trait;
 	    push @all_trait_ids, $trait_id;
 	}
