@@ -44,8 +44,16 @@ eval {
    
 
    my $population_name = "Eggplant accessions";
+   my $common_name_id;
    my $population = CXGN::Phenome::Population->new_with_name($dbh, $population_name);
    if (!$population) {
+      
+       my $common_name= 'Eggplant';
+       my $org_query= "SELECT common_name_id FROM sgn.common_name WHERE common_name ilike ?";
+       my $org_sth=$dbh->prepare($org_query);
+       $org_sth->execute($common_name);
+       ($common_name_id)=$org_sth->fetchrow_array();
+
        $population = CXGN::Phenome::Population->new($dbh);
        $population->set_name($population_name);
        $population->set_description("Eggplant accessions.... ");
@@ -55,11 +63,7 @@ eval {
    }
    
    while (my $line=<$infile>) {
-       my $common_name= 'Eggplant';
-       my $org_query= "SELECT common_name_id FROM sgn.common_name WHERE common_name ilike ?";
-       my $org_sth=$dbh->prepare($org_query);
-       $org_sth->execute($common_name);
-       my ($common_name_id)=$org_sth->fetchrow_array();
+       
        
        my @fields = split "\t", $line;
        my $cname= $fields[0];
