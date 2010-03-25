@@ -170,7 +170,6 @@ sub data_provider {
 
 
 sub comments {
-    ''
 }
 
 =head1 AUTHOR(S)
