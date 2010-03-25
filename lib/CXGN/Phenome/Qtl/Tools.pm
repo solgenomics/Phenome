@@ -376,7 +376,7 @@ sub browse_traits {
 
 =head2 is_from_qtl
 
- Usage: my $has_qtl = $qtl_tools->is_from_qtl();
+ Usage: my $has_qtl = $qtl_tools->is_from_qtl($id);
  Desc: returns 0 or 1 depending on whether a trait has been assayed in a 
        population for genetic and phenotypic data (qtl data). 
        The assumption is if a trait has a genetic and phenotype data, 
