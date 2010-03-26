@@ -147,7 +147,8 @@ sub fetch {
 
 sub store {
     my $self = shift;
-    if ($self->get_population_id()) { 
+    my $population_id = $self->get_population_id();
+    if ($population_id) { 
 	my $query = "UPDATE phenome.population SET
                        name = ?,
                        description = ?,
@@ -180,8 +181,6 @@ sub store {
 		      $self->get_population_id(),
 		      $self->get_common_name_id()
 	             );
-	
-	return $self->get_population_id();
     }
     else { 
 	my $query = "INSERT INTO phenome.population
@@ -204,10 +203,12 @@ sub store {
 		      $self->get_comment(),
 		      $self->get_web_uploaded(),
 		      $self->get_common_name_id()
-                    );
-
-	return $self->get_dbh()->last_insert_id("population", "phenome");
+	    );
+	
+	$population_id= $self->get_dbh()->last_insert_id("population", "phenome");
+	$self->set_population_id($population_id);
     }
+    return $population_id;
 }
 
 
@@ -1759,7 +1760,7 @@ sub store_data_privacy {
                                      VALUES (?, ?, ?)"
                             );
 
-	    print STDERR "is_public: $is_public\n";
+	    #print STDERR "is_public: $is_public\n";
 
 	    $sth->execute($pop_id, $is_public, $owner_id);
 	}
@@ -1797,7 +1798,7 @@ sub get_privacy_status {
 	
 	if (!defined($status)) {$status = 't';}
 
-	print STDERR "privacy status: $status\n";
+	#print STDERR "privacy status: $status\n";
 
 	return $status;
     }
