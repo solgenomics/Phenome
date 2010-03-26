@@ -35,8 +35,8 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 
 #my $person=CXGN::People::Person->new_with_name($dbh, $sp_person);
 my $sp_person_id=CXGN::People::Person->get_person_by_username($dbh, $sp_person);
-if (!$sp_prson_id) {
-    print STDOUT "User name $sp_person does not exist in database $bdname on host $dbhost!\n\n";
+if (!$sp_person_id) {
+    print STDOUT "User name $sp_person does not exist in database $dbname on host $dbhost!\n\n";
     usage();
 }
 
