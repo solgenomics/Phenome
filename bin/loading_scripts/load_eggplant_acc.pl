@@ -43,7 +43,13 @@ eval {
    <$infile>;
    
 
-   my $population_name = "Eggplant accessions";
+   my $population_name = "Asian eggplant landraces and allied species";
+   my $desc = "Accessions represented in this germplasm collection are eggplant landraces and closely-related species from various regions of Asia (with a few exceptions).  There are four sources of these collections.  The INRA (France), the AVRDC (Taiwan), the USDA ARS-GRIN (US), and NYBG (US).  These germplasm collections were selected for studying the biodiversity of Asian eggplants.
+Some of the INRA collections are divided by group.  These groups refer to Richard Lester’s classification of eggplants and theory of their domestication.  This classification is not reflected in the other germplasm collections. 
+Several of the accessions have new taxonomic determinations that may differ from the information in the primary germplasm databases (such as the GRIN database).  These new determinations were made by Michael Nee and Rachel Meyer (NYBG).  
+Please contact Rachel Meyer (Rmeyer\@nybg.org) for information about the collection or if you are interested in germplasm requests or donating germplasm.";
+
+
    my $common_name_id;
    my $population = CXGN::Phenome::Population->new_with_name($dbh, $population_name);
    if (!$population) {
@@ -56,7 +62,7 @@ eval {
 
        $population = CXGN::Phenome::Population->new($dbh);
        $population->set_name($population_name);
-       $population->set_description("Eggplant accessions.... ");
+       $population->set_description($desc);
        $population->set_common_name_id($common_name_id);
        $population->set_sp_person_id($sp_person_id);
        $population->store();

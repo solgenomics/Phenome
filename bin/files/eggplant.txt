@@ -1,53 +1,53 @@
 common name	accession	orgainsm	origin	comments	source	photo accession
-Hainan eggplant	W301	S. melongena	China			
-Long thin purple eggplant	W302	S. melongena	China			
-Hong ku qie	W303	S. aethiopicum	China			
-He Mong Tai Burmese eggplant	W307	S. melongena	China			
-He leng	W308	S. violaceum	China			
-He ba	W309	Datura sp.	China			
-Thai-style eggplant	W310	S.melongena	China			
-unknown	W311	S. viarum	China			
-local he poi eggplant	W312	S. melongena	China			
-local he poi eggplant	W317	S. melongena	China			
-la mi	W318	tentative: S. pittosporifolium	China			
-old black variety eggplant	W319	S. melongena	China			
-unknown	W322	S. macrocarpon	China			
-wild he poi eggplant	W323	S. melongena	China			
-unknown	W324	S. macrocarpon	China			
-wild eggplant	W325	S. undatum	China			
-bianyuan he poi eggplant	W326	S. melongena	China			
-traditional black variety eggplant	W328	S. melongena	China			
-unknown	W330	mix batch anguivi and viarum	China			
-local he poi eggplant	W332	S. melongena	China			
-wild eggplant	W333	S. cumingii (may be S. melongena)	China			
-local he poi eggplant	W339	S. melongena	China			
-large he poi eggplant	W340	S. melongena	China			
-local he poi eggplant	W341	S. melongena	China			
-unknown	W342	S. viarum	China			
-early cultivar eggplant	W343	S. melongena	China			
-hong qie	W346	S. aethiopicum	China			
-large he poi eggplant	W349	S. melongena	China			
-local he poi eggplant	W352	S. melongena	China			
-wild eggplant	W354	S. undatum	China			
-large old cultivated eggplant	W356	S. melongena mix bag aethiopicum	China			
-Dingras long purple eggplant	W362	S. melongena	Philippines			
-resembles Dingras long purple eggplant	W363	S. melongena	Philippines			
-white small long eggplant	W364	S. melongena	Philippines			
-Peñablanca curved lavendar eggplant	W370	S. melongena	Philippines			
-Tuguegarao lavendar traditional eggplant	W372	S. melongena	Philippines			
-Peñablanca curved lavendar eggplant	W373	S. melongena	Philippines			
-Peñablanca traditional eggplant	W375	S. melongena	Philippines			
-Peñablanca traditional eggplant	W376	S. melongena	Philippines			
-Lagum native eggplant	W377	S. melongena	Philippines			
-Long purple 1 eggplant	W378	S. melongena	Philippines			
-Wite-purple long eggplant	W381	S. melongena	Philippines			
-unknown	W382	S. capsicoides	Philippines			
-Shebing Guizhou heirloom	W384	S. melongena	China			
-Baguio heirloom	W385	S. melongena	Philippines			
-Ilocos round green eggplant	W387	S. melongena	Philippines	Kaneko Seeds- Philippines		
-wild hong qie	W391	S. anguivi	China			
-Puangyok/ Xiao ku gua	W393	S. torvum	China			
-eggplant	FS20148A	S. melongena	MMSU Leticia			
+Hainan eggplant	W301	S. melongena	China		Rachel Meyer, NYBG	
+Long thin purple eggplant	W302	S. melongena	China		Rachel Meyer, NYBG	
+Hong ku qie	W303	S. aethiopicum	China		Rachel Meyer, NYBG	
+He Mong Tai Burmese eggplant	W307	S. melongena	China		Rachel Meyer, NYBG	
+He leng	W308	S. violaceum	China		Rachel Meyer, NYBG	
+He ba	W309	Datura sp.	China		Rachel Meyer, NYBG	
+Thai-style eggplant	W310	S.melongena	China		Rachel Meyer, NYBG	
+unknown	W311	S. viarum	China		Rachel Meyer, NYBG	
+local he poi eggplant	W312	S. melongena	China		Rachel Meyer, NYBG	
+local he poi eggplant	W317	S. melongena	China		Rachel Meyer, NYBG	
+la mi	W318	tentative: S. pittosporifolium	China		Rachel Meyer, NYBG	
+old black variety eggplant	W319	S. melongena	China		Rachel Meyer, NYBG	
+unknown	W322	S. macrocarpon	China		Rachel Meyer, NYBG	
+wild he poi eggplant	W323	S. melongena	China		Rachel Meyer, NYBG	
+unknown	W324	S. macrocarpon	China		Rachel Meyer, NYBG	
+wild eggplant	W325	S. undatum	China		Rachel Meyer, NYBG	
+bianyuan he poi eggplant	W326	S. melongena	China		Rachel Meyer, NYBG	
+traditional black variety eggplant	W328	S. melongena	China		Rachel Meyer, NYBG	
+unknown	W330	mix batch anguivi and viarum	China		Rachel Meyer, NYBG	
+local he poi eggplant	W332	S. melongena	China		Rachel Meyer, NYBG	
+wild eggplant	W333	S. cumingii (may be S. melongena)	China		Rachel Meyer, NYBG	
+local he poi eggplant	W339	S. melongena	China		Rachel Meyer, NYBG	
+large he poi eggplant	W340	S. melongena	China		Rachel Meyer, NYBG	
+local he poi eggplant	W341	S. melongena	China		Rachel Meyer, NYBG	
+unknown	W342	S. viarum	China		Rachel Meyer, NYBG	
+early cultivar eggplant	W343	S. melongena	China		Rachel Meyer, NYBG	
+hong qie	W346	S. aethiopicum	China		Rachel Meyer, NYBG	
+large he poi eggplant	W349	S. melongena	China		Rachel Meyer, NYBG	
+local he poi eggplant	W352	S. melongena	China		Rachel Meyer, NYBG	
+wild eggplant	W354	S. undatum	China		Rachel Meyer, NYBG	
+large old cultivated eggplant	W356	S. melongena mix bag aethiopicum	China		Rachel Meyer, NYBG	
+Dingras long purple eggplant	W362	S. melongena	Philippines		Rachel Meyer, NYBG	
+resembles Dingras long purple eggplant	W363	S. melongena	Philippines		Rachel Meyer, NYBG	
+white small long eggplant	W364	S. melongena	Philippines		Rachel Meyer, NYBG	
+Peñablanca curved lavendar eggplant	W370	S. melongena	Philippines		Rachel Meyer, NYBG	
+Tuguegarao lavendar traditional eggplant	W372	S. melongena	Philippines		Rachel Meyer, NYBG	
+Peñablanca curved lavendar eggplant	W373	S. melongena	Philippines		Rachel Meyer, NYBG	
+Peñablanca traditional eggplant	W375	S. melongena	Philippines		Rachel Meyer, NYBG	
+Peñablanca traditional eggplant	W376	S. melongena	Philippines		Rachel Meyer, NYBG	
+Lagum native eggplant	W377	S. melongena	Philippines		Rachel Meyer, NYBG	
+Long purple 1 eggplant	W378	S. melongena	Philippines		Rachel Meyer, NYBG	
+Wite-purple long eggplant	W381	S. melongena	Philippines		Rachel Meyer, NYBG	
+unknown	W382	S. capsicoides	Philippines		Rachel Meyer, NYBG	
+Shebing Guizhou heirloom	W384	S. melongena	China		Rachel Meyer, NYBG	
+Baguio heirloom	W385	S. melongena	Philippines		Rachel Meyer, NYBG	
+Ilocos round green eggplant	W387	S. melongena	Philippines	Kaneko Seeds- Philippines	Rachel Meyer, NYBG	
+wild hong qie	W391	S. anguivi	China		Rachel Meyer, NYBG	
+Puangyok/ Xiao ku gua	W393	S. torvum	China		Rachel Meyer, NYBG	
+eggplant	FS20148A	S. melongena	MMSU Leticia		Rachel Meyer, NYBG	
 wild eggplant	S00011	S. incanum	Malaysia		AVRDC (Asian Vegetable Research and Development Center)	A2
 eggplant	S00016	S. melongena	Malaysia		AVRDC (Asian Vegetable Research and Development Center)	A3
 eggplant	S00025	S. melongena	Malaysia		AVRDC (Asian Vegetable Research and Development Center)	A6
@@ -70,12 +70,12 @@ eggplant	TS02245	S. melongena	Vietnam		AVRDC (Asian Vegetable Research and Devel
 eggplant	TS02812	S. melongena	Lao		AVRDC (Asian Vegetable Research and Development Center)	A42
 group E eggplant	MM0498	S. melongena group E	Japan		INRA	
 group E eggplant	MM0510	S. melongena group E	India		INRA	
-Gilo 	MM0580	S. aethiopicum Gilo	India		INRA	
+Gilo	MM0580	S. aethiopicum Gilo	India		INRA	
 eggplant	MM0644	S. melongena group H	Japan		INRA	
 group E eggplant	MM0669	S. melongena group E	India		INRA	
 group F eggplant	MM0675	S. melongena group F	India		INRA	
 group G eggplant	MM0685	S. melongena group G	Indonesia		INRA	
-group F eggplant wild form 	MM0686	S. melongena group F / S. undatum	Indonesia		INRA	
+group F eggplant wild form	MM0686	S. melongena group F / S. undatum	Indonesia		INRA	
 group G eggplant	MM0687	S. melongena group G	Malaysia		INRA	
 eggplant	MM0689	S. melongena group H	Malaysia		INRA	
 group G eggplant	MM0690	S. melongena group G	Malaysia		INRA	
@@ -85,10 +85,10 @@ group G eggplant	MM1010	S. melongena group G	Malaysia		INRA
 eggplant	MM1301	S. melongena group H	Thailand		INRA	
 eggplant	MM1302	S. melongena group H	Thailand		INRA	
 eggplant	MM1303	S. melongena group H	Thailand		INRA	
-group F eggplant wild form 	MM1407	S. melongena group F / S. undatum	Sri Lanka		INRA	
+group F eggplant wild form	MM1407	S. melongena group F / S. undatum	Sri Lanka		INRA	
 eggplant	MM1456	S. melongena group H	Thailand		INRA	
 group E eggplant	MM1506	S. melongena group E	India (Karnataka)		INRA	
-group F eggplant wild form 	MM1678	S. melongena group F / S. undatum	Thailand		INRA	
+group F eggplant wild form	MM1678	S. melongena group F / S. undatum	Thailand		INRA	
 eggplant	MM10425	S. melongena	Maldives		INRA	
 eggplant	MM10439	S. melongena	Maldives		INRA	
 eggplant	MM10440	S. melongena	Maldives		INRA	
@@ -107,7 +107,7 @@ Kamo Kyoto traditional eggplant	Kamo	S. melongena	Japan	Kitazawa seeds
 Lao purple stripe eggplant	Lao Purple Stripe	S. melongena	Laos	Baker's seeds		
 eggplant	PI105346	S. melongena			GRIN	
 Red ruffled	Red Ruffled	S. aethiopicum	S.E. Asia	Baker's seeds		
-Ping Tung eggplant	Ping Tung	S. melongena	 Taiwan	Baker's seeds		
+Ping Tung eggplant	Ping Tung	S. melongena	Taiwan	Baker's seeds		
 eggplant	PI470273	S. melongena	Indonesia		GRIN	
 eggplant	PI508502	S. melongena	Korea	Black coral	GRIN	
 eggplant	PI200854	S. melongena (was named S. lasiocarpum)	ALL FROM 2nd EXAM TABLE	Myanmar	GRIN	
@@ -115,12 +115,12 @@ wild eggplant	PI381155	S. incanum (may be S. melongena)	India		GRIN
 wild eggplant	PI179745	S. incanum (was named anguivi)	India		GRIN	
 eggplant	PI241594	S. melongena	Taiwan		GRIN	
 wild eggplant	PI390211	S. incanum (may be S. melongena)	Japan		GRIN	
-Red China 	Red China	S. aethiopicum	S.E. Asia	Baker's seeds		
+Red China	Red China	S. aethiopicum	S.E. Asia	Baker's seeds		
 Thai green pea / Puangyok	Thai Green Pea	S. torvum	Thailand	Baker's seeds		
 Thai white ribbed eggplant	Thai White Ribbed	S. melongena	Thailand	Baker's seeds		
 eggplant	PI180485	S. melongena (was named S. anguivi)	India		GRIN	
 unknown	PI420415	S. linnaeanum	Colombia		GRIN	
-eggplant	PI430664	S. melongena	China 	Chi ye qie	GRIN	
+eggplant	PI430664	S. melongena	China	Chi ye qie	GRIN	
 Panda hybrid eggplant	Panda	S. melongena	Thailand hybrid			
 unknown	PI388847	S. linnaeanum	Italy		GRIN	
 unknown	PI388846	S. linnaeanum	Italy		GRIN	
