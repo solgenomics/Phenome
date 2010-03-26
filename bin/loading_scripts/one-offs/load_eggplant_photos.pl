@@ -12,7 +12,7 @@ locad_eggplant_images.pl [ sandbox | cxgn | trial ] dirname
 
 Loads NYBG eggplant images into the SGN database, using the SGN::Image framework. 
 
-Thanks Rachel Meyer and Amy LItt! 
+Thanks Rachel Meyer and Amy Litt! 
     
 
 Requires the following parameters: 
@@ -87,9 +87,9 @@ if ($a !~ /[yY]/) { exit(); }
 if (($dbname eq "sandbox") && ($image_dir !~ /sandbox/)) { 
     die "The image directory needs to be set to image_files_sandbox if running on rubisco/sandbox. Please change the image_dir parameter in SGN.conf\n\n";
 }
-#if (($dbname eq "cxgn") && ($image_dir =~ /sandbox/)) { 
-#    die "The image directory needs to be set to image_files when the script is running on the production database. Please change the image_dir parameter in SGN.conf\n\n";
-#}
+if (($dbname eq "cxgn") && ($image_dir =~ /sandbox/)) { 
+    die "The image directory needs to be set to image_files when the script is running on the production database. Please change the image_dir parameter in SGN.conf\n\n";
+}
 
 my $pop_name= 'Asian eggplant landraces and allied species';
 my $population=CXGN::Phenome::Population->new_with_name($dbh, $pop_name);
