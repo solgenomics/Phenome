@@ -41,6 +41,7 @@ use CXGN::DB::InsertDBH;
 use SGN::Image;
 use CXGN::Phenome::Individual;
 use CXGN::Phenome::Population;
+use CXGN::People::Person;
 
 use File::Basename;
 use SGN::Context;
@@ -49,12 +50,13 @@ use Getopt::Std;
 
 our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_p);
 
-getopts('H:D:u:ti:p');
+getopts('H:D:u:ti:p:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
 my $dirname = $opt_i;
 my $sp_person=$opt_u;
+
 my $population_name = $opt_p;
 
 if (!$dbhost && !$dbname) { 
@@ -67,6 +69,7 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
 				    } );
 
+my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $sp_person);
 my %name2id = ();
 
 my $POPULATION_ID=0;
@@ -89,9 +92,12 @@ if (($dbname eq "cxgn") && ($image_dir =~ /sandbox/)) {
     die "The image directory needs to be set to image_files when the script is running on the production database. Please change the image_dir parameter in SGN.conf\n\n";
 }
 
-my $pop_name= $opt_p || 'Cultivars and heirloom lines' ;
+my $pop_name= $opt_p || 'Tomato Cultivars and Heirloom lines' ;
+print STDOUT "Fetching population $pop_name\n";
+
 my $population=CXGN::Phenome::Population->new_with_name($dbh, $pop_name);
 my $population_id = $population->get_population_id() ;
+$sp_person_id = $population->get_sp_person_id() if !$sp_person_id;
 
 if (!$population_id) { die "Can't find the population $pop_name'!"; }
 
@@ -130,7 +136,7 @@ while (my ($image_id, $individual_id) = $s2->fetchrow_array()) {
 
 open (ERR, ">$opt_i" . ".err") || die "Can't open error file\n";
 
-my @files = `ls $dirname/*.JPG`;
+my @files = `ls $dirname/*.jpg`;
 
 my $new_individual_count = 0;
 my $new_image_count = 0;
@@ -207,7 +213,7 @@ foreach my $file (@files) {
 		    $image->process_image("$file", "individual", $name2id{lc($individual_name)}); 
 		    $image->set_description("$caption");
 		    $image->set_name(basename($file));
-		    $image->set_sp_person_id($population->get_sp_person_id());
+		    $image->set_sp_person_id($sp_person_id);
 		    $image->set_obsolete("f");
 		    $image->store();
 		    $new_image_count++;
