@@ -24,6 +24,8 @@ use CXGN::People::Person;
 use CXGN::Phenome::Population;
 use File::Spec;
 
+use File::Path qw/ mkpath /;
+
 
 
 
@@ -293,11 +295,9 @@ sub default_stat_file {
 
     
     my $stat_file = "$temp_user/default_stat.txt";
-    open TXTFILE, ">$stat_file" or die "Can't create file: $! \n";
-    print TXTFILE $stat_table;
-    close TXTFILE;
-   
-   
+    open my $t, '>', $stat_file or die "$! writing $stat_file\n";
+    $t->print( $stat_table );
+
     return $stat_file;
 }
 
@@ -399,11 +399,11 @@ sub create_user_qtl_dir {
    
     if ($sp_person_id) {
 	unless (-d $temp_qtl) {    
-	    mkdir ($temp_qtl, 0755);
+	    mkpath ($temp_qtl, 0, 0755);
 	} 
     
 	unless (-d $temp_user) {    
-	    mkdir ($temp_user, 0755);	    
+	    mkpath ($temp_user, 0, 0755);	    
 	}  
 	
 	return $temp_qtl, $temp_user;  
