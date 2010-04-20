@@ -482,7 +482,7 @@ sub get_unigenes {
     $query .= " JOIN sgn.unigene USING (unigene_id) JOIN sgn.unigene_build USING (unigene_build_id) ";
     $query .= " WHERE locus_id=? AND obsolete = 'f' ";
     $query .= " AND status = 'C' " if $current;
-    print STDERR "get_unigenes query = $query\n\n";
+    
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_locus_id());
     my $unigene;
