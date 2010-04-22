@@ -228,11 +228,11 @@ sub user_stat_parameters {
 
 =head2 user_stat_file
 
- Usage: my $stat_file = $qtl->user_stat_file($c)
+ Usage: my $stat_file = $qtl->user_stat_file($c, $pop_id)
  Desc: converts user submitted statistical parameters from a hash
        to a tab delimited file and saves it in the users qtl directory.
  Ret: an abosolute path the user submitted statistics file or undef
- Args: None
+ Args: SGN::Context object and population id
  Side Effects:
  Example:
 
@@ -241,25 +241,23 @@ sub user_stat_parameters {
 sub user_stat_file {
     my $self = shift;
     my $c = shift;
-    my $pop_id = $self->get_population_id();
-    my $stat_ref = $self->user_stat_parameters();
- 
-    if ($stat_ref) {
-	my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
-
-	my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
-	my $stat_table = $self->make_table($stat_ref);
-       
+    my $pop_id = shift;
+    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
+    my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
    
-	open TXTFILE, ">$stat_file" or die "Can't create file: $! \n";
-	print TXTFILE $stat_table;
-	close TXTFILE;
-	print STDERR "created the statistics text file";
-
-	return $stat_file;
-    } else { 
-	return undef;
+    unless ( -e $stat_file ) 
+    {
+	my $stat_ref = $self->user_stat_parameters();
+	if ($stat_ref) 
+	{	   
+	    my $stat_table = $self->make_table($stat_ref);
+         
+	    open my $f, '>', $stat_file or die "Can't create file: $! \n";
+	    $f->print($stat_table);	   	   
+	} else {$stat_file = undef;}
     }
+  
+    return $stat_file;
 }
 
 =head2 default_stat_file
@@ -303,12 +301,12 @@ sub default_stat_file {
 
 =head2 default_stat_file
 
- Usage: my $stat_file = $qtl->get_stat_file($c)
+ Usage: my $stat_file = $qtl->get_stat_file($c, $pop_id)
  Desc: Checks if a qtl population has a submitter defined statistical
        parameters or not. If yes, it returns the submitter defined statistical
        parameter file. Otherwise, it return the default statistical file.
  Ret: an abosolute path to either statistics file
- Args: SGN::Context object
+ Args: SGN::Context object and population id
  Side Effects:
  Example:
 
@@ -317,9 +315,9 @@ sub default_stat_file {
 sub get_stat_file {
     my $self = shift;
     my $c = shift;
-    my $pop_id = $self->get_population_id();
-    my $user_stat = $self->user_stat_file($c);
-    
+    my $pop_id = shift;  
+    my $user_stat = $self->user_stat_file($c, $pop_id);
+   
     if (-e $user_stat) {
 	return $user_stat;
     }
@@ -418,6 +416,51 @@ sub create_user_qtl_dir {
 
 
 
+# sub legend {
+#     my $self = shift;
+#     my $c = shift;
+#     #my $sp_person  = CXGN::Phenome::Population->new($self->get_population_id();
+#    # ->get_sp_person_id();
+#     #my $qtl            = CXGN::Phenome::Qtl->new($sp_person_id);
+#     my $user_stat_file = $self->get_stat_file($c, $pop_id);
+#     my @legend;
+    
+#     open $_, "<", $user_stat_file or die "$! reading $user_stat_file\n";
+#     while (my $row = <$_>)
+#     {
+#         my ( $parameter, $value ) = split( /\t/, $row );
+# 	if ($parameter =~/qtl_method/) {$parameter = 'Mapping method';}
+# 	if ($parameter =~/qtl_model/) {$parameter = 'Mapping model';}
+# 	if ($parameter =~/prob_method/) {$parameter = 'QTL genotype probablity method';}
+# 	if ($parameter =~/step_size/) {$parameter = 'Genome scan size (cM)';}
+# 	if ($parameter =~/permu_level/) {$parameter = 'Permutation significance level';}
+# 	if ($parameter =~/permu_test/) {$parameter = 'No. of permutations';}
+# 	if ($parameter =~/prob_level/) {$parameter = 'QTL genotype signifance level';}
+
+
+# 	push @legend, [map{$_} ($parameter, $value)];
+
+#     }
+    
+#     if  (!$lod) 
+#     {
+# 	$lod = qq |<i>Not calculated</i>|;
+#     }
+        
+#     push @legend, 
+#     [
+#      map {$_} ('LOD Threshold', $lod)
+#     ];
+#     push @legend, 
+#     [
+#      map {$_} ('Confidence interval', 'based on 95% Bayesian Credible Interval')
+#     ];
+
+    
+
+#     return @legend;
+
+# }
 
 
 
