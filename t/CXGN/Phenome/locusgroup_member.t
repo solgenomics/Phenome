@@ -93,7 +93,7 @@ eval {
     #my $row=$schema->resultset('Organism::Organism')->create();
    
     #1. Store a directional group
-    diag("Directional group test! \n");
+    #diag("Directional group test! \n");
     my $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     my $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     
@@ -144,7 +144,7 @@ eval {
 
 ##########################################
     #2. Now try to store the same thing
-    diag("Store existing network test\n");
+    #diag("Store existing network test\n");
     $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     
@@ -185,7 +185,7 @@ eval {
 ################
 ##############
 
-    diag("Create 2nd directional group test! \n");
+    #diag("Create 2nd directional group test! \n");
     $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     
@@ -237,7 +237,7 @@ eval {
 ############
     #4. Associate a locus to itself..
     
-    diag("Store self test\n");
+    #diag("Store self test\n");
     $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     
@@ -257,7 +257,7 @@ eval {
     
 ##############
     #5 Try to store a conflict
-    diag("Store conflict test\n");
+    #diag("Store conflict test\n");
     eval { # this is in a nested eval. LocusgroupMember->find_or_create_group should return undef!
 	$lgm = CXGN::Phenome::LocusgroupMember->new($schema);
 	$associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
@@ -271,8 +271,8 @@ eval {
 	$associated_lgm->set_locus_id($locus_id);
 	$associated_lgm->set_evidence_id($ev_id);
 	$associated_lgm->set_direction($d2);
-	diag("Stored: locus $locus_id (direction=$d1) is $relationship of locus $associated_locus_id (direction=$d2)\n\n");
-	diag("conflict: locus $associated_locus_id (direction=$d1) id $relationship of locus $locus_id (direction=$d2)\n\n");
+	#diag("Stored: locus $locus_id (direction=$d1) is $relationship of locus $associated_locus_id (direction=$d2)\n\n");
+	#diag("conflict: locus $associated_locus_id (direction=$d1) id $relationship of locus $locus_id (direction=$d2)\n\n");
 	$locusgroup= $lgm->find_or_create_group($relationship_id, $associated_lgm); #this should return undef!
 
 	is($locusgroup, undef, "Store conflict test");
@@ -282,7 +282,7 @@ eval {
     #non-directional relationships
 ##############
     #6.
-    diag("Store non-directional group test\n");
+    #diag("Store non-directional group test\n");
     ##No group exists for any of the loci with this relationship type
     ##then a new group will be created and both loci added to the group.
     $relationship= 'Complex';
@@ -322,7 +322,7 @@ eval {
     #Store locus1 homolog of locus2
     #store locus3 homolog of locus1
     # locus3 should be added to the group of locus1&2
-    diag("Testing adding member to an existing group!\n");
+    #diag("Testing adding member to an existing group!\n");
     
     $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
@@ -365,7 +365,7 @@ eval {
     #first create a group with 2 new members
     $new_locus_id= 4;
     $associated_locus_id=5;
-    diag("Testing merging 2  groups!\n");
+    #diag("Testing merging 2  groups!\n");
     
     my $new_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
     $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
