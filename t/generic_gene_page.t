@@ -29,3 +29,5 @@ sub test_xml {
     like( $x, qr/<gene/, 'result looks OK');
     like( $x, qr/<data_provider>/, 'result looks OK');
 }
+
+$dbh->disconnect(42);
