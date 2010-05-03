@@ -1480,11 +1480,12 @@ sub phenotype_dataset {
 }
 =head2 genotype_dataset
 
- Usage:my ($genodataset)=$pop_obj->genotype_dataset()
- Desc:  returns a genotype dataset for the relevant population (csv file). 
-        It is  formatted as per RQTL requirement. 
- Ret: reference
- Args:none
+ Usage:my $genodataset = $pop_obj->genotype_dataset()
+ Desc:  returns a genotype dataset for the relevant population (csv format). 
+        genotypes are coded in numerical format to meet a RQTL requirement. A change
+        in the genotype code here must be accompanied with a matching change in the R code.
+ Ret: a scalar ref to the dataset.
+ Args: none
  Side Effects:
  Example:
 
@@ -1507,8 +1508,7 @@ sub genotype_dataset {
     my @genotyped_indls_name = @{$genotyped_indls_name};
     my @pop_marker_ids = @{$marker_ids};
     my @pop_marker_alias = @{$marker_alias};
- #  my @g_marker_id = @{$g_marker_id};
-    
+ 
 
     my $gen_dataset = "ID" . ",";
 
