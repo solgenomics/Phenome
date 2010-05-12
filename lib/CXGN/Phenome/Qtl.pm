@@ -219,6 +219,9 @@ sub user_stat_parameters {
 	    }
 	}    
     
+	if ($stat_args{stat_qtl_method} eq 'Marker Regression' || $stat_args{stat_step_size} eq 'zero') {
+	    $stat_args{stat_prob_method}="";
+	}
 	return \%stat_args;	
     } else {   
 

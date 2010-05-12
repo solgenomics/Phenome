@@ -149,10 +149,16 @@ sub check_stat_fields {
 
     foreach my $k (keys (%args)) {
 	my $v = $args{$k};
+		 
 	unless ($v) {
 	    unless (($k eq 'stat_no_draws' && $args{'stat_qtl_method'} eq 'Maximum Likelihood') || 
-                    ($k eq 'stat_no_draws' && $args{'stat_qtl_method'} eq 'Haley-Knott Regression')
-                   ) 
+                    ($k eq 'stat_no_draws' && $args{'stat_qtl_method'} eq 'Haley-Knott Regression') ||
+                    ($k eq 'stat_no_draws' && $args{'stat_qtl_method'} eq 'Marker Regression') ||
+		    ($k eq 'stat_permu_level' && $args{'stat_permu_test'} eq 'None') ||
+		    ($k eq 'stat_prob_method' && $args{'stat_qtl_method'} eq 'Marker Regression') ||
+		    ($k eq 'stat_step_size' && $args{'stat_qtl_method'} eq 'Marker Regression')	||	   
+		    ($k eq 'stat_prob_method' && $args{'stat_step_size'} eq 'zero')
+		) 
 	    {
 		my $error_message = $error_messages{$k};
 		if ($error_message) {
