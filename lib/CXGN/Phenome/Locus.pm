@@ -2005,7 +2005,7 @@ sub merge_locus {
 	my @m_aliases=$m_locus->get_locus_aliases();
 	foreach my $alias(@m_aliases) {
 	    $self->add_locus_alias($alias);
-	    $self->( "merge_locus is adding alias " . $alias->get_locus_alias() . " to locus " . $self->get_locus_id() . "\n**");
+	    $self->d( "merge_locus is adding alias " . $alias->get_locus_alias() . " to locus " . $self->get_locus_id() . "\n**");
 	}
 	my @unigenes=$m_locus->get_unigenes();
 	foreach my $u(@unigenes) { 
