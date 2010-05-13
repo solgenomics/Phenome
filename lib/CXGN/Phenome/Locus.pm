@@ -1994,7 +1994,7 @@ sub merge_locus {
     my $merged_locus_id=shift;
     my $sp_person_id=shift;
     my $m_locus=CXGN::Phenome::Locus->new($self->get_dbh(), $merged_locus_id);
-    $self->( "*****locus.pm: calling merge_locus...merging locus " . $m_locus->get_locus_id() . " with locus ". $self->get_locus_id() . " \n");
+    $self->d( "*****locus.pm: calling merge_locus...merging locus " . $m_locus->get_locus_id() . " with locus ". $self->get_locus_id() . " \n");
     eval {
 	my @m_owners=$m_locus->get_owners();
 	foreach my $o (@m_owners) { 
