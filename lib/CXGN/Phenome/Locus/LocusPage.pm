@@ -78,16 +78,20 @@ sub init_locus_form {
     my $locus_id = shift || 0;
     my $script= "/jsforms/locus_ajax_form.pl";
     return <<JAVASCRIPT;
-    <table><tr><td><div id=\"locus_details_buttons\" >\[loading edit links...\]</div>
-	</td></tr></table>
-    <table><tr><td><div id=\"locus_details\" >\[loading...\]</div>
-	</td></tr></table>
-	<script language="javascript" type="text/javascript">
-	var locusForm = new CXGN.Page.Form.JSFormPage($locus_id, 'locus', '/jsforms/locus_ajax_form.pl', 'locus_details', 'locusForm', '/phenome/locus_display.pl');
+    <div id="locus_details_buttons">[loading edit links...]</div>
+    <div id="locus_details">[loading...]</div>
+
+  <script language="javascript" type="text/javascript">
+	var locusForm = new CXGN.Page.Form.JSFormPage(
+            $locus_id
+           , 'locus'
+           , '/jsforms/locus_ajax_form.pl'
+           , 'locus_details'
+           , 'locusForm'
+           , '/phenome/locus_display.pl'
+        );
     locusForm.render();
-    
-    </script>  
-	
+  </script>
 JAVASCRIPT
 
 
