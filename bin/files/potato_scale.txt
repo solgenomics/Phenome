@@ -1,0 +1,112 @@
+SP_id	scale name	value	term name 	parent
+SP:0000243	NE1014	1	partial russet	tuber texture
+SP:0000244	NE1014	2	heavy russet	tuber texture
+SP:0000245	NE1014	3	moderate russet	tuber texture
+SP:0000246	NE1014	4	light russet	tuber texture
+SP:0000240	NE1014	5	netted	tuber texture
+SP:0000242	NE1014	6	slight net	tuber texture
+SP:0000241	NE1014	7	moderately smooth	tuber texture
+SP:0000247	NE1014	8	smooth	tuber texture
+SP:0000248	NE1014	9	very smooth	tuber texture
+SP:0000249	NE1014	1	very flat	tuber cross section
+SP:0000250	NE1014	3	flat	tuber cross section
+SP:0000251	NE1014	5	intermediate/oval	tuber cross section
+SP:0000252	NE1014	7	mostly round	tuber cross section
+SP:0000254	NE1014	9	very round	tuber cross section
+SP:0000255	NE1014	1	very poor	tuber skin set depth
+SP:0000256	NE1014	3	poor	tuber skin set depth
+SP:0000257	NE1014	5	fair	tuber skin set depth
+SP:0000258	NE1014	7	good	tuber skin set depth
+SP:0000259	NE1014	9	excellent	tuber skin set depth
+SP:0000260	NE1014	1	small	tuber size
+SP:0000261	NE1014	3	small-medium	tuber size
+SP:0000262	NE1014	5	medium	tuber size
+SP:0000263	NE1014	7	medium-large	tuber size
+SP:0000264	NE1014	9	large	tuber size
+SP:0000265	NE1014	1	very poor	tuber appearance
+SP:0000266	NE1014	3	poor	tuber appearance
+SP:0000267	NE1014	5	fair	tuber appearance
+SP:0000268	NE1014	7	good	tuber appearance
+SP:0000269	NE1014	9	excellent	tuber appearance
+SP:0000235	NE1014	1	decumbent 	plant type 
+SP:0000235	NE1014	2	decumbent 	plant type 
+SP:0000235	NE1014	3	decumbent 	plant type 
+SP:0000196	NE1014	4	spreading	plant type 
+SP:0000196	NE1014	5	spreading	plant type 
+SP:0000196	NE1014	6	spreading	plant type 
+SP:0000194	NE1014	7	upright	plant type 
+SP:0000194	NE1014	8	upright	plant type 
+SP:0000194	NE1014	9	upright	plant type 
+SP:0000237	NE1014	1	poor	canopy
+SP:0000238	NE1014	2	fair	canopy
+SP:0000239	NE1014	3	good	canopy
+SP:0000237	NE1014	4	poor	canopy
+SP:0000238	NE1014	5	fair	canopy
+SP:0000239	NE1014	6	good	canopy
+SP:0000237	NE1014	7	poor	canopy
+SP:0000238	NE1014	8	fair	canopy
+SP:0000239	NE1014	9	good	canopy
+	NE1014	1	Dead	plant disease and pollution reaction
+	NE1014	3	severe	plant disease and pollution reaction
+	NE1014	5	moderate	plant disease and pollution reaction
+	NE1014	8	slight	plant disease and pollution reaction
+	NE1014	9	none	plant disease and pollution reaction
+	NE1014	2	early	maturity
+	NE1014	5	medium	maturity
+	NE1014	8	late	maturity
+SP:0000273	PVP	1	white	epidermis color
+SP:0000274	PVP	2	light yellow	epidermis color
+SP:0000275	PVP	3	yellow	epidermis color
+SP:0000276	PVP	4	buff	epidermis color
+SP:0000277	PVP	5	tan	epidermis color
+SP:0000278	PVP	6	brown	epidermis color
+SP:0000279	PVP	7	pink	epidermis color
+SP:0000280	PVP	8	red	epidermis color
+SP:0000281	PVP	9	purplish-red	epidermis color
+SP:0000282	PVP	10	purple	epidermis color
+SP:0000283	PVP	11	dark purple-black	epidermis color
+SP:0000185	PVP	12	other	epidermis color
+SP:0000284	PVP	1	round	tuber thickness
+SP:0000285	PVP	2	medium thick	tuber thickness
+SP:0000286	PVP	3	slightly flattened	tuber thickness
+SP:0000287	PVP	4	flattened	tuber thickness
+SP:0000233	PVP	5	other	tuber thickness
+SP:0000297	PVP	1	white	ruber flesh color
+SP:0000289	PVP	2	light yellow	ruber flesh color
+SP:0000298	PVP	3	yellow	ruber flesh color
+SP:0000294	PVP	4	buff	ruber flesh color
+SP:0000291	PVP	5	tan	ruber flesh color
+SP:0000288	PVP	6	brown	ruber flesh color
+SP:0000295	PVP	7	pink	ruber flesh color
+SP:0000296	PVP	8	red	ruber flesh color
+SP:0000290	PVP	9	purplish-red	ruber flesh color
+SP:0000293	PVP	10	purple	ruber flesh color
+SP:0000292	PVP	11	dark purple-black	ruber flesh color
+SP:0000188	PVP	12	other	ruber flesh color
+SP:0000299	PVP	1	protruding	tuber eye depth
+SP:0000300	PVP	3	shallow	tuber eye depth
+SP:0000301	PVP	5	intermediate	tuber eye depth
+SP:0000302	PVP	7	deep	tuber eye depth
+SP:0000303	PVP	9	very deep	tuber eye depth
+SP:0000323	potato_cooperators	1	none	heat sprout rating
+SP:0000304	potato_cooperators	2	swollen eyes	heat sprout rating
+SP:0000305	potato_cooperators	3	sprouts ca. 1/4"	heat sprout rating
+SP:0000306	potato_cooperators	4	sprouts ca. 1/2"	heat sprout rating
+SP:0000307	potato_cooperators	5	sprouts ca. 1"	heat sprout rating
+SP:0000308	potato_cooperators	6	sprouts ca. 2"	heat sprout rating
+SP:0000309	potato_cooperators	7	sprouts ca. 3"	heat sprout rating
+SP:0000324	potato_cooperators	8	new top growth	heat sprout rating
+SP:0000310	potato_cooperators	9	chain tubers	heat sprout rating
+SP:0000311	potato_cooperators	1	eyes	tuber epidermis pattern
+SP:0000312	potato_cooperators	2	eyebrows	tuber epidermis pattern
+SP:0000313	potato_cooperators	3	splashed	tuber epidermis pattern
+SP:0000314	potato_cooperators	4	scattered	tuber epidermis pattern
+SP:0000315	potato_cooperators	5	spectacled	tuber epidermis pattern
+SP:0000316	potato_cooperators	6	stippled	tuber epidermis pattern
+SP:0000317	potato_cooperators	1	compressed	tuber shape
+SP:0000318	potato_cooperators	2	round	tuber shape
+SP:0000319	potato_cooperators	3	oval	tuber shape
+SP:0000321	potato_cooperators	4	oblong	tuber shape
+SP:0000320	potato_cooperators	5	long	tuber shape
+
+
