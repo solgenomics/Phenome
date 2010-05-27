@@ -58,6 +58,8 @@ __PACKAGE__->add_columns(
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "common_name_id",
   { data_type => "bigint", default_value => undef, is_nullable => 1, size => 8 },
+  "accession_id",
+  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
 );
 __PACKAGE__->set_primary_key("individual_id");
 __PACKAGE__->add_unique_constraint("individual_pkey", ["individual_id"]);
@@ -77,6 +79,11 @@ __PACKAGE__->belongs_to(
   { population_id => "population_id" },
 );
 __PACKAGE__->has_many(
+  "individual_alias",
+  "CXGN::Phenome::Schema::IndividualAlias",
+  { "foreign.individual_id" => "self.individual_id" },
+);
+__PACKAGE__->has_many(
   "individual_alleles",
   "CXGN::Phenome::Schema::IndividualAllele",
   { "foreign.individual_id" => "self.individual_id" },
@@ -92,14 +99,19 @@ __PACKAGE__->has_many(
   { "foreign.individual_id" => "self.individual_id" },
 );
 __PACKAGE__->has_many(
+  "individual_images",
+  "CXGN::Phenome::Schema::IndividualImage",
+  { "foreign.individual_id" => "self.individual_id" },
+);
+__PACKAGE__->has_many(
   "loci",
   "CXGN::Phenome::Schema::IndividualLocus",
   { "foreign.individual_id" => "self.individual_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-07-04 22:42:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JG1dUR52cTYOPwKRcYpIKQ
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2010-05-27 04:17:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Eg1BRZyfGe04hxGTpSW8yA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

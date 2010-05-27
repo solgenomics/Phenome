@@ -47,8 +47,8 @@ __PACKAGE__->add_unique_constraint("dbxref_type_dbxref_type_url_key", ["dbxref_t
 __PACKAGE__->add_unique_constraint("dbxref_type_dbxref_type_name_key", ["dbxref_type_name"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-07-04 22:42:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2eaRNqp/EbwsY4u82XB6vg
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2010-05-27 04:17:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8mB6OerJLjphHhmvmkrS8w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

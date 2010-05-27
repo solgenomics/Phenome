@@ -155,6 +155,11 @@ __PACKAGE__->has_many(
   { "foreign.locus_id" => "self.locus_id" },
 );
 __PACKAGE__->has_many(
+  "locus_images",
+  "CXGN::Phenome::Schema::LocusImage",
+  { "foreign.locus_id" => "self.locus_id" },
+);
+__PACKAGE__->has_many(
   "locus_markers",
   "CXGN::Phenome::Schema::LocusMarker",
   { "foreign.locus_id" => "self.locus_id" },
@@ -162,6 +167,16 @@ __PACKAGE__->has_many(
 __PACKAGE__->has_many(
   "locus_owners",
   "CXGN::Phenome::Schema::LocusOwner",
+  { "foreign.locus_id" => "self.locus_id" },
+);
+__PACKAGE__->has_many(
+  "locus_pub_rankings",
+  "CXGN::Phenome::Schema::LocusPubRanking",
+  { "foreign.locus_id" => "self.locus_id" },
+);
+__PACKAGE__->has_many(
+  "locus_pub_ranking_validates",
+  "CXGN::Phenome::Schema::LocusPubRankingValidate",
   { "foreign.locus_id" => "self.locus_id" },
 );
 __PACKAGE__->has_many(
@@ -186,8 +201,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-07-04 22:42:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0GnhFo1t4rFsaTDAPXCdcw
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2010-05-27 04:17:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/kqBdt3R3TR1TF/CVMEFDQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
