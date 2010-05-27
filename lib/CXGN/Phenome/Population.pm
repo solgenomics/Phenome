@@ -62,7 +62,7 @@ sub new {
     if ($population_id) { 
 	$self->set_population_id($population_id);
 	$population_id = $self->fetch();
-	if (!$population_id) { return undef; }
+	#if (!$population_id) { return undef; }
     }
     return $self;
     
@@ -87,7 +87,7 @@ sub new_with_name {
     my $sth=$dbh->prepare($query);
     $sth->execute($name);
     my $pop_id = $sth->fetchrow_array;
-    if ($pop_id) {   $population= $self->new($dbh,$pop_id); }
+    $population= $self->new($dbh,$pop_id); 
     return $population;
 }
 
