@@ -108,5 +108,23 @@ SP:0000318	potato_cooperators	2	round	tuber shape
 SP:0000319	potato_cooperators	3	oval	tuber shape
 SP:0000321	potato_cooperators	4	oblong	tuber shape
 SP:0000320	potato_cooperators	5	long	tuber shape
+SP:0000231	potato_cooperators	1	Very Early (Vine 100% dead)	maturity
+SP:0000325	potato_cooperators	2		maturity
+SP:0000326	potato_cooperators	3		maturity
+SP:0000232	potato_cooperators	4	Vine starting to senesce (yellowing evident)	maturity
+SP:0000327	potato_cooperators	5		maturity
+SP:0000270	potato_cooperators	6	Green Vine; done flowering	maturity
+SP:0000271	potato_cooperators	7	Green Vine; Some flowers yet in bloom	maturity
+SP:0000328	potato_cooperators	8		maturity
+SP:0000272	potato_cooperators	9	Very Late; full bloom with buds evident as well	maturity
+SP:0000329	PVP	1	erect 1	growth habit
+SP:0000330	PVP	2	erect 2	growth habit
+SP:0000194	PVP	3	erect	growth habit
+SP:0000331	PVP	4	semi-erect 4	growth habit
+SP:0000195	PVP	5	semi-erect	growth habit
+SP:0000332	PVP	6	spreading 6	growth habit
+SP:0000196	PVP	7	speading	growth habit
+SP:0000333	PVP	8	spreading 8	growth habit
+SP:0000334	PVP	9	spreading 9	growth habit
 
 
