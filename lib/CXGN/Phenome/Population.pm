@@ -637,12 +637,7 @@ sub get_pop_data_summary {
     
     if ($min == 0) {$min = '0.0';}
     if ($max == 0) {$min = '0.0';}
-    #if ($ave == 0) {$ave = '0.0';}
-    #push @min, $min;
-    #push @max, $max;
-    #push @ave, $ave;
-	
-
+    
     return $min,  $max, $ave, $std, $count;
 }
 

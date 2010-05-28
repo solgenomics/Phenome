@@ -874,7 +874,7 @@ sub get_population {
 
  Usage: $self->add_individual_dbxref($dbxref, $individual_dbxref_id, $sp_person_id)
  Desc:  store/update individual_dbxref 
- Ret:   database id
+ Ret:   CXGN::Phenome::Individual::IndividualDbxref object
  Args:  dbxref object , individual_dbxref_id(optional), sp_person_id
  Side Effects: accesses the database
  Example:
@@ -894,7 +894,7 @@ sub add_individual_dbxref {
     $ind_dbxref_id = $ind_dbxref->store();
     
     #return $self->{ind_dbxref};
-    return $ind_dbxref_id;
+    return $ind_dbxref;
 }
 
 =head2 add_dbxref

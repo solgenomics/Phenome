@@ -24,7 +24,7 @@ The terms usually come from breeders scales  (like the potato cooperators guide)
 Infile should be in the following format: 
 column 1 : cvterm full id (SP:0000xxx)
 column 2 : scale name (this is going to be the cvterm name for the prop type_id) 
-column 3 :value ( an integer or a string)
+column 3 :value ( an integer)
 
 cv_name for scale cvtermprops defaults to 'breeders_scale' 
 
@@ -57,6 +57,7 @@ use Carp qw /croak/ ;
 use CXGN::Phenome::Population;
 use CXGN::Phenome::Individual;
 use CXGN::Chado::Dbxref;
+use CXGN::Chado::Phenotype;
 
 my %value_map = (
  
@@ -135,16 +136,9 @@ if ($population->get_common_name() ne $common_name) {
 #      type_id => $population_cvterm_id,
 #    } );
 
-
-#print $spreadsheet->as_string();
-#column_labels
-#print join("\n",$spreadsheet->column_labels());
-
-#row_labels
-#print join("\n",$spreadsheet->row_labels());
-
-#value_at
-#print $spreadsheet->value_at('A05141-1','date') . "\n\n";
+# for this Unit Ontology has to be loaded! 
+my $unit_cv = $schema->resultset("Cv::Cv")->find(
+    { name => 'unit.ontology' } );
 
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
@@ -152,9 +146,10 @@ my @columns = $spreadsheet->column_labels();
 eval {
 	
     my $date;
-
+    
     foreach my $acc (@rows ) { 
-	#my $individual = $phenome_schema->resultset("Individual")->find_or_create(
+	my $date_count = 0;
+        #my $individual = $phenome_schema->resultset("Individual")->find_or_create(
 	#    { population_id => $population->get_population_id(),
 	#      name => $acc,
 	#      common_name_id => $common_name_id,
@@ -171,14 +166,16 @@ eval {
 	    $individual->store();
 	}
 	foreach my $label (@columns) { 
-	    print "accession= $acc, cloumn = $label, value = " . $spreadsheet->value_at($acc, $label) . "\n" ;
+	    #print "accession= $acc, cloumn = $label, value = " . $spreadsheet->value_at($acc, $label) . "\n" ;
 	    my $value =  $spreadsheet->value_at($acc, $label);
+	    $value =~ s/(\d+.?\d*)\s?.*/$1/g;
+	    #$value =~ s/\w+//g;
 	    
-	    my $date_count = 0;
 	    $date = $spreadsheet->value_at($acc, 'date') unless $date_count;
 	    
-	    if ($label =~ m/date\d/) {
+	    if ($label =~ /date\d/) {
 		$date_count++;
+		print "***Changing date $date \n\n ";
 		$date = $spreadsheet->value_at($acc, "date" . $date_count);
 	    }
 	    #individual needs to be a new stock and stock_relationship for 
@@ -189,7 +186,7 @@ eval {
 	    
 	    #db_name = SP , accession = 0000NNN 
 	    my ($db_name, $sp_accession) = split (/\:/ , $term);
-	    print STDERR "db_name = '$db_name' sp_accession = '$sp_accession'\n";
+	    #print STDERR "db_name = '$db_name' sp_accession = '$sp_accession'\n";
 	    next() if (!$sp_accession);
 
 	    ####################
@@ -204,24 +201,25 @@ eval {
 	    #unit_name should be the scale name or unit name 
 	    my ($value_type, $unit_name) = split (/\:/, $type) ; 
 	    my $unit = undef;
-   
+
 	    my $parent_cvterm = $schema->resultset("General::Db")->find(
 		{ name => $db_name } )->find_related(
-		"dbxrefs", { accession=>$sp_accession} )->find_related("cvterm");
+		"dbxrefs", { accession=>$sp_accession , } )->find_related("cvterm" , {});
 	    
             # if the value type is 'unit' we use the actual parent term for 
 	    # the annotation. If it's a 'scale' we need to find out the appropriate
 	    #child term, as stored in cvtermprop.
 	    # cvtermprops need to be pre-loaded using load_scale_cvtermprops.pl
 	    my $sp_term = $parent_cvterm;
-	    
+	    my $unit_cvterm; # cvterm for the unit specified in the file 
 	    if ($value_type eq 'scale') {
 		my $cvterm_type = $schema->resultset("Cv::Cv")->find(
 		    { name => 'breeders scale' } )->find_related(
 		    'cvterms' , { name  => $unit_name} );   
 		my $type_id = $cvterm_type->cvterm_id() if $cvterm_type || croak 'NO CVTERM FOUND FOR breeders_scale $unit_name! Cvterms for scales must be pre-loaded.  Cannot proceed';
-		print STDERR "type_id = $type_id for scale $unit_name! \n";
-		# find the mapped value for relevant sp terms 
+		##print STDERR "type_id = $type_id for scale $unit_name! \n";
+		
+                # find the mapped value for relevant sp terms 
 		# some values are used outside the definitions of trait scales
 		# For such cases I've mapped numeric values to the most relevant
 		# existing value from the pre-defined scale.
@@ -231,15 +229,19 @@ eval {
 		
 		my ($cvtermprop)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject')->search_related(
 		    "cvtermprops", { 'cvtermprops.type_id' => $type_id,
-				     value => $value , 
+				     'cvtermprops.value' => $value , 
 		    } );
 		
 		print "parent term is " . $parent_cvterm->name() . "\n";
-		print "Found cvtermprop " . $cvtermprop->get_column('value') . " for child cvterm '" . $cvtermprop->find_related("cvterm")->name() . "'\n\n" if $cvtermprop ; 
+		print "Found cvtermprop " . $cvtermprop->get_column('value') . " for child cvterm '" . $cvtermprop->find_related("cvterm" , {} )->name() . "'\n\n" if $cvtermprop ; 
 		croak("NO cvtermprop found for term $term , value $value! Cannot proceed! Check your input!!") if !$cvtermprop;
 		$sp_term = $cvtermprop->cvterm() ;
-	    } elsif ($value_type eq 'scale') {
+	    } elsif ($value_type eq 'unit') {
 		$unit = "unit: " . $unit_name ;
+		
+		($unit_cvterm) = $unit_cv->find_related("cvterms" , {
+		    name => $unit_name } ) if $unit_cv ; 
+		
 	    }
 	    my ($pato_term) = $schema->resultset("General::Db")->find( 
 		{ name => 'PATO' , } )->search_related
@@ -250,25 +252,40 @@ eval {
 	    my $pato_id = undef;
 	    $pato_id = $pato_term->cvterm_id() if $pato_term;
 	    
-	    my $dbxref = CXGN::Chado::Dbxref->new($dbh, $sp_term->dbxref_id());
-	    $individual->add_individual_dbxref($dbxref, undef, $sp_person_id);
+	    ##this is a phenotype. Do not store this as dbxref, 
+	    ##since it is not an annotation.
+ 
+	    #my $dbxref = CXGN::Chado::Dbxref->new($dbh, $sp_term->dbxref_id());
+	    #my $i_dbxref = $individual->add_individual_dbxref($dbxref, undef, $sp_person_id);
 	    #$individual->find_or_create_related("IndividualDbxref" , {
 	    #	dbxref_id => $sp_term->dbxref_id(),
 	    #	sp_person_id => $sp_person_id,
 	    #	create_date => $date , } );
-	    print "Adding dbxref id " . $dbxref->get_dbxref_id() . " to individual " . $individual->get_individual_id() . " ($acc) \n";  
+	    #print "Adding dbxref id " . $dbxref->get_dbxref_id() . " to individual " . $individual->get_individual_id() . " ($acc) \n";  
+	    
+
 	    my $phenotype = $parent_cvterm->find_or_create_related(
 		"phenotype_observables", { 
 		    attr_id => $sp_term->cvterm_id(),
-		    value => $value . $unit,
+		    value => $value ,
 		    cvalue_id => $pato_id,
-		    uniquename => "individual_id "  . $individual->get_individual_id . " dbxref_id " . $dbxref->get_dbxref_id() . " parent= " . $term,
+		    uniquename => "individual_id "  . $individual->get_individual_id . " dbxref_id " . $sp_term->dbxref_id() . " parent= " . $term,
                     #this needs to be moved to individual_phenotype
 		    # and eventually to nd_assay_phenotype
 		    # individual_id => $individual->get_individual_id(),
 		    # sp_person_id => $sp_person_id,
 		});
-	    print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n"; 
+	    print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n";
+	    my $p = CXGN::Chado::Phenotype->new($dbh, $phenotype->phenotype_id() );
+	    $p->set_individual_id($individual->get_individual_id() );
+	    $p->set_sp_person_id($sp_person_id);
+	    $p->store();
+	    print "Updated individual_id " . $individual->get_individual_id() . " for phenotype " . $p->get_phenotype_id . " . Date is $date\n";
+	    
+	    # store the unit for the measurement (if exists) in phenotype_cvterm
+	    $phenotype->find_or_create_related("phenotype_cvterms" , {
+		cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
+	    print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ; 
 	}
     }
 };
