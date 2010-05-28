@@ -126,5 +126,9 @@ SP:0000332	PVP	6	spreading 6	growth habit
 SP:0000196	PVP	7	speading	growth habit
 SP:0000333	PVP	8	spreading 8	growth habit
 SP:0000334	PVP	9	spreading 9	growth habit
+SP:0000335	NE1014	2		tuber size
+SP:0000336	NE1014	4		tuber size
+SP:0000337	NE1014	6		tuber size
+SP:0000338	NE1014	8		tuber size
 
 

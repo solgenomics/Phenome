@@ -152,7 +152,7 @@ my @columns = $spreadsheet->column_labels();
 eval {
 	
     my $date;
-    my $date_change;
+
     foreach my $acc (@rows ) { 
 	#my $individual = $phenome_schema->resultset("Individual")->find_or_create(
 	#    { population_id => $population->get_population_id(),
@@ -173,10 +173,13 @@ eval {
 	foreach my $label (@columns) { 
 	    print "accession= $acc, cloumn = $label, value = " . $spreadsheet->value_at($acc, $label) . "\n" ;
 	    my $value =  $spreadsheet->value_at($acc, $label);
-	    $date = $spreadsheet->value_at($acc, 'date') unless $date_change;
-	    if ($label eq 'new date') {
-		$date_change= 1;
-		$date = $spreadsheet->value_at($acc, 'new date');
+	    
+	    my $date_count = 0;
+	    $date = $spreadsheet->value_at($acc, 'date') unless $date_count;
+	    
+	    if ($label =~ m/date\d/) {
+		$date_count++;
+		$date = $spreadsheet->value_at($acc, "date" . $date_count);
 	    }
 	    #individual needs to be a new stock and stock_relationship for 
 	    #associating with the population stock_id
@@ -188,7 +191,16 @@ eval {
 	    my ($db_name, $sp_accession) = split (/\:/ , $term);
 	    print STDERR "db_name = '$db_name' sp_accession = '$sp_accession'\n";
 	    next() if (!$sp_accession);
-	    #value type should be 'scale' or 'unit'
+
+	    ####################
+	    next() if ($sp_accession eq '0000201');
+	    next() if ($sp_accession eq '0000212');
+	    next() if ($sp_accession eq '0000191');
+	    
+	    ######################
+
+
+            #value type should be 'scale' or 'unit'
 	    #unit_name should be the scale name or unit name 
 	    my ($value_type, $unit_name) = split (/\:/, $type) ; 
 	    my $unit = undef;
@@ -222,15 +234,6 @@ eval {
 				     value => $value , 
 		    } );
 		
-		#my @subjects= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject');
-		#print "Found " . scalar(@subjects) . " subjects for term $acc \n\n";
-		#foreach (@subjects) {
-		#    print "found child term " . $_->name . "\n";
-		#}
-		#->search_related(
-		#    "cvtermprops", { 'cvtermprops.type_id' => $type_id,
-		#		     value => $value , 
-		#    } );
 		print "parent term is " . $parent_cvterm->name() . "\n";
 		print "Found cvtermprop " . $cvtermprop->get_column('value') . " for child cvterm '" . $cvtermprop->find_related("cvterm")->name() . "'\n\n" if $cvtermprop ; 
 		croak("NO cvtermprop found for term $term , value $value! Cannot proceed! Check your input!!") if !$cvtermprop;
@@ -259,7 +262,7 @@ eval {
 		    attr_id => $sp_term->cvterm_id(),
 		    value => $value . $unit,
 		    cvalue_id => $pato_id,
-		    uniquename => "individual_id "  . $individual->get_individual_id . " dbxref_id " . $dbxref->get_dbxref_id() ,
+		    uniquename => "individual_id "  . $individual->get_individual_id . " dbxref_id " . $dbxref->get_dbxref_id() . " parent= " . $term,
                     #this needs to be moved to individual_phenotype
 		    # and eventually to nd_assay_phenotype
 		    # individual_id => $individual->get_individual_id(),
