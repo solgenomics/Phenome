@@ -156,8 +156,11 @@ eval {
 	#      sp_person_id => $sp_person_id,
 	#    } );
 	my @individuals= CXGN::Phenome::Individual->new_with_name($dbh, $acc, $population->get_population_id() );
+	print "*******new_with_name $acc, pop_id = " . $population->get_population_id() . "\n";
 	my $individual= $individuals[0] if @individuals;
+	print "found " . scalar(@individuals) . " individuals \n";
 	if (!@individuals) {
+	    print "instanciating new individual!!!!\n";
 	    $individual= CXGN::Phenome::Individual->new($dbh);
 	    $individual->set_name($acc);
 	    $individual->set_population_id($population->get_population_id()); 
@@ -168,9 +171,9 @@ eval {
 	foreach my $label (@columns) { 
 	    #print "accession= $acc, cloumn = $label, value = " . $spreadsheet->value_at($acc, $label) . "\n" ;
 	    my $value =  $spreadsheet->value_at($acc, $label);
-	    $value =~ s/(\d+.?\d*)\s?.*/$1/g;
-	    #$value =~ s/\w+//g;
-	    
+	    $value =~ s/(\d+\.?\d+?)\D+//g;
+	    print "Value $value \n";
+	    	    
 	    $date = $spreadsheet->value_at($acc, 'date') unless $date_count;
 	    
 	    if ($label =~ /date\d/) {
@@ -190,9 +193,9 @@ eval {
 	    next() if (!$sp_accession);
 
 	    ####################
-	    next() if ($sp_accession eq '0000201');
-	    next() if ($sp_accession eq '0000212');
-	    next() if ($sp_accession eq '0000191');
+	    ##next() if ($sp_accession eq '0000201'); # 1-9 values in Yencho data file 
+	   ## next() if ($sp_accession eq '0000212');  ## Yencho - check data
+	   ## next() if ($sp_accession eq '0000191'); # 1-5 values in Yencho data file .
 	    
 	    ######################
 

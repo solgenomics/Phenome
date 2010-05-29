@@ -24,9 +24,13 @@ SP:0000262	NE1014	5	medium	tuber size
 SP:0000263	NE1014	7	medium-large	tuber size
 SP:0000264	NE1014	9	large	tuber size
 SP:0000265	NE1014	1	very poor	tuber appearance
+SP:0000339	NE1014	2		
 SP:0000266	NE1014	3	poor	tuber appearance
+SP:0000341	NE1014	4		
 SP:0000267	NE1014	5	fair	tuber appearance
+SP:0000342	NE1014	6		
 SP:0000268	NE1014	7	good	tuber appearance
+SP:0000340	NE1014	8		
 SP:0000269	NE1014	9	excellent	tuber appearance
 SP:0000235	NE1014	1	decumbent 	plant type 
 SP:0000235	NE1014	2	decumbent 	plant type 
