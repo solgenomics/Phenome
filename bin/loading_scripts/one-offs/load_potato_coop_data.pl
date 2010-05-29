@@ -147,8 +147,12 @@ eval {
 	
     my $date;
     
-    foreach my $acc (@rows ) { 
+    foreach my $accession (@rows ) { 
 	my $date_count = 0;
+	my ($acc, $rep) = split (/\|/ , $accession);
+	print "accession = $accession, acc= $acc, rep= $rep!\n\n";
+
+	my $plot = $spreadsheet->value_at($accession, "Plot Number");
         #my $individual = $phenome_schema->resultset("Individual")->find_or_create(
 	#    { population_id => $population->get_population_id(),
 	#      name => $acc,
@@ -169,17 +173,16 @@ eval {
 	    $individual->store();
 	}
 	foreach my $label (@columns) { 
-	    #print "accession= $acc, cloumn = $label, value = " . $spreadsheet->value_at($acc, $label) . "\n" ;
-	    my $value =  $spreadsheet->value_at($acc, $label);
+	    my $value =  $spreadsheet->value_at($accession, $label);
 	    $value =~ s/(\d+\.?\d+?)\D+//g;
-	    print "Value $value \n";
+	    #print "Value $value \n";
 	    	    
-	    $date = $spreadsheet->value_at($acc, 'date') unless $date_count;
+	    $date = $spreadsheet->value_at($accession, 'date') unless $date_count;
 	    
 	    if ($label =~ /date\d/) {
 		$date_count++;
 		print "***Changing date $date \n\n ";
-		$date = $spreadsheet->value_at($acc, "date" . $date_count);
+		$date = $spreadsheet->value_at($accession, "date" . $date_count);
 	    }
 	    #individual needs to be a new stock and stock_relationship for 
 	    #associating with the population stock_id
@@ -193,9 +196,9 @@ eval {
 	    next() if (!$sp_accession);
 
 	    ####################
-	    ##next() if ($sp_accession eq '0000201'); # 1-9 values in Yencho data file 
+	    next() if ($sp_accession eq '0000201'); # 1-9 values in Yencho data file 
 	   ## next() if ($sp_accession eq '0000212');  ## Yencho - check data
-	   ## next() if ($sp_accession eq '0000191'); # 1-5 values in Yencho data file .
+	    next() if ($sp_accession eq '0000191'); # 1-5 values in Yencho data file .
 	    
 	    ######################
 
@@ -272,7 +275,7 @@ eval {
 		    attr_id => $sp_term->cvterm_id(),
 		    value => $value ,
 		    cvalue_id => $pato_id,
-		    uniquename => "individual_id "  . $individual->get_individual_id . " dbxref_id " . $sp_term->dbxref_id() . " parent= " . $term,
+		    uniquename => "Replicate: $rep, plot: $plot, individual_id: "  . $individual->get_individual_id  . ", Term: " . $sp_term->name() . ", parent:  $term",
                     #this needs to be moved to individual_phenotype
 		    # and eventually to nd_assay_phenotype
 		    # individual_id => $individual->get_individual_id(),
