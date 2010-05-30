@@ -176,7 +176,8 @@ eval {
 	    my $value =  $spreadsheet->value_at($accession, $label);
 	    $value =~ s/(\d+\.?\d+?)\D+//g;
 	    #print "Value $value \n";
-	    	    
+	    next() if $value !~ /^\d/;
+	   
 	    $date = $spreadsheet->value_at($accession, 'date') unless $date_count;
 	    
 	    if ($label =~ /date\d/) {
@@ -184,6 +185,7 @@ eval {
 		print "***Changing date $date \n\n ";
 		$date = $spreadsheet->value_at($accession, "date" . $date_count);
 	    }
+	   
 	    #individual needs to be a new stock and stock_relationship for 
 	    #associating with the population stock_id
 	    
@@ -240,7 +242,7 @@ eval {
 		
 		print "parent term is " . $parent_cvterm->name() . "\n";
 		print "Found cvtermprop " . $cvtermprop->get_column('value') . " for child cvterm '" . $cvtermprop->find_related("cvterm" , {} )->name() . "'\n\n" if $cvtermprop ; 
-		croak("NO cvtermprop found for term $term , value $value! Cannot proceed! Check your input!!") if !$cvtermprop;
+		croak("NO cvtermprop found for term '$term' , value '$value'! Cannot proceed! Check your input!!") if !$cvtermprop;
 		$sp_term = $cvtermprop->cvterm() ;
 	    } elsif ($value_type eq 'unit') {
 		$unit = "unit: " . $unit_name ;
