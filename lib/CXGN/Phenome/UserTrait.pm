@@ -382,11 +382,11 @@ sub insert_phenotype_user_trait_ids {
 
 =head2 new_with_name
 
- Usage:        my @traits = CXGN::Chado::UserTrait->new_with_name($dbh, "fruit perimeter")
+ Usage:        my $trait = CXGN::Chado::UserTrait->new_with_name($dbh, "fruit perimeter")
  Desc:         An alternate constructor that takes a trait name 
-               as a parameter and returns a list of objects
-               that match that name.
- Ret:          a list of CXGN::Chado::UserTrait objects
+               as a parameter and returns an object
+               for that trait.
+ Ret:          a CXGN::Chado::UserTrait object
  Args:         a database handle, a trait name
  Side Effects: accesses the database.
  Example:
