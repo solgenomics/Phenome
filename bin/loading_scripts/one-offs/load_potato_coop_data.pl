@@ -27,7 +27,7 @@ column 2 : scale name (this is going to be the cvterm name for the prop type_id)
 column 3 :value ( an integer)
 
 cv_name for scale cvtermprops defaults to 'breeders_scale' 
-
+\
 
 Each term has a cvterm_id (must load first the cvterms from an obo file using gmod_load_cvterms.pl) and the values are stored as cvtermprops. 
 Since potato (and other) breeders like to assign numeric scale to sets of values, these numbers are stored in the 'rank' field, and the values will be the vaalues too. If the value is not numeric, the rank will be automatically incremented, starting from '0'.  Prop values are mapped whenever possible to the SP ontology, and should be mapped whenever possible to PATO. 
@@ -150,7 +150,7 @@ eval {
     foreach my $accession (@rows ) { 
 	my $date_count = 0;
 	my ($acc, $rep) = split (/\|/ , $accession);
-	print "accession = $accession, acc= $acc, rep= $rep!\n\n";
+	##print "accession = $accession, acc= $acc, rep= $rep!\n\n";
 
 	my $plot = $spreadsheet->value_at($accession, "Plot Number");
         #my $individual = $phenome_schema->resultset("Individual")->find_or_create(
@@ -160,11 +160,11 @@ eval {
 	#      sp_person_id => $sp_person_id,
 	#    } );
 	my @individuals= CXGN::Phenome::Individual->new_with_name($dbh, $acc, $population->get_population_id() );
-	print "*******new_with_name $acc, pop_id = " . $population->get_population_id() . "\n";
+	##print "*******new_with_name $acc, pop_id = " . $population->get_population_id() . "\n";
 	my $individual= $individuals[0] if @individuals;
-	print "found " . scalar(@individuals) . " individuals \n";
+	##print "found " . scalar(@individuals) . " individuals \n";
 	if (!@individuals) {
-	    print "instanciating new individual!!!!\n";
+	    ##print "instanciating new individual!!!!\n";
 	    $individual= CXGN::Phenome::Individual->new($dbh);
 	    $individual->set_name($acc);
 	    $individual->set_population_id($population->get_population_id()); 
@@ -174,15 +174,17 @@ eval {
 	}
 	foreach my $label (@columns) { 
 	    my $value =  $spreadsheet->value_at($accession, $label);
-	    $value =~ s/(\d+\.?\d+?)\D+//g;
+	   	    
+	    ($value, undef) = split (/\s/, $value) ;
 	    #print "Value $value \n";
+
 	    next() if $value !~ /^\d/;
 	   
 	    $date = $spreadsheet->value_at($accession, 'date') unless $date_count;
 	    
 	    if ($label =~ /date\d/) {
 		$date_count++;
-		print "***Changing date $date \n\n ";
+		##print "***Changing date $date \n\n ";
 		$date = $spreadsheet->value_at($accession, "date" . $date_count);
 	    }
 	   
@@ -196,7 +198,7 @@ eval {
 	    my ($db_name, $sp_accession) = split (/\:/ , $term);
 	    #print STDERR "db_name = '$db_name' sp_accession = '$sp_accession'\n";
 	    next() if (!$sp_accession);
-
+	   
 	    ####################
 	    next() if ($sp_accession eq '0000201'); # 1-9 values in Yencho data file 
 	   ## next() if ($sp_accession eq '0000212');  ## Yencho - check data
