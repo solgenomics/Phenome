@@ -1089,7 +1089,7 @@ sub get_existing_organisms {
 
  Usage: $self->get_phenotypes()
  Desc:  find associated phenotypes
- Ret:   an array of  phenotype objects
+ Ret:   hash of arrays {observable_id} => [phenotype1, phenotype2]
  Args:  none
  Side Effects: none
  Example:
@@ -1125,14 +1125,14 @@ sub get_phenotypes {
     my $sth = $self->get_dbh()->prepare($query);
     
     $sth->execute($self->get_individual_id());
-    my @phenotypes;
+    my %p; # hash of arrays for each observable id we can have multiple phenotypes 
     
     while (my ($id) = $sth->fetchrow_array()) {
 	my $pheno=CXGN::Chado::Phenotype->new($self->get_dbh(), $id);
-	push @phenotypes, $pheno;
-	
+	push @ { $p{$pheno->get_observable_id()} } , $pheno; 
+ 
     }
-    return @phenotypes;
+    return %p;
 }
 
 
