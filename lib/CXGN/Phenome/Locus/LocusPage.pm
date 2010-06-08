@@ -6,7 +6,7 @@ CXGN::Phenome::Locus::LocusPage - a module that implements dynamic javascript pr
 =head1 DESCRIPTION
 
    Basically this module is used for printing <script> tags and calling js functions in jslib/CXGN/Phenome/Locus/LocusPage.js
-   It should be used by calling first initialize($locus_id) , which will instantiate a new javascript LocuaPage object. 
+   It should be used by calling first initialize($locus_id) , which will instantiate a new javascript LocusPage object.
 
 =head1 AUTHOR(S)
 
