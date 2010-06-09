@@ -420,23 +420,31 @@ sub is_from_qtl {
 
 }
 
-# =head2 all_pops_trait_cv
 
-#  Usage:
-#  Desc:
-#  Ret:
-#  Args:
-#  Side Effects:
-#  Example:
 
-# =cut
 
-# sub all_pops_trait_cv {
-#     my $self = shift;
+sub search_usertrait {
+    my $self = shift;
+    my $trait = shift;    
+    my $sth = $self->get_dbh()->prepare("SELECT user_trait_id, name, definition
+                                                FROM phenome.user_trait
+                                                WHERE name ILIKE ?"
+                                       );
+
     
+    $sth->execute($trait);
+    
+    my (@id, @name, @definition);
+    while ((my $id, $name, $definition) = $sth->fetchrow_array()) {
+	push @id, $id;
+	push @name, $name;
+	push @definition, $definition;
+	print STDERR "name2: $name\n";
+    } 
+    
+    return \@id, \@name, \@definition;   
 
-# }
-
+}
 
 
 ########
