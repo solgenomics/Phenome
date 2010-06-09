@@ -6,24 +6,50 @@ load_images.pl
 
 =head1 SYNOPSYS
 
-load_images.pl [ sandbox | cxgn | trial ] dirname
+load_images.pl -D [ sandbox | cxgn | trial ] -H hostname -i dirname -P myPopulationName 
 
 =head1 DESCRIPTION
 
-Loads tomato images from the Van der Knaap lab into the SGN database, using the SGN::Image framework. 
+Loads tomato images  into the SGN database, using the SGN::Image framework. 
     
 
 Requires the following parameters: 
 
-=over 5
+=over 8
 
-=item 
+=item -D
 
 a database parameter, which can either be "cxgn", "sandbox", or "trial". "cxgn" and "sandbox" will cause the script to connect to the respective databases; "trial" will connect to sandbox, but not perform any of the database modifications. 
 
-=item
+=item -H 
 
-a dirname that contains subdirectories named after database accessions, containing one or more images.
+host name 
+
+=item -p 
+
+population name - must match exactly the population name for the individuals as stored in the database.
+
+=item -i
+
+a dirname that contains image filenames or subdirectories named after database accessions, containing one or more images (see option -d) .
+
+=item -u
+
+use name - from sgn_people.sp_person. Will load the sp_person_id in individual_image table
+
+=item -d 
+
+files are stored in sub directories named after database accessions 
+
+=item -e 
+
+image file extension . Defaults to 'jpg'
+
+
+=item -t 
+
+trial mode . Nothing will be stored.
+
 
 =back
 
@@ -42,15 +68,16 @@ use SGN::Image;
 use CXGN::Phenome::Individual;
 use CXGN::Phenome::Population;
 use CXGN::People::Person;
+use Carp qw /croak/;
 
 use File::Basename;
 use SGN::Context;
 use Getopt::Std;
 
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_p);
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_p, $opt_d, $opt_e);
 
-getopts('H:D:u:ti:p:');
+getopts('H:D:u:ti:e:dp:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -58,6 +85,7 @@ my $dirname = $opt_i;
 my $sp_person=$opt_u;
 
 my $population_name = $opt_p;
+my $ext = $opt_e || 'jpg';
 
 if (!$dbhost && !$dbname) { 
     usage();
@@ -136,7 +164,9 @@ while (my ($image_id, $individual_id) = $s2->fetchrow_array()) {
 
 open (ERR, ">$opt_i" . ".err") || die "Can't open error file\n";
 
-my @files = `ls $dirname/*.jpg`;
+my @files = `ls $dirname/ | grep .$ext`;
+@files = `ls $dirname` if $opt_d ;
+my @sub_files;
 
 my $new_individual_count = 0;
 my $new_image_count = 0;
@@ -145,78 +175,71 @@ my $new_image_count = 0;
 foreach my $file (@files) { 
     eval { 
 	chomp($file);
-	print STDOUT "Processing file $file...\n";
+	
+	@sub_files = ($file);
+	@sub_files =  `ls $dirname/$file/ | grep .$ext` if $opt_d;
+	
+
 	
 	my $individual_name = basename($file);
-	
+	print STDOUT "individual_name = $individual_name \n";
 	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
-	($individual_name, undef ) =  split /_/, $individual_name;
+	#($individual_name, undef ) =  split /_/, $individual_name;
 	if (!$individual_name) { die "File $file has no individual name in it!"; }
 	
-	print STDOUT "Loading $individual_name, image $file\n";
-	print ERR "Loading $individual_name, image $file\n";
-	
-	if (! -e $file) { 
-	    die "The specified file $file does not exist! Skipping...\n";
-	}
-	
-	
-	if (!exists($name2id{lc($individual_name)})) { 
+	foreach my $filename (@sub_files) {
+	    chomp $filename;
+	    print STDOUT "Processing file $file...\n";
+	    print STDOUT "Loading $individual_name, image $filename\n";
+	    print ERR "Loading $individual_name, image $filename\n";
 	    
-	    message ("$individual_name does not exist in the database...\n");
-	    #message("Adding individual $individual_name...\n");
+	    # if (! -e $filename) { 
+	    #warn "The specified file $filename does not exist! Skipping...\n";
+	    #	next();
+	    #   }
 	    
-	   # if ($opt_t) { 
-	#	print STDOUT "Trial parse: would load individual $individual_name...\n";
-	#	$new_individual_count++;
-	   # }
-	   # else { 
-	#	my $new_individual = CXGN::Phenome::Individual->new($dbh);
-	#	$new_individual->set_population_id($POPULATION_ID);
-	#	$new_individual->set_name($individual_name);
-	#	my $id = 0;
-	#	if ($id = $new_individual->store()) { 
-	#	    print STDOUT "Stored individual successfully...\n";
-	#	}
-	#	$name2id{lc($individual_name)}=$id;
-	#	$new_individual_count++;
-	#    }
-	}
-	
-	else {
-	    print ERR "Adding $file...\n";
-	    if (exists($image_hash{$file})) { 
-		print ERR "$file is already loaded into the database...\n";
-		my $image_id = $image_hash{$file}->get_image_id();
-		$connections{$image_id."-".$name2id{lc($individual_name)}}++;
-		if ($connections{$image_id."-".$name2id{lc($individual_name)}} > 1) { 
-		    print ERR "The connection between $individual_name and image $file has already been made. Skipping...\n";
-		}
-		elsif ($image_hash{$file}) { 
-		    print ERR qq  { Associating individual $name2id{lc($individual_name)} with already loaded image $file...\n };
-		    $image_hash{$file}->associate_individual($name2id{lc($individual_name)});
-		}
+	    
+	    if (!exists($name2id{lc($individual_name)})) { 
+		
+		message ("$individual_name does not exist in the database...\n");
+		
 	    }
-	    else { 
-		print ERR qq { Generating new image object for image $file and associating it with individual $individual_name, id $name2id{lc($individual_name)} ...\n };
-		my $caption = $individual_name;
-		
-		
-		if ($opt_t)  { 
-		    print STDOUT qq { Would associate file $file to individual $individual_name, id $name2id{lc($individual_name)}\n };
-		    $new_image_count++;
+	    
+	    else {
+		print ERR "Adding $filename...\n";
+		if (exists($image_hash{$filename})) { 
+		    print ERR "$filename is already loaded into the database...\n";
+		    my $image_id = $image_hash{$filename}->get_image_id();
+		    $connections{$image_id."-".$name2id{lc($individual_name)}}++;
+		    if ($connections{$image_id."-".$name2id{lc($individual_name)}} > 1) { 
+			print ERR "The connection between $individual_name and image $filename has already been made. Skipping...\n";
+		    }
+		    elsif ($image_hash{$filename}) { 
+			print ERR qq  { Associating individual $name2id{lc($individual_name)} with already loaded image $filename...\n };
+			$image_hash{$filename}->associate_individual($name2id{lc($individual_name)});
+		    }
 		}
 		else { 
-		    my $image = SGN::Image->new($dbh);   
-		    $image_hash{$file}=$image;
+		    print ERR qq { Generating new image object for image $filename and associating it with individual $individual_name, id $name2id{lc($individual_name)} ...\n };
+		    my $caption = $individual_name;
 		    
-		    $image->process_image("$file", "individual", $name2id{lc($individual_name)}); 
-		    $image->set_description("$caption");
-		    $image->set_name(basename($file));
-		    $image->set_sp_person_id($sp_person_id);
-		    $image->set_obsolete("f");
-		    $image->store();
-		    $new_image_count++;
+		    
+		    if ($opt_t)  { 
+			print STDOUT qq { Would associate file $filename to individual $individual_name, id $name2id{lc($individual_name)}\n };
+			$new_image_count++;
+		    }
+		    else { 
+			my $image = SGN::Image->new($dbh);   
+			$image_hash{$filename}=$image;
+		    
+			$image->process_image("$filename", "individual", $name2id{lc($individual_name)}); 
+			$image->set_description("$caption");
+			$image->set_name(basename($filename));
+			$image->set_sp_person_id($sp_person_id);
+			$image->set_obsolete("f");
+			$image->store();
+			$new_image_count++;
+		    }
 		}
 	    }
 	}
