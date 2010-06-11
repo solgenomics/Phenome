@@ -164,8 +164,8 @@ while (my ($image_id, $individual_id) = $s2->fetchrow_array()) {
 
 open (ERR, ">$opt_i" . ".err") || die "Can't open error file\n";
 
-my @files = `ls $dirname/ | grep .$ext`;
-@files = `ls $dirname` if $opt_d ;
+my @files = glob "$dirname/*.$ext";
+@files = glob "$dirname/*" if $opt_d ;
 my @sub_files;
 
 my $new_individual_count = 0;
@@ -176,8 +176,9 @@ foreach my $file (@files) {
     eval { 
 	chomp($file);
 	
+	
 	@sub_files = ($file);
-	@sub_files =  `ls $dirname/$file/ | grep .$ext` if $opt_d;
+	@sub_files =  glob "$file/*.$ext" if $opt_d;
 	
 
 	
@@ -193,10 +194,10 @@ foreach my $file (@files) {
 	    print STDOUT "Loading $individual_name, image $filename\n";
 	    print ERR "Loading $individual_name, image $filename\n";
 	    
-	    # if (! -e $filename) { 
-	    #warn "The specified file $filename does not exist! Skipping...\n";
-	    #	next();
-	    #   }
+	    if (! -e $filename) { 
+		warn "The specified file $filename does not exist! Skipping...\n";
+	    	next();
+	    }
 	    
 	    
 	    if (!exists($name2id{lc($individual_name)})) { 
