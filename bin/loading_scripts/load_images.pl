@@ -15,7 +15,7 @@ Loads tomato images  into the SGN database, using the SGN::Image framework.
 
 Requires the following parameters: 
 
-=over 8
+=over 9
 
 =item -D
 
@@ -44,6 +44,11 @@ files are stored in sub directories named after database accessions
 =item -e 
 
 image file extension . Defaults to 'jpg'
+
+
+=item -g 
+
+image dir , default = get_conf("image_dir")
 
 
 =item -t 
@@ -75,8 +80,7 @@ use SGN::Context;
 use Getopt::Std;
 
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_p, $opt_d, $opt_e);
-
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_p, $opt_d, $opt_e, $opt_g);
 getopts('H:D:u:ti:e:dp:');
 
 my $dbhost = $opt_H;
@@ -104,7 +108,7 @@ my $POPULATION_ID=0;
 
 
 my $ch = SGN::Context->new();
-my $image_dir = $ch->get_conf("image_dir");
+my $image_dir = $opt_g || $ch->get_conf("image_dir");
 
 print "PLEASE VERIFY:\n";
 print "Using dbhost: $dbhost. DB name: $dbname. \n";
