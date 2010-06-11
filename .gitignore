@@ -1,0 +1,8 @@
+*~
+!exists
+!.exists
+_build
+Build
+MYMETA.yml
+*.sw?
+blib/*
