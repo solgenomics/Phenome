@@ -84,24 +84,19 @@ sub apache_upload_file {
     my $upload_fh = $upload->fh;
 
    
-    if (-e $temp_file) { 
-	 # #die "The file $temp_file already exists. You cannot upload a file more than once\n";
-	unlink $temp_file;  
- }
+    if (-e $temp_file) {
+        unlink $temp_file;
+    }
 
     print STDERR "Uploading file to location: $temp_file\n";
     
-    open UPLOADFILE, ">$temp_file" or die "Could not write to $temp_file: $!\n";
+    open UPLOADFILE, ">", $temp_file or die "Could not write to $temp_file: $!\n";
     
-    #warn "could open filename $temp_filename...\n";
     binmode UPLOADFILE;
     while (<$upload_fh>) {
-	#warn "Read another chunk...\n";
-	print UPLOADFILE;
+        print UPLOADFILE;
     }
     close UPLOADFILE;
-    warn "Done uploading.\n";
-
 
     return $temp_file;
 
