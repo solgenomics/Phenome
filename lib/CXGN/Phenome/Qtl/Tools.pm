@@ -420,7 +420,17 @@ sub is_from_qtl {
 
 }
 
+=head2 search_usertrait
 
+ Usage: my ($id, $name, $defi) = $qtltool->search_usertrait('trait name')
+ Desc: queries for user submitted traits and returns their ids, trait 
+       names and definitions
+ Ret: array refs of ids, trait names, definitions
+ Args: trait name
+ Side Effects: accesses db
+ Example:
+
+=cut
 
 
 sub search_usertrait {
@@ -439,7 +449,7 @@ sub search_usertrait {
 	push @id, $id;
 	push @name, $name;
 	push @definition, $definition;
-	print STDERR "name2: $name\n";
+
     } 
     
     return \@id, \@name, \@definition;   
