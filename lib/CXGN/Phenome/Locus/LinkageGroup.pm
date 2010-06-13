@@ -19,7 +19,7 @@ This static class needs to be replace with an AJAX server side script that will 
 =head2 get_all_lgs
 
  Usage:        my ($names_ref) = CXGN::Phenome::Locus::LinkageGroup::get_all_organisms($dbh);
- Desc:         This is a static function. Retrieves distinct linkage group names and IDs from sgn.organismprop
+ Desc:         This is a static function. Retrieves distinct linkage group names and IDs from sgn.common_nameprop
  Ret:          Returns an arrayref containing all the
                linkage group names.
  Args:         a database handle
@@ -31,8 +31,8 @@ This static class needs to be replace with an AJAX server side script that will 
 sub get_all_lgs {
     my $dbh = shift;
     my $query = "SELECT  distinct  value 
-                 FROM sgn.organismprop 
-                 JOIN public.cvterm on (cvterm.cvterm_id = organismprop.type_id)
+                 FROM sgn.common_nameprop 
+                 JOIN public.cvterm on (cvterm.cvterm_id = common_nameprop.type_id)
                  WHERE cvterm.name = ? ";
                 
     my $sth = $dbh->prepare($query);
@@ -49,7 +49,7 @@ sub get_all_lgs {
 =head2 get_lg_arms
 
  Usage:        my ($names_ref) = CXGN::Phenome::Locus::LinkageGroup::get_lg_arms($dbh);
- Desc:         This is a static function. Retrieves distinct linkage group arm names and IDs from sgn.organismprop
+ Desc:         This is a static function. Retrieves distinct linkage group arm names and IDs from sgn.common_nameprop
  Ret:          Returns an arrayref containing all the
                linkage group arm names.
  Args:         a database handle
@@ -61,8 +61,8 @@ sub get_all_lgs {
 sub get_lg_arms {
     my $dbh = shift;
     my $query = "SELECT distinct value 
-                   FROM sgn.organismprop
-                  JOIN public.cvterm on (cvterm.cvterm_id = organismprop.type_id)
+                   FROM sgn.common_nameprop
+                  JOIN public.cvterm on (cvterm.cvterm_id = common_nameprop.type_id)
                    WHERE cvterm.name ilike ?
                    ";
     my $sth = $dbh->prepare($query);

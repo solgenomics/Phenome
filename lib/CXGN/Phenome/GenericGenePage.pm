@@ -152,7 +152,7 @@ sub organism {
     my $locus=$self->_locus();
     my $organism= CXGN::Chado::Organism->new_with_common_name($self->_dbh, $locus->get_common_name() );
     if (!$organism) { 
-	warn "No organism found for common name '" . $locus->get_common_name() . "'. Please check your database.\nDefault common_name should be stored in organismprop, and point to only one scientific species name in the organism table\n"; 
+	warn "No organism found for common name '" . $locus->get_common_name() . "'. Please check your database.\nDefault common_name should be stored in common_nameprop, and point to only one scientific species name in the organism table\n"; 
 	return undef;
     } 
     
