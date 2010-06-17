@@ -164,7 +164,7 @@ alter table sgn.common_nameprop drop CONSTRAINT organismprop_pkey;
 alter table sgn.common_nameprop add primary key (common_nameprop_id);
 
 --rename the sequence
-alter SEQUENCE sgn.common_nameprop_id_seq rename to common_nameprop_common_nameprop_id_seq ;
+alter SEQUENCE sgn.organismprop_organismprop_id_seq rename to common_nameprop_common_nameprop_id_seq ;
 
  
 
