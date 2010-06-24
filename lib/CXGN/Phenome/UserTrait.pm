@@ -5,7 +5,7 @@ A class for handling user submitted trait objects.
 
 It implements an object for the  'user_trait, unit, 
 phenotype_user_trait' tables in the phenome schema.
-
+   
 =head1 SYNOPSIS
 
 
@@ -397,9 +397,9 @@ sub new_with_name {
     my $self = shift;
     my $dbh = shift;
     my $name = shift;
-    my $query = "SELECT user_trait_id FROM phenome.user_trait WHERE name ILIKE '$name'";
+    my $query = "SELECT user_trait_id FROM phenome.user_trait WHERE name ILIKE ?";
     my $sth = $dbh->prepare($query);
-    $sth->execute();
+    $sth->execute($name);
     
     my $id = $sth->fetchrow_array();  
    
