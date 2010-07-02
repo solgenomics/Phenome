@@ -1,4 +1,4 @@
-     
+package CXGN::Phenome::Locus;
 
 =head1 NAME
 
@@ -18,7 +18,8 @@ Naama Menda <nm249@cornell.edu>
 
 =cut
 
-package CXGN::Phenome::Locus;
+use strict;
+use warnings;
 
 use CXGN::DB::Connection;
 use CXGN::Phenome::Allele;
@@ -31,8 +32,6 @@ use CXGN::Phenome::Locus::LocusRanking;
 use CXGN::Transcript::Unigene;
 use CXGN::Phenome::Schema;
 use CXGN::Phenome::LocusGroup;
-
-
 use CXGN::DB::Object;
 use CXGN::Chado::Dbxref;
 
@@ -77,7 +76,7 @@ sub new {
 	while (my ($lm) = $locus_marker_query->fetchrow_array() ) {
 	    push @locus_marker, $lm;
 	}
-	foreach $lm_id (@locus_marker) {
+	for my $lm_id (@locus_marker) {
 	   
 	    my $locus_marker_obj = CXGN::Phenome::LocusMarker->new($dbh, $lm_id);
 	    $self->add_locus_marker($locus_marker_obj);
@@ -553,6 +552,8 @@ sub add_unigene {
 	return $id;
     }
     #se if the unigene has solcyc links
+
+    my $dbh;
     my $unigene= CXGN::Transcript::Unigene->new($dbh, $unigene_id);
     my @u_dbxrefs= $unigene->get_dbxrefs();
     foreach my $d(@u_dbxrefs) {
@@ -2070,7 +2071,7 @@ sub merge_locus {
 		$lgm->set_locus_id($self->get_locus_id() );
 		$lgm->set_evidence_id($m_lgm->evidence_id());
 		$lgm->set_reference_id($m_lgm->reference_id());
-		$lgm->set_sp_person_id($m_gm->sp_person_id());
+		$lgm->set_sp_person_id($m_lgm->sp_person_id());
 		$lgm->set_direction($m_lgm->direction());
 		$lgm->set_obsolete($m_lgm->obsolete());
 		$lgm->set_create_date($m_lgm->create_date());
@@ -2115,12 +2116,11 @@ sub get_locus_stats {
     $sth->execute();
     my @stats;
     my $count;
-    while (($loci, $month, $year) = $sth->fetchrow_array()) {
-	$year= substr($year, -2);
-	$count +=$loci;
-	push @{ $stats[0] }, "$month/$year";
-	push @{ $stats[1] }, $count;
-	
+    while (my ($loci, $month, $year) = $sth->fetchrow_array()) {
+        $year= substr($year, -2);
+        $count +=$loci;
+        push @{ $stats[0] }, "$month/$year";
+        push @{ $stats[1] }, $count;
     }
     return @stats;
 }
