@@ -222,7 +222,7 @@ my @new_ids = map ($_->get_column('locus_id'), @new_members);
 is(scalar(@new_members), 2, "New locus group 2 members test");
 my @new_expected=($locus_id,$new_locus_id);
 
-ok( eq_set(\@new_ids, \@new_expected) );
+is_deeply( [sort @new_ids], [ sort @new_expected ] );
 
 
 ###################################
