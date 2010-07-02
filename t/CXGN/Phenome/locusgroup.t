@@ -12,7 +12,6 @@
  perl locusgroup.t
 
 
-
 =head1 DESCRIPTION
 
 
@@ -25,12 +24,12 @@ Naama Menda <n249@cornell.edu>
 =cut
 
 use strict;
+use warnings;
+use autodie;
 
-use Test::More qw / no_plan / ; # tests=>6; 
+use Test::More tests => 3;
 use CXGN::DB::Connection;
 use CXGN::Phenome::LocusGroup;
-
-use Data::Dumper;
 
 BEGIN {
     use_ok('CXGN::Phenome::Schema');
@@ -55,31 +54,19 @@ my $last_locusgroup_id= $schema->resultset('Locusgroup')->get_column('locusgroup
 # make a new locusgroup and store it, all in a transaction. 
 # then rollback to leave db content intact.
 
-eval {
-    #my $row=$schema->resultset('Organism::Organism')->create();
+my $lg = CXGN::Phenome::LocusGroup->new($schema);
 
-    my $lg = CXGN::Phenome::LocusGroup->new($schema);
-    
-    my $name= "Test group";
-    my $relationship= "Homolog";
-    
-    #my $dbix_o=$o->get_schema()->resultset('Organism::Organism')->new({species=>$species, genus=>$genus});
-    #$o->get_schema()->resultset('Organism::Organism')species($species);
-    $lg->set_locusgroup_name($name);
-    
-    my $lg_id= $lg->store();
-    
+my $name= "Test group";
+my $relationship= "Homolog";
 
-    my $re_lg= CXGN::Phenome::LocusGroup->new($schema, $lg_id);
-    is($re_lg->get_locusgroup_name(), $name, "Locusgroup name test");
+$lg->set_locusgroup_name($name);
+
+my $lg_id= $lg->store();
+
+
+my $re_lg= CXGN::Phenome::LocusGroup->new($schema, $lg_id);
+is($re_lg->get_locusgroup_name(), $name, "Locusgroup name test");
   
-};
-
-######ok (@term_list == 2, "get_parents");
-
-if ($@) { 
-    print STDERR "An error occurred: $@\n";
-}
 
 # rollback in any case
 $dbh->rollback();
