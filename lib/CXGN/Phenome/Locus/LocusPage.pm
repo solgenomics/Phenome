@@ -1,3 +1,4 @@
+package CXGN::Phenome::Locus::LocusPage;
 
 =head1 NAME
 
@@ -14,25 +15,16 @@ Naama Menda <nm249@cornell.edu>
 
 =head1 METHODS
 
-
-
 =cut
 
-
-
 use strict;
-
-package CXGN::Phenome::Locus::LocusPage;
-
+use warnings;
 
 use JSON;
 use CXGN::DB::Object;
 use CXGN::Phenome::Locus;
 
-
 use base qw | CXGN::DB::Object |;
-
-
 
 =head2 initialize
 
