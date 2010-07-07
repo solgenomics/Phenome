@@ -64,39 +64,6 @@ JAVASCRIPT
 }
 
 
-=head2 include_locus_network
-
- Usage:        CXGN::Phenome::Locus::LocusPage->include_locus_network()
- Desc:         includes the locus network section  on the respective page
-               by including its javascript code
- Ret:          nothing
- Args:         none
- Side Effects: prints the  code to STDOUT
- Example:
-
-=cut
-
-sub include_locus_network {
-
-    
-return <<JAVASCRIPT;
-
-<table><tr><td><div id=\"locus_network\" >\[loading...\]</div>
-</td></tr></table>
-
-   <script language="javascript" type="text/javascript">
-    
-    locusPage.printLocusNetwork(); 
-
-</script>  
-
-JAVASCRIPT
-
-}
-
-
-
-
 
 =head2 associate_locus_form
 
