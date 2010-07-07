@@ -1192,7 +1192,7 @@ sub add_locus_marker {
 
 sub get_locus_markers {
   my $self=shift;
-  return @{$self->{locus_markers}};
+  return @{$self->{locus_markers} || [] };
 }
 
 
