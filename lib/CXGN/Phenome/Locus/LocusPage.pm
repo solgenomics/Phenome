@@ -15,6 +15,8 @@ Naama Menda <nm249@cornell.edu>
 
 =head1 METHODS
 
+
+
 =cut
 
 use strict;
@@ -25,34 +27,6 @@ use CXGN::DB::Object;
 use CXGN::Phenome::Locus;
 
 use base qw | CXGN::DB::Object |;
-
-=head2 initialize
-
- Usage: CXGN::Phenome::Locus::LocusPage::initialize($locus_id) 
- Desc:  instantiate a new js LocusPage object 
- Ret:   <script> tag with  a locusPage var
- Args:  locus_id 
- Side Effects:  sets locus_id for LocusPage js object
- Example:
-
-=cut
-
-sub initialize {
-    my $locus_id = shift;
-    return <<JAVASCRIPT;
-
-    <script language="javascript" type="text/javascript">
-	
-    var locusPage = new CXGN.Phenome.Locus.LocusPage();
-    locusPage.setLocusId($locus_id);
-    
-    
-</script>
-
-JAVASCRIPT
-
-}
-
 
 =head2 init_locus_form
 
