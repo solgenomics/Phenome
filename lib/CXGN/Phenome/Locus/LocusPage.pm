@@ -148,38 +148,6 @@ JAVASCRIPT
 
 }
 
-=head2 include_locus_ontology
-
- Usage:        CXGN::Phenome::Locus::LocusPage->include_locus_ontology()
- Desc:         includes the locus ontology annotation section  on the respective page
-               by including its javascript code
- Ret:          nothing
- Args:         none
- Side Effects: prints the  code to STDOUT
- Example:
-
-=cut
-
-sub include_locus_ontology {
-
-    my $id = shift;
-
-    
-return <<JAVASCRIPT;
-
-<table><tr><td><div id=\"locus_ontology\" >\[loading...\]</div>
-</td></tr></table>
-
-   <script language="javascript" type="text/javascript">
-    
-    locusPage.printLocusOntology(); 
-
-</script>  
-    
-JAVASCRIPT
-
-}
-
 =head2 unobsolete_evidence
 
  Usage: CXGN::Phenome::Locus::LocusPage::unobsolete_evidence($locus_dbxref_evidence_id)
