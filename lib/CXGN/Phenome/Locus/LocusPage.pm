@@ -64,7 +64,7 @@ JAVASCRIPT
 }
 
 
-=head2 include_locus_newtwork
+=head2 include_locus_network
 
  Usage:        CXGN::Phenome::Locus::LocusPage->include_locus_network()
  Desc:         includes the locus network section  on the respective page
