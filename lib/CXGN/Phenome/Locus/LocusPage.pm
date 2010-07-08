@@ -299,37 +299,6 @@ JAVASCRIPT
 
 }
 
-=head2 include_solcyc_links
-
- Usage:        CXGN::Phenome::Locus::LocusPage->include_solcyc_links()
- Desc:         includes the solcyc links section  on the respective page
-               by including its javascript code
- Ret:          nothing
- Args:         none
- Side Effects: prints the  code to STDOUT
- Example:
-
-=cut
-
-sub include_solcyc_links {
-
-        
-return <<JAVASCRIPT;
-
-<table><tr><td><div id=\"solcyc_links\" >\[loading...\]</div>
-</td></tr></table>
-
-   <script language="javascript" type="text/javascript">
-    
-    locusPage.printSolcycLinks(); 
-
-</script>  
-
-JAVASCRIPT
-
-}
-
-
 ##############
 return 1;#####
 ##############
