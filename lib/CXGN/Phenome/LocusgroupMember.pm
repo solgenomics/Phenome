@@ -1,3 +1,4 @@
+package CXGN::Phenome::LocusgroupMember;
 
 =head1 NAME
 
@@ -18,20 +19,13 @@ This class implements the following methods:
 
 =cut
 
-
 use strict;
 use warnings;
-
-use CXGN::DB::Connection;
 use CXGN::Phenome::Locus;
 use CXGN::Chado::Cvterm;
 use CXGN::Chado::Publication;
 use CXGN::Chado::Dbxref;
-
 use Carp;
-
-package CXGN::Phenome::LocusgroupMember;
-
 use base qw / CXGN::DB::Object /;
 
 
@@ -149,7 +143,7 @@ sub find_or_create_group {
     my $locus_id= $self->get_locus_id();
     if ($locus_id == $lgm->get_locus_id()) {
 	
-	warn ("Cannot associate a locus to itself! (locus_id = $locus_id)\n");
+	warn "Cannot associate a locus to itself! (locus_id = $locus_id)";
 	return undef;
     }
     my $relationship=CXGN::Chado::Cvterm->new($self->get_dbh(), $relationship_id)->get_cvterm_name();
@@ -220,11 +214,11 @@ sub find_or_create_group {
 	    $self->d( "locus1=" . $m1{locus_id} . " direction1=" . $m1{direction} . " .Locus2 = " . $m2{locus_id} . "direction2= " . $m2{direction} ); 
 	    if (($m1{locus_id} == $locus_id) & ($m1{direction} eq $lgm->get_direction()) ) { 
 		if  (($m2{locus_id} == $lgm->get_locus_id()) & ($m2{direction} eq $direction)) {
-		    warn("Found conflict! Trying to store locus $locus_id as $direction and locus ". $lgm->get_locus_id() . " as " . $lgm->get_direction() . "\n while found group $group_id with locus " . $m1{locus_id} . " and direction " . $m1{direction} . "\nand locus "  . $m2{locus_id} . " and direction " . $m2{direction} . " Exiting!!\n");
+		    warn("Found conflict! Trying to store locus $locus_id as $direction and locus ". $lgm->get_locus_id() . " as " . $lgm->get_direction() . "\n while found group $group_id with locus " . $m1{locus_id} . " and direction " . $m1{direction} . "\nand locus "  . $m2{locus_id} . " and direction " . $m2{direction} . " Exiting!!");
 		    return undef;   
 		}
 	    }elsif  (($m2{locus_id} == $locus_id) & ($m2{direction} eq $lgm->get_direction()) ) {
-		    warn("Found conflict! Trying to store locus $locus_id as $direction and locus ". $lgm->get_locus_id() . " as " . $lgm->get_direction() . "\n while found group $group_id with locus " . $m1{locus_id} . " and direction " . $m1{direction} . "\nand locus "  . $m2{locus_id} . " and direction " . $m2{direction} . " Exiting!!\n");
+		    warn("Found conflict! Trying to store locus $locus_id as $direction and locus ". $lgm->get_locus_id() . " as " . $lgm->get_direction() . "\n while found group $group_id with locus " . $m1{locus_id} . " and direction " . $m1{direction} . "\nand locus "  . $m2{locus_id} . " and direction " . $m2{direction} . " Exiting!!");
 		    return undef;   
 	    }
 	}
@@ -295,11 +289,9 @@ sub merge_groups {
 	    $name=$group1->locusgroup_name();
 	    
 	    $self->d( "Update members of all groups to group $name (id = $group_id) \n");
-	    print STDERR  "Update members of all groups to group $name (id = $group_id) \n";
 	}else {
 	    my $group= $lgs{$key};
 	    $self->d( "Merging group " . $group->locusgroup_name() . "(id=" . $group->locusgroup_id . ") with group $name ($group_id)\n");
-	    print STDERR  "Merging group " . $group->locusgroup_name() . "(id=" . $group->locusgroup_id . ") with group $name ($group_id)\n";
 	    
 	    my @members= $group->locusgroup_members();
 	    
@@ -307,14 +299,12 @@ sub merge_groups {
 	    foreach my $member(@members) { 
 		$member->update( {locusgroup_id => $group_id, modified_date=> \ 'now()'  }) ; 
 		$self->d("Updated group_id of member " . $member->get_column('locus_id') . "\n");
-		print STDERR "Updated group_id of member " . $member->get_column('locus_id') . "\n";
 	    } 
 	    
 	    #now obsolete the merged groups 
 	    $group->update({ obsolete => 't' , modified_date => \ 'now()' } );
 	    
 	    $self->d( "Set group " . $group->locusgroup_name() . " (id= " . $group->locusgroup_id() . ") to obsolete! \n");
-	    print STDERR  "Set group " . $group->locusgroup_name() . " (id= " . $group->locusgroup_id() . ") .  to obsolete! \n";
 	}
     }
     return $group1;
