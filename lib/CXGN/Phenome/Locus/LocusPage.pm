@@ -28,42 +28,6 @@ use CXGN::Phenome::Locus;
 
 use base qw | CXGN::DB::Object |;
 
-=head2 init_locus_form
-
- Usage:        CXGN::Phenome::Locus::LocusPage->init_locus_form()
- Desc:         includes a locus details editable form on the respective page
-               by including its javascript code
- Ret:          nothing
- Args:         locus_id
- Side Effects: prints the  code to STDOUT
- Example:
-
-=cut
-
-sub init_locus_form {
-    my $locus_id = shift || 0;
-    my $script= "/jsforms/locus_ajax_form.pl";
-    return <<JAVASCRIPT;
-    <div id="locus_details_buttons">[loading edit links...]</div>
-    <div id="locus_details">[loading...]</div>
-
-  <script language="javascript" type="text/javascript">
-	var locusForm = new CXGN.Page.Form.JSFormPage(
-            $locus_id
-           , 'locus'
-           , '/jsforms/locus_ajax_form.pl'
-           , 'locus_details'
-           , 'locusForm'
-           , '/phenome/locus_display.pl'
-        );
-    locusForm.render();
-  </script>
-JAVASCRIPT
-
-
-}
-
-
 
 =head2 associate_locus_form
 
