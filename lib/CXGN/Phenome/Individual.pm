@@ -186,7 +186,7 @@ sub store {
 
   Synopsis:     my @images = $self->get_images()	
   Arguments:    none	
-  Returns:      an array of image objects	 
+  Returns:      a list of CXGN::Image objects	 
   Side effects:	none
   Description:	a method for fetching all images associated with an individual
 

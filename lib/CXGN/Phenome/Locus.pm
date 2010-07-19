@@ -34,6 +34,7 @@ use CXGN::Phenome::Schema;
 use CXGN::Phenome::LocusGroup;
 use CXGN::DB::Object;
 use CXGN::Chado::Dbxref;
+use CXGN::Image;
 
 use base qw /  CXGN::DB::ModifiableI CXGN::Phenome::Locus::LocusRanking /;
 
@@ -1655,10 +1656,9 @@ sub get_edits {
 
   Synopsis:	my @figures=$locus->get_figures();
   Arguments:	none
-  Returns:	array of figure and image objects
+  Returns:	list of CXGN::image objects
   Side effects:	
-  Description:	selects the ids of all figures associated with the locus from
-                locus_image linking table and and array of these individual objects.
+  Description:	all images are stored in the locus_image linking table 
 
 =cut
 
@@ -1728,10 +1728,10 @@ sub add_figure {
 
 =head2 get_owners
 
- Usage: my @owners=$locus->get_owners()
+ Usage: my @owners=$locus->get_owners(1)
  Desc:  get all the owners of the current locus object 
  Ret:   an array of SGN person ids
- Args:  none 
+ Args:  [optional] boolean - if passed then return an arrayref of people objects
  Side Effects:
  Example:
 
@@ -1739,16 +1739,20 @@ sub add_figure {
 
 sub get_owners {
     my $self=shift;
+    my $return_obj = shift;
     my $query = "SELECT sp_person_id FROM phenome.locus_owner 
                  WHERE locus_id = ? AND obsolete = 'f' ORDER BY create_date";
     my $sth=$self->get_dbh()->prepare($query);
     $sth->execute($self->get_locus_id());
     my $person;
     my @owners = ();
+    my @o_objects = ();
     while (my ($sp_person_id) = $sth->fetchrow_array()) { 
         $person = CXGN::People::Person->new($self->get_dbh(), $sp_person_id);
 	push @owners, $sp_person_id;
+	push @o_objects, $person;
     }
+    return \@o_objects if $return_obj;
     return @owners;
 }
 
