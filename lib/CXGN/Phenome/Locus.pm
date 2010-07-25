@@ -461,7 +461,7 @@ sub update_locus_alias {
 
 =head2 get_unigenes
 
- Usage: $self->get_unigenes({full=>1, current=1})
+ Usage: $self->get_unigenes({full=>1, current=>1})
  Desc:  find unigenes associated with the locus
  Ret:   list of (lite) unigene objects (without the sequences- much faster) 
  Args:  optional hashref with the following keys:
