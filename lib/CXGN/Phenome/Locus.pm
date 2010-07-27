@@ -1137,6 +1137,92 @@ sub get_dbxref_lists {
     return %dbxrefs;
 }
 
+=head2 get_all_dbxrefs
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_all_dbxrefs {
+    my $locus = shift;
+    my $locus_name = $locus->get_locus_name() ;
+    my %dbs        = $locus->get_dbxref_lists() ;    #hash of arrays. keys=dbname values= dbxref objects
+    my @alleles = $locus->get_alleles();
+    #add the allele dbxrefs to the locus dbxrefs hash...
+    #This way the alleles associated publications and sequences are also printed on the locus page
+    #it might be a good idea to print a link to the allele next to each allele-derived annotation
+    
+    foreach my $a (@alleles) {
+        my %a_dbs = $a->get_dbxref_lists();
+	
+        foreach my $a_db_name ( keys %a_dbs ) { 
+            #add allele_dbxrefs to the locus_dbxrefs list
+            my %seen = () ; #hash for assisting filtering of duplicated dbxrefs (from allele annotation)
+            foreach my $xref ( @{ $dbs{$a_db_name} } ) {
+                $seen{ $xref->[0]->get_accession() }++;
+            }    #populate with the locus_dbxrefs
+            foreach my $axref ( @{ $a_dbs{$a_db_name} } ) {    #and filter duplicates
+                push @{ $dbs{$a_db_name} }, $axref
+		    unless $seen{ $axref->[0]->get_accession() }++;
+            }
+        }
+    }
+    #my ( $tgrc, $pubs, $genbank );
+    ##tgrc
+    #foreach ( @{ $dbs{'tgrc'} } ) {
+    #    if ( $_->[1] eq '0' ) {
+    #        my $url       = $_->[0]->get_urlprefix() . $_->[0]->get_url();
+    #        my $accession = $_->[0]->get_accession();
+    #        $tgrc .=
+    #		qq|$locus_name is a <a href="$url$accession" target="blank">TGRC gene</a><br />|;
+    #    }
+    #}
+    
+    my $abs_count = 0;
+    my @sorted;
+    
+    #@sorted = sort { $a->[0]->get_accession() <=> $b->[0]->get_accession() } @{ $dbs{PMID} } if  defined @{ $dbs{PMID} } ;
+ 
+    #foreach ( @sorted  ) {
+    #    if ( $_->[1] eq '0' ) {    #if the pub is not obsolete
+    #        $pubs .= get_pub_info( $_->[0], 'PMID', $abs_count++ );
+    #    }
+    #}
+    #foreach ( @{ $dbs{'SGN_ref'} } ) {
+    #    $pubs .= get_pub_info( $_->[0], 'SGN_ref', $abs_count++ )
+#	    if $_->[1] eq '0';
+#}
+    
+    my $gb_count = 0;
+    ##foreach ( @{ $dbs{'DB:GenBank_GI'} } ) {
+    #    if ( $_->[1] eq '0' ) {
+    #        $gb_count++;
+    #        my $url = $_->[0]->get_urlprefix() . $_->[0]->get_url();
+    #        my $gb_accession =
+#		$locus->CXGN::Chado::Feature::get_feature_name_by_gi(
+    #$_->[0]->get_accession() );
+     #       my $description = $_->[0]->get_description();
+     #       $genbank .=
+	#	qq|<a href="$url$gb_accession" target="blank">$gb_accession</a> $description<br />|;
+        #}
+    #}
+    
+    
+    # foreach ( @{$dbs{'GO'}}) { push @ont_annot, $_; }
+    # foreach ( @{$dbs{'PO'}}) { push @ont_annot, $_; }
+    # foreach ( @{$dbs{'SP'}}) { push @ont_annot, $_; }
+    
+    #return ( $tgrc, $pubs, $abs_count, $genbank, $gb_count, \@ont_annot );
+    return %dbs;
+    
+}
+
+
 
 =head2 get_locus_dbxrefs
 
