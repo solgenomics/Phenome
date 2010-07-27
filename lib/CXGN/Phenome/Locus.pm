@@ -1171,55 +1171,8 @@ sub get_all_dbxrefs {
 		    unless $seen{ $axref->[0]->get_accession() }++;
             }
         }
-    }
-    #my ( $tgrc, $pubs, $genbank );
-    ##tgrc
-    #foreach ( @{ $dbs{'tgrc'} } ) {
-    #    if ( $_->[1] eq '0' ) {
-    #        my $url       = $_->[0]->get_urlprefix() . $_->[0]->get_url();
-    #        my $accession = $_->[0]->get_accession();
-    #        $tgrc .=
-    #		qq|$locus_name is a <a href="$url$accession" target="blank">TGRC gene</a><br />|;
-    #    }
-    #}
-    
-    my $abs_count = 0;
-    my @sorted;
-    
-    #@sorted = sort { $a->[0]->get_accession() <=> $b->[0]->get_accession() } @{ $dbs{PMID} } if  defined @{ $dbs{PMID} } ;
- 
-    #foreach ( @sorted  ) {
-    #    if ( $_->[1] eq '0' ) {    #if the pub is not obsolete
-    #        $pubs .= get_pub_info( $_->[0], 'PMID', $abs_count++ );
-    #    }
-    #}
-    #foreach ( @{ $dbs{'SGN_ref'} } ) {
-    #    $pubs .= get_pub_info( $_->[0], 'SGN_ref', $abs_count++ )
-#	    if $_->[1] eq '0';
-#}
-    
-    my $gb_count = 0;
-    ##foreach ( @{ $dbs{'DB:GenBank_GI'} } ) {
-    #    if ( $_->[1] eq '0' ) {
-    #        $gb_count++;
-    #        my $url = $_->[0]->get_urlprefix() . $_->[0]->get_url();
-    #        my $gb_accession =
-#		$locus->CXGN::Chado::Feature::get_feature_name_by_gi(
-    #$_->[0]->get_accession() );
-     #       my $description = $_->[0]->get_description();
-     #       $genbank .=
-	#	qq|<a href="$url$gb_accession" target="blank">$gb_accession</a> $description<br />|;
-        #}
-    #}
-    
-    
-    # foreach ( @{$dbs{'GO'}}) { push @ont_annot, $_; }
-    # foreach ( @{$dbs{'PO'}}) { push @ont_annot, $_; }
-    # foreach ( @{$dbs{'SP'}}) { push @ont_annot, $_; }
-    
-    #return ( $tgrc, $pubs, $abs_count, $genbank, $gb_count, \@ont_annot );
+    }    
     return %dbs;
-    
 }
 
 
