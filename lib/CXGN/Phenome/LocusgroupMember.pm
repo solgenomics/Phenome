@@ -34,8 +34,7 @@ use base qw / CXGN::DB::Object /;
   Usage: my $lg = CXGN::Phenome::locusgroupMember->new($schema, $lgm_id);
   Desc:
   Ret: a CXGN::Phenome::LocusgroupMember object
-  Args: a $schema a schema object, preferentially created using:
-        CXGN::Phenome::Schema->connect( sub{ CXGN::DB::Connection->new()->get_actual_dbh()}, %other_parameters);
+  Args: a $schema a DBIC schema object,
         $lgm_id, if omitted, an empty  object is created.
   Side_Effects: accesses the database
 
