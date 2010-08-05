@@ -15,6 +15,7 @@ my $build = Module::Build->new(
 
     # and now the list of perl module dependencies
     requires => {
+        perl => '5.10',
 	
 	'Bio::Chado::Schema'         => '0.04000',
 	'Bio::GMOD::GenericGenePage' => '0.12',
