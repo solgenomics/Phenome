@@ -54,7 +54,7 @@ sub new {
     my $dbh = shift;
     my $id= shift; # the primary key in the databaes of this object
     
-    if (!$dbh->isa("CXGN::DB::Connection")) { 
+    unless( $dbh->can('selectall_arrayref') ) {
 	die "First argument to CXGN::Phenome::Locus constructor needs to be a database handle.";
     }
     my $self=$class->SUPER::new($dbh);   
