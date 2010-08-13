@@ -154,8 +154,8 @@ print STDERR "\nExecuting the SQL commands.\n";
 $dbh->do(<<EOSQL);
 
 
-GRANT ALL ON public.organismprop TO web_usr;
-GRANT ALL ON public.organismprop_organismprop_id_seq TO web_usr; 
+GRANT insert,select ON public.organismprop TO web_usr;
+GRANT update,usage ON public.organismprop_organismprop_id_seq TO web_usr; 
 
 EOSQL
 
