@@ -32,7 +32,7 @@ use CXGN::Phenome::UserTrait;
 use CXGN::Phenome::PopulationDbxref;
 use List::Compare;
 use Cache::File;
-
+use File::Path qw / mkpath /;
 
 use base qw / CXGN::DB::ModifiableI  /;
 
@@ -1585,69 +1585,15 @@ sub genotype_dataset {
 	$gen_dataset = substr $gen_dataset, 0, -1;	
     } 
   
+
+
+    
     return \$gen_dataset;
 
 }
 
 
-###################################################
-#
-# MOVED has_qtl_data to CXGN::Phenome::Qtl::Tools
-##################################################
 
-# =head2 has_qtl_data
-
-#  Usage: my @pop_objs = $pop_obj->has_qtl_data();
-#  Desc: returns a list of population (objects)  with genetic and phenotypic data (qtl data). 
-#        The assumption is if a trait has genetic and phenotype data, it is from a qtl study.
-#  Ret: an array of population objects
-#  Args: none
-#  Side Effects: accesses the database
-#  Example:
-
-# =cut
-
-# sub has_qtl_data {
-#     my $self = shift;    
-#     my $dbh = CXGN::DB::Connection->new();
-#     my $query = "SELECT DISTINCT (population_id) 
-#                         FROM public.phenotype 
-#                         LEFT JOIN phenome.individual USING (individual_id)";
-
-#     my $sth = $dbh->prepare($query);
-#     $sth->execute();
-    
-#     my (@pop_objs, @pop_ids)=();
-    
-#     while (my ($pop_id) = $sth->fetchrow_array()) {
-# 	push @pop_ids, $pop_id;
-#     }
-
-#     foreach my $pop_id2 (@pop_ids) {
-
-# 	my $query2 = "SELECT DISTINCT (population_id) 
-#                              FROM phenome.genotype 
-#                              LEFT JOIN phenome.individual USING (individual_id) 
-#                              WHERE individual.population_id = ?";
-
-# 	my $sth2 = $dbh->prepare($query2);
-# 	$sth2->execute($pop_id2);
-	
-# 	my ($qtl_pop_id) = $sth2->fetchrow_array();
-	
-# 	if ($qtl_pop_id) {
-# 	    my $pop_obj = CXGN::Phenome::Population->new($dbh, $qtl_pop_id);
-	
-
-# 	    push @pop_objs, $pop_obj;
-# 	}
-#     }
-
-#         return  @pop_objs; 
- 
-    
-
-# }
 
 
 =head2 mapversion_id
@@ -1833,8 +1779,115 @@ sub my_populations {
 
 }
 
+=head2 cache_path
+
+ Usage: my $cache_path = $population->cache_path($c);
+ Desc: creates a /data/prod/tmp/r_qtl/cache directory, 
+       if it does not exist. 
+ Ret: absolute path to the cache directory
+ Args: SGN::Context object
+ Side Effects: 
+ Example:
+
+=cut
+
+sub cache_path
+{
+    my $self = shift;
+    my $c    = shift;
+    my $pop_cache = $c->get_conf('r_qtl_temp_path');
+    $pop_cache= "$pop_cache/cache";
+    
+    unless (-d $pop_cache) 
+    {
+	mkpath ($pop_cache, 0, 0755);
+    }   
+    return $pop_cache;
+}
 
 
+
+=head2 genotype_file
+
+ Usage: my $geno_file = $population->genotype_file($c);
+ Desc: writes the genotype data set into a file and caches it. 
+ Ret: absolute path to the cached genotype file
+ Args: SGN::Context object
+ Side Effects: 
+ Example:
+
+=cut
+
+sub genotype_file {
+    my $self = shift;
+    my $c = shift;
+    my $pop_id = $self->get_population_id();
+    my $cache_path = $self->cache_path($c);
+    
+    my $file_cache = Cache::File->new( cache_root => $cache_path );
+    $file_cache->purge();
+
+    my $key_gen          = "popid_" . $pop_id . "_genodata";
+    my $gen_dataset_file = $file_cache->get($key_gen);
+
+    unless ($gen_dataset_file)
+    {
+        my $genodata     = $self->genotype_dataset();
+        my $geno_dataset = ${$genodata};
+
+        my $filename = "genodata_" . $pop_id . ".csv";
+        my $file     = "$cache_path/$filename";
+
+        open my $gh, ">", $file or die "can't open $file: !$\n";
+        $gh->print($geno_dataset);
+
+        $file_cache->set( $key_gen, $file, '30 days' );
+        $gen_dataset_file = $file_cache->get($key_gen);
+    }
+
+    return $gen_dataset_file;
+}
+
+=head2 phenotype_file
+
+ Usage: my $pheno_file = $population->phenotype_file($c);
+ Desc: writes the phenotype data set into a file and caches it. 
+ Ret: absolute path to the cached phenotype file
+ Args: SGN::Context object
+ Side Effects: 
+ Example:
+
+=cut
+
+sub phenotype_file {
+    my $self = shift;
+    my $c = shift;
+    my $pop_id = $self->get_population_id();
+    my $cache_path = $self->cache_path($c);
+    
+    my $file_cache = Cache::File->new( cache_root => $cache_path );
+    $file_cache->purge();
+
+    my $key_gen          = "popid_" . $pop_id . "_phenodata";
+    my $phe_dataset_file = $file_cache->get($key_gen);
+
+    unless ($phe_dataset_file)
+    {
+        my $phenodata     = $self->phenotype_dataset();
+        my $pheno_dataset = ${$phenodata};
+
+        my $filename = "phenodata_" . $pop_id . ".csv";
+        my $file     = "$cache_path/$filename";
+
+        open my $gh, ">", $file or die "can't open $file: !$\n";
+        $gh->print($pheno_dataset);
+
+        $file_cache->set( $key_gen, $file, '30 days' );
+        $phe_dataset_file = $file_cache->get($key_gen);
+    }
+
+    return $phe_dataset_file;
+}
 
 ############# 
 return  1;
