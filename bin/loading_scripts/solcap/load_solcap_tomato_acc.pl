@@ -40,7 +40,7 @@ use CXGN::Phenome::Population;
 use CXGN::Phenome::Individual;
 use CXGN::Chado::Dbxref;
 use CXGN::Chado::Phenotype;
-
+use CXGN::People::Person;
 
 our ($opt_H, $opt_D, $opt_i, $opt_t);
 
@@ -62,8 +62,25 @@ my $phenome_schema= CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh()
 
 
 #getting the last database ids for resetting at the end in case of rolling back
-my $last_cvtermprop_id= $schema->resultset('Cv::Cvtermprop')->get_column('cvtermprop_id')->max; 
+my $last_stockprop_id= $schema->resultset('Stock::Stockprop')->get_column('stockprop_id')->max; 
+my $last_stock_id= $schema->resultset('Stock::Stock')->get_column('stock_id')->max;
+my $last_stockrel_id= $schema->resultset('Stock::StockRelationship')->get_column('stock_relationship_id')->max; 
+my $last_cvterm_id= $schema->resultset('Cv::Cvterm')->get_column('cvterm_id')->max; 
+my $last_cv_id= $schema->resultset('Cv::Cv')->get_column('cv_id')->max; 
+my $last_db_id= $schema->resultset('General::Db')->get_column('db_id')->max; 
+my $last_dbxref_id= $schema->resultset('General::Dbxref')->get_column('dbxref_id')->max; 
+my $last_organism_id = $schema->resultset('Organism::Organism')->get_column('organism_id')->max;
 
+my %seq  = (
+	    'db_db_id_seq' => $last_db_id,
+	    'dbxref_dbxref_id_seq' => $last_dbxref_id,
+	    'cv_cv_id_seq' => $last_cv_id,
+	    'cvterm_cvterm_id_seq' => $last_cvterm_id,
+	    'stock_stock_id_seq' => $last_stock_id,
+	    'stockprop_stockprop_id_seq' => $last_stockprop_id,
+	    'stock_relationship_stock_relationship_id_seq' => $last_stockrel_id,
+	    'organism_organism_id_seq' => $last_organism_id,
+	    );
 
 #new spreadsheet, skip 2 first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file);
@@ -81,7 +98,10 @@ my $population_name = 'Tomato Cultivars and Heirloom lines';
 my $common_name= 'Tomato';
 
 my $common_name_id = 1; # find by name = $common_name !
-my $sp_person_id = undef; # who is the owner ? 
+
+
+my $sp_person_id = CXGN::People::Person->get_person_by_username($dbh, 'solcap_project');
+die "Need to have SolCAP user pre-loaded in the sgn database! " if !$sp_person_id;
 
 
 #my $population = $phenome_schema->resultset("Population")->find_or_create( 
@@ -98,8 +118,9 @@ if (!$population->get_population_id() ) {
 	$population->store();
 }
 
-my $organism = $schema->resultset("Organism::Organism")->find( {
-    species => 'Solanum lycopersicum' } );
+ 
+my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
+    species => 'any' } );
 my $organism_id = $organism->organism_id();
 
 ## For the stock module:
@@ -114,7 +135,7 @@ my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     });
 
 ################################
-
+print "creating new stock for population $population_name\n";
 my $stock_population = $schema->resultset("Stock::Stock")->find_or_create(
     { organism_id => $organism_id,
       name  => $population_name,
@@ -126,8 +147,12 @@ my $stock_population = $schema->resultset("Stock::Stock")->find_or_create(
 ##my $unit_cv = $schema->resultset("Cv::Cv")->find(
  ##   { name => 'unit.ontology' } );
 
+print "parsing spreadsheet... \n";
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
+
+my $individual_count ;
+my $ex_ind;
 
 eval {
     
@@ -139,8 +164,20 @@ eval {
 	
 	my $accession = $spreadsheet->value_at($sct, 'Donor number/Variety Name:');
 	
+	my $sname = $spreadsheet->value_at($sct, 'Scientific Name:');
+	$sname  =~ m/(S\.\s)(.*)/ ;
+	my $s = $2;
+	$s = 'lycopersicum' if $2 =~ m/^lycopersic..$/ ;
+	$s = 'corneliomuelleri' if $2 =~m/corneliomulleri/;
 	
-       #the cvterm for the accession
+	my $species = 'Solanum ' . $s;
+	print "Species = '$species'\n";
+	
+	my $organism = $schema->resultset("Organism::Organism")->find( {
+	    species => $species } );
+	my $organism_id = $organism->organism_id();
+	
+	#the cvterm for the accession
 	print "Finding/creating cvtem for 'stock type' \n"; 
 	my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
 	    { name   => 'accession',
@@ -155,6 +192,18 @@ eval {
 	      type_id => $accession_cvterm->cvterm_id()
 	    });
 	    
+	
+	#add the owner for this stock
+	$stock->create_stockprops( { sp_person_id => $sp_person_id }, { autocreate => 1 } );
+	
+	
+	#add the sct# as a stockprop with type = 'solcap number'.
+        #this prop will be used for looking up the variety for storing experiment data
+	#into the natural diversity module 
+	
+	$stock->create_stockprops( { 'solcap number' => $sct }, { autocreate => 1 } );
+	
+##
 	#the stock belongs to the population:
 	
         #add new stock_relationship
@@ -186,6 +235,7 @@ eval {
 	my $individual= $individuals[0] if @individuals;
 	
 	if (!@individuals) {
+	    $individual_count++;
 	    print "instantiating new individual!!!!\n";
 	    $individual= CXGN::Phenome::Individual->new($dbh);
 	    $individual->set_name($accession);
@@ -193,7 +243,7 @@ eval {
 	    $individual->set_sp_person_id($sp_person_id); 
 	    $individual->set_common_name_id($common_name_id);
 	    $individual->store();
-	}
+	} else { $ex_ind++; }
 	
 	
 	my $la = $spreadsheet->value_at($sct, "Accession number LA number (if available):");
@@ -230,38 +280,33 @@ eval {
 	my $donor = $spreadsheet->value_at($sct,"Name of Donor:");
 	$stock->create_stockprops( { donor  => $var_type }, { autocreate => 1 } );
 	##
-	#Donor is SolCAP, and should be found in sgn_people.sp_person and loaded into stock_owner
-	my $person = CXGN::People::Person->get_person_by_username($dbh, 'SolCAP');
-	#my $owner_q= "INSERT INTO sgn.stock_owner (stock_id, sp_person_id) VALUES (?,?)";
-	#$owner_s = $dbh->prepate($owner_q);
-	#$owner_s->execute($stock->stock_id(), $person->get_sp_person_id());
 	
 	my $donor_source = $spreadsheet->value_at($sct, "Donor Source:");
-	$stock->create_stockprops( { 'donor source'  => $donor_source }, { autocreate => 1 } );
+	$stock->create_stockprops( { 'donor source'  => $donor_source }, { autocreate => 1 } ) if $donor_source;
 	
 	my $institute = $spreadsheet->value_at($sct, "Donor Institution:");
-	$stock->create_stockprops( { 'donor institution'  => $institute }, { autocreate => 1 } );
+	$stock->create_stockprops( { 'donor institution'  => $institute }, { autocreate => 1 } ) if $institute;
 
 	my $country = $spreadsheet->value_at($sct, "Origin Country");
-	$stock->create_stockprops( { country  => $country }, { autocreate => 1 } );
+	$stock->create_stockprops( { country  => $country }, { autocreate => 1 } ) if $country ;
 
-	my $state = $spreadsheet->value_at($sct, "Origin State/Province");
-	$stock->create_stockprops( { state  => $state }, { autocreate => 1 } );
+	my $state = $spreadsheet->value_at($sct, "Origin State/Province") ;
+	$stock->create_stockprops( { state  => $state }, { autocreate => 1 } ) if $state;
 
 	my $adaptation = $spreadsheet->value_at($sct, "Adaptation (Humid/Arid)");
-	$stock->create_stockprops( { adaptation  => $adaptation }, { autocreate => 1 } );
+	$stock->create_stockprops( { adaptation  => $adaptation }, { autocreate => 1 } ) if $adaptation;
 
 	my $male = $spreadsheet->value_at($sct, "Male");
-	$stock->create_stockprops( { 'male parent'  => $male }, { autocreate => 1 } );
+	$stock->create_stockprops( { 'male parent'  => $male }, { autocreate => 1 } ) if $male;
 
 	my $female = $spreadsheet->value_at($sct, "Female");
-	$stock->create_stockprops( { 'female parent' => $female }, { autocreate => 1 } );
+	$stock->create_stockprops( { 'female parent' => $female }, { autocreate => 1 } ) if $female;
 
 	my $other = $spreadsheet->value_at($sct, "Other e.g. BC, IBC");
-	$stock->create_stockprops( { pedigree  => $other }, { autocreate => 1 } );
+	$stock->create_stockprops( { pedigree  => $other }, { autocreate => 1 } ) if $other;
 
 	my $notes = $spreadsheet->value_at($sct, "Notes:");
-	$stock->create_stockprops( { notes  => $notes }, { autocreate => 1 } );
+	$stock->create_stockprops( { notes  => $notes }, { autocreate => 1 } ) if $notes;
 	
 	########
 	my @props = $stock->search_related('stockprops');
@@ -273,13 +318,21 @@ eval {
 };
 
 
-
-if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
+print "Created $individual_count new individuals! $ex_ind individuals existed in the database \n\n";
+if ($@) { 
+    print "An error occured! Rolling backl!\n\n $@ \n\n "; 
+    $dbh->rollback();
+}
 elsif ($opt_t) {
     print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
     
-    if ($last_cvtermprop_id) { $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', $last_cvtermprop_id, true)"); }
-    else { $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', 1, false)"); }
+    foreach my $value ( keys %seq ) { 
+	my $maxval= $seq{$value} || 0;
+	#print  "$key: $value, $maxval \n";
+	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+    }
+    $dbh->rollback();
     
     
 }else {
