@@ -17,6 +17,8 @@ Isaak Y Tecle (iyt2@cornell.edu)
 =cut
 
 package CXGN::Phenome::Qtl::Tools;
+use strict;
+use warnings;
 
 use CXGN::Phenome::Qtl;
 use CXGN::Phenome::Population;
@@ -341,9 +343,9 @@ sub all_traits_with_qtl_data {
 sub browse_traits {
     my $self = shift;
     my ($all_traits, $all_trait_d) = $self->all_traits_with_qtl_data();
-    my @all_traits = @{$all_traits}; 
+    my @all_traits = @{$all_traits};
     $all_traits = uniq(@all_traits);
-    @all_traits = sort{$a<=>$b} @all_traits;
+    @all_traits = sort{$a cmp $b} @all_traits;
 
     my @indices = ('A'..'Z');
     my %traits_hash = ();
@@ -441,18 +443,17 @@ sub search_usertrait {
                                                 WHERE name ILIKE ?"
                                        );
 
-    
     $sth->execute($trait);
-    
-    my (@id, @name, @definition);
-    while ((my $id, $name, $definition) = $sth->fetchrow_array()) {
-	push @id, $id;
-	push @name, $name;
-	push @definition, $definition;
 
-    } 
-    
-    return \@id, \@name, \@definition;   
+    my (@id, @name, @definition);
+    my ($id, $name, $definition);
+    # this should use selectall_arrayref
+    while ( ($id, $name, $definition) = $sth->fetchrow_array()) {
+        push @id, $id;
+        push @name, $name;
+        push @definition, $definition;
+    }
+    return \@id, \@name, \@definition;
 
 }
 
