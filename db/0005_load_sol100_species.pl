@@ -177,18 +177,11 @@ print STDOUT "DONE!\n";
 $dbh->commit;
 
 
-# Brunfelsia grandiflora
+
 # Benthamiella sp.
-# Sessea dependens
-# Nicotiana benthamiella
-# Anthotroche sp.
-# Lycium carolinense
-# Sclerophylax sp.
-# Exodeconus maritimis
+
 # Solanum scabrum * NEED TO UPDATE TAXONOMY FOR THIS!
-# Nothocestrum sp.
-# Aureliana lucida
-# Athenaea sp.
+
 
 
 __DATA__
@@ -280,3 +273,12 @@ Capsicum pubescens
 Lycianthes biflora
 Lycianthes multiflora
 Lycianthes moziniana
+Sessea corymbiflora
+Nicotiana benthamiana
+Anthotroche pannosa
+Lycium americanum
+Sclerophylax sp. Nee and Bohs 50857
+Exodeconus miersii
+Nothocestrum latifolium
+Aureliana fasciculata
+Athenaea sp. Bohs 91
