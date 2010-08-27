@@ -1,3 +1,5 @@
+package CXGN::Phenome::Qtl;
+
 =head1 NAME
 CXGN::Phenome::Qtl 
 
@@ -14,37 +16,31 @@ Isaak Y Tecle (iyt2@cornell.edu)
 =cut
 
 use strict;
-
-
-package CXGN::Phenome::Qtl;
+use warnings;
 
 use File::stat;
-#use CXGN::Tools::Text qw | sanitize_string |;
 use CXGN::People::Person;
 use CXGN::Phenome::Population;
 use File::Spec;
 
 use File::Path qw/ mkpath /;
 
-
-
-
 sub new {
-    my $class = shift; 
+    my $class        = shift;
     my $sp_person_id = shift;
-    my $params_ref = shift;
-    my $self = bless {}, $class; 
+    my $params_ref   = shift;
+    my $self         = bless {}, $class;
+
     # put the right control conditions for a hash ref $params_ref
     if ($params_ref) {
-	$self->set_all_parameters($params_ref);
+        $self->set_all_parameters($params_ref);
     }
+
     #$self->set_user_stat_parameters($self->user_stat_parameters);
- 
+
     $self->set_sp_person_id($sp_person_id);
     return $self;
 }
-
-
 
 =head2 apache_upload_file
 
@@ -60,38 +56,35 @@ sub new {
 
 =cut
 
-
-
-sub apache_upload_file { 
-    my $self = shift;
+sub apache_upload_file {
+    my $self   = shift;
     my $upload = shift;
-    my $c = shift;
-    
-    # Adjust File name if using Windows IE - it sends whole path; drive letter, path, and filename
-    my ($upload_filename, $dir);
-    if  ( $ENV{HTTP_USER_AGENT} =~ /msie/i ) {	
-	($dir, $upload_filename) =   $upload->filename =~ m/(.*\\)(.*)$/;	
-    
+    my $c      = shift;
+
+# Adjust File name if using Windows IE - it sends whole path; drive letter, path, and filename
+    my ( $upload_filename, $dir );
+    if ( $ENV{HTTP_USER_AGENT} =~ /msie/i ) {
+        ( $dir, $upload_filename ) = $upload->filename =~ m/(.*\\)(.*)$/;
+
     }
     else {
-	$upload_filename = $upload->filename;
-     }
-    
-    
-    my ($temp_qtl, $temp_user) = $self->create_user_qtl_dir($c);
-    
-    my $temp_file = $temp_user . "/".$upload_filename;      
+        $upload_filename = $upload->filename;
+    }
+
+    my ( $temp_qtl, $temp_user ) = $self->create_user_qtl_dir($c);
+
+    my $temp_file = $temp_user . "/" . $upload_filename;
     my $upload_fh = $upload->fh;
 
-   
-    if (-e $temp_file) {
+    if ( -e $temp_file ) {
         unlink $temp_file;
     }
 
     print STDERR "Uploading file to location: $temp_file\n";
-    
-    open UPLOADFILE, ">", $temp_file or die "Could not write to $temp_file: $!\n";
-    
+
+    open UPLOADFILE, ">", $temp_file
+      or die "Could not write to $temp_file: $!\n";
+
     binmode UPLOADFILE;
     while (<$upload_fh>) {
         print UPLOADFILE;
@@ -102,17 +95,15 @@ sub apache_upload_file {
 
 }
 
-
 sub set_all_parameters {
     my $self = shift;
-    $self->{all_parameters}=shift;
+    $self->{all_parameters} = shift;
 }
 
 sub get_all_parameters {
     my $self = shift;
     return $self->{all_parameters};
 }
-
 
 sub set_sp_person_id {
     my $self = shift;
@@ -124,7 +115,6 @@ sub get_sp_person_id {
     return $self->{sp_person_id};
 }
 
-
 =head2 accessors get_population_id, set_population_id
 
  Usage:
@@ -135,15 +125,14 @@ sub get_sp_person_id {
 
 =cut
 
-
 sub get_population_id {
-  my $self = shift;
-  return $self->{population_id}; 
+    my $self = shift;
+    return $self->{population_id};
 }
 
 sub set_population_id {
-  my $self = shift;
-  $self->{population_id} = shift;
+    my $self = shift;
+    $self->{population_id} = shift;
 }
 
 =head2 user_pop_details
@@ -158,30 +147,28 @@ sub set_population_id {
 
 =cut
 
-
-
 sub user_pop_details {
-    my $self = shift;
+    my $self     = shift;
     my $args_ref = $self->get_all_parameters();
-    
+
     if ($args_ref) {
-	my %args = %$args_ref;
+        my %args = %$args_ref;
 
-	my %pop_args;
-    
-	foreach my $k (keys %args) {
-	    my $v = $args{$k};	
+        my %pop_args;
 
-	    if ($k =~/^pop/) {
-		$pop_args{$k}=$v;
-	    }
-    
-	}     
+        foreach my $k ( keys %args ) {
+            my $v = $args{$k};
 
-	return \%pop_args;	    
+            if ( $k =~ /^pop/ ) {
+                $pop_args{$k} = $v;
+            }
+
+        }
+
+        return \%pop_args;
     }
-    else { 
-	return undef;
+    else {
+        return undef;
     }
 }
 
@@ -199,28 +186,31 @@ sub user_pop_details {
 =cut
 
 sub user_stat_parameters {
-    my $self = shift;
+    my $self     = shift;
     my $args_ref = $self->get_all_parameters();
-   
-    if ($args_ref) {
-	my %args = %$args_ref;
-	my %stat_args;
-    
-	foreach my $k (keys %args) {
-	    my $v = $args{$k};	
-	
-	    if ($k =~/^stat_/) {
-		$stat_args{$k}=$v;
-	    }
-	}    
-    
-	if ($stat_args{stat_qtl_method} eq 'Marker Regression' || $stat_args{stat_step_size} eq 'zero') {
-	    $stat_args{stat_prob_method}="";
-	}
-	return \%stat_args;	
-    } else {   
 
-	return undef;
+    if ($args_ref) {
+        my %args = %$args_ref;
+        my %stat_args;
+
+        foreach my $k ( keys %args ) {
+            my $v = $args{$k};
+
+            if ( $k =~ /^stat_/ ) {
+                $stat_args{$k} = $v;
+            }
+        }
+
+        if (   $stat_args{stat_qtl_method} eq 'Marker Regression'
+            || $stat_args{stat_step_size} eq 'zero' )
+        {
+            $stat_args{stat_prob_method} = "";
+        }
+        return \%stat_args;
+    }
+    else {
+
+        return undef;
     }
 }
 
@@ -237,24 +227,23 @@ sub user_stat_parameters {
 =cut
 
 sub user_stat_file {
-    my $self = shift;
-    my $c = shift;
+    my $self   = shift;
+    my $c      = shift;
     my $pop_id = shift;
-    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
+    my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
     my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
-   
-    unless ( -e $stat_file ) 
-    {
-	my $stat_ref = $self->user_stat_parameters();
-	if ($stat_ref) 
-	{	   
-	    my $stat_table = $self->make_table($stat_ref);
-         
-	    open my $f, '>', $stat_file or die "Can't create file: $! \n";
-	    $f->print($stat_table);	   	   
-	} else {$stat_file = undef;}
+
+    unless ( -e $stat_file ) {
+        my $stat_ref = $self->user_stat_parameters();
+        if ($stat_ref) {
+            my $stat_table = $self->make_table($stat_ref);
+
+            open my $f, '>', $stat_file or die "Can't create file: $! \n";
+            $f->print($stat_table);
+        }
+        else { $stat_file = undef; }
     }
-  
+
     return $stat_file;
 }
 
@@ -273,26 +262,24 @@ sub user_stat_file {
 =cut
 
 sub default_stat_file {
-    my $self = shift;
-    my $c = shift;
-    my %default_stat = ( 
-	           stat_qtl_method  => 'Maximum Likelihood',
-	           stat_qtl_model   => 'Single-QTL Scan',
-	           stat_prob_method => 'Calculate',
-	           stat_prob_level  => '0.05',
-	           stat_permu_test  => '1000',
-	           stat_permu_level => '0.05', 	          
-	           stat_step_size   => '10',	          
-	        );
- 
-   
-    my $stat_table = $self->make_table(\%default_stat);
-    my ($temp_qtl, $temp_user) = $self->create_user_qtl_dir($c);
+    my $self         = shift;
+    my $c            = shift;
+    my %default_stat = (
+        stat_qtl_method  => 'Maximum Likelihood',
+        stat_qtl_model   => 'Single-QTL Scan',
+        stat_prob_method => 'Calculate',
+        stat_prob_level  => '0.05',
+        stat_permu_test  => '1000',
+        stat_permu_level => '0.05',
+        stat_step_size   => '10',
+    );
 
-    
+    my $stat_table = $self->make_table( \%default_stat );
+    my ( $temp_qtl, $temp_user ) = $self->create_user_qtl_dir($c);
+
     my $stat_file = "$temp_user/default_stat.txt";
     open my $t, '>', $stat_file or die "$! writing $stat_file\n";
-    $t->print( $stat_table );
+    $t->print($stat_table);
 
     return $stat_file;
 }
@@ -311,17 +298,17 @@ sub default_stat_file {
 =cut
 
 sub get_stat_file {
-    my $self = shift;
-    my $c = shift;
-    my $pop_id = shift;  
-    my $user_stat = $self->user_stat_file($c, $pop_id);
-   
-    if (-e $user_stat) {
-	return $user_stat;
+    my $self      = shift;
+    my $c         = shift;
+    my $pop_id    = shift;
+    my $user_stat = $self->user_stat_file( $c, $pop_id );
+
+    if ( -e $user_stat ) {
+        return $user_stat;
     }
     else {
-	my $default_stat = $self->default_stat_file($c);
-	return $default_stat;
+        my $default_stat = $self->default_stat_file($c);
+        return $default_stat;
     }
 
 }
@@ -337,138 +324,74 @@ sub get_stat_file {
 
 =cut
 
-sub make_table {    
-    my $self =shift;
+sub make_table {
+    my $self      = shift;
     my $param_ref = shift;
-    
+
     if ($param_ref) {
-	my %parameters = %$param_ref;
-    
-	my $table;
-	foreach my $k (keys %parameters) {
-	    my $v = $parameters{$k};
-	    $table .= $k . "\t" . $v ."\n";
-	}    
-    
-	return $table;
-    } else {
-	return undef; 
+        my %parameters = %$param_ref;
+
+        my $table;
+        foreach my $k ( keys %parameters ) {
+            my $v = $parameters{$k};
+            $table .= $k . "\t" . $v . "\n";
+        }
+
+        return $table;
     }
-        
+    else {
+        return undef;
+    }
+
 }
-
-
-
 
 sub get_user_qtl_dir {
-    my $self = shift;
-    my $vh = shift;
+    my $self         = shift;
+    my $vh           = shift;
     my $sp_person_id = $self->get_sp_person_id();
-    
+
     #my $vh = SGN::Context->new();
     my $bdir = $vh->get_conf("basepath");
-    my $tdir = $vh->get_conf("tempfiles_subdir");    
-    my $temp = File::Spec->catfile($bdir, $tdir, "page_uploads");    
-    
+    my $tdir = $vh->get_conf("tempfiles_subdir");
+    my $temp = File::Spec->catfile( $bdir, $tdir, "page_uploads" );
+
     my $temp_qtl = "$temp/qtl";
-    
-    my $dbh = CXGN::DB::Connection->new();
-    my $person = CXGN::People::Person->new($dbh, $sp_person_id);
-    my $last_name = $person->get_last_name();
+
+    my $dbh        = CXGN::DB::Connection->new();
+    my $person     = CXGN::People::Person->new( $dbh, $sp_person_id );
+    my $last_name  = $person->get_last_name();
     my $first_name = $person->get_first_name();
-    $last_name =~ s/\s//g;
+    $last_name  =~ s/\s//g;
     $first_name =~ s/\s//g;
     my $temp_user = "$temp_qtl/user_" . $first_name . $last_name;
-    
-    return $temp_qtl, $temp_user;
-   
-    
-}
 
+    return $temp_qtl, $temp_user;
+
+}
 
 sub create_user_qtl_dir {
-    my $self = shift;
-    my $c = shift;
+    my $self         = shift;
+    my $c            = shift;
     my $sp_person_id = $self->get_sp_person_id();
-   
-    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
-   
-    if ($sp_person_id) {
-	unless (-d $temp_qtl) {    
-	    mkpath ($temp_qtl, 0, 0755);
-	} 
-    
-	unless (-d $temp_user) {    
-	    mkpath ($temp_user, 0, 0755);	    
-	}  
-	
-	return $temp_qtl, $temp_user;  
 
-    } 
-     else { 
-	return 0;
-     }
-       
-   
+    my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
+
+    if ($sp_person_id) {
+        unless ( -d $temp_qtl ) {
+            mkpath( $temp_qtl, 0, 0755 );
+        }
+
+        unless ( -d $temp_user ) {
+            mkpath( $temp_user, 0, 0755 );
+        }
+
+        return $temp_qtl, $temp_user;
+
+    }
+    else {
+        return 0;
+    }
+
 }
 
-
-
-# sub legend {
-#     my $self = shift;
-#     my $c = shift;
-#     #my $sp_person  = CXGN::Phenome::Population->new($self->get_population_id();
-#    # ->get_sp_person_id();
-#     #my $qtl            = CXGN::Phenome::Qtl->new($sp_person_id);
-#     my $user_stat_file = $self->get_stat_file($c, $pop_id);
-#     my @legend;
-    
-#     open $_, "<", $user_stat_file or die "$! reading $user_stat_file\n";
-#     while (my $row = <$_>)
-#     {
-#         my ( $parameter, $value ) = split( /\t/, $row );
-# 	if ($parameter =~/qtl_method/) {$parameter = 'Mapping method';}
-# 	if ($parameter =~/qtl_model/) {$parameter = 'Mapping model';}
-# 	if ($parameter =~/prob_method/) {$parameter = 'QTL genotype probablity method';}
-# 	if ($parameter =~/step_size/) {$parameter = 'Genome scan size (cM)';}
-# 	if ($parameter =~/permu_level/) {$parameter = 'Permutation significance level';}
-# 	if ($parameter =~/permu_test/) {$parameter = 'No. of permutations';}
-# 	if ($parameter =~/prob_level/) {$parameter = 'QTL genotype signifance level';}
-
-
-# 	push @legend, [map{$_} ($parameter, $value)];
-
-#     }
-    
-#     if  (!$lod) 
-#     {
-# 	$lod = qq |<i>Not calculated</i>|;
-#     }
-        
-#     push @legend, 
-#     [
-#      map {$_} ('LOD Threshold', $lod)
-#     ];
-#     push @legend, 
-#     [
-#      map {$_} ('Confidence interval', 'based on 95% Bayesian Credible Interval')
-#     ];
-
-    
-
-#     return @legend;
-
-# }
-
-
-
-
-
-
-
-#####
-return 1;
-#####
-
-
-
+1;
