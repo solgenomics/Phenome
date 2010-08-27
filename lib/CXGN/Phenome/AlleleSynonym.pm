@@ -17,7 +17,7 @@ use CXGN::Phenome::Allele;
 
 package CXGN::Phenome::AlleleSynonym;
 
-use base qw/ CXGN::Phenome::Main  CXGN::Phenome::Allele CXGN::DB::ModifiableI/;
+use base qw/ CXGN::DB::ModifiableI /;
 
 =head2 new
 
