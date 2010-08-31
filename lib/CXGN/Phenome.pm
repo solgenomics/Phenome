@@ -1,8 +1,9 @@
+package CXGN::Phenome;
 use strict;
+use warnings;
 
 ####################
 
-package CXGN::Phenome;
 use base qw/CXGN::Search::DBI::Simple CXGN::Search::WWWSearch/;
 
 __PACKAGE__->creates_result('CXGN::Phenome::Result');
@@ -30,7 +31,7 @@ use CXGN::Phenome::Locus::LinkageGroup;
 use base qw/CXGN::Search::DBI::Simple::WWWQuery/;
 our %pname;
 
-sub _cached_dbh() { our $_cached_dbc ||= CXGN::DB::Connection->new('phenome') }
+sub _cached_dbh() { our $_cached_dbc ||= CXGN::DB::Connection->new }
 my $phenome    = 'phenome';
 my $sgn        = 'sgn';
 my $sgn_people = 'sgn_people';
