@@ -29,6 +29,7 @@ Naama Menda (nm249@cornell.edu)
 #!/usr/bin/perl
 use strict;
 use Getopt::Std; 
+use CXGN::Tools::File::Spreadsheet;
 
 use Bio::Chado::Schema;
 use CXGN::DB::InsertDBH;
@@ -68,41 +69,65 @@ my %seq  = (
 	    );
 
 
+
+#new spreadsheet, skip first column
+my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 1);
+
+my @rows = $spreadsheet->row_labels();
+my @columns = $spreadsheet->column_labels();
+
+foreach my $name (@rows ) { 
+    
+    my $project_description = $spreadsheet->value_at($name, "project_description");
+    
 #store a new project
-my $project_name = 'solcap vintage tomatoes 2009, Fremont, OH';
-my $p_description = 'solcap vintage tomatoes. OSU-OARDC North Central Agricultural Research Station, 1165 CR 43 Fremont, OH 43420';
-my $project = $schema->resultset("Project::Project")->find_or_create( {
-    name => $project_name,
-    description => $p_description,
-} ) ;
+    my $project = $schema->resultset("Project::Project")->find_or_create( {
+	name => $name,
+    description => $project_description,
+    } ) ;
+    
+   #store the geolocation data and props:
+    
+    my $geo_description = $spreadsheet->value_at($name, "geo_description");
+    
+    #Degrees and minutes followed by N(North) or S(South) 	41 20 56 N
+    my $latitude = $spreadsheet->value_at($name, "latitude");;
+    
+    #Degrees and minutes followed by E(East) or W(West)	83 7 2 W
+    my $longitude =$spreadsheet->value_at($name, "longitude");
 
-#store the geolocation data and props:
+    my $datum= $spreadsheet->value_at($name, "datum");
+    
+    #Elevation (m asl)	191
+    my $altitude = $spreadsheet->value_at($name, "altitude");
+    
+    my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create( {
+	description => $geo_description,
+	latitude => $latitude,
+	longitude => $longitude,
+	geodetic_datum => $datum,
+	altitude => $altitude,
+    } ) ; 
+    
+    my $year = $spreadsheet->value_at($name, "year");
+    
+    $geolocation->create_geolocationprops( { 'geolocation year' => $year }, { autocreate => 1 } );
+    my $address = $spreadsheet->value_at($name, "address");
 
-my $geo_description = 'OSU-OARDC Fremont, OH';
+    $geolocation->create_geolocationprops( { 'geolocation address' => $address }, { autocreate => 1 } );
+    #project_name	project_description	geo_description	latitude	longitude	datum	altitude	Sowing_date	Transplanting_Date	First_Harvest_Date	Last_Harvest_Date
+    my $sowing_date = $spreadsheet->value_at($name, "Sowing_date");
+    $project->create_projectprops( { 'project sowing date' => $sowing_date }, { autocreate => 1 } );
 
-#Degrees and minutes followed by N(North) or S(South) 	41 20 56 N
-my $latitude = 41+20/60+56/360;
+    my $trans_date = $spreadsheet->value_at($name, "Transplanting_date");
+    $project->create_projectprops( { 'project transplanting date' => $trans_date }, { autocreate => 1 } );
+    my $first_date = $spreadsheet->value_at($name, "First_Harvest_date");
+    $project->create_projectprops( { 'project first harvest date' => $first_date }, { autocreate => 1 } );
+    my $last_date = $spreadsheet->value_at($name, "Last_Harvest_date");
+    $project->create_projectprops( { 'project last harvest date' => $last_date }, { autocreate => 1 } );
 
-#Degrees and minutes followed by E(East) or W(West)	83 7 2 W
-my $longitude = -83-7/60-2/360;
 
-my $datum= 'WGS84';
-
-#Elevation (m asl)	191
-my $altitude = 191;
-
-my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create( {
-    description => $geo_description,
-    latitude => $latitude,
-    longitude => $longitude,
-    geodetic_datum => $datum,
-    altitude => $altitude,
-} ) ; 
-
-my $year = '2009';
-$geolocation->create_geolocationprops( { 'geolocation year' => $year }, { autocreate => 1 } );
-my $address = 'OSU-OARDC North Central Agricultural Research Station, 1165 CR 43 Fremont, OH 43420';
-$geolocation->create_geolocationprops( { 'geolocation address' => $address }, { autocreate => 1 } );
+}
 
 
 if ($opt_t) {
