@@ -119,7 +119,7 @@ eval {
 	#find the stock for this sct# 
 	my $stock = $schema->resultset("Stock::Stockprop")->find( {
 	    value => $sct 
-	    })->find_related('stock'); 
+	    })->find_related('stock', {}); 
 	my $plot = $spreadsheet->value_at($sct, "Plot Number");
 	my $rep = $spreadsheet->value_at($sct, "Replicate Number");
 	my $comment = $spreadsheet->value_at($sct, "Comment");
@@ -211,7 +211,7 @@ eval {
 	    
 	    #check if the phenotype is already associated with an experiment
 	    # which means this loading script has been run before .
-	    if ( $phenotype->find_related("nd_experiment_phenotypes") ) {
+	    if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
 		warn "This experiment has been stored before! Skipping! \n";
 		next();
 	    }

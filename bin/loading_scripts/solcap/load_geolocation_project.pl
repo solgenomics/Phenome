@@ -115,7 +115,7 @@ foreach my $name (@rows ) {
     my $address = $spreadsheet->value_at($name, "address");
 
     $geolocation->create_geolocationprops( { 'geolocation address' => $address }, { autocreate => 1 } );
-    #project_name	project_description	geo_description	latitude	longitude	datum	altitude	Sowing_date	Transplanting_Date	First_Harvest_Date	Last_Harvest_Date
+
     my $sowing_date = $spreadsheet->value_at($name, "Sowing_date");
     $project->create_projectprops( { 'project sowing date' => $sowing_date }, { autocreate => 1 } );
 
