@@ -303,7 +303,7 @@ sub get_stat_file {
     my $pop_id    = shift;
     my $user_stat = $self->user_stat_file( $c, $pop_id );
 
-    if ( -e $user_stat ) {
+    if ( $user_stat && -e $user_stat ) {
         return $user_stat;
     }
     else {
