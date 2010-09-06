@@ -445,7 +445,7 @@ EOH
     my $html_ret = <<EOHTML;
     
     <table><tr>
-	<td colspan="2"><b>Search for any locus or allele</b>  (<a href="../help/gene_search_help.pl" />gene search help page<a />)</td></tr>
+	<td colspan="2"><b>Search for any locus or allele</b>  (<a href="../help/gene_search_help.pl">gene search help page</a>)</td></tr>
 	<tr><td>$any_name_select</td>
 	<td><a href="../phenome/locus_display.pl?action=new">[Submit new locus]</a></td>
 	</tr></table>
