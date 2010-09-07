@@ -458,6 +458,65 @@ sub search_usertrait {
 }
 
 
+=head2 qtl_pops_by_common_name
+
+ Usage: my @qtl_pops = $qtl_tool_obj->qtl_pops_by_common_name($common_name);
+ Desc: queries db for qtl populations assayed for a given
+       organism (based on group common_name)
+ Ret: an array of qtl population object or undef
+ Args: organism group common name
+ Side Effects:
+ Example:
+
+=cut
+
+
+
+sub qtl_pops_by_common_name {
+    my $self = shift;
+    my $org_common_name = shift;
+
+    my @pop_objs = $self->has_qtl_data();
+    
+    my @org_pops;
+    
+    foreach my $pop_obj (@pop_objs) {
+	my $pop_id = $pop_obj->get_population_id();
+	unless (!$pop_id) {
+	    my $sth = $self->get_dbh()->prepare("SELECT  distinct(common_name) 
+                                                         FROM phenome.individual 
+                                                         LEFT JOIN sgn.common_name USING (common_name_id)
+                                                         WHERE individual.population_id = ?
+                                                         AND common_name ILIKE ?"
+		                                );
+	    
+	    $sth->execute($pop_id, $org_common_name);
+	    my $common_name = $sth->fetchrow_array();
+	    
+	    unless (!$common_name) {
+		push @org_pops,  $pop_obj;
+	    }	    
+
+	}
+	
+    }
+
+    return @org_pops;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 ########
 return 1;
 #######
