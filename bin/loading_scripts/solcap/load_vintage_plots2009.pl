@@ -57,22 +57,6 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
     );
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
 					  );
-#store the geolocation data and props:
-#Location:THIS NEES TO BE IN REAL DATATYPE:
-	
-#Degrees and minutes followed by N(North) or S(South) Longitude	41 20 56 N
-#Degrees and minutes followed by E(East) or W(West)	83 7 2 W
-
-#THIS IS A PROP:
-#Elevation (m asl)	191
-
-#geolocation description: 
-#Name of farm or institute	OSU-OARDC North Central Agricultural Research Station
-#Street address	1165 CR 43 Fremont, OH 43420
-
-#GEOLOCATIONPROP:
-#Year (YYYY)	2009
-
 
 #getting the last database ids for resetting at the end in case of rolling back
 my $last_stockprop_id= $schema->resultset('Stock::Stockprop')->get_column('stockprop_id')->max; 
@@ -95,38 +79,17 @@ my %seq  = (
 	    'organism_organism_id_seq' => $last_organism_id,
 	    );
 
-#new spreadsheet, skip 2 first columns
+#new spreadsheet
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file);
 
 ##############
 ##parse first the file with the accessions . Load it into phenome.individual and public.stock
 #############
 
-### sp_term scale_name value name_string
-##my $scale_cv_name= "breeders scale";
-
-# population for the tomato accessions 
-
-my $population_name = 'Tomato Cultivars and Heirloom lines';
-my $common_name= 'Tomato';
-
-my $common_name_id = 1; # find by name = $common_name !
 
 
 my $sp_person_id = CXGN::People::Person->get_person_by_username($dbh, 'solcap_project');
 die "Need to have SolCAP user pre-loaded in the sgn database! " if !$sp_person_id;
-
-
-#my $population = $phenome_schema->resultset("Population")->find_or_create( 
- #   {
-#	name => $population_name,
-#	common_name_id => $common_name_id,
-#    });
-my $population = CXGN::Phenome::Population->new_with_name($dbh, $population_name);
-
-if (!$population->get_population_id() ) { 
-    die "FAILED! Population $population_name is not stored! Did you run first load_solcap_tomato_acc.pl ? \n";
-}
 
  
 my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
@@ -155,10 +118,6 @@ eval {
     foreach my $sct (@rows ) { 
 	print "label is $sct \n\n";
 	
-	#SCT#	Year	Location	Location2	Plot	Replicate	Donor number/Variety Name:
-	#SCT_0329	2009	Fremont	Ohio	8975	1	1091-Chonto 21 (mataverde (3-21-2))
-	#SCT_0329	2009	Fremont	Ohio	9047	2	1091-Chonto 21 (mataverde (3-21-2))
-	
 	#find the stock for the sct#
 	my ($parent_stock) = $schema->resultset("Cv::Cvterm")->search( {
 	    'me.name' => 'solcap number' } )->search_related('stockprops', { 
@@ -186,8 +145,6 @@ eval {
 	$stock->create_stockprops( { sp_person_id => $sp_person_id }, { autocreate => 1 } );
 	
 	##
-	#the stock belongs to the population:
-	
         #add new stock_relationship
 	#the cvterm for the relationship type 
 	print "Finding/creating cvtem for stock relationship 'is_plot_of' \n"; 
@@ -199,9 +156,9 @@ eval {
 	     dbxref => 'is_plot_of',
 	 });
 	
-	$parent_stock->find_or_create_related('stock_relationship_subjects', {
+	$parent_stock->find_or_create_related('stock_relationship_objects', {
 	    type_id => $plot_of->cvterm_id(),
-	    object_id => $stock->stock_id(),
+	    subject_id => $stock->stock_id(),
 	} );
 	
 

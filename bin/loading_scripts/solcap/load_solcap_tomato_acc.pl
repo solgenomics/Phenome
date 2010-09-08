@@ -217,9 +217,9 @@ eval {
 	     dbxref => 'is_member_of',
 	 });
 	
-	$stock_population->find_or_create_related('stock_relationship_subjects', {
+	$stock_population->find_or_create_related('stock_relationship_objects', {
 	    type_id => $member_of->cvterm_id(),
-	    object_id => $stock->stock_id(),
+	    subject_id => $stock->stock_id(),
 	} );
 	
 	#store the accession in the individual table 
