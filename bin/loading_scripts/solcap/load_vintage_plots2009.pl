@@ -115,22 +115,22 @@ my @columns = $spreadsheet->column_labels();
 
 
 eval {
-    foreach my $sct (@rows ) { 
-	print "label is $sct \n\n";
-	
+    foreach my $plot (@rows ) { 
+	print "label is $plot \n\n";
+	my $sct = $spreadsheet->value_at($plot, 'SCT#');
 	#find the stock for the sct#
 	my ($parent_stock) = $schema->resultset("Cv::Cvterm")->search( {
 	    'me.name' => 'solcap number' } )->search_related('stockprops', { 
 		value => $sct } )->search_related('stock');
 	die "No stock found for sct# $sct. Check your database! \n" if !$parent_stock ;
 	
-	my $year = $spreadsheet->value_at($sct, 'Year');
-	my $loc1 = $spreadsheet->value_at($sct, 'Location');
-	my $loc2 = $spreadsheet->value_at($sct, 'Location2');
+	my $year = $spreadsheet->value_at($plot, 'Year');
+	my $loc1 = $spreadsheet->value_at($plot, 'Location');
+	my $loc2 = $spreadsheet->value_at($plot, 'Location2');
 	my $location = "$loc1, $loc2";
 	
-	my $plot = $spreadsheet->value_at($sct, 'Plot');
-	my $rep = $spreadsheet->value_at($sct, 'Replicate');
+
+	my $rep = $spreadsheet->value_at($plot, 'Replicate');
 
 		
 	my $stock = $schema->resultset("Stock::Stock")->find_or_create( 
