@@ -104,7 +104,7 @@ my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
                          });
 
 
-#new spreadsheet, skip 3 first columns
+#new spreadsheet, skip  first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 3);
     
 my $sp_person_id = undef; # who is the owner ? SolCap was loaded for the project. 
@@ -114,31 +114,30 @@ my @columns = $spreadsheet->column_labels();
 
 eval {
 	
-    foreach my $plot (@rows ) { 
+    foreach my $row_label (@rows ) { 
 	#$plot number is the row label. Need to get the matching stock 
-	#plot is a stock, with a relationship 'is_plot_of' of a parent accession
-	# the sct number is a stockprop of that accession.
+	print "label # = $row_label\n";
 	
-	my ($parent_stock) = $schema->resultset("Stock::Stockprop")->find( {
-	    value => $sct} )->search_related('stock');
-	
-	my $plot = $spreadsheet->value_at($sct, "Plot Number");
-	my $rep = $spreadsheet->value_at($sct, "Replicate Number");
-	my $comment = $spreadsheet->value_at($sct, "Comment");
-	
-	#get these 2 params from the user, or from the database based on project input.
+        my $plot = $spreadsheet->value_at($row_label, "Plot #");
+        #get these 2 params from the user, or from the database based on project input.
 	my $year = '2009';
-	my $location = "Fremont, OH";
+	my $location = "Fremont, Ohio";
 	##########################################
 	# find the child stock based on plot name 
-	my $stock = $parent_stock->search_related('stock_relationship_subjects')->search_related('subject', { name=> $plot ,  uniquename => $plot ."_" . $rep . "_" . $year.",". $location  });
+	my ($stock) = $schema->resultset("Stock::Stockprop")->search( {
+	    value => $location,
+	})->search_related('stock', { name=> $plot } );
 	
-	my $fruit_number =  $spreadsheet->value_at($sct, $fruit_number);
-
+	if (!$stock) {
+	    warn "no stock found for plot # $plot ! Skipping !!\n\n";
+		next();
+	}
+	my $fruit_number =$spreadsheet->value_at($row_label, 'Fruit');
+	
 	
       COLUMN: foreach my $label (@columns) { 
-	  my $value =  $spreadsheet->value_at($sct, $label);
-	  
+	  my $value =  $spreadsheet->value_at($row_label, $label);
+	  	  
 	  my ($db_name, $sp_accession) = split (/\:/ , $label);
 	  next() if (!$sp_accession);
 	  next() if !$value;

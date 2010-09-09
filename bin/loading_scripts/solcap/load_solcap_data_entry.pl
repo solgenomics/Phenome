@@ -121,7 +121,7 @@ eval {
 	my ($parent_stock) = $schema->resultset("Stock::Stockprop")->find( {
 	    value => $sct 
 	    })->search_related('stock'); 
-	my $stock = $schema->resultset("Stock::StockRelationship")->search( {
+	my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
 	    object_id => $parent_stock->stock_id() } )->search_related('subject');
 
 	my $comment = $spreadsheet->value_at($sct, "Comment");
