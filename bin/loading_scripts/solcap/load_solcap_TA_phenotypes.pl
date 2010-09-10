@@ -105,7 +105,7 @@ my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
 
 
 #new spreadsheet, skip  first columns
-my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 3);
+my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 2);
     
 my $sp_person_id = undef; # who is the owner ? SolCap was loaded for the project. 
 
