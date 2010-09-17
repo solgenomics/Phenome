@@ -94,11 +94,11 @@ sub store {
     my $locus_dbxref_id=$self->get_object_dbxref_id() || locus_dbxref_exists($self->get_dbh(), $self->get_locus_id(), $self->get_dbxref_id() );
     if (!$locus_dbxref_id) {
 	$self->d("Inserting new locus_dbxref");
-	my $query = "INSERT INTO phenome.locus_dbxref (locus_id, dbxref_id, sp_person_id) VALUES(?,?,?)";
+	my $query = "INSERT INTO phenome.locus_dbxref (locus_id, dbxref_id, sp_person_id) VALUES(?,?,?) RETURNING locus_dbxref_id";
 	my $sth= $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_locus_id, $self->get_dbxref_id, $self->get_sp_person_id);
-	
-	$locus_dbxref_id=  $self->get_dbh()->last_insert_id("locus_dbxref", "phenome");
+	($locus_dbxref_id) = $sth->fetchrow_array();
+		
 	$self->set_object_dbxref_id($locus_dbxref_id);
    
     }elsif ($obsolete eq 't' ) {
