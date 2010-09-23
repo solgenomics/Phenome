@@ -156,7 +156,6 @@ sub obsolete {
 =cut
 
 sub unobsolete {
-
     my $self = shift;
     if ($self->get_object_dbxref_id()) { 
 	my $query = "UPDATE phenome.locus_dbxref SET obsolete='f', modified_date=now()
@@ -165,7 +164,7 @@ sub unobsolete {
 	$sth->execute($self->get_object_dbxref_id());
 
     }else { 
-	print STDERR  "trying to unobsolete a locus_dbxref that has not yet been stored to db.\n";
+	#print STDERR  "trying to unobsolete a locus_dbxref that has not yet been stored to db.\n";
     }    
 }		     
 
