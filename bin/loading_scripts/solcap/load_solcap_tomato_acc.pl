@@ -94,7 +94,7 @@ my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file);
 
 # population for the tomato accessions 
 
-my $population_name = 'Tomato Cultivars and Heirloom lines';
+my $population_name = 'Cultivars and heirloom lines';
 my $common_name= 'Tomato';
 
 my $common_name_id = 1; # find by name = $common_name !
@@ -278,7 +278,7 @@ eval {
 	
 ##
 	my $donor = $spreadsheet->value_at($sct,"Name of Donor:");
-	$stock->create_stockprops( { donor  => $var_type }, { autocreate => 1 } );
+	$stock->create_stockprops( { donor  => $donor }, { autocreate => 1 } );
 	##
 	
 	my $donor_source = $spreadsheet->value_at($sct, "Donor Source:");
