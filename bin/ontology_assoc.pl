@@ -99,12 +99,12 @@ if (!$dbhost && !$dbname) { die "Need -D dbname and -H hostname arguments.\n"; }
 
 my $error = 0; # keep track of input errors (in command line switches).
 if (!$opt_D) { 
-    print STDERR "Option -D required. Must be a valid database name.\n";
+    print STDOUT "Option -D required. Must be a valid database name.\n";
     $error=1;
 }
 
 if (!$opt_d) { $opt_d="PO"; } # the database name that Dbxrefs should refer to
-print STDERR "Default for -d: $opt_d (specifies the database names for Dbxref objects)\n";
+print STDOUT "Default for -d: $opt_d (specifies the database names for Dbxref objects)\n";
 
 
 if (!$opt_n) {$opt_n = "plant_structure"; } 
@@ -275,7 +275,7 @@ sub print_gene_annotations {
 	
 	my $organism = CXGN::Chado::Organism->new_with_species($schema, $species);
 	my $taxon= "taxon:" . $organism->get_genbank_taxon_id();
-	my $org_name = $organism->get_abbreviation;
+	my $org_name = $organism->get_abbreviation || $organism->get_species() ;
 	###
 	my $date= $annot->get_modification_date();
 	$date = $annot->get_create_date() if (!$date) ;
@@ -285,7 +285,7 @@ sub print_gene_annotations {
 	###
 	chomp $unigenes;
 	chomp $gb_links;
-	print STDOUT "unigenes: $unigenes, gb_links: $gb_links \n" if $opt_v && ($unigenes || $gb_links);
+	#print STDOUT "unigenes: $unigenes, gb_links: $gb_links \n" if $opt_v && ($unigenes || $gb_links);
 	my @ev= $annot->get_locus_dbxref_evidence('f');
 	my $ev_count;
 	EVIDENCE: foreach my $dbxref_ev (@ev) { 
@@ -302,7 +302,7 @@ sub print_gene_annotations {
 	    
 	    #skip if no evidence code provided or if inferred from electronic annotation
 	    if (!$ev_code || $ev_code eq 'IEA') { 
-		print STDERR "no evidence code or electronic annotation. Skipping...(ev_code_id = " . $dbxref_ev->get_evidence_code_id() . ")\n" if $opt_v;
+		print STDOUT "no evidence code or electronic annotation. Skipping...(ev_code_id = " . $dbxref_ev->get_evidence_code_id() . ")\n" if $opt_v;
 		next EVIDENCE unless $opt_f;
 	    }else { }#print STDERR "Found annotation for locus $object_id ($symbol) $ontology_id evidence code: $ev_code\n"; }
 	    my $db_reference= $ref_object->get_db_name(); 
@@ -372,7 +372,7 @@ sub print_pheno_annotations {
 	
 	$count++;
 	print STDOUT "." if !$opt_v;
-	print STDOUT "Looking at phenotype annotation $count for individual id " . $annot->get_individual_id() . "\n";
+	#print STDOUT "Looking at phenotype annotation $count for individual id " . $annot->get_individual_id() . "\n";
 	my $ind= CXGN::Phenome::Individual->new($dbh,$annot->get_individual_id);
 	my $dbxref=CXGN::Chado::Dbxref->new($dbh, $annot->get_dbxref_id);
 	my $cv= $dbxref->get_cv_name();
@@ -391,7 +391,7 @@ sub print_pheno_annotations {
 	next ANNOT if !$species;
 	my $organism = CXGN::Chado::Organism->new_with_species($schema, $species) || next ANNOT;
 	my $taxon= "taxon:" . $organism->get_genbank_taxon_id();
-	my $org_name= $organism->get_abbreviation();
+	my $org_name= $organism->get_abbreviation() || $organism->get_species();
 	###
 	my $date= $annot->get_modification_date();
 	$date = $annot->get_create_date() if (!$date) ;
