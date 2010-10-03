@@ -42,7 +42,7 @@ sub init_patch {
     my $name = __PACKAGE__;
     print "dbpatch name is ':" .  $name . "\n\n";
     my $description = 'Loading the chado stock module';
-    my @previous_requested_patches = (); #ADD HERE 
+    my @previous_requested_patches = ('LoadChadoGenotype', 'LoadChadoContact'); #ADD HERE 
     
     $self->name($name);
     $self->description($description);
