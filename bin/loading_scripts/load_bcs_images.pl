@@ -77,7 +77,7 @@ use Getopt::Std;
 
 
 our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e);
-getopts('H:D:u:ti:e:dr:g:');
+getopts('H:D:u:i:e:tdr:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -88,10 +88,12 @@ my $chado_table = $opt_r;
 my $ext = $opt_e || 'jpg';
 
 if (!$dbhost && !$dbname) { 
+    print "dbhost = $dbhost , dbname = $dbname\n";
+    print "opt_t = $opt_t, opt_u = $opt_u, opt_r = $chado_table, opt_i = $dirname\n";
     usage();
 }
 
-if (!$dirname) { usage(); }
+if (!$dirname) { print "dirname = $dirname\n" ; usage(); }
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
@@ -135,8 +137,12 @@ while (my $object = $object_rs->next ) {
 #
 print "Caching image $chado_table links...\n";
 
-my $type = $schema->resultset("Cv::Cvterm")->find( {
-    name => 'sgn image_id' } );
+my $type = $schema->resultset("Cv::Cvterm")->create_with( {
+    name   => 'sgn image_id' ,
+    cv     => 'stock_property',
+    db     => 'null',
+    dbxref => 'autocreated: sgn image_id',
+} );
 
 if ($type) {
     my $rs = $schema->resultset("Stock::Stockprop")->search( { 
@@ -151,7 +157,7 @@ if ($type) {
     }
 }
 
-open (ERR, ">$opt_i" . ".err") || die "Can't open error file\n";
+open (ERR, ">load_bcs_images.err") || die "Can't open error file\n";
 
 my @files = glob "$dirname/*.$ext";
 @files = glob "$dirname/*" if $opt_d ;
@@ -207,30 +213,31 @@ foreach my $file (@files) {
 			#$image_hash{$filename}->associate_individual($name2id{lc($individual_name)});
 			################################
 		    }
+		}
+		else { 
+		    print ERR qq { Generating new image object for image $filename and associating it with $chado_table $plot, id $name2id{lc($plot) } ...\n };
+		    my $caption = $plot;
+		    
+		    if ($opt_t)  { 
+			print STDOUT qq { Would associate file $filename to $chado_table $plot, id $name2id{lc($plot)}\n };
+			$new_image_count++;
+		    }
 		    else { 
-			print ERR qq { Generating new image object for image $filename and associating it with $chado_table $plot, id $name2id{lc($plot) } ...\n };
-			my $caption = $plot;
+			my $image = SGN::Image->new($dbh);   
+			$image_hash{$filename}=$image;
 			
-			if ($opt_t)  { 
-			    print STDOUT qq { Would associate file $filename to $chado_table $plot, id $name2id{lc($plot)}\n };
-			    $new_image_count++;
-			}
-			else { 
-			    my $image = SGN::Image->new($dbh);   
-			    $image_hash{$filename}=$image;
-			    
-			    $image->process_image("$filename", undef, undef); 
-			    $image->set_description("$caption");
-			    $image->set_name(basename($filename));
-			    $image->set_sp_person_id($sp_person_id);
-			    $image->set_obsolete("f");
-			    $image_id = $image->store();
-			    #link the image with the BCS object 
-			    $new_image_count++;
-			}
+			$image->process_image("$filename", undef, undef); 
+			$image->set_description("$caption");
+			$image->set_name(basename($filename));
+			$image->set_sp_person_id($sp_person_id);
+			$image->set_obsolete("f");
+			$image_id = $image->store();
+			#link the image with the BCS object 
+			$new_image_count++;
 		    }
 		}
 	    }
+	    
 	    #store the image_id as a stockprop
 	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 } );
 	}
