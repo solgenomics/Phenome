@@ -118,6 +118,7 @@ eval {
 	my $plot = $spreadsheet->value_at($sct, "Plot Number");
 	my $rep = $spreadsheet->value_at($sct, "Replicate Number");
 	#find the stock for this plot # The sct# is the parent!!# 
+	print "looking at sct# $sct \n";
 	my ($parent_stock) = $schema->resultset("Stock::Stockprop")->find( {
 	    value => $sct 
 	    })->search_related('stock'); 
