@@ -52,7 +52,7 @@ $sth->execute();
 while ( my ($locus_id) = $sth->fetchrow_array() ) {
     my $locus       = CXGN::Phenome::Locus->new( $dbh, $locus_id );
     my $common_name = $locus->get_common_name();
-    my @unigenes    = $locus->get_unigenes(1);
+    my @unigenes    = $locus->get_unigenes( {full=>1} );
     foreach my $unigene_obj (@unigenes) {
         my $sgn_id      = $unigene_obj->get_sgn_id();
         my $unigene_seq = $unigene_obj->get_sequence();
