@@ -1,7 +1,7 @@
 
 =head1
 
-load_vintage_plots2009.pl
+load_solcap_plots.pl
 
 =head1 SYNOPSIS
 
