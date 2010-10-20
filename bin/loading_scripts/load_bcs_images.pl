@@ -119,7 +119,7 @@ if (($dbname eq "sandbox") && ($image_dir !~ /sandbox/)) {
     die "The image directory needs to be set to image_files_sandbox if running on rubisco/sandbox. Please change the image_dir parameter in SGN.conf\n\n";
 					  }
 if (($dbname eq "cxgn") && ($image_dir =~ /sandbox/)) { 
-    die "The image directory needs to be set to image_files when the script is running on the production database. Please change the image_dir parameter in SGN.conf\n\n";
+    warn "The image directory needs to be set to image_files when the script is running on the production database. Please change the image_dir parameter in SGN.conf\n\n";
 }
 
 my %image_hash = ();  # used to retrieve images that are already loaded
