@@ -34,7 +34,6 @@ use CXGN::Phenome::Schema;
 use CXGN::Phenome::LocusGroup;
 use CXGN::DB::Object;
 use CXGN::Chado::Dbxref;
-use CXGN::Image;
 
 use base qw /  CXGN::DB::ModifiableI CXGN::Phenome::Locus::LocusRanking /;
 
@@ -1513,9 +1512,9 @@ sub get_recent_annotated_loci {
     $image_sth->execute($date,$date);
     
     while (my($locus_id, $image_id, $person_id, $cdate, $mdate, $obsolete) = $image_sth->fetchrow_array()) { 
-	my $image= CXGN::Image->new($dbh, $image_id);
+###	my $image= CXGN::Image->new($dbh, $image_id);
 	my $locus=CXGN::Phenome::Locus->new($dbh, $locus_id);
-	push @{ $edits{locus_images} }, [$locus, $image, $person_id, $cdate, $mdate, $obsolete];
+	push @{ $edits{locus_images} }, [$locus, $image_id, $person_id, $cdate, $mdate, $obsolete];
     }
     
     ###
@@ -1631,6 +1630,8 @@ sub get_edits {
     ###
     #get associated images
     ####
+
+    ### this does not seem to be used (note by Lukas)
     my $image_query="SELECT image_id , sp_person_id, create_date, modified_date, obsolete
                      FROM phenome.locus_image 
                      WHERE locus_id=?
@@ -1639,8 +1640,7 @@ sub get_edits {
     $image_sth->execute($self->get_locus_id);
     
     while (my($image_id, $person_id, $cdate, $mdate, $obsolete) = $image_sth->fetchrow_array()) { 
-	my $image= CXGN::Image->new($dbh, $image_id);
-	push @{ $edits{images} }, [$image, $person_id, $cdate, $mdate, $obsolete];
+	push @{ $edits{images} }, [$image_id, $person_id, $cdate, $mdate, $obsolete];
     }
     
     ###
@@ -1691,30 +1691,30 @@ sub get_edits {
 }
 
 
-=head2 function get_figures
+# =head2 function get_figures
 
-  Synopsis:	my @figures=$locus->get_figures();
-  Arguments:	none
-  Returns:	list of CXGN::image objects
-  Side effects:	
-  Description:	all images are stored in the locus_image linking table 
+#   Synopsis:	my @figures=$locus->get_figures();
+#   Arguments:	none
+#   Returns:	list of CXGN::image objects
+#   Side effects:	
+#   Description:	all images are stored in the locus_image linking table 
 
-=cut
+# =cut
 
-sub get_figures {
-    my $self = shift;
-    my $query = "SELECT image_id FROM phenome.locus_image 
-                 WHERE  obsolete = 'f' and locus_id=?";
-    my $sth = $self->get_dbh()->prepare($query);
-    $sth->execute($self->get_locus_id());
-    my $image;
-    my @images = ();
-    while (my ($image_id) = $sth->fetchrow_array()) { 
-        $image = CXGN::Image->new($self->get_dbh(), $image_id);
-	push @images, $image;
-    }
-    return @images;
-}
+# sub get_figures {
+#     my $self = shift;
+#     my $query = "SELECT image_id FROM phenome.locus_image 
+#                  WHERE  obsolete = 'f' and locus_id=?";
+#     my $sth = $self->get_dbh()->prepare($query);
+#     $sth->execute($self->get_locus_id());
+#     my $image;
+#     my @images = ();
+#     while (my ($image_id) = $sth->fetchrow_array()) { 
+#         $image = CXGN::Image->new($self->get_dbh(), $image_id);
+# 	push @images, $image;
+#     }
+#     return @images;
+# }
 
 =head2 get_figure_ids
 
