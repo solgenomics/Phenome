@@ -25,7 +25,7 @@ use Carp;
 
 use CXGN::DB::Connection;
 use CXGN::People::Person;
-use CXGN::Image;
+#use CXGN::Image;
 use CXGN::Phenome::Allele;
 use CXGN::Phenome::IndividualHistory;
 use CXGN::Phenome::Population;
@@ -51,7 +51,7 @@ sub new {
     my $dbh = shift;
     my $individual_id = shift;
     
-    if (!$dbh->isa("CXGN::DB::Connection")) { 
+    if (!$dbh->isa("CXGN::DB::Connection") && (!ref($dbh)=~/DBI/)) { 
 	die "First argument to CXGN::Phenome::Individual constructor needs to be a database handle.";
     }
     my $self = $class->SUPER::new($dbh);
@@ -182,29 +182,29 @@ sub store {
     }
 }
 
-=head2 function get_images
+# =head2 function get_images
 
-  Synopsis:     my @images = $self->get_images()	
-  Arguments:    none	
-  Returns:      a list of CXGN::Image objects	 
-  Side effects:	none
-  Description:	a method for fetching all images associated with an individual
+#   Synopsis:     my @images = $self->get_images()	
+#   Arguments:    none	
+#   Returns:      a list of CXGN::Image objects	 
+#   Side effects:	none
+#   Description:	a method for fetching all images associated with an individual
 
-=cut
+# =cut
 
-sub get_images {
-    my $self = shift;
-    my $query = "SELECT image_id FROM phenome.individual_image WHERE individual_id=? AND obsolete = 'f'";
-    my $sth = $self->get_dbh()->prepare($query);
-    $sth->execute($self->get_individual_id());
-    my $image;
-    my @images =();
-    while (my ($image_id) = $sth->fetchrow_array()) { 
-	$image = CXGN::Image->new($self->get_dbh(), $image_id);
-	push @images, $image;
-    }
-    return @images;
-}
+# sub get_images {
+#     my $self = shift;
+#     my $query = "SELECT image_id FROM phenome.individual_image WHERE individual_id=? AND obsolete = 'f'";
+#     my $sth = $self->get_dbh()->prepare($query);
+#     $sth->execute($self->get_individual_id());
+#     my $image;
+#     my @images =();
+#     while (my ($image_id) = $sth->fetchrow_array()) { 
+# 	$image = CXGN::Image->new($self->get_dbh(), $image_id);
+# 	push @images, $image;
+#     }
+#     return @images;
+# }
 
 
 =head2 function get_image_ids
