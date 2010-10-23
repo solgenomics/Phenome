@@ -243,9 +243,9 @@ sub get_individual_publications {
 
 =head2 get_object_dbxref_evidence
 
- Usage: my $individual_dbxref->get_object_dbxref_evidence()
+ Usage: $individual_dbxref->get_object_dbxref_evidence()
  Desc:  get all the evidence data associated with a individual dbxref (ontology term)
- Ret:   a individual_dbxref_evidence object
+ Ret:   a list of L<CXGN::Phenome::Individual::IndividualDbxrefEvidence> objects
  Args:  none
  Side Effects:
  Example:
