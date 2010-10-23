@@ -51,9 +51,6 @@ sub new {
     my $dbh = shift;
     my $individual_id = shift;
     
-    if (!$dbh->isa("CXGN::DB::Connection")) { 
-	die "First argument to CXGN::Phenome::Individual constructor needs to be a database handle.";
-    }
     my $self = $class->SUPER::new($dbh);
 
     $self->set_individual_id($individual_id);
@@ -1377,6 +1374,32 @@ sub individual_in_population {
     else { return 0;
     }
 }
+
+=head2 has_phenotype
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub has_phenotype {
+    my $self=shift;
+    return undef if !$self->get_individual_id;
+    my $q = 'SELECT phenotype_id FROM public.phenotype WHERE individual_id = ?';
+    my $sth = $self->get_dbh->prepare($q);
+    $sth->execute($self->get_individual_id);
+    my $p;
+    while ( my ($phenotype_id)  =  $sth->fetchrow_array ) {
+	$p = 1 ;
+    }
+    return $p;
+}
+
+
 
 #######do not remove#    
 return 1; ###########
