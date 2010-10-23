@@ -139,7 +139,7 @@ print "Caching image $chado_table links...\n";
 
 my $type = $schema->resultset("Cv::Cvterm")->create_with( {
     name   => 'sgn image_id' ,
-    cv     => 'stock_property',
+    cv     => 'local',
     db     => 'null',
     dbxref => 'autocreated: sgn image_id',
 } );
@@ -239,7 +239,7 @@ foreach my $file (@files) {
 	    }
 	    
 	    #store the image_id as a stockprop
-	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 } );
+	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 , cv_name => 'local' } );
 	}
     };
     
