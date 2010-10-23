@@ -53,11 +53,7 @@ sub new {
     my $dbh = shift;
     my $population_id = shift;
     
-    if (!$dbh->isa("CXGN::DB::Connection")) { 
-	die "First argument to CXGN::Phenome::Population constructor needs to be a database handle.";
-    }
     my $self=$class->SUPER::new($dbh);
-
 
     if ($population_id) { 
 	$self->set_population_id($population_id);
