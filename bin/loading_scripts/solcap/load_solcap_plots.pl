@@ -142,7 +142,7 @@ eval {
 	    
 	
 	#add the owner for this stock
-	$stock->create_stockprops( { sp_person_id => $sp_person_id }, { autocreate => 1 } );
+	$stock->create_stockprops( { sp_person_id => $sp_person_id }, { autocreate => 1 , cv_name => 'local'} );
 	
 	##
         #add new stock_relationship
