@@ -128,7 +128,8 @@ sub patch {
 	    my $stock_population = $schema->resultset("Stock::Stock")->find_or_create(
 		{ organism_id => $organism_id,
 		  name  => $name,
-		  uniquename => $desc,
+		  uniquename => $name,
+		  description => $desc,
 		  type_id => $population_cvterm->cvterm_id(),
 		} );
 	    #store the properties for the population
@@ -353,6 +354,11 @@ sub patch {
 			print "Individual stock " . $stock_individual->name . " has phenotype " . $phenotype->uniquename . " linked to experiment " . $experiment->nd_experiment_id . "\n";
 		    }
 		}
+		#if ($ind->has_genotype) {
+		    #store genotyping experiment 
+		    # get data from phenome.genotype and genotype_experiment
+		    
+	         #}
 	    }
 	}
 	print "You're done!\n";
@@ -360,10 +366,13 @@ sub patch {
 	    print "Trail mode! Rolling back transaction\n\n";
 	    $schema->txn_rollback 
 	}
+	return 1;
     };
     
     try { 
 	$schema->txn_do($coderef);
+	$schema->txn_commit;
+	print "Data committed! \n";
     } catch { die "Load failed! " . $_ . "\n" ; 
     };
 }
