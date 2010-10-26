@@ -393,7 +393,9 @@ sub patch {
 	$schema->txn_do($coderef);
 	$schema->txn_commit;
 	print "Data committed! \n";
-    } catch { die "Load failed! " . $_ . "\n" ;
+    } catch {
+	$schema->txn_rollback;
+	die "Load failed! " . $_ . "\n" ;
     };
 }
 
