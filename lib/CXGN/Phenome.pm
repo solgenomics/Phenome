@@ -214,7 +214,7 @@ __PACKAGE__->has_parameter(name   =>'default_allele',
 			   );
 
 __PACKAGE__->has_complex_parameter( name => 'any_name',
-				    uses => [qw/locus_name locus_symbol locus_alias locus_description allele_symbol allele_name allele_synonym/],
+				    uses => [qw/locus_name locus_symbol locus_alias locus_description allele_symbol allele_name allele_synonym phenotype/],
 				    setter => sub {
 				      my ($self, @args) = @_;
 				      $self->locus_name(@args);
@@ -224,8 +224,9 @@ __PACKAGE__->has_complex_parameter( name => 'any_name',
 				      $self->allele_symbol(@args);
 				      $self->allele_name(@args);
 				      $self->allele_synonym(@args);
+                                      $self->phenotype(@args);
 
-				      $self->compound('&t OR &t OR &t OR &t OR &t OR &t OR &t' ,'locus_name', 'locus_symbol', 'locus_alias', 'locus_description', 'allele_symbol','allele_name', 'allele_synonym');
+				      $self->compound('&t OR &t OR &t OR &t OR &t OR &t OR &t OR&t' ,'locus_name', 'locus_symbol', 'locus_alias', 'locus_description', 'allele_symbol','allele_name', 'allele_synonym', 'phenotype');
 				    }
 				  );
 
