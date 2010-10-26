@@ -49,7 +49,7 @@ use Carp qw /croak/ ;
 
 our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_g);
 
-getopts('H:i:tD:p:g');
+getopts('H:i:tD:p:g:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
