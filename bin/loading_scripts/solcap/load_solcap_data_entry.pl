@@ -9,18 +9,19 @@ load_solcap_data_entry.pl
 
 =head1 COMMAND-LINE OPTIONS
 
- -H  host name 
- -D  database name 
- -i infile 
+ -H  host name
+ -D  database name
+ -i infile
  -t  Test run . Rolling back at the end.
-
+ -p project name
+ -g geolocation description
+(g and p must match the name as loaded with load_geolocation_project.pl)
 
 =head2 DESCRIPTION
 
-This is a script for loading solcap phenotypes, as scored in the field/lab -post harvest 
+This is a script for loading solcap phenotypes, as scored in the field/lab -post harvest
 
-See the solCap template for the 'Data entry' spreadsheet for  more details 
-
+See the solCap template for the 'Data entry' spreadsheet for  more details
 
 
 =head2 AUTHOR
@@ -28,14 +29,15 @@ See the solCap template for the 'Data entry' spreadsheet for  more details
 Naama Menda (nm249@cornell.edu)
 
 August 2010
- 
+
 =cut
 
 
 #!/usr/bin/perl
 use strict;
-use Getopt::Std; 
+use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
+use CXGN::People::Person;
 
 use Bio::Chado::Schema;
 use CXGN::DB::InsertDBH;
@@ -45,11 +47,9 @@ use Date::Calc qw(
 		  );
 use Carp qw /croak/ ;
 
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_g);
 
-
-our ($opt_H, $opt_D, $opt_i, $opt_t);
-
-getopts('H:i:tD:');
+getopts('H:i:tD:p:g');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -57,7 +57,7 @@ my $file = $opt_i;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
-				      dbargs => {AutoCommit => 0,
+				      dbargs => {AutoCommit => 1,
 						 RaiseError => 1}
 				    }
     );
@@ -81,16 +81,16 @@ my %seq  = (
     'nd_experiment_project_nd_experiment_project_id_seq' => $last_nd_experiment_project_id,
     'nd_experiment_stock_nd_experiment_stock_id_seq' => $last_nd_experiment_stock_id,
     'nd_experiment_phenotype_nd_experiment_phenotype_id_seq' => $last_nd_experiment_phenotype_id,
-    'phenotype_phenotype_id_seq' => $last_phenotype_id, 
+    'phenotype_phenotype_id_seq' => $last_phenotype_id,
     );
 
-# get the project 
-my $project_name = 'solcap vintage tomatoes 2009, Fremont, OH';
+# get the project
+my $project_name = $opt_p || 'solcap vintage tomatoes 2009, Fremont, OH';
 my $project = $schema->resultset("Project::Project")->find( {
     name => $project_name,
 } );
-# get the geolocation 
-my $geo_description = 'OSU-OARDC Fremont, OH';
+# get the geolocation
+my $geo_description = $opt_g || 'OSU-OARDC Fremont, OH';
 my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( {
     description => $geo_description ,
 } );
@@ -104,58 +104,84 @@ my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
                          });
 
 
+my $username = 'solcap_project';
+my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
+
+die "User $username for Solcap must be pre-loaded in the database! \n" if !$sp_person_id ;
+
+#find the cvterm for sgn person_id
+my $person_id_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'sp_person_id',
+      cv     => 'local',
+      db     => 'null',
+      dbxref => 'autocreated:sp_person_id',
+    });
+###store a new nd_experiment. One experiment per run
+my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
+    nd_geolocation_id => $geolocation->nd_geolocation_id(),
+    type_id => $pheno_cvterm->cvterm_id(),
+                                                                               } );
+
+#link to the project
+$experiment->find_or_create_related('nd_experiment_projects', {
+    project_id => $project->project_id()
+                                    } );
+#create experimentprop for the person_id
+if ($sp_person_id) {
+    $experiment->find_or_create_related('nd_experimentprops', {
+        value => $sp_person_id,
+        type_id => $person_id_cvterm->cvterm_id,
+                                        });
+}
 #new spreadsheet, skip 3 first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 3);
-    
-my $sp_person_id = undef; # who is the owner ? SolCap was loaded for the project. 
+
 
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
 
 eval {
-	
-    foreach my $sct (@rows ) { 
+
+    foreach my $sct (@rows ) {
 	my $plot = $spreadsheet->value_at($sct, "Plot Number");
 	my $rep = $spreadsheet->value_at($sct, "Replicate Number");
-	#find the stock for this plot # The sct# is the parent!!# 
+	#find the stock for this plot # The sct# is the parent!!#
 	print "looking at sct# $sct \n";
 	my ($parent_stock) = $schema->resultset("Stock::Stockprop")->find( {
-	    value => $sct 
-	    })->search_related('stock'); 
+	    value => $sct
+	    })->search_related('stock');
 	my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
 	    object_id => $parent_stock->stock_id() } )->search_related('subject');
 
 	my $comment = $spreadsheet->value_at($sct, "Comment");
-	
 	my $prop_type = $schema->resultset("Cv::Cv")->find( {
 	    'me.name' => 'project_property' } )->find_related('cvterms', {
 		'me.name' => 'project transplanting date' } );
 	my $tp_date = $project->find_related('projectprops' , {
-	    type_id => $prop_type->cvterm_id() 
+	    type_id => $prop_type->cvterm_id()
 	    } )->value();
 	my ($tp_year, $tp_month, $tp_day) = split /\// , $tp_date;
 
-	COLUMN: foreach my $label (@columns) { 
+	COLUMN: foreach my $label (@columns) {
 	    my $value =  $spreadsheet->value_at($sct, $label);
-	    
+
 	    ($value, undef) = split (/\s/, $value) ;
-	 
+
 	    my ($db_name, $sp_accession) = split (/\:/ , $label);
 	    next() if (!$sp_accession);
-	   
+
 	    if ($label =~ /SP:0000366/) {
 		my ($m_year, $m_month, $m_day) = split /\//, $value ;
-		
+
 		next() if !( check_date($m_year,$m_month,$m_day) ) ; 
-		$value  = Delta_Days($tp_year,$tp_month,$tp_day, $m_year,$m_month,$m_day); 
+		$value  = Delta_Days($tp_year,$tp_month,$tp_day, $m_year,$m_month,$m_day);
 	    }
 	    ######################
 	    next() if !$value;
-	    
 	    my $parent_cvterm = $schema->resultset("General::Db")->find( {
 		name => $db_name } )->find_related("dbxrefs", { 
 		    accession=>$sp_accession , } )->find_related("cvterm" , {});
-	    
+
             my $sp_term = $parent_cvterm;
             # if the value type is 'unit' we use the actual parent term for 
 	    # the annotation. If it's a 'scale' we need to find out the appropriate
@@ -188,7 +214,7 @@ eval {
 	    ##$sp_term = $cvtermprop->cvterm() ;
 	    ##} elsif ($value_type eq 'unit') {
 	    ##	$unit = "unit: " . $unit_name ;
-	    
+ 
 	    ##($unit_cvterm) = $unit_cv->find_related("cvterms" , {
 	    ##name => $unit_name } ) if $unit_cv ; 
 	    ##
@@ -202,16 +228,16 @@ eval {
 		    });
 	    my $pato_id = undef;
 	    $pato_id = $pato_term->cvterm_id() if $pato_term;
-	    
+
 	    #store the phenotype
-	    my $phenotype = $sp_term->find_or_create_related("phenotype_observables", { 
+	    my $phenotype = $sp_term->find_or_create_related("phenotype_observables", {
 		attr_id => $sp_term->cvterm_id(),
 		value => $value ,
 		cvalue_id => $pato_id,
 		uniquename => "$project_name, Replicate: $rep, plot: $plot, Term: " . $sp_term->name() ,
 	    });
-	    
-	    
+
+
 	    #check if the phenotype is already associated with an experiment
 	    # which means this loading script has been run before .
 	    if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
@@ -222,28 +248,17 @@ eval {
 	    print "Value $value \n";
 	    print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n";
 	    ########################################################
-	    ###store a new nd_experiment. Each phenotype is going to get a new experiment_id
-	    my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
-		nd_geolocation_id => $geolocation->nd_geolocation_id(),
-		type_id => $pheno_cvterm->cvterm_id(),
-	    } );
-	    
-	    #link to the project
-	    $experiment->find_or_create_related('nd_experiment_projects', {
-		project_id => $project->project_id()
-		} );
-	    
-	    #link to the stock
+
+	    #link the experiment to the stock
 	    $experiment->find_or_create_related('nd_experiment_stocks' , {
 		stock_id => $stock->stock_id(),
 		type_id  =>  $pheno_cvterm->cvterm_id(),
 	    });
-	    
-	    
+
 	    # link the phenotype with the experiment
-	    my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotype', { phenotype_id => $phenotype->phenotype_id() } );
-	    
-	    	    
+	    my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
+
+
 	    # store the unit for the measurement (if exists) in phenotype_cvterm
 	    #$phenotype->find_or_create_related("phenotype_cvterms" , {
 	    #	cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
