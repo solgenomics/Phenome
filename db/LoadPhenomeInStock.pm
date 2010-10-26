@@ -17,7 +17,7 @@ see the perldoc of parent class for more details.
 This is a patch for loading data in phenome.population and phenome.individual in the stock module, which will eventually replace these 2 tables.
 
 This subclass uses L<Moose>. The parent class uses L<MooseX::Runnable>
-    
+
 =head1 AUTHOR
 
  Naama Menda<nm249@cornell.edu>
@@ -50,24 +50,30 @@ sub init_patch {
     my $name = __PACKAGE__;
     print "dbpatch name is : '" .  $name . "'\n\n";
     my $description = 'Loading the phenome individual data into the stock module';
-    my @previous_requested_patches = ('CopyAccessionToStock'); #ADD HERE 
-    
+    my @previous_requested_patches = ('CopyAccessionToStock'); #ADD HERE
+
     $self->name($name);
     $self->description($description);
     $self->prereq(\@previous_requested_patches);
-    
+
 }
 
 sub patch {
     my $self=shift;
-    
-   
+
     print STDOUT "Executing the patch:\n " .   $self->name . ".\n\nDescription:\n  ".  $self->description . ".\n\nExecuted by:\n " .  $self->username . " .";
-    
+
     print STDOUT "\nChecking if this db_patch was executed before or if previous db_patches have been executed.\n";
 
     my $schema = Bio::Chado::Schema->connect( sub { $self->dbh->clone } ,  { on_connect_do => ['SET search_path TO public;'], autocommit => 1 });
-    
+
+    my %names_hash = ( 'Tomato' => 'Solanum lycopersicum' ,
+                       'Potato' => 'Solanum tuberosum',
+                       'Eggplant' => 'Solanum melongena',
+                       'Pepper' => 'Capsicum annuum',
+                       'Coffee' => 'Coffea arabica',
+                       'Petunia' => 'Petunia x hybrida',
+        );
     my $coderef = sub {
 	print "Finding/creating cvterm for population\n";
 	my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
@@ -84,15 +90,15 @@ sub patch {
 	      db     => 'null',
 	      dbxref => 'accession',
 	    });
-	print "Finding/creating cvtem for stock relationship 'is_member_of' \n"; 
-	
+	print "Finding/creating cvtem for stock relationship 'is_member_of' \n";
+
 	my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
 	    { name   => 'is_member_of',
 	      cv     => 'stock relationship',
 	      db     => 'null',
 	      dbxref => 'is_member_of',
 	    });
-	#find the cvterm for sgn person_id 
+	#find the cvterm for sgn person_id
 	my $person_id_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
 	    { name   => 'sp_person_id',
 	      cv     => 'local',
@@ -100,19 +106,19 @@ sub patch {
 	      dbxref => 'autocreated:sp_person_id',
 	    });
 ##
-	#set the searchpath 
+	#set the searchpath
 	$self->dbh->do('set search_path to phenome, public');
-	# first load the populations 
+	# first load the populations
 	my $q = "SELECT population_id FROM phenome.population";
 	my $sth = $self->dbh->prepare($q);
 	$sth->execute();
 	while (my $pop_id = $sth->fetchrow_array() ) {
-	    my $population = CXGN::Phenome::Population->new($self->dbh, $pop_id);
+            my $population = CXGN::Phenome::Population->new($self->dbh, $pop_id);
 	    my $name = $population->get_name;
 	    my $desc = $population->get_description;
 	    my $sp_person_id = $population->get_sp_person_id;
 	    my $create_date = $population->get_create_date;
-	    
+
 	    my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
 		species => 'any' } );
 	    my $organism_id = $organism->organism_id();
@@ -133,9 +139,9 @@ sub patch {
 		  type_id => $population_cvterm->cvterm_id(),
 		} );
 	    #store the properties for the population
-	    $stock_population->create_stockprops({ sp_person_id => $sp_person_id}, 
+	    $stock_population->create_stockprops({ sp_person_id => $sp_person_id},
 						 { autocreate => 1 , cv_name => 'local'});
-	    $stock_population->create_stockprops({ create_date => $create_date}, 
+	    $stock_population->create_stockprops({ create_date => $create_date},
 					     { autocreate => 1 , cv_name => 'local' });
 	    print "Fetching population dbxrefs \n";
 	    my @pop_dbxrefs = $population->get_all_population_dbxrefs;
@@ -153,7 +159,7 @@ sub patch {
 
 	    print "Loading individuals: \n";
 	    my @individuals = $population->get_individuals();
-	    foreach my $ind (@individuals) { 
+	    foreach my $ind (@individuals) {
 		my $iname = $ind->get_name;
 		my $idesc = $ind->get_description;
 		my $iperson_id = $ind->get_sp_person_id;
@@ -163,16 +169,31 @@ sub patch {
 		my $updated_by   = $ind->get_updated_by;
 		my $common_name = $ind->get_common_name;
 		my $i_organism_id = $organism_id ;
-		
-		print "creating new stock for individual $iname\n";
-		my $stock_individual = $schema->resultset("Stock::Stock")->find_or_create(
-		    { organism_id => $i_organism_id,
-		      name  => $iname,
-		      uniquename => $iname,
-		      description => $idesc,
-		      type_id => $accession_cvterm->cvterm_id(),
-		      is_obsolete => $i_obsolete,
-		    } );
+                if ($common_name) {
+                    print "Finding organism_id for common_name $common_name (" . $names_hash{$common_name} . ")\n"; 
+                    ($i_organism_id) = $schema->resultset("Organism::Organism")->find( {
+                        species => $names_hash{$common_name} } )->organism_id;
+                }
+                print "creating new stock for individual $iname\n";
+                my $stock_individual = $schema->resultset("Stock::Stock")->find(
+		    {  name  => $iname,
+                       uniquename => $iname,
+                       type_id => $accession_cvterm->cvterm_id(),
+                    } );
+                if ($stock_individual) {
+                    print "stock exists! Updating description ... \n";
+                    $stock_individual->description($idesc);
+                    $stock_individual->update;
+                } else {
+                    $stock_individual = $schema->resultset("Stock::Stock")->create(
+                        { organism_id => $i_organism_id,
+                          name  => $iname,
+                          uniquename => $iname,
+                          description => $idesc,
+                          type_id => $accession_cvterm->cvterm_id(),
+                          is_obsolete => $i_obsolete,
+                        } );
+                }
 		#load the population relationship
 		$stock_population->find_or_create_related('stock_relationship_objects', {
 		    type_id => $member_of->cvterm_id(),
@@ -180,18 +201,18 @@ sub patch {
 							  } );
 		#load the stock properties
 		print "loading stock properties\n";
-		$stock_individual->create_stockprops({ sp_person_id => $iperson_id}, 
+		$stock_individual->create_stockprops({ sp_person_id => $iperson_id},
 						     { autocreate => 1 , cv_name => 'local'});
-		$stock_individual->create_stockprops({ create_date => $icreate_date}, 
+		$stock_individual->create_stockprops({ create_date => $icreate_date},
 						     { autocreate => 1, cv_name => 'local' }) if $icreate_date;
-		$stock_individual->create_stockprops({ modified_date => $imodified_date}, 
+		$stock_individual->create_stockprops({ modified_date => $imodified_date},
 						     { autocreate => 1 , cv_name => 'local'}) if $imodified_date;
-		$stock_individual->create_stockprops({ common_name => $common_name}, 
+		$stock_individual->create_stockprops({ common_name => $common_name},
 						     { autocreate => 1 , cv_name => 'stock_property' , db_name => 'SGN' }) if $common_name;
-		
-		$stock_individual->create_stockprops({ updated_by => $updated_by}, 
+
+		$stock_individual->create_stockprops({ updated_by => $updated_by},
 						     { autocreate => 1 , cv_name => 'local'}) if $updated_by;
-		
+
 		#each individual has dbxrefs, alleles, images, phenotypes
 		print "Storing stock_dbxrefs\n";
 		my @i_dbxrefs = $ind->get_dbxrefs;
@@ -204,63 +225,63 @@ sub patch {
 		    my $idx_create = $idx->get_create_date;
 		    my $idx_modified = $idx->get_modification_date;
 		    my $idx_obsolete = $idx->get_obsolete;
-		    
-		    #each dbxref may have individual_dbxref_evidence 
+
+		    #each dbxref may have individual_dbxref_evidence
 		    #(in case of ontology annotations)
 		    my @idxe = $idx->get_object_dbxref_evidence;
 		    if (!@idxe) { # if this is not an ontology annotation
 			#store the metadata in stock_dbxrefprop
 			print "Storing stock_dbxrefprops\n";
-			$stock_dbxref->create_stock_dbxrefprops( { sp_person_id => $idx_person_id}, 
+			$stock_dbxref->create_stock_dbxrefprops( { sp_person_id => $idx_person_id},
 								 { autocreate => 1 , cv_name => 'local'}) if $idx_person_id;
-			$stock_dbxref->create_stock_dbxrefprops({ create_date => $idx_create}, 
+			$stock_dbxref->create_stock_dbxrefprops({ create_date => $idx_create},
 								{ autocreate => 1, cv_name => 'local' }) if $idx_create;
-			
-			$stock_dbxref->create_stock_dbxrefprops({ modified_date => $idx_modified }, 
+
+			$stock_dbxref->create_stock_dbxrefprops({ modified_date => $idx_modified },
 								{ autocreate => 1 , cv_name => 'local'}) if $idx_modified;
-			$stock_dbxref->create_stock_dbxrefprops({ obsolete => '1'}, 
+			$stock_dbxref->create_stock_dbxrefprops({ obsolete => '1'},
 								{ autocreate => 1 , cv_name => 'local'}) if $idx_obsolete eq 't' ;
 		    }
 		    else { # evidence matadata overrides individual_dbxref metadata
-			foreach my $ev (@idxe) {  
+			foreach my $ev (@idxe) {
 			    print "Storing stock_dbxrefprops for ontology evidence codes \n";
-			    
+
 			    my $e_person_id = $ev->get_sp_person_id || $idx_person_id;
-			    $stock_dbxref->create_stock_dbxrefprops( { sp_person_id => $e_person_id}, 
+			    $stock_dbxref->create_stock_dbxrefprops( { sp_person_id => $e_person_id},
 								     { autocreate => 1 , cv_name => 'local'}) if $e_person_id;
 			    my $e_create = $ev->get_create_date || $idx_create;
-			    $stock_dbxref->create_stock_dbxrefprops({ create_date => $e_create}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ create_date => $e_create},
 								    { autocreate => 1, cv_name => 'local' }) if $e_create;
 			    my $e_modified = $ev->get_modification_date || $idx_modified;
-			    $stock_dbxref->create_stock_dbxrefprops({ modified_date => $e_modified }, 
+			    $stock_dbxref->create_stock_dbxrefprops({ modified_date => $e_modified },
 								    { autocreate => 1 , cv_name => 'local'}) if $e_modified;
 			    my $e_obsolete = $ev->get_obsolete;
-			    $stock_dbxref->create_stock_dbxrefprops({ obsolete => '1'}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ obsolete => '1'},
 								    { autocreate => 1 , cv_name => 'local'}) if $e_obsolete eq 't';
 			    my $e_rel = CXGN::Chado::Dbxref->new($self->dbh, $ev->get_relationship_type_id)->get_cvterm_name;
-			    $stock_dbxref->create_stock_dbxrefprops({ $e_rel => '1'}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ $e_rel => '1'},
 								    { cv_name => 'relationship'}) if $e_rel;
 			    my $e_code = CXGN::Chado::Dbxref->new($self->dbh, $ev->get_evidence_code_id)->get_cvterm_name;
-			    $stock_dbxref->create_stock_dbxrefprops({ $e_code => '1'}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ $e_code => '1'},
 								    { cv_name => 'evidence_code'}) if $e_code;
 			    my $e_desc = CXGN::Chado::Dbxref->new($self->dbh, $ev->get_evidence_description_id)->get_cvterm_name;
-			    $stock_dbxref->create_stock_dbxrefprops({ $e_desc => '1'}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ $e_desc => '1'},
 								    { cv_name => 'evidence_code'}) if $e_desc;
 			    my $e_with = CXGN::Chado::Dbxref->new($self->dbh, $ev->get_evidence_with)->get_dbxref_id;
-			    $stock_dbxref->create_stock_dbxrefprops({ evidence_with => $e_with}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ evidence_with => $e_with},
 								    { autocreate =>1 , cv_name => 'local'}) if $e_with;
 			    my $e_ref = CXGN::Chado::Dbxref->new($self->dbh, $ev->get_reference_id)->get_dbxref_id;
-			    $stock_dbxref->create_stock_dbxrefprops({ reference => $e_ref}, 
+			    $stock_dbxref->create_stock_dbxrefprops({ reference => $e_ref},
 								    { autocreate =>1 , cv_name => 'local'}) if $e_ref;
 			}
 		    }
 		}
-		#individual aliases 
+		#individual aliases
 		my @synonyms = $ind->get_aliases;
 		print "Storing synonyms\n";
 		foreach my $s (@synonyms) {
-		    $stock_individual->create_stockprops({ synonym => $s}, 
-							 {autocreate => 1, 
+		    $stock_individual->create_stockprops({ synonym => $s},
+							 {autocreate => 1,
 							  cv_name => 'null'
 							 });
 		}
@@ -269,44 +290,43 @@ sub patch {
 		foreach my $a (@alleles) {
 		    print "Adding allele ... \n";
 		    my $a_id = $a->get_allele_id;
-		    $stock_individual->create_stockprops({ 'sgn allele_id' => $a_id}, 
-							 {autocreate => 1, 
+		    $stock_individual->create_stockprops({ 'sgn allele_id' => $a_id},
+							 {autocreate => 1,
 							  cv_name => 'local'
 							 });
 		}
-		##find linked images 
+		##find linked images
 		my @images = $ind->get_image_ids;
 		foreach my $i_id (@images) {
 		    print "Adding image $i_id\n";
-		    $stock_individual->create_stockprops({ 'sgn image_id' => $i_id}, 
-							 {autocreate => 1, 
+		    $stock_individual->create_stockprops({ 'sgn image_id' => $i_id},
+							 {autocreate => 1,
 							  cv_name => 'local'
 							 });
 		}
-		
-		## find linked phenotypes 
-		# 
-		# create a new nd_experiment and store the phenotype in the natural div module 
+
+		## find linked phenotypes
+		#
+		# create a new nd_experiment and store the phenotype in the natural div module
 		if ($ind->has_phenotype) {
 		    print "Found phenotypes! Storing in Natural Diversity module \n";
-		    # get the project 
+		    # get the project
 		    my $project_name = $population->get_name;
 		    my @pop_owners = $population->get_owners;
 		    my $project_desc = 'Phenotypes recorded for population $project_name';
-		    
 		    if ( defined($pop_owners[0]) ) {
 			print "owner is " . $pop_owners[0] . "\n" ;
 			my $owner = CXGN::People::Person->new($self->dbh, $pop_owners[0]);
-			$project_desc .= 'by ' . $owner->get_first_name . ' ' . $owner->get_last_name ; 
+			$project_desc .= 'by ' . $owner->get_first_name . ' ' . $owner->get_last_name ;
 		    }
 		    my $project = $schema->resultset("Project::Project")->find_or_create( {
-			name => $project_name, 
+			name => $project_name,
 			description => $project_desc , } );
-		    # get the geolocation 
+		    # get the geolocation
 		    my $geo_description = 'unknown';
 		    my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create( {
 			description => $geo_description , } );
-		    
+
 		    # find the cvterm for a phenotyping experiment
 		    my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
 			{ name   => 'phenotyping experiment',
@@ -318,62 +338,62 @@ sub patch {
 		    my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
 			nd_geolocation_id => $geolocation->nd_geolocation_id(),
 			type_id => $pheno_cvterm->cvterm_id(), } );
-		    
+
 		    #link to the project
 		    $experiment->find_or_create_related('nd_experiment_projects', {
 			project_id => $project->project_id } );
-		    
+
 		    #link to the stock
 		    $experiment->find_or_create_related('nd_experiment_stocks' , {
 			stock_id => $stock_individual->stock_id(),
 			type_id  =>  $pheno_cvterm->cvterm_id(),
 							});
-		    
+
 		    my $pq = "SELECT sp_person_id, phenotype_id FROM public.phenotype WHERE individual_id = ?";
 		    my $p_sth = $self->dbh->prepare($pq);
 		    $p_sth->execute($ind->get_individual_id);
 		    while ( my ($p_person_id, $phenotype_id ) = $p_sth->fetchrow_array ) {
-			
-			#create experimentprop for the person_id 
-			if ($p_person_id) { 
-			    $experiment->find_or_create_related('nd_experimentprops', { 
+
+			#create experimentprop for the person_id
+			if ($p_person_id) {
+			    $experiment->find_or_create_related('nd_experimentprops', {
 				value => $p_person_id,
 				type_id => $person_id_cvterm->cvterm_id,
 								});
 			}
 			my ($phenotype) = $schema->resultset("Phenotype::Phenotype")->find( {
 			    phenotype_id => $phenotype_id, });
-			
+
 			if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
-			    warn "This experiment has been stored before! Skipping! \n";
+			    warn "This experiment has been stored before (phenotype_id = $phenotype_id) ! Skipping! \n";
 			    next();
 			}
 			########################################################
 			# link the phenotype with the experiment
-			my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotype', { phenotype_id => $phenotype->phenotype_id() } );
+			my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype_id } );
 			print "Individual stock " . $stock_individual->name . " has phenotype " . $phenotype->uniquename . " linked to experiment " . $experiment->nd_experiment_id . "\n";
 		    }
 		}
 		#if ($ind->has_genotype) {
-		    #store genotyping experiment 
+		    #store genotyping experiment
 		    # get data from phenome.genotype and genotype_experiment
-		    
+
 	         #}
-	    }
+            }
 	}
 	print "You're done!\n";
 	if ($self->trial) {
 	    print "Trail mode! Rolling back transaction\n\n";
-	    $schema->txn_rollback 
+	    $schema->txn_rollback
 	}
 	return 1;
     };
-    
-    try { 
+
+    try {
 	$schema->txn_do($coderef);
 	$schema->txn_commit;
 	print "Data committed! \n";
-    } catch { die "Load failed! " . $_ . "\n" ; 
+    } catch { die "Load failed! " . $_ . "\n" ;
     };
 }
 
