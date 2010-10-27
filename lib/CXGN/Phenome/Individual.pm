@@ -51,9 +51,9 @@ sub new {
     my $dbh = shift;
     my $individual_id = shift;
     
-    if (!$dbh->isa("CXGN::DB::Connection") && (!ref($dbh)=~/DBI/)) { 
-	die "First argument to CXGN::Phenome::Individual constructor needs to be a database handle.";
-    }
+    $dbh && $dbh->can('selectall_arrayref')
+	or die "First argument to CXGN::Phenome::Individual constructor needs to be a database handle.";
+
     my $self = $class->SUPER::new($dbh);
 
     $self->set_individual_id($individual_id);
