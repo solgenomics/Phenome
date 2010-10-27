@@ -1885,6 +1885,43 @@ sub phenotype_file {
     return $phe_dataset_file;
 }
 
+
+=head2 ci_lod_file
+
+ Usage: my $ci_lod_file = $population->ci_lod_file($c, $trait_acronym);
+ Desc: creates and  caches a file for the bayesian 
+       confidence interval markers, their map positions,
+       lod scores. 
+ Ret: absolute path to the cached file
+ Args: SGN::Context object, trait acronym name
+ Side Effects: 
+ Example:
+
+=cut
+
+sub ci_lod_file {
+    my ($self, $c, $trait) = @_;
+   
+    my $pop_id = $self->get_population_id();
+    my $cache_path = $self->cache_path($c);
+    
+    my $file_cache = Cache::File->new( cache_root => $cache_path );
+    $file_cache->purge();
+
+    my $key          = "popid_" . $pop_id . $trait. "_ci_lod";
+    my $ci_lod_file = $file_cache->get($key);
+
+    unless ($ci_lod_file)
+    {      
+        my $filename = "confidence_lod_" .$trait . "_" . $pop_id;
+        my $file     = "$cache_path/$filename";        
+        $file_cache->set( $key, $file, '30 days' );
+        $ci_lod_file = $file_cache->get($key);
+    }
+
+    return $ci_lod_file;
+}
+
 ############# 
 return  1;
 ############
