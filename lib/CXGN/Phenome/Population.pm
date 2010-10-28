@@ -52,7 +52,7 @@ sub new {
     my $class = shift;
     my $dbh = shift;
     my $population_id = shift;
-    
+
     my $self=$class->SUPER::new($dbh);
 
     if ($population_id) { 
@@ -61,7 +61,7 @@ sub new {
 	#if (!$population_id) { return undef; }
     }
     return $self;
-    
+
 }
 
 =head2 function new_with_name
@@ -70,7 +70,7 @@ sub new {
   Arguments:	a database handle and a population name
   Returns:	a population object
   Side effects:	if a non - existing  $population_name is supplied, undef is returned.
-  Description:	
+  Description:
 
 =cut
 
@@ -88,26 +88,26 @@ sub new_with_name {
 }
 
 
-sub fetch { 
+sub fetch {
     my $self= shift;
-    my $query = "SELECT population_id, population.name, description, 
-                        background_accession_id, population.sp_person_id, 
-                        population.create_date, population.modified_date, population.obsolete, 
-                        cross_type_id, female_parent_id, male_parent_id, recurrent_parent_id, 
+    my $query = "SELECT population_id, population.name, description,
+                        background_accession_id, population.sp_person_id,
+                        population.create_date, population.modified_date, population.obsolete,
+                        cross_type_id, female_parent_id, male_parent_id, recurrent_parent_id,
                         donor_parent_id, comment, web_uploaded,
-                        population.common_name_id, sgn.common_name.common_name 
+                        population.common_name_id, sgn.common_name.common_name, population.stock_id
                   FROM phenome.population 
-                  LEFT JOIN sgn.accession ON (population.background_accession_id = sgn.accession.accession_id)                  
+                  LEFT JOIN sgn.accession ON (population.background_accession_id = sgn.accession.accession_id)
                   LEFT JOIN sgn.common_name ON (population.common_name_id = common_name.common_name_id)
                   WHERE population_id=? and population.obsolete='f'";
-#LEFT JOIN phenome.individual USING (population_id)    
+
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_population_id());
 
     my ($population_id, $name, $description, $background_accession_id, 
 	$sp_person_id, $create_date, $modified_date, $obsolete, $cross_type_id,
 	$female_parent_id, $male_parent_id, $recurrent_parent_id, 
-	$donor_parent_id, $comment, $web_uploaded, $common_name_id, $common_name) = $sth->fetchrow_array();
+	$donor_parent_id, $comment, $web_uploaded, $common_name_id, $common_name, $stock_id) = $sth->fetchrow_array();
 
     $self->set_population_id($population_id);
     $self->set_name($name);
@@ -121,14 +121,13 @@ sub fetch {
     $self->set_female_parent_id($female_parent_id);
     $self->set_male_parent_id($male_parent_id);
     $self->set_recurrent_parent_id($recurrent_parent_id);
-    $self->set_donor_parent_id($donor_parent_id);   
+    $self->set_donor_parent_id($donor_parent_id);
     $self->set_comment($comment);
     $self->set_web_uploaded($web_uploaded);
     $self->set_common_name_id($common_name_id);
     $self->set_common_name($common_name);
-    
+    $self->set_stock_id($stock_id);
     return $population_id;
-
 }
 
 =head2 function store
@@ -137,14 +136,14 @@ sub fetch {
   Arguments:	none
   Returns:	database id
   Side effects:	Update an existing population
-  Description:	
+  Description
 
 =cut
 
 sub store {
     my $self = shift;
     my $population_id = $self->get_population_id();
-    if ($population_id) { 
+    if ($population_id) {
 	my $query = "UPDATE phenome.population SET
                        name = ?,
                        description = ?,
@@ -155,10 +154,11 @@ sub store {
                        female_parent_id = ?,
                        male_parent_id = ?,
                        recurrent_parent_id = ?,
-                       donor_parent_id = ?,                      
+                       donor_parent_id = ?, 
                        comment = ?,
                        web_uploaded = ?,
-                       common_name_id = ?
+                       common_name_id = ?,
+                       stock_id = ?
                      WHERE
                        population_id = ?
                      ";
@@ -171,21 +171,23 @@ sub store {
 		      $self->get_female_parent_id(), 
 		      $self->get_male_parent_id(), 
 		      $self->get_recurrent_parent_id(), 
-		      $self->get_donor_parent_id(), 		      
+		      $self->get_donor_parent_id(),
 		      $self->get_comment(),
 		      $self->get_web_uploaded(),
 		      $self->get_population_id(),
-		      $self->get_common_name_id()
+		      $self->get_common_name_id(),
+                      $self->get_stock_id(),
 	             );
     }
-    else { 
+    else {
 	my $query = "INSERT INTO phenome.population
-                      (name, description, background_accession_id, 
+                      (name, description, background_accession_id,
                        sp_person_id, modified_date, cross_type_id, female_parent_id, 
-                       male_parent_id, recurrent_parent_id, 
-                       donor_parent_id, comment, web_uploaded, common_name_id)
-                     VALUES 
-                      (?, ?, ?, ?, now(), ?, ?, ?, ?, ?, ?,?, ?)";
+                       male_parent_id, recurrent_parent_id,
+                       donor_parent_id, comment, web_uploaded, common_name_id, stock_id)
+                     VALUES
+                      (?, ?, ?, ?, now(), ?, ?, ?, ?, ?, ?,?, ?, ?)
+                      RETURNING population_id";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_name(), 
 		      $self->get_description(), 
@@ -194,15 +196,15 @@ sub store {
 		      $self->get_cross_type_id(), 
 		      $self->get_female_parent_id(),
 		      $self->get_male_parent_id(), 
-		      $self->get_recurrent_parent_id(), 
-		      $self->get_donor_parent_id(), 	
+		      $self->get_recurrent_parent_id(),
+		      $self->get_donor_parent_id(),
 		      $self->get_comment(),
 		      $self->get_web_uploaded(),
-		      $self->get_common_name_id()
+		      $self->get_common_name_id,
+                      $self->get_stock_id
 	    );
-	
-	$population_id= $self->get_dbh()->last_insert_id("population", "phenome");
-	$self->set_population_id($population_id);
+        ($population_id) = $sth->fetchrow_array();
+        $self->set_population_id($population_id);
     }
     return $population_id;
 }
@@ -563,7 +565,28 @@ sub set_web_uploaded {
     $self->{web_uploaded}=shift;
 }
 
-    
+
+=head2 accessors get_stock_id, set_stock_id
+
+ Usage: $self->get/set_stock_id
+ Desc:  accessor for the FK to the chado stock table
+ Property
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_stock_id {
+  my $self = shift;
+  return $self->{stock_id};
+}
+
+sub set_stock_id {
+  my $self = shift;
+  $self->{stock_id} = shift;
+}
+
+
 =head2 get_owners
 
  Usage:

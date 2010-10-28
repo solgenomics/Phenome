@@ -32,6 +32,7 @@ use CXGN::Phenome::Population;
 use CXGN::Phenome::Individual::IndividualDbxref;
 use CXGN::Chado::Phenotype;
 use CXGN::DB::Object;
+use CXGN::Phenome::Genotype;
 
 use base qw / CXGN::DB::ModifiableI  /;
 
@@ -50,11 +51,11 @@ sub new {
     my $class = shift;
     my $dbh = shift;
     my $individual_id = shift;
-    
+
     my $self = $class->SUPER::new($dbh);
 
     $self->set_individual_id($individual_id);
-    
+
     if ($individual_id) { 
 	$self->fetch();
     }
@@ -98,7 +99,7 @@ sub fetch {
     my $query = "SELECT individual.name, individual.description, population.name, 
                         individual.sp_person_id, individual.create_date, 
                         individual.modified_date, updated_by, individual.population_id, 
-                        individual.common_name_id, common_name, individual.obsolete 
+                        individual.common_name_id, common_name, individual.obsolete, individual.stock_id
                  FROM phenome.individual 
                  LEFT JOIN phenome.population USING (population_id)  
                  LEFT JOIN sgn.common_name ON (individual.common_name_id = common_name.common_name_id)
@@ -107,7 +108,7 @@ sub fetch {
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_individual_id());
 
-    my ($name, $description, $population_name, $sp_person_id, $create_date, $modified_date, $updated_by, $population_id, $common_name_id, $common_name, $obsolete) = $sth->fetchrow_array();
+    my ($name, $description, $population_name, $sp_person_id, $create_date, $modified_date, $updated_by, $population_id, $common_name_id, $common_name, $obsolete, $stock_id) = $sth->fetchrow_array();
 
     $self->set_name($name);
     $self->set_description($description);
@@ -120,7 +121,8 @@ sub fetch {
     $self->set_common_name_id($common_name_id);
     $self->set_common_name($common_name);
     $self->set_obsolete($obsolete);
-    
+    $self->set_stock_id($stock_id);
+
     return $individual_id;
 }
 
@@ -140,43 +142,43 @@ sub store {
     if ($self->get_individual_id()) { 
 	$self->d( "Individual.pm -> updating....\n\n"); 
 	$self->store_history();
-	
+
 	my $query = "UPDATE phenome.individual SET
                        name = ?,
                        description = ?,
                        updated_by=?,
+                       stock_id = ? ,
                        modified_date = now()
                      WHERE
                        individual_id = ?
                      ";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), 
-		      $self->get_description(), 
-		      $self->get_updated_by(), 
+	$sth->execute($self->get_name(),
+		      $self->get_description(),
+		      $self->get_updated_by(),
+                      $self->get_stock_id(),
 		      $self->get_individual_id()
-	            );
-	
-	return $self->get_individual_id();
+            );
     }
-    
-    else { 
+    else {
 	my $query = "INSERT INTO phenome.individual
-                      (name, description, population_id, sp_person_id, create_date, common_name_id)
-                     VALUES 
-                      (?,?,?,?,now(), ?)";
-	
-	my $sth = $self->get_dbh()->prepare($query);
+                      (name, description, population_id, sp_person_id, common_name_id, stock_id)
+                     VALUES
+                      (?,?,?,?,?,?)
+                      RETURNING individual_id";
+
+        my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_name(), 
-		      $self->get_description(), 
-		      $self->get_population_id(), 
-		      $self->get_sp_person_id(), 
-		      $self->get_common_name_id()  
-	             );
-	
-	my $id = $self->get_dbh()->last_insert_id("individual", "phenome");
-	$self->set_individual_id($id);
-	return $id;
+                                       $self->get_description(), 
+                                       $self->get_population_id(), 
+                                       $self->get_sp_person_id(), 
+                                       $self->get_common_name_id() ,
+                                       $self->get_stock_id(),
+            );
+        my ($id) = $sth->fetchrow_array();
+        $self->set_individual_id($id);
     }
+    return $self->get_individual_id;
 }
 
 =head2 function get_images
@@ -728,6 +730,25 @@ sub set_common_name_id {
   $self->{common_name_id}=shift;
 }
 
+=head2 accessors get_stock_id, set_stock_id
+
+ Usage:
+ Desc:
+ Property
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_stock_id {
+  my $self = shift;
+  return $self->{stock_id};
+}
+
+sub set_stock_id {
+  my $self = shift;
+  $self->{stock_id} = shift;
+}
 
 
 =head2 delete
@@ -742,7 +763,7 @@ sub set_common_name_id {
 =cut
 
 
-sub delete { 
+sub delete {
     my $self = shift;
     if ($self->get_individual_id()) { 
 	my $query = "UPDATE phenome.individual SET obsolete='t', modified_date=now()
@@ -1377,11 +1398,11 @@ sub individual_in_population {
 
 =head2 has_phenotype
 
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
+ Usage: $self->has_phenotype
+ Desc:  check if the individual is linked with phenotypes 
+ Ret:   number of linked phenotypes or undef
+ Args: none
+ Side Effects: none
  Example:
 
 =cut
@@ -1389,18 +1410,61 @@ sub individual_in_population {
 sub has_phenotype {
     my $self=shift;
     return undef if !$self->get_individual_id;
-    my $q = 'SELECT phenotype_id FROM public.phenotype WHERE individual_id = ?';
+    my $q = 'SELECT count(phenotype_id) FROM public.phenotype WHERE individual_id = ?';
     my $sth = $self->get_dbh->prepare($q);
     $sth->execute($self->get_individual_id);
-    my $p;
-    while ( my ($phenotype_id)  =  $sth->fetchrow_array ) {
-	$p = 1 ;
-    }
-    return $p;
+    my ($count)  =  $sth->fetchrow_array ;
+    return $count;
 }
 
 
+=head2 has_genotype
 
-#######do not remove#    
+ Usage: $self->has_genotype
+ Desc:  check if the individual is linked with genotypes
+ Ret:   number of genotypes or undef
+ Args: none
+ Side Effects: none
+ Example:
+
+=cut
+
+sub has_genotype {
+    my $self=shift;
+    return undef if !$self->get_individual_id;
+    my $q = 'SELECT count(genotype_id) FROM phenome.genotype WHERE individual_id = ?';
+    my $sth = $self->get_dbh->prepare($q);
+    $sth->execute($self->get_individual_id);
+    my ($count)  =  $sth->fetchrow_array;
+    return $count;
+}
+
+=head2 get_genotypes
+
+ Usage: $self->get_genotypes
+ Desc:  find the linked genotypes of this individual
+ Ret:   a list of CXGN::Phenome::Genotype objects
+ Args:  none
+ Side Effects: none
+ Example:
+
+=cut
+
+sub get_genotypes {
+    my $self=shift;
+    my @genotypes;
+    if ($self->get_individual_id) {
+        my $q = "SELECT genotype_id FROM phenome.genotype WHERE individual_id = ?";
+        my $sth= $self->get_dbh->prepare($q);
+        $sth->execute( $self->get_individual_id);
+        while ( my ($genotype_id) = $sth->fetchrow_array ) {
+            push @genotypes,  CXGN::Phenome::Genotype->new($self->get_dbh, $genotype_id);
+        }
+    }
+    return @genotypes;
+}
+
+
+#######do not remove#
 return 1; ###########
 ####################
