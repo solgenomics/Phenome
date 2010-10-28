@@ -16,7 +16,7 @@ my $build = Module::Build->new(
     # and now the list of perl module dependencies
     requires => {
         perl => '5.10.0',
-	
+
 	'Bio::Chado::Schema'         => '0.04000',
 	'Bio::GMOD::GenericGenePage' => '0.12',
 
@@ -57,3 +57,26 @@ my $build = Module::Build->new(
     },
 );
 $build->create_build_script;
+
+## print the db_patches that this module needs to run to work
+
+my $db_patches = {
+    '1. mx-run AddStockLinks -H [host] -D [dbname] -u [sgn username]'  => 1,
+    '2. LoadChadoContact' => 1,
+    '3. LoadChadoProject' =>1,
+    '4. LoadChadoGenotype' =>1 ,
+    '5. LoadChadoStock' => 1,
+    '6. LoadChadoND' => 1,
+    '7. GrantStockPermissions' => 1,
+    '8. CopyAccessionToStock' => 1,
+    '9. LoadPhenomeInStock' => 1,
+};
+
+## For now it will print the dbpatches that this Build.PL requires
+
+if (%{$db_patches}) {
+    print "\nDB: db_patches required:\n";
+    for my $dbpatch (sort  keys %{$db_patches}) {
+        print "\t+ $dbpatch\n";
+    }
+}
