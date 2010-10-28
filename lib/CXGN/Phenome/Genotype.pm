@@ -372,7 +372,6 @@ sub get_genotype_regions {
             push @regions,  CXGN::Phenome::GenotypeRegion->new($self->get_dbh, $region_id);
         }
     }
-    print STDERR "Found " . scalar(@regions) . "genotype regions! \n";
     return @regions;
 }
 
