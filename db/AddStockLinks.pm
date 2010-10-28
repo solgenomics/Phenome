@@ -72,9 +72,9 @@ phenome.individual
 SET SEARCH_PATH  TO public;
 --do your SQL here
 
-    ALTER TABLE sgn.accession ADD COLUMN stock_id INTEGER REFERENCES public.stock;
-    ALTER TABLE phenome.population ADD COLUMN stock_id INTEGER REFERENCES public.stock;
-     ALTER TABLE phenome.individual ADD COLUMN stock_id INTEGER REFERENCES public.stock;
+    ALTER TABLE sgn.accession ADD COLUMN stock_id INTEGER;
+    ALTER TABLE phenome.population ADD COLUMN stock_id INTEGER;
+     ALTER TABLE phenome.individual ADD COLUMN stock_id INTEGER;
 
 
 EOSQL
