@@ -164,31 +164,29 @@ eval {
             next();
 	}
 	my $fruit_number =$spreadsheet->value_at($row_label, 'Fruit');
-	
-	
+
       COLUMN: foreach my $label (@columns) { 
 	  my $value =  $spreadsheet->value_at($row_label, $label);
-          
+
 	  my ($db_name, $sp_accession) = split (/\:/ , $label);
 	  next() if (!$sp_accession);
 	  next() if !$value;
-	  
+
 	  my ($sp_term) = $schema->resultset("General::Db")->find( {
 	      name => $db_name } )->find_related("dbxrefs", { 
 		  accession=>$sp_accession , } )->search_related("cvterm");
-	  
-	  
+
 	  my ($pato_term) = $schema->resultset("General::Db")->find( {
 	      name => 'PATO' , } )->search_related
 		  ("dbxrefs")->search_related
 		  ("cvterm_dbxrefs", {
-		      cvterm_id => $sp_term->cvterm_id() , 
+		      cvterm_id => $sp_term->cvterm_id() ,
                    });
 	  my $pato_id = undef;
 	  $pato_id = $pato_term->cvterm_id() if $pato_term;
-	  
+
 	  #store the phenotype
-	  my $phenotype = $sp_term->find_or_create_related("phenotype_observables", { 
+	  my $phenotype = $sp_term->find_or_create_related("phenotype_observables", {
 	      attr_id => $sp_term->cvterm_id(),
 	      value => $value ,
 	      cvalue_id => $pato_id,
@@ -218,23 +216,20 @@ eval {
 	  # store the unit for the measurement (if exists) in phenotype_cvterm
 	  #$phenotype->find_or_create_related("phenotype_cvterms" , {
 	  #	cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
-	  #print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ; 
+	  #print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ;
       }
     }
 };
 
-
-
 if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
 elsif ($opt_t) {
     print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
-    foreach my $value ( keys %seq ) { 
+    foreach my $value ( keys %seq ) {
 	my $maxval= $seq{$value} || 0;
 	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
 	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
     }
     $dbh->rollback;
-    
 }else {
     print "Transaction succeeded! Commiting phenotyping experiments! \n\n";
     $dbh->commit();
