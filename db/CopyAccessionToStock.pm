@@ -59,6 +59,8 @@ sub patch {
     print STDOUT "\nChecking if this db_patch was executed before or if previous db_patches have been executed.\n";
 
     my $schema = Bio::Chado::Schema->connect( sub { $self->dbh->clone } );
+
+    my $coderef = sub {
     my $q = "SELECT accession.accession_id, common_name, chado_organism_id , accession_name FROM sgn.accession JOIN sgn.accession_names USING (accession_name_id)";
     my $sth = $self->dbh->prepare($q);
     $sth->execute();
@@ -78,9 +80,25 @@ sub patch {
         my $stockprop = $stock->create_stockprops( { stock_synonym => $cname } , {autocreate => 1 } );
         #add the stock_id to the accession table
         my $stock_id = $stock->stock_id;
-        $self->dbh->do("UPDATE sgn.accession SET stock_id = $stock_id WHERE accession_id = $accession_id");
+        my $q = "UPDATE sgn.accession SET stock_id = ? WHERE accession_id = ?";
+        my $sth = $self->dbh->prepare($q);
+        $sth->execute($stock_id, $accession_id);
+ 
     }
     print "You're done!\n";
+    if ($self->trial) {
+        print "Trial mode! Rolling back transaction\n\n";
+        $schema->txn_rollback;
+    }
+    return 1;
+    };
+
+    try {
+	$schema->txn_do($coderef);
+	print "Data committed! \n";
+    } catch {
+	die "Load failed! " . $_ . "\n" ;
+    };
 }
 
 

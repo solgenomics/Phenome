@@ -197,7 +197,7 @@ sub patch {
                           type_id => $accession_cvterm->cvterm_id(),
                           is_obsolete => $i_obsolete,
                         } );
-                
+                }
                 #load the new stock_id in the individual table 
                 $ind->set_stock_id( $stock_individual->stock_id );
                 $ind->store();
@@ -312,7 +312,7 @@ sub patch {
 							  cv_name => 'local'
 							 });
 		}
-                }###########################################
+                ###########################################
 		## find linked phenotypes
 		#
 		# create a new nd_experiment and store the phenotype in the natural div module
@@ -430,7 +430,7 @@ sub patch {
                         value => $pop_owners[0],
                         type_id => $person_id_cvterm->cvterm_id,
                                                         }) if $pop_owners[0];
-                    
+
                     ########################################################
 			# link the genotype_region with the experiment
 			my @genotypes = $ind->get_genotypes();
@@ -447,12 +447,11 @@ sub patch {
                 }
             }
         }
-        
-	print "You're done!\n";
+        print "You're done!\n";
 	if ($self->trial) {
 	    print "Trail mode! Rolling back transaction\n\n";
-	    $schema->txn_rollback
-	}
+	    $schema->txn_rollback;
+        }
 	return 1;
     };
 
