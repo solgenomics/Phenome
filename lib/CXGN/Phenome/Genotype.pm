@@ -36,6 +36,8 @@ use strict;
 
 package CXGN::Phenome::Genotype;
 
+use CXGN::Phenome::GenotypeRegion;
+
 use base qw | CXGN::Phenome::Main  CXGN::DB::ModifiableI |;
 
 =head2 function new
@@ -79,7 +81,7 @@ sub new {
 
 sub fetch {
     my $self = shift;
-    my $query = "SELECT genotype_id, individual_id
+    my $query = "SELECT genotype_id, individual_id,
                         sp_person_id,
                         genotype_experiment_id,
                         modified_date, create_date
@@ -345,6 +347,33 @@ sub get_individual_id {
 sub set_individual_id {
   my $self=shift;
   $self->{individual_id}=shift;
+}
+
+
+=head2 get_genotype_regions
+
+ Usage: $self->get_genotype_regions
+ Desc:   find the associated genotype regions
+ Ret:    list of CXGN::Phenome::GenotypeRegion objects
+ Args:   none
+ Side Effects: none
+ Example:
+
+=cut
+
+sub get_genotype_regions {
+    my $self=shift;
+    my @regions;
+    if ($self->get_genotype_id) {
+        my $q = "SELECT genotype_region_id FROM phenome.genotype_region WHERE genotype_id = ?";
+        my $sth= $self->get_dbh->prepare($q);
+        $sth->execute( $self->get_genotype_id);
+        while ( my ($region_id) = $sth->fetchrow_array() ) {
+            push @regions,  CXGN::Phenome::GenotypeRegion->new($self->get_dbh, $region_id);
+        }
+    }
+    print STDERR "Found " . scalar(@regions) . "genotype regions! \n";
+    return @regions;
 }
 
 

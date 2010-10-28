@@ -88,7 +88,7 @@ sub new {
 
 sub fetch {
     my $self = shift;
-    my $query = "SELECT genotype_region_id, genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, zygosity_code, lg_id, type, name
+    my $query = "SELECT genotype_region_id, genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, zygocity_code, lg_id, type, name
                    FROM phenome.genotype_region
                   WHERE genotype_region_id = ?
                         AND (obsolete='f' OR obsolete=NULL)";
