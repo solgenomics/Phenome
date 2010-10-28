@@ -8,10 +8,10 @@
 =head1 SYNOPSIS
 
 mx-run ThisPackageName [options] -H hostname -D dbname -u username [-F]
-    
+
 this is a subclass of L<CXGN::Metadata::Dbpatch>
 see the perldoc of parent class for more details.
-    
+
 =head1 DESCRIPTION
 
 This is a patch for loading data in phenome.population and phenome.individual in the stock module, which will eventually replace these 2 tables.
@@ -50,7 +50,7 @@ sub init_patch {
     my $name = __PACKAGE__;
     print "dbpatch name is : '" .  $name . "'\n\n";
     my $description = 'Loading the phenome individual data into the stock module';
-    my @previous_requested_patches = ('CopyAccessionToStock'); #ADD HERE
+    my @previous_requested_patches = ('CopyAccessionToStock', 'AddStockLinks'); #ADD HERE
 
     $self->name($name);
     $self->description($description);
@@ -138,6 +138,10 @@ sub patch {
 		  description => $desc,
 		  type_id => $population_cvterm->cvterm_id(),
 		} );
+            #now load the stock in the population table
+            $population->set_stock_id($stock_population->stock_id);
+            $population->store();
+            ##
 	    #store the properties for the population
 	    $stock_population->create_stockprops({ sp_person_id => $sp_person_id},
 						 { autocreate => 1 , cv_name => 'local'});
@@ -193,7 +197,11 @@ sub patch {
                           type_id => $accession_cvterm->cvterm_id(),
                           is_obsolete => $i_obsolete,
                         } );
-                }
+                
+                #load the new stock_id in the individual table 
+                $ind->set_stock_id( $stock_individual->stock_id );
+                $ind->store();
+                ##
 		#load the population relationship
 		$stock_population->find_or_create_related('stock_relationship_objects', {
 		    type_id => $member_of->cvterm_id(),
@@ -304,7 +312,7 @@ sub patch {
 							  cv_name => 'local'
 							 });
 		}
-
+                }###########################################
 		## find linked phenotypes
 		#
 		# create a new nd_experiment and store the phenotype in the natural div module
@@ -374,13 +382,72 @@ sub patch {
 			print "Individual stock " . $stock_individual->name . " has phenotype " . $phenotype->uniquename . " linked to experiment " . $experiment->nd_experiment_id . "\n";
 		    }
 		}
-		#if ($ind->has_genotype) {
+		if ($ind->has_genotype) {
 		    #store genotyping experiment
 		    # get data from phenome.genotype and genotype_experiment
+                    print "Found genotypes! Storing new experiment and linking to phenome.genotype_region\n";
+		    # get the project
+		    my $project_name = $population->get_name;
+		    my @pop_owners = $population->get_owners;
+		    my $project_desc = 'genotypes recorded for population $project_name';
+		    if ( defined($pop_owners[0]) ) {
+			print "owner is " . $pop_owners[0] . "\n" ;
+			my $owner = CXGN::People::Person->new($self->dbh, $pop_owners[0]);
+			$project_desc .= 'by ' . $owner->get_first_name . ' ' . $owner->get_last_name ;
+		    }
+		    my $project = $schema->resultset("Project::Project")->find_or_create( {
+			name => $project_name,
+			description => $project_desc , } );
+		    # get the geolocation
+		    my $geo_description = 'unknown';
+		    my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create( {
+			description => $geo_description , } );
 
-	         #}
+		    # find the cvterm for a phenotyping experiment
+		    my $geno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
+			{ name   => 'genotyping experiment',
+			  cv     => 'experiment type',
+			  db     => 'null',
+			  dbxref => 'genotyping experiment',
+			});
+		    ###store a new nd_experiment. Each genotyped population is going to get a new experiment_id
+		    my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
+			nd_geolocation_id => $geolocation->nd_geolocation_id(),
+			type_id => $geno_cvterm->cvterm_id(), } );
+
+		    #link to the project
+		    $experiment->find_or_create_related('nd_experiment_projects', {
+			project_id => $project->project_id } );
+
+		    #link to the stock
+		    $experiment->find_or_create_related('nd_experiment_stocks' , {
+			stock_id => $stock_individual->stock_id(),
+			type_id  =>  $geno_cvterm->cvterm_id(),
+							});
+                    ##########################
+#######################
+                    $experiment->find_or_create_related('nd_experimentprops', {
+                        value => $pop_owners[0],
+                        type_id => $person_id_cvterm->cvterm_id,
+                                                        }) if $pop_owners[0];
+                    
+                    ########################################################
+			# link the genotype_region with the experiment
+			my @genotypes = $ind->get_genotypes();
+                        foreach my $g (@genotypes) {
+                            my @regions = $g->get_genotype_regions;
+                            foreach my $gr (@regions) {
+                                my $gr_id = $gr->get_genotype_region_id;
+                                $experiment->create_nd_experimentprops(
+                                    { 'sgn genotype_region_id' => $gr_id },
+                                    { autocreate => 1 , cv_name => 'local' } );
+                                print "Individual stock " . $stock_individual->name . " has genotype region ($gr_id) linked to experiment " . $experiment->nd_experiment_id . "\n";
+                            }
+                        }
+                }
             }
-	}
+        }
+        
 	print "You're done!\n";
 	if ($self->trial) {
 	    print "Trail mode! Rolling back transaction\n\n";
@@ -391,10 +458,8 @@ sub patch {
 
     try {
 	$schema->txn_do($coderef);
-	$schema->txn_commit;
 	print "Data committed! \n";
     } catch {
-	$schema->txn_rollback;
 	die "Load failed! " . $_ . "\n" ;
     };
 }
