@@ -163,39 +163,37 @@ sub store {
                        population_id = ?
                      ";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), 
-		      $self->get_description(), 
-		      $self->get_background_accession_id(), 
+	$sth->execute($self->get_name(),
+		      $self->get_description(),
+		      $self->get_background_accession_id(),
 		      $self->get_sp_person_id(),
-		      $self->get_cross_type_id(), 
-		      $self->get_female_parent_id(), 
-		      $self->get_male_parent_id(), 
-		      $self->get_recurrent_parent_id(), 
-		      $self->get_donor_parent_id(),
+		      $self->get_cross_type_id(),
+		      $self->get_female_parent_id(),
+		      $self->get_male_parent_id(),
+		      $self->get_recurrent_parent_id(),
+		      $self->get_donor_parent_id()
 		      $self->get_comment(),
 		      $self->get_web_uploaded(),
-		      $self->get_population_id(),
-		      $self->get_common_name_id(),
+                      $self->get_common_name_id(),
                       $self->get_stock_id(),
+                      $self->get_population_id(),
 	             );
     }
     else {
 	my $query = "INSERT INTO phenome.population
                       (name, description, background_accession_id,
-                       sp_person_id, modified_date, cross_type_id, female_parent_id, 
-                       male_parent_id, recurrent_parent_id,
-                       donor_parent_id, comment, web_uploaded, common_name_id, stock_id)
+                       sp_person_id, modified_date, cross_type_id, female_parent_id, male_parent_id, recurrent_parent_id, donor_parent_id, comment, web_uploaded, common_name_id, stock_id)
                      VALUES
                       (?, ?, ?, ?, now(), ?, ?, ?, ?, ?, ?,?, ?, ?)
                       RETURNING population_id";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_name(), 
-		      $self->get_description(), 
-		      $self->get_background_accession_id(), 
+	$sth->execute($self->get_name(),
+		      $self->get_description(),
+		      $self->get_background_accession_id(),
                       $self->get_sp_person_id(),
-		      $self->get_cross_type_id(), 
+		      $self->get_cross_type_id(),
 		      $self->get_female_parent_id(),
-		      $self->get_male_parent_id(), 
+		      $self->get_male_parent_id(),
 		      $self->get_recurrent_parent_id(),
 		      $self->get_donor_parent_id(),
 		      $self->get_comment(),
