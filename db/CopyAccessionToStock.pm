@@ -38,6 +38,7 @@ package CopyAccessionToStock;
 use Moose;
 extends 'CXGN::Metadata::Dbpatch';
 use Bio::Chado::Schema;
+use Try::Tiny;
 
 sub init_patch {
     my $self=shift;
