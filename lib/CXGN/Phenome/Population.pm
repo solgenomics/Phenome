@@ -171,12 +171,12 @@ sub store {
 		      $self->get_female_parent_id(),
 		      $self->get_male_parent_id(),
 		      $self->get_recurrent_parent_id(),
-		      $self->get_donor_parent_id()
+		      $self->get_donor_parent_id(),
 		      $self->get_comment(),
 		      $self->get_web_uploaded(),
                       $self->get_common_name_id(),
                       $self->get_stock_id(),
-                      $self->get_population_id(),
+                      $self->get_population_id()
 	             );
     }
     else {
