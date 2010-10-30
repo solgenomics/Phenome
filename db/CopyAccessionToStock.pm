@@ -66,8 +66,12 @@ sub patch {
     my $sth = $self->dbh->prepare($q);
     $sth->execute();
 
-    my ($accession_cvterm_id) = $schema->resultset("Cv::Cvterm")->find( { name => 'accession' } )->cvterm_id ||
-        die "cvterm for 'accession' has to be stored first in the database ! ";
+    my $accession_cvterm_id =
+        $schema->resultset("Cv::Cvterm")
+               ->search( { name => 'accession' } )
+               ->get_column('cvterm_id')
+               ->first
+          || die "No cvterm for 'accession' found, please create one.  Aborting.\n";
 
     while ( my ($accession_id, $cname, $organism_id , $acc_name)  = $sth->fetchrow_array) {
         print "Storing new stock $acc_name ($cname)\n";
