@@ -66,12 +66,13 @@ sub patch {
     my $sth = $self->dbh->prepare($q);
     $sth->execute();
 
-    my $accession_cvterm_id =
-        $schema->resultset("Cv::Cvterm")
-               ->search( { name => 'accession' } )
-               ->get_column('cvterm_id')
-               ->first
-          || die "No cvterm for 'accession' found, please create one.  Aborting.\n";
+    my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with( {
+        name => 'accession' ,
+        cv     => 'stock type',
+        db     => 'null',
+        dbxref => 'accession', });
+
+    my $accession_cvterm_id = $accession_cvterm->cvterm_id;
 
     while ( my ($accession_id, $cname, $organism_id , $acc_name)  = $sth->fetchrow_array) {
         print "Storing new stock $acc_name ($cname)\n";
