@@ -17,7 +17,7 @@ my $build = Module::Build->new(
     requires => {
         perl => '5.10.0',
 
-	'Bio::Chado::Schema'         => '0.04000',
+	'Bio::Chado::Schema'         => '0.065',
 	'Bio::GMOD::GenericGenePage' => '0.12',
 
 # 	'CXGN::Chado::Cvterm' => 0,
