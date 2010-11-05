@@ -56,7 +56,6 @@ sub fetch {
 ;
     my $allele_synonym_query = $self->get_dbh()->prepare("SELECT  allele_id, alias, sp_person_id, create_date, modified_date FROM phenome.allele_alias WHERE allele_alias_id=? and obsolete='f'");
 
-        	   
     $allele_synonym_query->execute( $self->get_allele_alias_id());
 
     my ($allele_id, $alias, $sp_person_id, $create_date, $modified_date)=$allele_synonym_query->fetchrow_array();
@@ -65,12 +64,12 @@ sub fetch {
     $self->set_sp_person_id($sp_person_id);
     $self->set_create_date($create_date);
     $self->set_modification_date($modified_date);
-    
 }
 
 sub store {
     my $self= shift;
-    if ($self->get_allele_alias_id()) {
+    my $id = $self->get_allele_alias_id();
+    if ($id) {
 	my $query = "UPDATE phenome.allele_alias SET
                          alias=?,
                          sp_person_id= ?,
@@ -78,18 +77,16 @@ sub store {
                          where allele_alias_id=?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_allele_alias, $self->get_sp_person_id);
-	return $self->get_allele_alias_id();
     }
     else {
-	my $query = "INSERT INTO phenome.allele_alias (allele_id, alias, sp_person_id) VALUES(?,?,?)";
+	my $query = "INSERT INTO phenome.allele_alias (allele_id, alias, sp_person_id) VALUES(?,?,?) RETURNING allele_alias_id";
 	my $sth= $self->get_dbh()->prepare($query);
-
-	
 	$sth->execute($self->get_allele_id, $self->get_allele_alias, $self->get_sp_person_id);
-	#return $self->get_dbh()->last_insert_id("allele_alias");
+        ($id) = $sth->fetchrow_array();
+        $self->set_allele_alias_id;
     }
-    return $self->get_allele_alias_id();
-}                
+    return $id;
+}
 
 sub delete { 
     my $self = shift;
