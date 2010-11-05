@@ -85,19 +85,19 @@ sub store {
     my $self= shift;
     
     my $obsolete= $self->get_obsolete();
-    
+
     my $locus_dbxref_evidence_id=$self->get_object_dbxref_evidence_id()  || $self->evidence_exists();
-    
+
     if (!$locus_dbxref_evidence_id) {
 	$self->d("about to store a new locus_dbxref_evidence\n...");
-	my $query = "INSERT INTO phenome.locus_dbxref_evidence (locus_dbxref_id, relationship_type_id, evidence_code_id, evidence_description_id, evidence_with, reference_id, sp_person_id) VALUES(?,?,?,?,?,?,?)";
+	my $query = "INSERT INTO phenome.locus_dbxref_evidence (locus_dbxref_id, relationship_type_id, evidence_code_id, evidence_description_id, evidence_with, reference_id, sp_person_id) VALUES(?,?,?,?,?,?,?) RETURNING locus_dbxref_evidence_id";
 	my $sth= $self->get_dbh()->prepare($query);
-	
+
 	$sth->execute($self->get_object_dbxref_id(), $self->get_relationship_type_id(), $self->get_evidence_code_id(),$self->get_evidence_description_id(), $self->get_evidence_with(), $self->get_reference_id(), $self->get_sp_person_id() );
-	
-	$locus_dbxref_evidence_id=  $self->get_dbh()->last_insert_id("locus_dbxref_evidence", "phenome");
+
+	($locus_dbxref_evidence_id) = $sth->fetchrow_array();
 	$self->set_object_dbxref_evidence_id($locus_dbxref_evidence_id);
-	
+
     }elsif ($locus_dbxref_evidence_id ) {
 	$self->d( "about to update locus_dbxref_evidence...\n" );
 	my $query = "UPDATE phenome.locus_dbxref_evidence SET relationship_type_id=?, evidence_code_id=?, evidence_description_id=?, evidence_with=?, reference_id=?,  updated_by=?, obsolete='f', modified_date = now() WHERE locus_dbxref_evidence_id=?";
@@ -197,14 +197,13 @@ sub store_history {
 	print STDERR "LocusDbxrefEvidence.pm **** store_history()\n\n";
 	my $history_query= "INSERT INTO phenome.locus_dbxref_evidence_history
                             (locus_dbxref_evidence_id, locus_dbxref_id, relationship_type, evidence_code, evidence_description, evidence_with, reference_id, sp_person_id, updated_by,  modified_date, obsolete) 
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?) RETURNING locus_dbxref_evidence_history_id";
 	my $history_sth=$self->get_dbh()->prepare($history_query);
 	$history_sth->execute($self->get_object_dbxref_evidence_id(), $self->get_object_dbxref_id(), $self->get_relationship_type_id(), $self->get_evidence_code_id, $self->get_evidence_description_id(), $self->get_evidence_with(), $self->get_reference_id(), $self->get_sp_person_id, $self->get_updated_by(), $self->get_modification_date(),$self->get_obsolete());
-	my $id= $self->get_dbh()->last_insert_id("locus_dbxref_evidence_history", "phenome");
-	print STDERR "*!*!locus_dbxref_evidence_history_id: $id***\n";
-    }else { 
+	my ($id) = $history_sth->fetchrow_array();
+    }else {
 	print STDERR  "trying to store history of a locus_dbxref_evidence that has not yet been stored to db.\n";
-    }    
+    }
 }
 
 =head2 evidence_exists

@@ -77,21 +77,21 @@ sub store {
     print STDERR "IndividualDbxref is storing entry for individual " .  $self->get_individual_id() . " dbxref_id = " . $self->get_dbxref_id() . "\n\n";
     if (!$individual_dbxref_id) {
 	print STDERR "IndividualDbxref is storing a new entry...\n";
-	my $query = "INSERT INTO phenome.individual_dbxref (individual_id, dbxref_id, sp_person_id) VALUES(?,?,?)";
+	my $query = "INSERT INTO phenome.individual_dbxref (individual_id, dbxref_id, sp_person_id) VALUES(?,?,?) RETURNING individual_dbxref_id";
 	my $sth= $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_individual_id, $self->get_dbxref_id, $self->get_sp_person_id);
-	
-	$individual_dbxref_id=  $self->get_dbh()->last_insert_id("individual_dbxref", "phenome");
+
+	($individual_dbxref_id) = $sth->fetchrow_array();
 	$self->set_object_dbxref_id($individual_dbxref_id);
-   
+
     }elsif ($obsolete eq 't' ) {
-	my $query = "UPDATE phenome.individual_dbxref SET obsolete='f', sp_person_id=? , modified_date=now() 
+	my $query = "UPDATE phenome.individual_dbxref SET obsolete='f', sp_person_id=? , modified_date=now()
             WHERE individual_dbxref_id=?";
 	my $sth= $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_sp_person_id, $individual_dbxref_id);
     }else { print STDERR "individual_dbxref already stored!!\n\n";  }
-    
-    return $individual_dbxref_id; 
+
+    return $individual_dbxref_id;
 }
 
 
@@ -158,16 +158,16 @@ sub delete {
 sub unobsolete {
 
     my $self = shift;
-    if ($self->get_object_dbxref_id()) { 
+    if ($self->get_object_dbxref_id()) {
 	my $query = "UPDATE phenome.individual_dbxref SET obsolete='f', modified_date=now()
                   WHERE individual_dbxref_id=?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_object_dbxref_id());
 
-    }else { 
+    }else {
 	print STDERR  "trying to unobsolete an individual_dbxref that has not yet been stored to db.\n";
-    }    
-}		     
+    }
+}
 
 
 
