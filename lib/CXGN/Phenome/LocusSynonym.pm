@@ -93,16 +93,16 @@ sub store {
                 WHERE locus_alias_id=?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_obsolete(), $self->get_locus_alias(), $self->get_preferred(), $self->get_sp_person_id(),$id);
-	
+
     }else {
-	my $query = "INSERT INTO phenome.locus_alias (locus_id, alias, sp_person_id) VALUES(?,?,?)";
+	my $query = "INSERT INTO phenome.locus_alias (locus_id, alias, sp_person_id) VALUES(?,?,?) RETURNING locus_alias_id";
 	my $sth= $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_locus_id, $self->get_locus_alias, $self->get_sp_person_id);
-	$id= $self->get_dbh->last_insert_id("locus_alias", "phenome" );
+	($id)= $sth->fetchrow_array;
 	$self->set_locus_alias_id($id);
     }
     return $id;
-}                
+}
 
 
 sub delete { 
