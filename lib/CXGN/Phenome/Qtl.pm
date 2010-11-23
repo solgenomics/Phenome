@@ -44,12 +44,12 @@ sub new {
 
 =head2 apache_upload_file
 
- Usage:        my $temp_file_name = $image->apache_upload_file($apache_upload_object, $c);
- Desc:
- Ret:          the name of the intermediate tempfile that can be 
+ Usage:        my $data_file_name = $qtl->apache_upload_file($upload_object, $c);
+ Desc:         writes uploaded data to a file in  user specific dir
+ Ret:          the name of the data file that can be 
                used to access down the road.
- Args:         an apache upload object
- Side Effects: generates an intermediate temp file from an apache request
+ Args:         an upload object
+ Side Effects: generates an data file from a request
                that can be handled more easily. 
  
  Example:
@@ -62,36 +62,37 @@ sub apache_upload_file {
     my $c      = shift;
 
 # Adjust File name if using Windows IE - it sends whole path; drive letter, path, and filename
-    my ( $upload_filename, $dir );
-    if ( $ENV{HTTP_USER_AGENT} =~ /msie/i ) {
-        ( $dir, $upload_filename ) = $upload->filename =~ m/(.*\\)(.*)$/;
-
+    my ( $data_filename, $dir );
+    
+    if ( $ENV{HTTP_USER_AGENT} =~ /msie/i ) 
+    {
+        ( $dir, $data_filename ) = $upload->filename =~ m/(.*\\)(.*)$/;
     }
     else {
-        $upload_filename = $upload->filename;
+        $data_filename = $upload->filename;
     }
 
     my ( $temp_qtl, $temp_user ) = $self->create_user_qtl_dir($c);
 
-    my $temp_file = $temp_user . "/" . $upload_filename;
-    my $upload_fh = $upload->fh;
-
-    if ( -e $temp_file ) {
-        unlink $temp_file;
+    my $data_file = $temp_user . "/" . $data_filename;
+    my $data_fh = $upload->fh;
+    my $temp_file = $upload->tempname();
+    
+    if ( -e $data_file ) {
+        unlink $data_file;
     }
-
-    print STDERR "Uploading file to location: $temp_file\n";
-
-    open UPLOADFILE, ">", $temp_file
-      or die "Could not write to $temp_file: $!\n";
-
-    binmode UPLOADFILE;
-    while (<$upload_fh>) {
-        print UPLOADFILE;
+ 
+    if (-e $temp_file ) 
+    {
+	open my $temp_fh, "<", $temp_file 
+	    or die "Could not read to $temp_file: $!\n";	
+	while (<$temp_fh>) 
+	{
+	    $data_fh->print($_);
+	}
     }
-    close UPLOADFILE;
-
-    return $temp_file;
+    
+    return $data_file;
 
 }
 
@@ -347,12 +348,12 @@ sub make_table {
 
 sub get_user_qtl_dir {
     my $self         = shift;
-    my $vh           = shift;
+    my $c           = shift;
     my $sp_person_id = $self->get_sp_person_id();
 
-    #my $vh = SGN::Context->new();
-    my $bdir = $vh->get_conf("basepath");
-    my $tdir = $vh->get_conf("tempfiles_subdir");
+ 
+    my $bdir = $c->get_conf("basepath");
+    my $tdir = $c->get_conf("tempfiles_subdir");
     my $temp = File::Spec->catfile( $bdir, $tdir, "page_uploads" );
 
     my $temp_qtl = "$temp/qtl";
