@@ -71,7 +71,7 @@ sub apache_upload_file {
     else {
         $data_filename = $upload->filename;
     }
-
+    print STDERR "data_filename: $data_filename\n\n";
     my ( $temp_qtl, $temp_user ) = $self->create_user_qtl_dir($c);
 
     my $data_file = $temp_user . "/" . $data_filename;
@@ -85,13 +85,15 @@ sub apache_upload_file {
     if (-e $temp_file ) 
     {
 	open my $temp_fh, "<", $temp_file 
-	    or die "Could not read to $temp_file: $!\n";	
+	    or die "Could not read to $temp_file: $!\n";
+	open my $data_fh, ">", $data_file 
+	    or die "Could not write to $data_file: $!\n";
 	while (<$temp_fh>) 
 	{
-	    $data_fh->print($_);
+	    $data_fh->print($_);	   
 	}
     }
-    
+
     return $data_file;
 
 }
