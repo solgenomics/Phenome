@@ -81,6 +81,7 @@ sub run {
             my $itag_synonym = CXGN::Phenome::LocusSynonym->new($dbh);
             $itag_synonym->set_locus_id($locus_id);
             $itag_synonym->set_locus_alias($itag);
+            $itag_synonym->set_preferred('f');
             $itag_synonym->store();
             my $alias_id = $locus->add_locus_alias($itag_synonym);
             print "Added synonym $itag (id = $alias_id) to locus " . $locus->get_locus_symbol . " (id = $locus_id)\n";
