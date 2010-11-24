@@ -77,9 +77,19 @@ sub run {
     foreach my $line (@lines) {
         chomp $line;
         my ($locus_id, $itag, $annotation) = split (/\t/ , $line ) ;
-        my ( $chromosome ) = $itag =~ /^Solyc(\d+)g/ or die "cannot parse itag gene name '$itag'\n";
+        my ( $chromosome ) = $itag =~ /^Solyc0?(\d+)g/ or die "cannot parse itag gene name '$itag'\n";
         my $locus = CXGN::Phenome::Locus->new($dbh, $locus_id);
         if ($locus->get_locus_id) {
+            next if $locus->get_obsolete eq 't';
+            print "locus_id = " . $locus->get_locus_id . "name = " . $locus->get_locus_name . "\n";
+            my $locus_chr = $locus->get_linkage_group;
+            if ($locus_chr && $locus_chr != $chromosome) {
+                warn("ERROR: ITAG chromosome is $chromosome, but the matching locus (id=" . $locus->get_locus_id . ") is on chromosome $locus_chr. Please fix the locus chromosome in the database, or change the ITAG match\n");
+            }elsif (!$locus_chr) {
+                print "Updating chromosome = $chromosome for locus_id " . $locus->get_locus_id . "\n";
+                $locus->set_linkage_group($chromosome);
+                $locus->store;
+            }
             my $itag_synonym = CXGN::Phenome::LocusSynonym->new($dbh);
             $itag_synonym->set_locus_id($locus_id);
             $itag_synonym->set_locus_alias($itag);
@@ -102,6 +112,7 @@ sub run {
         print "Trial mode! Not locus synonyms and new loci in the database \n";
         $dbh->rollback;
     } else {
+        print "COMMITING\n";
         $dbh->commit;
     }
 
