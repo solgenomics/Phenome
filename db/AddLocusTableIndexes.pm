@@ -1,4 +1,4 @@
-package LoadChadoProject;
+package AddLocusTableIndexes;
 
 use Try::Tiny;
 use Moose;
@@ -30,12 +30,12 @@ sub patch {
 create index locus_history_locus_id on phenome.locus_history(locus_id);
 create index locus_pub_ranking_locus_id on phenome.locus_pub_ranking(locus_id);
 create index allele_locus_id on phenome.allele(locus_id);
-create index phenome.locus_alias_locus_id on phenome.locus_alias(locus_id);
 create index locus_alias_locus_id on phenome.locus_alias(locus_id);
-create index locus2locus_locus_id on phenome.locus2locus(locus_id);
-create index locus2locus_locus_id on phenome.locus2locus(
+
+
 create index locus2locus_subject_id on phenome.locus2locus(subject_id);
 create index locus2locus_object_id on phenome.locus2locus(object_id);
+
 create index individual_locus_locus_id on phenome.individual_locus(locus_id);
 create index locus_image_locus_id on phenome.locus_image(locus_id);
 EOSQL
