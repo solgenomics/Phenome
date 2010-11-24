@@ -189,22 +189,22 @@ sub store {
                          where allele_id=?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_allele_symbol(), $self->get_allele_name, $self->get_mode_of_inheritance, $self->get_allele_phenotype, $self->get_updated_by, $self->get_sequence(), $allele_id);
-	
+
     }elsif (!$exists) {
-	my $query = "INSERT INTO phenome.allele (locus_id, allele_symbol, allele_name, mode_of_inheritance, allele_phenotype, sp_person_id, is_default, sequence) VALUES(?,?,?,?,?,?,?,?)";
+	my $query = "INSERT INTO phenome.allele (locus_id, allele_symbol, allele_name, mode_of_inheritance, allele_phenotype, sp_person_id, is_default, sequence) VALUES(?,?,?,?,?,?,?,?) RETURNING allele_id";
 	my $sth= $self->get_dbh()->prepare($query);
 	my $is_default = $self->get_is_default();
-	
+
        	$sth->execute($self->get_locus_id, $self->get_allele_symbol, $self->get_allele_name, $self->get_mode_of_inheritance, $self->get_allele_phenotype, $self->get_sp_person_id, $is_default, $self->get_sequence());
-    	$allele_id= $self->get_dbh()->last_insert_id("allele", "phenome");
+    	($allele_id) = $sth->fetchrow_array;
 	$self->set_allele_id($allele_id);
-	
-    }elsif ($exists) { 
-	$allele_id=$exists ; 
+
+    }elsif ($exists) {
+	$allele_id=$exists ;
 	print STDERR "Allele.pm cannot store existing allele. id = $allele_id, locus_id =" .  $self->get_locus_id() . ", symbol= ". $self->get_allele_symbol() ."\n";
-    } 
+    }
     return $allele_id;
-}                
+}
 
 
 =head2 accessors are available for the following: 

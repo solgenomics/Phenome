@@ -314,7 +314,7 @@ sub store {
 	
 	my $sth= $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_locus_name, $self->get_locus_symbol,  $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_updated_by(), $self->get_obsolete(), $locus_id );
-	
+
 	foreach my $dbxref ( @{$self->{locus_dbxrefs}} )   {
 	    my $locus_dbxref_obj= CXGN::Phenome::LocusDbxref->new($self->get_dbh());
 	    #$locus_dbxref_obj->store(); # what do I want to store here?
@@ -323,25 +323,24 @@ sub store {
 	#Update locus_alias 'preferred' field
 	$self->update_locus_alias();
     }
-    else { 
-	
+    else {
 	eval {
-	    my $query = "INSERT INTO phenome.locus (locus_name, locus_symbol, original_symbol, gene_activity, description, linkage_group, lg_arm,  common_name_id, create_date) VALUES(?,?,?,?,?,?,?,?, now())";
-	    
+	    my $query = "INSERT INTO phenome.locus (locus_name, locus_symbol, original_symbol, gene_activity, description, linkage_group, lg_arm,  common_name_id, create_date) VALUES(?,?,?,?,?,?,?,?, now()) RETURNING locus_id";
+
 	    my $sth= $self->get_dbh()->prepare($query);
 	    $sth->execute($self->get_locus_name, $self->get_locus_symbol, $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_common_name_id);
-	    
-	    $locus_id= $self->get_dbh->last_insert_id("locus", "phenome" );
+
+            ($locus_id) = $sth->fetchrow_array;
 	    $self->set_locus_id($locus_id);
-	    
+
 	    my $locus_owner_query="INSERT INTO phenome.locus_owner (locus_id, sp_person_id) VALUES (?,?)";
 	    my $locus_owner_sth=$self->get_dbh()->prepare($locus_owner_query);
 	    $locus_owner_sth->execute($locus_id, $self->get_sp_person_id());
-	    
+
 	    my $alias_query= "INSERT INTO phenome.locus_alias(locus_id, alias, preferred) VALUES (?, ?,'t')";
 	    my $alias_sth= $self->get_dbh()->prepare($alias_query);
 	    $alias_sth->execute($self->get_locus_id(), $self->get_locus_symbol());
-	    
+
 	    #the following query will insert a 'dummy' default allele. Each locus must have a default allele.
 	    # This is important for associating individuals with loci. The locus_display code masks the dummy alleles.
 	    my $allele= CXGN::Phenome::Allele->new($self->get_dbh());
@@ -349,7 +348,7 @@ sub store {
 	    $allele->set_allele_symbol( uc($self->get_locus_symbol) );
 	    $allele->set_is_default('t');
 	    $allele->store();
-	    
+
 	    $self->d("***#####Locus.pm store: inserting new locus $locus_id....\n");
 	};
     }
