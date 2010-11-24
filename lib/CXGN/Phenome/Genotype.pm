@@ -141,17 +141,17 @@ sub store {
                                  modified_date,
                                  create_date,
                                  obsolete)
-                          VALUES (?, ?, ?, now(), now(), 'f')";
+                          VALUES (?, ?, ?, now(), now(), 'f')
+                          RETURNING genotype_id";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute( 
 		       $self->get_individual_id(),
 		       $self->get_sp_person_id(),
 		       $self->get_genotype_experiment_id(),
 		       );
-	my $id = $self->get_dbh()->last_insert_id("genotype", "phenome");
+	my ($id) = $sth->fetchrow_array();
 	$self->set_genotype_id($id);
 	return $id;
-    
     }
 }
 

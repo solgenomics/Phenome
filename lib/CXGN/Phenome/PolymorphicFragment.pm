@@ -127,13 +127,12 @@ sub store {
 		      $self->get_linkage_group(),
 		      $self->get_type()
 		      );
-	return $self->get_polymorphic_fragment_id();
     }
-    else { 
+    else {
 	my $query = "INSERT INTO phenome.polymorphic_fragment 
                        (genotype_id, flanking_marker1_id, flanking_marker2_id, zygocity, linkage_group, type)
                      VALUES
-                       (?, ?, ?, ?, ?, ?)";
+                       (?, ?, ?, ?, ?, ?) RETURNING polymorphic_fragment_id";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
 		      $self->get_genotype_id(),
@@ -143,10 +142,10 @@ sub store {
 		      $self->get_linkage_group(),
 		      $self->get_type()
 		      );
-	my $id = $self->get_dbh()->last_insert_id("polymorphic_fragment", "phenome");
+	my ($id) = $sth->fetchrow_array();
 	$self->set_polymorphic_fragment_id($id);
-	return $id;
-    }           
+    }
+    return $self->get_polymorphic_fragment_id();
 }
 
 =head2 get_polymorphic_fragment_id

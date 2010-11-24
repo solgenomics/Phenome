@@ -96,18 +96,19 @@ sub store {
                      ";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute($self->get_germplasm_type(), $self->get_description(), $self->get_sp_person_id(), $self->get_germplasm_id());
-	return $self->get_germplasm_id();
     }
-    else { 
+    else {
 	my $query = "INSERT INTO phenome.germplasm
                       (germplasm_type, description, sp_person_id, modified_date)
-                     VALUES 
-                      (?, ?, ?, now())";
+                     VALUES
+                      (?, ?, ?, now()) RETURNING germplasm_id";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_germplasm_type(), $self->get_description(),  
+	$sth->execute($self->get_germplasm_type(), $self->get_description(),
                       $self->get_sp_person_id());
-	return $self->get_dbh()->last_insert_id("phenome.germplasm");
+        my ($id) = $sth->fetchrow_array();
+        $self->set_germplasm_id($id);
     }
+    return $self->get_germplasm_id();
 }
 
 

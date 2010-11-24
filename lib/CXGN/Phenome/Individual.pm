@@ -293,6 +293,7 @@ sub get_loci {
 =cut
 
 sub associate_locus {
+    warn(" associate_locus is DEPRECATED. Please use associate_allele");
     my $self = shift;
     my $locus_id = shift;
     my $sp_person_id= shift;
@@ -348,11 +349,11 @@ sub associate_allele {
 	}else {
 	    $self->d("Individual.pm: inserting a new individual_allele.");
 	    my $query = "INSERT INTO phenome.individual_allele
-                   (allele_id, individual_id, sp_person_id) VALUES (?, ?, ?)";
+                   (allele_id, individual_id, sp_person_id) VALUES (?, ?, ?)
+                   RETURNING individual_allele_id";
 	    my $sth = $self->get_dbh()->prepare($query);
 	    $sth->execute($allele_id, $individual_id, $sp_person_id);
-
-	    $individual_allele_id= $self->get_dbh()->last_insert_id("individual_allele", "phenome");
+            ($individual_allele_id) = $sth->fetchrow_array();
 	}
 
     }elsif ($obsolete || $individual_allele_id) {
@@ -435,7 +436,7 @@ sub get_dbxrefs {
 
   Synopsis:  $individual->associate_dbxref($dbxref_id)
   Arguments: $dbxref_id an id of an entry from public.dbxref table
-  Returns:   last_insert_id
+  Returns:   individual_dbxref_id
   Side effects:
   Description:	inserts a new entry into phenome.individual_dbxref
 
@@ -445,10 +446,12 @@ sub associate_dbxref {
     my $self = shift;
     my $dbxref_id = shift;
     my $query = "INSERT INTO phenome.individual_dbxref
-                   (dbxref_id, individual_id) VALUES (?, ?)";
+                   (dbxref_id, individual_id) VALUES (?, ?)
+                 RETURNING individual_dbxref_id";
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($dbxref_id, $self->get_individual_id());
-    return $self->get_dbh()->last_insert_id("individual_dbxref", "phenome");
+    my ($id) = $sth->fetchrow_array();
+    return $id;
 }
 
 =head2 function get_individual_id

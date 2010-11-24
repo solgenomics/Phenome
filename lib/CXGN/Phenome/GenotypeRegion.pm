@@ -161,8 +161,9 @@ sub store {
                        (genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, 
                         zygocity_code, lg_id, type, name, sp_person_id, modified_date, create_date, obsolete)
                      VALUES
-                       (?, ?, ?, ?, ?, ?, ? ,?, ?, ? , now(), now(), 'f')";
-	my $sth = $self->get_dbh()->prepare($query);
+                       (?, ?, ?, ?, ?, ?, ? ,?, ?, ? , now(), now(), 'f')
+	               RETURNING genotype_region_id";
+        my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
 		      $self->get_genotype_id(),
 		      $self->get_marker_id_nn(),
@@ -174,12 +175,11 @@ sub store {
 		      $self->get_type(),
 		      $self->get_name(),
 		      $self->get_create_date()
-		      
 		      );
-	my $id = $self->get_dbh()->last_insert_id("genotype_region", "phenome");
+	my ($id) = $sth->fetchrow_array;
 	$self->set_genotype_region_id($id);
 	return $id;
-    }           
+    }
 }
 
 # =head2 get_polymorphic_fragment_id

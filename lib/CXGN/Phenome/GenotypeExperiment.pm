@@ -148,9 +148,10 @@ sub store {
                                  modified_date,
                                  create_date,
                                  obsolete)
-                          VALUES (?, ?, ?, ?, ?, now(), now(), ?)";
+                          VALUES (?, ?, ?, ?, ?, now(), now(), ?)
+                          RETURNING genotype_experiment_id";
 	my $sth = $self->get_dbh()->prepare($query);
-	$sth->execute( 
+	$sth->execute(
 		       $self->get_experiment_name(),
 		       $self->get_reference_map_id(),
 		       $self->get_background_accession_id(),
@@ -158,10 +159,9 @@ sub store {
 		       $self->get_sp_person_id(),
 		       $self->get_obsolete()
 		       );
-	my $id = $self->get_dbh()->last_insert_id("genotype_experiment", "phenome");
+	my ($id) = $sth->fetchrow_array;
 	$self->set_genotype_experiment_id($id);
 	return $id;
-    
     }
 }
 
