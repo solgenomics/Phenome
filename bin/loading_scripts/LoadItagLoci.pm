@@ -75,6 +75,7 @@ sub run {
     my $file = $self->infile;
     my @lines = read_file( $file ) ;
     foreach my $line (@lines) {
+        chomp $line;
         my ($locus_id, $itag, $annotation) = split (/\t/ , $line ) ;
         my $locus = CXGN::Phenome::Locus->new($dbh, $locus_id);
         if ($locus->get_locus_id) {
