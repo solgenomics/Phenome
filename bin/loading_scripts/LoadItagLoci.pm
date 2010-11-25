@@ -77,6 +77,7 @@ sub run {
     foreach my $line (@lines) {
         chomp $line;
         my ($locus_id, $itag, $annotation) = split (/\t/ , $line ) ;
+        my ( $chromosome ) = $itag =~ /^Solyc(\d+)g/ or die "cannot parse itag gene name '$itag'\n";
         my $locus = CXGN::Phenome::Locus->new($dbh, $locus_id);
         if ($locus->get_locus_id) {
             my $itag_synonym = CXGN::Phenome::LocusSynonym->new($dbh);
@@ -91,6 +92,7 @@ sub run {
             $locus->set_locus_symbol($itag);
             $locus->set_description($annotation);
             $locus->set_common_name_id($tomato_cname_id);
+            $locus->set_linkage_group( $chromosome );
             $locus->set_sp_person_id('329');
             $locus->store();
             print "STORED new locus $itag (id = " . $locus->get_locus_id . ")\n";
