@@ -1943,6 +1943,29 @@ sub ci_lod_file {
     return $ci_lod_file;
 }
 
+
+sub qtl_effects_file {
+    my ($self, $c, $trait) = @_;
+   
+    my $pop_id = $self->get_population_id();
+    my $cache_path = $self->cache_path($c);
+    
+    my $file_cache = Cache::File->new( cache_root => $cache_path );
+    $file_cache->purge();
+
+    my $key          = "popid_" . $pop_id . $trait. "_qtl_effects";
+    my $qtl_effects_file = $file_cache->get($key);
+
+    unless ($qtl_effects_file)
+    {      
+        my $filename = "qtl_effects_" .$trait . "_" . $pop_id;
+        my $file     = "$cache_path/$filename";        
+        $file_cache->set( $key, $file, '30 days' );
+        $qtl_effects_file = $file_cache->get($key);
+    }
+
+    return $qtl_effects_file;
+}
 ############# 
 return  1;
 ############
