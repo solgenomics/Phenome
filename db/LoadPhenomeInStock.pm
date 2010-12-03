@@ -175,8 +175,8 @@ sub patch {
 		my $i_organism_id = $organism_id ;
                 if ($common_name) {
                     print "Finding organism_id for common_name $common_name (" . $names_hash{$common_name} . ")\n"; 
-                    ($i_organism_id) = $schema->resultset("Organism::Organism")->find( {
-                        species => $names_hash{$common_name} } )->organism_id;
+                    ($i_organism_id) = $schema->resultset("Organism::Organism")->search( {
+                        species => $names_hash{$common_name} } )->first->organism_id;
                 }
                 print "creating new stock for individual $iname\n";
                 my $stock_individual = $schema->resultset("Stock::Stock")->find(

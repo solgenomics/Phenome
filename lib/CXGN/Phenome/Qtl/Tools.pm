@@ -388,7 +388,7 @@ sub browse_traits {
  Desc: returns 0 or 1 depending on whether a trait has been assayed in a 
        population for genetic and phenotypic data (qtl data). 
        The assumption is if a trait has a genetic and phenotype data, 
-       it is from qtl study.
+       it is from a qtl study.
  Ret: true or false
  Args: none
  Side Effects: accesses the database
@@ -440,10 +440,10 @@ sub search_usertrait {
     my $trait = shift;    
     my $sth = $self->get_dbh()->prepare("SELECT user_trait_id, name, definition
                                                 FROM phenome.user_trait
-                                                WHERE name ILIKE ?"
+                                                WHERE name ILIKE '%$trait%'"
                                        );
 
-    $sth->execute($trait);
+    $sth->execute();
 
     my (@id, @name, @definition);
     my ($id, $name, $definition);
