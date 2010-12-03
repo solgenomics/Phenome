@@ -380,14 +380,7 @@ sub create_user_qtl_dir {
     my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
 
     if ($sp_person_id) {
-        unless ( -d $temp_qtl ) {
-            mkpath( $temp_qtl, 0, 0755 );
-        }
-
-        unless ( -d $temp_user ) {
-            mkpath( $temp_user, 0, 0755 );
-        }
-
+        mkpath ( [ $temp_qtl, $temp_user ], 0, 0755 );
         return $temp_qtl, $temp_user;
 
     }
