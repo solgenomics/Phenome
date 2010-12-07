@@ -1461,31 +1461,35 @@ sub phenotype_dataset {
 		   exit();
 		}
     }
-    $phe_dataset .= "ID" . ",";
-    $phe_dataset .= join (",", @cvterm_acronyms);   
-    my $old_ind_id = "";
-    my @pheno_indls=();
+
+    if (@cvterm_acronyms) {
+        $phe_dataset .= "ID" . ",";
+        $phe_dataset .= join (",", @cvterm_acronyms); 
+  
+        my $old_ind_id = "";
+        my @pheno_indls=();
  
-    for (my $i=0; $i<@$pop_id; $i++) { 
+        for (my $i=0; $i<@$pop_id; $i++) { 
 	
-	if ($old_ind_id != $ind_id->[$i]) {
-	    if ($old_ind_id) {
-		$phe_dataset = substr $phe_dataset, 0, -1;
-	    }	
-	    $phe_dataset .= "\n$ind_name->[$i]" . ",";		
-	}
+            if ($old_ind_id != $ind_id->[$i]) {
+                if ($old_ind_id) {
+                    $phe_dataset = substr $phe_dataset, 0, -1;
+                }	
+                $phe_dataset .= "\n$ind_name->[$i]" . ",";		
+            }
 	    
-	foreach my $t (@cvterms) { 
-	    my $term = $cvterm->[$i];
-	    if ($t =~ /^$term$/i) { 
-		$phe_dataset .="$value->[$i]" . ",";
-	    }	    
-	}
-	$old_ind_id=$ind_id->[$i];
+            foreach my $t (@cvterms) { 
+                my $term = $cvterm->[$i];
+                if ($t =~ /^$term$/i) { 
+                    $phe_dataset .="$value->[$i]" . ",";
+                }	    
+            }
+            $old_ind_id=$ind_id->[$i];
 	   
-    }
+        }
     
-    $phe_dataset = substr $phe_dataset, 0, -1;
+        $phe_dataset = substr $phe_dataset, 0, -1;
+    }
 
     return \$phe_dataset;
 
