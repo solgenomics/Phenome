@@ -46,13 +46,13 @@ $dbh->add_search_path(qw/ sgn phenome /);
 open OF, ">/data/prod/ftpsite/loci/loci_sequences.fasta"
   or die "Can't open output file  ($!)";
 
-my $loci_query = "SELECT locus_id FROM phenome.locus";
+my $loci_query = "SELECT locus_id FROM phenome.locus WHERE obsolete = 'f' ";
 my $sth        = $dbh->prepare($loci_query);
 $sth->execute();
 while ( my ($locus_id) = $sth->fetchrow_array() ) {
     my $locus       = CXGN::Phenome::Locus->new( $dbh, $locus_id );
     my $common_name = $locus->get_common_name();
-    my @unigenes    = $locus->get_unigenes( {full=>1} );
+    my @unigenes    = $locus->get_unigenes( { full=>1, current=>1} );
     foreach my $unigene_obj (@unigenes) {
         my $sgn_id      = $unigene_obj->get_sgn_id();
         my $unigene_seq = $unigene_obj->get_sequence();
