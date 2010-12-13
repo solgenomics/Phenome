@@ -236,7 +236,7 @@ sub user_stat_file {
     my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
     my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
 
-    unless ( -e $stat_file ) {
+    #unless ( -e $stat_file ) {
         my $stat_ref = $self->user_stat_parameters();
         if ($stat_ref) {
             my $stat_table = $self->make_table($stat_ref);
@@ -245,7 +245,7 @@ sub user_stat_file {
             $f->print($stat_table);
         }
         else { $stat_file = undef; }
-    }
+   # }
 
     return $stat_file;
 }
@@ -301,27 +301,27 @@ sub default_stat_file {
 =cut
 
 sub get_stat_file {
-    my $self      = shift;
-    my $c         = shift;
-    my $pop_id    = shift;
-    my $user_stat = $self->user_stat_file( $c, $pop_id );
+    my ($self, $c, $pop_id)  = @_;
+    #my $user_stat = $self->user_stat_file( $c, $pop_id );
+    my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
+    my $user_stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
 
-    if ( $user_stat && -e $user_stat ) {
-        return $user_stat;
+    #if ( $user_stat && -e $user_stat ) {
+    if (-e $user_stat_file) {
+        return $user_stat_file;
     }
     else {
-        my $default_stat = $self->default_stat_file($c);
-        return $default_stat;
+       return $self->default_stat_file($c);
     }
 
 }
 
 =head2 make_table
 
- Usage: my $make_table = $qtl->make_table()
- Desc: makes a tab delimited file out of a hash file.
+ Usage: my $make_table = $qtl->make_table($param_ref)
+ Desc: makes a tab delimited file out of a hash ref file.
  Ret: tab delimited file or undef
- Args: None
+ Args: hash ref of parameters
  Side Effects:
  Example:
 
@@ -332,14 +332,11 @@ sub make_table {
     my $param_ref = shift;
 
     if ($param_ref) {
-        my %parameters = %$param_ref;
-
         my $table;
-        foreach my $k ( keys %parameters ) {
-            my $v = $parameters{$k};
+        foreach my $k ( keys %{$param_ref} ) {
+            my $v = $param_ref->{$k};
             $table .= $k . "\t" . $v . "\n";
         }
-
         return $table;
     }
     else {
