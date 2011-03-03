@@ -116,23 +116,7 @@ my $person_id_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
       db     => 'null',
       dbxref => 'autocreated:sp_person_id',
     });
-###store a new nd_experiment. One experiment per run
-my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
-    nd_geolocation_id => $geolocation->nd_geolocation_id(),
-    type_id => $pheno_cvterm->cvterm_id(),
-                                                                               } );
 
-#link to the project
-$experiment->find_or_create_related('nd_experiment_projects', {
-    project_id => $project->project_id()
-                                    } );
-#create experimentprop for the person_id
-if ($sp_person_id) {
-    $experiment->find_or_create_related('nd_experimentprops', {
-        value => $sp_person_id,
-        type_id => $person_id_cvterm->cvterm_id,
-                                        });
-}
 #new spreadsheet, skip 3 first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 3);
 
@@ -162,7 +146,30 @@ eval {
 	    } )->value();
 	my ($tp_year, $tp_month, $tp_day) = split /\// , $tp_date;
 
-	COLUMN: foreach my $label (@columns) {
+        ###store a new nd_experiment. One experiment per stock
+        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( 
+            {
+                nd_geolocation_id => $geolocation->nd_geolocation_id(),
+                type_id => $pheno_cvterm->cvterm_id(),
+            } );
+        #link to the project
+        $experiment->find_or_create_related('nd_experiment_projects', {
+            project_id => $project->project_id()
+                                            } );
+        #create experimentprop for the person_id
+        if ($sp_person_id) {
+            $experiment->find_or_create_related('nd_experimentprops', {
+                value => $sp_person_id,
+                type_id => $person_id_cvterm->cvterm_id,
+                                                });
+        }
+        #link the experiment to the stock
+        $experiment->find_or_create_related('nd_experiment_stocks' , {
+            stock_id => $stock->stock_id(),
+            type_id  =>  $pheno_cvterm->cvterm_id(),
+                                            });
+
+      COLUMN: foreach my $label (@columns) {
 	    my $value =  $spreadsheet->value_at($sct, $label);
 
 	    ($value, undef) = split (/\s/, $value) ;
@@ -187,14 +194,14 @@ eval {
 	    # the annotation. If it's a 'scale' we need to find out the appropriate
 	    #child term, as stored in cvtermprop.
 	    # cvtermprops need to be pre-loaded using load_scale_cvtermprops.pl
-	    
+
 	    ##my $unit_cvterm; # cvterm for the unit specified in the file 
 	    ##if ($value_type eq 'scale') {
 	    ##	my $cvterm_type = $schema->resultset("Cv::Cv")->find(
 	    ##	    { name => 'breeders scale' } )->find_related(
 	    ##	    'cvterms' , { name  => $unit_name} );   
 	    ##	my $type_id = $cvterm_type->cvterm_id() if $cvterm_type || croak 'NO CVTERM FOUND FOR breeders_scale $unit_name! Cvterms for scales must be pre-loaded.  Cannot proceed';
-	    
+
 	    # find the mapped value for relevant sp terms 
 	    # some values are used outside the definitions of trait scales
 	    # For such cases I've mapped numeric values to the most relevant
@@ -202,12 +209,12 @@ eval {
 	    # this usually happens for logically contineuos scales (e.g. 1=very poor, 9 =excellent) thus the actual value used for scoring the phenotype is stored in the phenotype table for allowing more acurate quantitative analysis, 
 	    # although these scores may be very subjective.
 	    ##$value = $value_map{$term}{$value} if $value_map{$term};
-	    
+
 	    ##my ($cvtermprop)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject')->search_related(
 	    ##    "cvtermprops", { 'cvtermprops.type_id' => $type_id,
 	    ##		     'cvtermprops.value' => $value , 
 	    ##   } );
-	    
+
 	    ##print "parent term is " . $parent_cvterm->name() . "\n";
 	    ##	print "Found cvtermprop " . $cvtermprop->get_column('value') . " for child cvterm '" . $cvtermprop->find_related("cvterm" , {} )->name() . "'\n\n" if $cvtermprop ; 
 	    ##croak("NO cvtermprop found for term '$term' , value '$value'! Cannot proceed! Check your input!!") if !$cvtermprop;
@@ -224,7 +231,7 @@ eval {
 		name => 'PATO' , } )->search_related
 		    ("dbxrefs")->search_related
 		    ("cvterm_dbxrefs", {
-			cvterm_id => $sp_term->cvterm_id() , 
+			cvterm_id => $sp_term->cvterm_id() ,
 		    });
 	    my $pato_id = undef;
 	    $pato_id = $pato_term->cvterm_id() if $pato_term;
@@ -249,15 +256,8 @@ eval {
 	    print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n";
 	    ########################################################
 
-	    #link the experiment to the stock
-	    $experiment->find_or_create_related('nd_experiment_stocks' , {
-		stock_id => $stock->stock_id(),
-		type_id  =>  $pheno_cvterm->cvterm_id(),
-	    });
-
 	    # link the phenotype with the experiment
 	    my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
-
 
 	    # store the unit for the measurement (if exists) in phenotype_cvterm
 	    #$phenotype->find_or_create_related("phenotype_cvterms" , {
@@ -266,7 +266,6 @@ eval {
 	}
     }
 };
-
 
 
 if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
