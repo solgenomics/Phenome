@@ -32,7 +32,7 @@ it under the same terms as Perl itself.
 =cut
 
 
-package AddStockLinks;
+package AddStockGenotype;
 
 use Try::Tiny;
 use Moose;
@@ -69,7 +69,7 @@ SET SEARCH_PATH  TO phenome;
 
      ALTER TABLE phenome.genotype ADD COLUMN stock_id INTEGER;
 
-    UPDATE genotype SET stock_id  = individual.stock_id FORM individual WHERE genotype.individual_id = individual.individual_id ;
+    UPDATE genotype SET stock_id  = individual.stock_id FROM individual WHERE genotype.individual_id = individual.individual_id ;
 
 
 EOSQL
