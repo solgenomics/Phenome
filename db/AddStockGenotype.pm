@@ -44,7 +44,7 @@ sub init_patch {
     my $name = __PACKAGE__;
     print "dbpatch name is : '" .  $name . "'\n\n";
     my $description = 'Adding stock_id FK to phenome.genotype table';
-    my @previous_requested_patches = (); #ADD HERE
+    my @previous_requested_patches = ('AddStockLinks'); #ADD HERE
 
     $self->name($name);
     $self->description($description);
