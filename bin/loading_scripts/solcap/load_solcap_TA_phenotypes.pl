@@ -120,23 +120,7 @@ my $person_id_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
       db     => 'null',
       dbxref => 'autocreated:sp_person_id',
     });
-###store a new nd_experiment. One experiment per run
-my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
-    nd_geolocation_id => $geolocation->nd_geolocation_id(),
-    type_id => $pheno_cvterm->cvterm_id(),
-                                                                               } );
 
-#link to the project
-$experiment->find_or_create_related('nd_experiment_projects', {
-    project_id => $project->project_id()
-                                    } );
-#create experimentprop for the person_id
-if ($sp_person_id) {
-    $experiment->find_or_create_related('nd_experimentprops', {
-        value => $sp_person_id,
-        type_id => $person_id_cvterm->cvterm_id,
-                                        });
-}
 #new spreadsheet, skip  first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 2);
 
@@ -164,7 +148,29 @@ eval {
             next();
 	}
 	my $fruit_number =$spreadsheet->value_at($row_label, 'Fruit');
-
+        ##
+        ###store a new nd_experiment. One experiment per stock
+        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
+            nd_geolocation_id => $geolocation->nd_geolocation_id(),
+            type_id => $pheno_cvterm->cvterm_id(),
+                                                                                       } );
+        #link to the project
+        $experiment->find_or_create_related('nd_experiment_projects', {
+            project_id => $project->project_id()
+                                            } );
+        #create experimentprop for the person_id
+        if ($sp_person_id) {
+            $experiment->find_or_create_related('nd_experimentprops', {
+                value => $sp_person_id,
+                type_id => $person_id_cvterm->cvterm_id,
+                                                });
+        }
+        #link to the stock
+        $experiment->find_or_create_related('nd_experiment_stocks' , {
+            stock_id => $stock->stock_id(),
+            type_id  =>  $pheno_cvterm->cvterm_id(),
+                                            });
+        ##
       COLUMN: foreach my $label (@columns) { 
 	  my $value =  $spreadsheet->value_at($row_label, $label);
 
@@ -203,12 +209,6 @@ eval {
 	  print "Value $value \n";
 	  print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n";
 	  ########################################################
-
-	  #link to the stock
-	  $experiment->find_or_create_related('nd_experiment_stocks' , {
-	      stock_id => $stock->stock_id(),
-	      type_id  =>  $pheno_cvterm->cvterm_id(),
-                                              });
 
 	  # link the phenotype with the experiment
 	  my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );

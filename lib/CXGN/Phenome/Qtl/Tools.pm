@@ -247,7 +247,7 @@ sub has_qtl_data {
     }
 
     foreach my $pop_id2 (@pop_ids) {
-	$self->d("phenotype population id: $pop_id2\n");
+	#$self->d("phenotype population id: $pop_id2\n");
 
 	my $query2 = "SELECT DISTINCT (population_id) 
                              FROM phenome.genotype 
