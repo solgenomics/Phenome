@@ -82,9 +82,29 @@ sub new_with_name {
     my $query = "SELECT population_id FROM phenome.population WHERE name ilike ?";
     my $sth=$dbh->prepare($query);
     $sth->execute($name);
-    my $pop_id = $sth->fetchrow_array;
+    my ($pop_id) = $sth->fetchrow_array;
     $population= $self->new($dbh,$pop_id); 
     return $population;
+}
+
+=head2 new_with_stock_id
+
+ Usage: CXGN::Phenome::Population->new_with_stock_id($dbh, $stock_id)
+ Desc:  get a population object with the stock id. There is now 1-1 mapping between populations and stocks. This function is used for bridging existing code that needs refactoring. The population table is now deprecated, and stock should be used instead.
+ Ret:   new CXGN::Phenome::Population object
+ Args:  dbh, stock_id
+ Side Effects:
+ Example:
+
+=cut
+
+sub new_with_stock_id {
+    my ($self, $dbh, $stock_id) = @_;
+    my $q = "SELECT population_id FROM phenome.population WHERE stock_id = ? ";
+    my $sth = $dbh->prepare($q);
+    $sth->execute($stock_id);
+    my ($population_id) = $sth->fetchrow_array;
+    return $self->new($dbh , $population_id);
 }
 
 
