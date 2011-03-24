@@ -74,6 +74,7 @@ sub patch {
     
 ##################
     my $result = $schema->txn_do( sub {
+        print "loading ...\n";
 # do this for GO, PO, SP - copy from stock_dbxref to stock cvterm, and the evidence codes copied to stock_cvtermprop.
         my $stockdbxrefs = $schema->resultset("General::Db")->search( {
             -or => [
@@ -87,7 +88,7 @@ sub patch {
             my $stock_cvterm = $sd->stock->find_or_create_related('stock_cvterms' , {
                 cvterm_id => $sd->dbxref->search_related('cvterm')->first->cvterm_id ,
                 pub_id => $pub_curator->pub_id  } );
-            print "Added cvterm for stock " . $sd->stock->name . "\n";
+            #print "Added cvterm for stock " . $sd->stock->name . "\n";
             
             # get all the properties of the stock_dbxref , and load them into stock_cvtermprop
             my $dprops = $sd->search_related('stock_dbxrefprops') ;
@@ -95,24 +96,29 @@ sub patch {
               my $cv_name = $dprop->type->cv->name;
               my $type_name = $dprop->type->name;
               my $db_name = $dprop->type->dbxref->db->name;
-              my $value = $dprop->value;
+              my $value = $dprop->value
+                  or die "Invalid stock_dbxrefprop: ".Data::Dumper::Dumper({ $dprop->get_columns });
               my $rank = $dprop->rank;
               if ($cv_name eq 'local' ) {
                   # load the reference into stock_cvterm.pub_id
                   if ($type_name eq 'reference' ) {
-                      my $pub = $schema->resultset("General::Dbxref")->find( {
-                          dbxref_id => $value })->find_related('pub_dbxrefs')->find_related('pub');
-                      $stock_cvterm->update( { pub_id => $pub->pub_id } );
+                      my @pubs = $schema->resultset("General::Dbxref")
+                                        ->find({ dbxref_id => $value })
+                                        ->pubs_mm;
+                      if( @pubs > 1 ) {
+                          die "multiple pubs for stock_dbxrefprop ID ".$dprop->stock_dbxrefprop_id;
+                      }
+                      $stock_cvterm->update( { pub_id => $_->pub_id } ) for @pubs;
                       next PROP;
                   }
                   $stock_cvterm->create_stock_cvtermprops(
                       {  $type_name => $value  } , { cv_name =>'local' , autocreate=>1} ) if ( $value && $rank == 0) ;
-                  print "Added prop to stock_cvterm. type= $type_name , value =  $value \n";
+                  #print "Added prop to stock_cvterm. type= $type_name , value =  $value \n";
               }
               if ($cv_name eq 'relationship' || $cv_name eq 'evidence_code' ) {
                   $stock_cvterm->create_stock_cvtermprops(
                       {  $cv_name => $dprop->type_id  } , { cv_name =>$cv_name , db_name => $db_name} ) if $value && $rank == 0 ;
-                  print "Added prop to stock_cvterm. type= $cv_name , value =  $type_name \n";
+                  #print "Added prop to stock_cvterm. type= $cv_name , value =  $type_name \n";
               }
               #delete the stock_dbxrefprop
               $dprop->delete
@@ -128,7 +134,7 @@ sub patch {
             print "Committing.\n";
             return 1;
         }
-                                  });
+    });
 
     print $result ? "Patch applied successfully.\n" : "Patch not applied.\n";
 }
