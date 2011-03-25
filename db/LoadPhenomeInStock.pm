@@ -389,7 +389,7 @@ sub patch {
 		    # get the project
 		    my $project_name = $population->get_name;
 		    my @pop_owners = $population->get_owners;
-		    my $project_desc = 'genotypes recorded for population $project_name';
+		    my $project_desc = "genotypes recorded for population $project_name";
 		    if ( defined($pop_owners[0]) ) {
 			print "owner is " . $pop_owners[0] . "\n" ;
 			my $owner = CXGN::People::Person->new($self->dbh, $pop_owners[0]);
