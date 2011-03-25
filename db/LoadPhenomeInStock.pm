@@ -393,7 +393,7 @@ sub patch {
 		    if ( defined($pop_owners[0]) ) {
 			print "owner is " . $pop_owners[0] . "\n" ;
 			my $owner = CXGN::People::Person->new($self->dbh, $pop_owners[0]);
-			$project_desc .= 'by ' . $owner->get_first_name . ' ' . $owner->get_last_name ;
+			$project_desc .= ' by ' . $owner->get_first_name . ' ' . $owner->get_last_name ;
 		    }
 		    my $project = $schema->resultset("Project::Project")->find_or_create( {
 			name => $project_name,
