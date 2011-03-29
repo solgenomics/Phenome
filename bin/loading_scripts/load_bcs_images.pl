@@ -246,7 +246,7 @@ foreach my $file (@files) {
 	    }
 	    
 	    #store the image_id as a stockprop
-	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 , cv_name => 'local' } );
+	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 , cv_name => 'local', allow_duplicate_values => 1 } );
 	}
     };
     
