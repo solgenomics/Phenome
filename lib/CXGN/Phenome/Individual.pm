@@ -241,7 +241,7 @@ sub get_germplasms {
 
 sub get_alleles {
     my $self = shift;
-    my $query = "SELECT allele_id FROM phenome.individual_allele JOIN phenome.allele USING (allele_id) WHERE individual_allele.individual_id=? AND individual_allele.obsolete = 'f' AND allele.is_default = 'f'";
+    my $query = "SELECT allele_id FROM phenome.individual_allele JOIN phenome.allele USING (allele_id) WHERE individual_allele.individual_id=? AND individual_allele.obsolete = 'f' ";
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_individual_id());
     my $allele;
