@@ -69,7 +69,7 @@ sub patch {
        #set the searchpath
         $self->dbh->do('set search_path to phenome, public');
 	# delete existing alleles , to prevent duplications
-        $self->do("delete from stockprop where type_id = (select cvterm_id from cvterm where name = 'sgn allele_id' " ) ;
+        $self->dbh->do("delete from stockprop where type_id = (select cvterm_id from cvterm where name = 'sgn allele_id' ) " ) ;
         print "Loading individual alleles .... \n";
         my $q = "SELECT individual_id FROM phenome.individual";
         my $sth = $self->dbh->prepare($q);
