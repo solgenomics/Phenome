@@ -173,12 +173,19 @@ foreach my $file (@files) {
 	@sub_files =  glob "$file/*.$ext" if $opt_d;
 	
 	
-	my $object_name = basename($file);
-	print  "object_name = $object_name \n";
+	my $object_name = basename($file, ".$ext" );
+	print  "object_name = '".$object_name."' \n";
 	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
 	#2009_oh_8902_fruit-t
-	my ($year, $place, $plot, undef) = split /_/ , $object_name; 
+	# solcap images:
+	#my ($year, $place, $plot, undef) = split /_/ , $object_name; 
 	
+	#lycotill images 
+	#
+	if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
+	    $object_name = $1;
+	}
+	my $plot = "LycoTILL:" . $object_name;
 	print  "plot = $plot \n";
 	
 	if (!$plot) { die "File $file has no object name in it!"; }
@@ -228,7 +235,7 @@ foreach my $file (@files) {
 			
 			$image->process_image("$filename", undef, undef); 
 			$image->set_description("$caption");
-			$image->set_name(basename($filename));
+			$image->set_name(basename($filename , ".$ext"));
 			$image->set_sp_person_id($sp_person_id);
 			$image->set_obsolete("f");
 			$image_id = $image->store();
