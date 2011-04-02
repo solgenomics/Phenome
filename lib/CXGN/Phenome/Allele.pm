@@ -464,7 +464,8 @@ sub remove_allele_alias {
 
 =head2 function get_individuals
 
-  Synopsis:	$allele->get_individuals()
+  Synopsis:	DEPRECATED. Use get_stocks. 
+                $allele->get_individuals()
   Arguments:	none
   Returns:	An arrayref of individual objects
   Side effects:	
@@ -474,6 +475,7 @@ sub remove_allele_alias {
 =cut
 
 sub get_individuals {
+    warn "DEPRECATED. Use get_stocks";
     my $self = shift;
     my $query = "SELECT individual_id FROM phenome.individual_allele WHERE allele_id=? AND obsolete= 'f'";
     my $sth = $self->get_dbh()->prepare($query);
@@ -485,6 +487,31 @@ sub get_individuals {
 	push @individuals, $individual;
     }
     return @individuals;
+}
+
+=head2 function get_stock_ids
+
+  Synopsis:	$allele->get_stock_ids
+  Arguments:	none
+  Returns:	An arrayref of stock ids
+  Side effects:
+  Description:	Gets all stocks ids associated with this allele
+                from stockprop table
+
+=cut
+
+sub get_stock_ids {
+    my $self = shift;
+    my $query = "SELECT stock_id FROM stockprop
+                 JOIN cvterm on cvterm.cvterm_id = stockprop.type_id
+                 WHERE stockprop.value = ? AND cvterm.name = ? ";
+    my $ids = $self->get_dbh->selectcol_arrayref
+        ( $query,
+          undef,
+          $self->get_allele_id,
+          'sgn allele_id'
+        );
+    return $ids;
 }
 
 =head2 add_allele_dbxref
