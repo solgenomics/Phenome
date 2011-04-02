@@ -76,8 +76,8 @@ use SGN::Context;
 use Getopt::Std;
 
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e);
-getopts('H:D:u:i:e:tdr:');
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_f);
+getopts('H:D:u:i:e:f:tdr:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -106,7 +106,7 @@ my %name2id = ();
 
 
 my $ch = SGN::Context->new();
-my $image_dir =  $ch->get_conf("image_dir");
+my $image_dir =  $opt_f || $ch->get_conf("image_dir");
 
 print "PLEASE VERIFY:\n";
 print "Using dbhost: $dbhost. DB name: $dbname. \n";
