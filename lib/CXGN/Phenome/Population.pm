@@ -1958,7 +1958,7 @@ sub ci_lod_file {
 
     unless ($ci_lod_file)
     {      
-        my $filename = "confidence_lod_" .$trait . "_" . $pop_id;
+        my $filename = "confidence_lod_" . $trait . "_" . $pop_id;
         my $file     = "$cache_path/$filename";        
         $file_cache->set( $key, $file, '30 days' );
         $ci_lod_file = $file_cache->get($key);
@@ -1969,21 +1969,20 @@ sub ci_lod_file {
 
 
 sub qtl_effects_file {
-    my ($self, $c, $trait) = @_;
+    my ($self, $c, $trait_ac) = @_;
    
     my $pop_id = $self->get_population_id();
     my $cache_path = $self->cache_path($c);
-    my $trait_ac   = $self->cvterm_acronym($trait);
-    
+  
     my $file_cache = Cache::File->new( cache_root => $cache_path );
     $file_cache->purge();
 
-    my $key          = "popid_" . $pop_id . $trait_ac. "_qtl_effects";
+    my $key          = "popid_" . $pop_id . $trait_ac . "_qtl_effects";
     my $qtl_effects_file = $file_cache->get($key);
 
     unless ($qtl_effects_file)
     {      
-        my $filename = "qtl_effects_" .$trait_ac . "_" . $pop_id;
+        my $filename = "qtl_effects_" . $trait_ac . "_" . $pop_id;
         my $file     = "$cache_path/$filename";        
         $file_cache->set( $key, $file, '30 days' );
         $qtl_effects_file = $file_cache->get($key);
@@ -1994,21 +1993,20 @@ sub qtl_effects_file {
 
 
 sub explained_variation_file {
-    my ($self, $c, $trait) = @_;
+    my ($self, $c, $trait_ac) = @_;
    
     my $pop_id = $self->get_population_id();
     my $cache_path = $self->cache_path($c);
-    my $trait_ac   = $self->cvterm_acronym($trait);
-    
+
     my $file_cache = Cache::File->new( cache_root => $cache_path );
     $file_cache->purge();
 
-    my $key          = "popid_" . $pop_id . $trait_ac. "_explained_variation";
+    my $key          = "popid_" . $pop_id . $trait_ac . "_explained_variation";
     my $explained_variation_file = $file_cache->get($key);
 
     unless ($explained_variation_file)
     {      
-        my $filename = "explained_variation_" .$trait_ac . "_" . $pop_id;
+        my $filename = "explained_variation_" . $trait_ac . "_" . $pop_id;
         my $file     = "$cache_path/$filename";        
         $file_cache->set( $key, $file, '30 days' );
         $explained_variation_file = $file_cache->get($key);
