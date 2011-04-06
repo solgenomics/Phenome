@@ -26,7 +26,7 @@ use CXGN::Phenome::Allele;
 use CXGN::Phenome::LocusSynonym;
 use CXGN::Phenome::LocusMarker;
 use CXGN::Phenome::Locus::LocusHistory;
-use CXGN::Phenome::Individual;
+
 use CXGN::Phenome::LocusDbxref;
 use CXGN::Phenome::Locus::LocusRanking;
 use CXGN::Transcript::Unigene;
@@ -1290,31 +1290,47 @@ sub add_locus_dbxref {
 
 =head2 function get_individuals
 
-  Synopsis:	my @individuals=$locus->get_individuals();
+  Synopsis:	DEPRECATED. Use get_stock_ids
+                my @individuals=$locus->get_individuals();
   Arguments:	none
-  Returns:	array of individual objects
-  Side effects:	
-  Description:	selects the ids of all individuals associated with the locus from
-                phenome.individual_locus linking table and and array of these individual objects.
+  Returns:
+  Side effects:
+  Description:
 
 =cut
 
 sub get_individuals {
     my $self = shift;
-    my $query = "SELECT individual_id FROM phenome.individual_allele 
-                 JOIN phenome.allele USING (allele_id)
-                 JOIN phenome.individual USING (individual_id)
-                 WHERE locus_id=? AND allele.obsolete = 'f' AND individual_allele.obsolete = 'f'
-                ";
-    my $sth = $self->get_dbh()->prepare($query);
-    $sth->execute($self->get_locus_id());
-    my $individual;
-    my @individuals= ();
-    while (my ($individual_id) = $sth->fetchrow_array()) { 
-	$individual = CXGN::Phenome::Individual->new($self->get_dbh(), $individual_id);
-	push @individuals, $individual;
-    }
-    return @individuals;
+    warn "DEPRECATED. Use get_stocks.";
+    $self->get_stocks;
+}
+
+=head2 get_stock_ids
+
+ Usage: my $stock_ids = $self->get_stock_ids
+ Desc:  find stocks associated with the locus
+ Ret:   a list of stock_ids
+ Args:  none
+ Side Effects: none
+ Example:
+
+=cut
+
+sub get_stock_ids {
+    my $self  = shift;
+    my $query = "select distinct stock_id FROM public.stockprop
+             JOIN public.stock USING (stock_id)
+             JOIN public.cvterm ON cvterm.cvterm_id = stockprop.type_id
+             JOIN phenome.allele on allele.allele_id = (cast(stockprop.value as numeric ) )
+             WHERE cvterm.name = ? AND locus_id = ? AND allele.obsolete = ? ";
+    my $ids = $self->get_dbh->selectcol_arrayref
+        ( $query,
+          undef,
+          'sgn allele_id',
+          $self->get_locus_id,
+          'false'
+        );
+    return $ids;
 }
 
 
@@ -1439,7 +1455,7 @@ sub associated_publication {
 
  Usage: my %edits= CXGN::Phenome::Locus::get_recent_annotated_loci($dbh, $date)
  Desc:  find all the loci annotated after date $date
- Ret:   hash of arrays of locus objects, aliases, alleles, locus_dbxrefs, unigenes, markers,individuals, and images
+ Ret:   hash of arrays of locus objects, aliases, alleles, locus_dbxrefs, unigenes, markers,stocks, and images
  Args:  database handle and a date
  Side Effects:
  Example:
@@ -1518,21 +1534,10 @@ sub get_recent_annotated_loci {
     }
     
     ###
-    #get associated individuals
+    #get associated stocks
     ####
-    my $individual_query="SELECT individual_id, allele_id, sp_person_id, create_date, modified_date, obsolete
-                          FROM phenome.individual_allele 
-                          WHERE (individual_allele.modified_date>? OR individual_allele.create_date>?) 
-                          ORDER BY individual_allele.modified_date DESC, individual_allele.create_date DESC";
-    my $individual_sth=$dbh->prepare($individual_query);
-    $individual_sth->execute($date,$date);
-    
-    while (my($individual_id, $allele_id, $person_id, $cdate, $mdate, $obsolete) = $individual_sth->fetchrow_array()) { 
-	my $individual= CXGN::Phenome::Individual->new($dbh, $individual_id);
-	my $allele= CXGN::Phenome::Allele->new($dbh, $allele_id);
-	
-	push @{ $edits{individuals} }, [$individual, $allele, $person_id, $cdate, $mdate, $obsolete];
-    }
+    # need to figure out a way for storing the metadata of the stockprop for 'sgn allele_id' 
+    #push @{ $edits{individuals} }, [$individual, $allele, $person_id, $cdate, $mdate, $obsolete];
     
     ###
     #get associated unigenes
@@ -1572,7 +1577,7 @@ sub get_recent_annotated_loci {
 
  Usage: my %edits= CXGN::Phenome::Locus::get_edits($locus)
  Desc:  find all annotations by date for this locus
- Ret:   hash of arrays of  aliases, alleles, locus_dbxrefs, unigenes, markers,individuals, and images
+ Ret:   hash of arrays of  aliases, alleles, locus_dbxrefs, unigenes, markers,stocks, and images
  Args:  locus object
  Side Effects:
  Example:
@@ -1641,23 +1646,14 @@ sub get_edits {
 	my $image= CXGN::Image->new($dbh, $image_id);
 	push @{ $edits{images} }, [$image, $person_id, $cdate, $mdate, $obsolete];
     }
-    
+
     ###
-    #get associated individuals
+    #get associated stocks
     ####
-    my $individual_query="SELECT individual_id FROM phenome.individual 
-                          JOIN phenome.individual_allele USING (individual_id)
-                          JOIN phenome.allele USING (allele_id) 
-                          WHERE locus_id = ?
-                          ORDER BY individual_allele.modified_date DESC, individual_allele.create_date DESC";
-    my $individual_sth=$dbh->prepare($individual_query);
-    $individual_sth->execute($self->get_locus_id());
-    
-    while (my($individual_id) = $individual_sth->fetchrow_array()) { 
-	my $individual= CXGN::Phenome::Individual->new($dbh, $individual_id);
-	push @{ $edits{individuals} }, $individual;
-    }
-    
+    # need to figure out a way for storing stockprops of type 'sgn allele_id' with storage date
+    #push @{ $edits{individuals} }, $individual;
+
+
     ###
     #get associated unigenes
     ####
@@ -1665,7 +1661,7 @@ sub get_edits {
                             FROM phenome.locus_unigene 
                             WHERE locus_id = ?
                             ORDER BY modified_date DESC, create_date DESC";
-    
+
     my $locus_unigene_sth=$dbh->prepare($locus_unigene_query);
     $locus_unigene_sth->execute($self->get_locus_id());
     
@@ -1848,10 +1844,11 @@ sub owner_exists {
 
 =head2 get_individual_allele_id
 
- Usage: my $individual_allele_id= $locus->get_individual_allele_id($individual_id)
+ Usage: DEPRECATED. allele_ids are now stored as stockprops. 
+        my $individual_allele_id= $locus->get_individual_allele_id($individual_id)
  Desc:  find the individual_allele database id for a given individual id
         useful for manipulating individual_allele table (like obsoleting an individual-allele  association)
-               
+
  Ret: a database id from the table phenome.individual_allele
  Args: $individual_id
  Side Effects:
@@ -2056,7 +2053,6 @@ sub merge_locus {
 	    $self->add_unigene($u_id, $sp_person_id); 
 	    $self->d( "merge_locus is adding unigene $u to locus" . $self->get_locus_id() . "\n**");
 	}
-	
 	my @alleles=$m_locus->get_alleles();
 	foreach my $allele(@alleles) { 
 	    $self->d( "adding allele ........\n");
@@ -2064,22 +2060,22 @@ sub merge_locus {
 	    $allele->set_allele_id(undef);
 	    my $allele_id=$self->add_allele($allele);
 	    $self->d( "merge_locus is adding allele $allele_id " . $allele->get_allele_symbol() . "to locus" . $self->get_locus_id() . "\n**");
-	   
-	    #find the individuals of the current allele
-	    my @individuals=$allele->get_individuals();
-	    #associated individuals with the newly inserted allele
-	    foreach my $i(@individuals) {
-		$i->associate_allele($allele_id, $sp_person_id); 
-		$self->d( "merge_locus is adding allele $allele_id to *individual* " . $i->get_individual_id() . "\n**");
+
+	    #find the stocks of the current allele
+	    my $stock_ids = $allele->get_stock_ids;
+	    #associated stocks with the newly inserted allele
+	    foreach my $stock_id(@$stock_ids) {
+		$allele->associate_stock($stock_id, $sp_person_id);
+		$self->d( "merge_locus is adding allele $allele_id to *stock* $stock_id n**");
 	    }
 	}
-	
+
 	my @figures=$m_locus->get_figures();
 	foreach my $image(@figures) { 
 	    $self->add_figure($image->get_image_id(), $sp_person_id);
 	    $self->d( "merge_locus is adding figure" . $image->get_image_id() . " to locus " . $self->get_locus_id() . "\n**");
 	}
-	
+
 	my @dbxrefs=$m_locus->get_dbxrefs();
 	foreach my $dbxref(@dbxrefs) {
 	    my $ldbxref=$m_locus->get_locus_dbxref($dbxref); #the old locusDbxref object
@@ -2096,9 +2092,9 @@ sub merge_locus {
 	}
 	#Add this locus to all the groups of the merged locus
 	my @groups=$m_locus->get_locusgroups();
-	
+
 	my $schema;
-	
+
 	if ($groups[0]) { $schema = $groups[0]->get_schema(); }
 	foreach my $group (@groups) {
 	    my $m_lgm=$group->get_object_row()->
@@ -2108,7 +2104,7 @@ sub merge_locus {
 		find_related('locusgroup_members', { locus_id => $self->get_locus_id() } );
 	    if (!$existing_member) {
 		my $lgm=CXGN::Phenome::LocusgroupMember->new($schema);
-		
+
 		$lgm->set_locusgroup_id($m_lgm->locusgroup_id() );
 		$lgm->set_locus_id($self->get_locus_id() );
 		$lgm->set_evidence_id($m_lgm->evidence_id());
@@ -2118,7 +2114,7 @@ sub merge_locus {
 		$lgm->set_obsolete($m_lgm->obsolete());
 		$lgm->set_create_date($m_lgm->create_date());
 		$lgm->set_modified_date($m_lgm->modified_date());
-		
+
 		my $lgm_id= $lgm->store();
 	    }
 	    $self->d( "obsoleting group member... \n");
