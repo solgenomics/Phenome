@@ -76,8 +76,8 @@ use SGN::Context;
 use Getopt::Std;
 
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e);
-getopts('H:D:u:i:e:tdr:');
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_f);
+getopts('H:D:u:i:e:f:tdr:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -106,7 +106,7 @@ my %name2id = ();
 
 
 my $ch = SGN::Context->new();
-my $image_dir =  $ch->get_conf("image_dir");
+my $image_dir =  $opt_f || $ch->get_conf("image_dir");
 
 print "PLEASE VERIFY:\n";
 print "Using dbhost: $dbhost. DB name: $dbname. \n";
@@ -173,12 +173,19 @@ foreach my $file (@files) {
 	@sub_files =  glob "$file/*.$ext" if $opt_d;
 	
 	
-	my $object_name = basename($file);
-	print  "object_name = $object_name \n";
+	my $object_name = basename($file, ".$ext" );
+	print  "object_name = '".$object_name."' \n";
 	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
 	#2009_oh_8902_fruit-t
-	my ($year, $place, $plot, undef) = split /_/ , $object_name; 
+	# solcap images:
+	#my ($year, $place, $plot, undef) = split /_/ , $object_name; 
 	
+	#lycotill images 
+	#
+	if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
+	    $object_name = $1;
+	}
+	my $plot = "LycoTILL:" . $object_name;
 	print  "plot = $plot \n";
 	
 	if (!$plot) { die "File $file has no object name in it!"; }
@@ -228,7 +235,7 @@ foreach my $file (@files) {
 			
 			$image->process_image("$filename", undef, undef); 
 			$image->set_description("$caption");
-			$image->set_name(basename($filename));
+			$image->set_name(basename($filename , ".$ext"));
 			$image->set_sp_person_id($sp_person_id);
 			$image->set_obsolete("f");
 			$image_id = $image->store();
@@ -239,7 +246,7 @@ foreach my $file (@files) {
 	    }
 	    
 	    #store the image_id as a stockprop
-	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 , cv_name => 'local' } );
+	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 , cv_name => 'local', allow_duplicate_values => 1 } );
 	}
     };
     

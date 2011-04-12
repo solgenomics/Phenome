@@ -44,7 +44,7 @@ __PACKAGE__->selects_data("$phenome.locus.locus_id","$phenome.locus.locus_name",
 __PACKAGE__->join_root("$phenome.locus");
 
 #join locus with allele table. Filter out obsolete alleles and the empty "default" alleles
-#(each locus should have one row in the allele table as a default space holder. This is important for making locus-individual associations, because these 2 are linked via the individual_allele table, so that if we want to link an individual with a locus name, without associating with a specific allele, the link will be made to the default allele_id)
+#(each locus should have one row in the allele table as a default space holder. This is important for making locus-stock associations, because these 2 are linked via the stockprop table, so that if we want to link a stock with a locus, without associating with a specific allele, the link will be made to the default allele_id)
 __PACKAGE__->uses_joinpath('allelepath', 
 			   [ "$phenome.allele", "$phenome.allele.locus_id=$phenome.locus.locus_id AND $phenome.allele.obsolete=false AND $phenome.allele.is_default=false" ],
 			   );
@@ -60,10 +60,6 @@ __PACKAGE__->uses_joinpath('person_path',
 			   );
 __PACKAGE__->uses_joinpath('organism_path', [ "$sgn.common_name", "$sgn.common_name.common_name_id=$phenome.locus.common_name_id"]);
 
-__PACKAGE__->uses_joinpath('individual_path',
-			   [ "$phenome.individual_locus", "$phenome.individual_locus.locus_id=$phenome.locus.locus_id"],
-			   [ "$phenome.individual", "$phenome.individual.individual_id=$phenome.individual_locus.individual_id"],
-			   );
 
 __PACKAGE__->uses_joinpath('locusdbxrefpath',
 			   [ "$phenome.locus_dbxref", "$phenome.locus_dbxref.locus_id=$phenome.locus.locus_id"],
@@ -204,10 +200,7 @@ __PACKAGE__->has_parameter(name   =>'genbank_accession',
 	                   group  => 1,
 			   );
 
-__PACKAGE__->has_parameter(name   =>'ind_phenotype',
-                           columns=>"$phenome.individual.description",
- 	                   group  =>1,
-			   );
+
 __PACKAGE__->has_parameter(name   =>'default_allele',
                            columns=>"$phenome.allele.is_default",
  	                   group  =>1,
@@ -252,8 +245,8 @@ sub request_to_params {
 
     if($params{phenotype}) {
 	$self->phenotype('ILIKE ?',"%$params{phenotype}%");
-	$self->ind_phenotype('ILIKE ?',"%$params{phenotype}%");
-	$self->compound('&t OR &t', 'phenotype','ind_phenotype');
+	#$self->ind_phenotype('ILIKE ?',"%$params{phenotype}%");
+	#$self->compound('&t OR &t', 'phenotype','ind_phenotype');
     }
 
     if($params{common_name}) {
