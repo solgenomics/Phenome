@@ -1318,15 +1318,12 @@ sub get_individuals {
 
 sub get_stock_ids {
     my $self  = shift;
-    my $query = "select distinct stock_id FROM public.stockprop
-             JOIN public.stock USING (stock_id)
-             JOIN public.cvterm ON cvterm.cvterm_id = stockprop.type_id
-             JOIN phenome.allele on allele.allele_id = (cast(stockprop.value as numeric ) )
-             WHERE cvterm.name = ? AND locus_id = ? AND allele.obsolete = ? ";
+    my $query = "select distinct stock_id FROM phenome.stock_allele
+             JOIN phenome.allele on allele USING (allele_id)
+             WHERE locus_id = ? AND allele.obsolete = ? ";
     my $ids = $self->get_dbh->selectcol_arrayref
         ( $query,
           undef,
-          'sgn allele_id',
           $self->get_locus_id,
           'false'
         );
