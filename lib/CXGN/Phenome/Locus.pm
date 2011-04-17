@@ -35,6 +35,7 @@ use CXGN::Phenome::LocusGroup;
 use CXGN::DB::Object;
 use CXGN::Chado::Dbxref;
 use CXGN::Image;
+use Bio::Chado::Schema;
 
 use base qw /  CXGN::DB::ModifiableI CXGN::Phenome::Locus::LocusRanking /;
 
@@ -1533,9 +1534,16 @@ sub get_recent_annotated_loci {
     ###
     #get associated stocks
     ####
-    # need to figure out a way for storing the metadata of the stockprop for 'sgn allele_id' 
-    #push @{ $edits{individuals} }, [$individual, $allele, $person_id, $cdate, $mdate, $obsolete];
-    
+    my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
+    );
+    my $stock_query = "SELECT *  FROM phenome.stock_allele  join metadata.md_metadata USING (metadata_id) WHERE create_date>? OR modified_data>? ORDER BY modified_date DESC, create_date DESC";
+    my $stock_sth = $dbh->prepare($stock_query);
+    $stock_sth->execute($date, $date);
+    while ( my $hashref = $stock_sth->fetchrow_hashref() ) {
+        my $stock = CXGN::Chado::Stock->new($schema, $hashref->{stock_id} );
+        my $allele = CXGN::Phenome::Allele->new($dbh, $hashref->{allele_id} );
+        push @{ $edits{stocks} }, [$stock, $allele, $hashref->{create_person_id}, $hashref->{create_date}, $hashref->{modified_date}, $hashref->{obsolete}];
+    }
     ###
     #get associated unigenes
     ####
@@ -1841,7 +1849,7 @@ sub owner_exists {
 
 =head2 get_individual_allele_id
 
- Usage: DEPRECATED. allele_ids are now stored as stockprops. 
+ Usage: DEPRECATED. allele_ids are now stored in stock_allele 
         my $individual_allele_id= $locus->get_individual_allele_id($individual_id)
  Desc:  find the individual_allele database id for a given individual id
         useful for manipulating individual_allele table (like obsoleting an individual-allele  association)

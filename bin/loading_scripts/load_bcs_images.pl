@@ -65,6 +65,7 @@ Naama Menda (nm249@cornell.edu) October 2010.
 
 use strict;
 
+use CXGN::Metadata::Schema;
 use CXGN::DB::InsertDBH;
 use SGN::Image;
 use Bio::Chado::Schema;
@@ -101,6 +102,10 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
     );
+my $metadata_schema = CXGN::Metadata::Schema->connect(
+    sub { $dbh },
+    { on_connect_do => ['SET search_path TO metadata;'] },
+    );
 my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $sp_person);
 my %name2id = ();
 
@@ -114,7 +119,7 @@ print "Path to image is: $image_dir\n";
 print "CONTINUE? ";
 my $a = (<STDIN>);
 if ($a !~ /[yY]/) { exit(); }
-					  
+
 if (($dbname eq "sandbox") && ($image_dir !~ /sandbox/)) { 
     die "The image directory needs to be set to image_files_sandbox if running on rubisco/sandbox. Please change the image_dir parameter in SGN.conf\n\n";
 					  }
@@ -137,24 +142,16 @@ while (my $object = $object_rs->next ) {
 #
 print "Caching image $chado_table links...\n";
 
-my $type = $schema->resultset("Cv::Cvterm")->create_with( {
-    name   => 'sgn image_id' ,
-    cv     => 'local',
-    db     => 'null',
-    dbxref => 'autocreated: sgn image_id',
-} );
-
-if ($type) {
-    my $rs = $schema->resultset("Stock::Stockprop")->search( { 
-	type_id => $type->cvterm_id } );
-    while ( my $prop = $rs->next ) {
-	my $image_id = $prop->value;
-	my $chado_table_id = $prop->stock_id;  ##### table specific
-	my $i = SGN::Image->new($dbh, $image_id);
-	my $original_filename = $i->get_original_filename();
-	$image_hash{$original_filename} = $i; # this doesn't have the file extension
-	$connections{$image_id."-".$chado_table_id}++;
-    }
+my $q = "SELECT * FROM phenome.stock_image";
+my $sth = $dbh->prepare($q);
+$sth->execute();
+while ( my $hashref = $sth->fetchrow_hashref() ) {
+    my $image_id = $hashref->{image_id};
+    my $chado_table_id = $hashref->{stock_id};  ##### table specific
+    my $i = SGN::Image->new($dbh, $image_id);
+    my $original_filename = $i->get_original_filename();
+    $image_hash{$original_filename} = $i; # this doesn't have the file extension
+    $connections{$image_id."-".$chado_table_id}++;
 }
 
 open (ERR, ">load_bcs_images.err") || die "Can't open error file\n";
@@ -166,20 +163,19 @@ my @sub_files;
 my $new_image_count = 0;
 
 
-foreach my $file (@files) { 
-    eval { 
+foreach my $file (@files) {
+    eval {
 	chomp($file);
 	@sub_files = ($file);
 	@sub_files =  glob "$file/*.$ext" if $opt_d;
-	
-	
+
 	my $object_name = basename($file, ".$ext" );
 	print  "object_name = '".$object_name."' \n";
 	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
 	#2009_oh_8902_fruit-t
 	# solcap images:
 	#my ($year, $place, $plot, undef) = split /_/ , $object_name; 
-	
+
 	#lycotill images 
 	#
 	if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
@@ -187,7 +183,7 @@ foreach my $file (@files) {
 	}
 	my $plot = "LycoTILL:" . $object_name;
 	print  "plot = $plot \n";
-	
+
 	if (!$plot) { die "File $file has no object name in it!"; }
 	my $stock = $schema->resultset("Stock::Stock")->find( {
 	    stock_id => $name2id{ lc($plot) }  } );
@@ -201,11 +197,11 @@ foreach my $file (@files) {
 		warn "The specified file $filename does not exist! Skipping...\n";
 	    	next();
 	    }
-	    
+
 	    if (!exists($name2id{lc($plot)})) { 
 		message ("$plot does not exist in the database...\n");
 	    }
-	    
+
 	    else {
 		print ERR "Adding $filename...\n";
 		if (exists($image_hash{$filename})) { 
@@ -224,7 +220,7 @@ foreach my $file (@files) {
 		else { 
 		    print ERR qq { Generating new image object for image $filename and associating it with $chado_table $plot, id $name2id{lc($plot) } ...\n };
 		    my $caption = $plot;
-		    
+
 		    if ($opt_t)  { 
 			print STDOUT qq { Would associate file $filename to $chado_table $plot, id $name2id{lc($plot)}\n };
 			$new_image_count++;
@@ -232,7 +228,7 @@ foreach my $file (@files) {
 		    else { 
 			my $image = SGN::Image->new($dbh);   
 			$image_hash{$filename}=$image;
-			
+
 			$image->process_image("$filename", undef, undef); 
 			$image->set_description("$caption");
 			$image->set_name(basename($filename , ".$ext"));
@@ -244,17 +240,19 @@ foreach my $file (@files) {
 		    }
 		}
 	    }
-	    
-	    #store the image_id as a stockprop
-	    $stock->create_stockprops( { 'sgn image_id' => $image_id } , {autocreate => 1 , cv_name => 'local', allow_duplicate_values => 1 } );
+            my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $sp_person);
+            my $metadata_id = $metadata->store()->get_metadata_id();
+            #store the image_id - stock_id link
+	    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
+            my $sth  = $dbh->prepare($q);
+            $sth->execute($stock->stock_id, $image_id, $metadata_id);
 	}
     };
-    
-    if ($@) { 
+    if ($@) {
 	print STDOUT "ERROR OCCURRED WHILE SAVING NEW INFORMATION. $@\n";
 	$dbh->rollback();
     }
-    else { 
+    else {
 	$dbh->commit();
     }
 }
