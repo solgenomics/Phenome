@@ -95,6 +95,9 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
         $self->dbh->do("GRANT USAGE ON phenome.stock_image_stock_image_id_seq TO web_usr");
         $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_owner TO web_usr");
         $self->dbh->do("GRANT USAGE ON phenome.stock_owner_stock_owner_id_seq TO web_usr");
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON metadata.md_metadata TO web_usr");
+        $self->dbh->do("GRANT USAGE ON metadata.md_metadata_metadata_id_seq TO web_usr");
+
         #select all stock-allele links
         my $q = "SELECT individual_allele.*, stock_id FROM phenome.individual_allele JOIN phenome.individual USING (individual_id)";
         my $sth = $self->dbh->prepare($q);
