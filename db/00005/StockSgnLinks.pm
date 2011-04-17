@@ -88,7 +88,13 @@ stock_id integer not null REFERENCES public.stock(stock_id),
 sp_person_id integer not null REFERENCES sgn_people.sp_person(sp_person_id),
 metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
 
-
+        #
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_allele TO web_usr");
+        $self->dbh->do("GRANT USAGE ON phenome.stock_allele_stock_allele_id_seq TO web_usr");
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_image TO web_usr");
+        $self->dbh->do("GRANT USAGE ON phenome.stock_image_stock_image_id_seq TO web_usr");
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_owner TO web_usr");
+        $self->dbh->do("GRANT USAGE ON phenome.stock_owner_stock_owner_id_seq TO web_usr");
         #select all stock-allele links
         my $q = "SELECT individual_allele.*, stock_id FROM phenome.individual_allele JOIN phenome.individual USING (individual_id)";
         my $sth = $self->dbh->prepare($q);
@@ -102,7 +108,7 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
             my $modified_date = $hashref->{modified_date};
             my $obsolete      = $hashref->{obsolete};
             my $username = CXGN::People::Person->new($self->dbh, $sp_person_id)->get_username;
-            #stock metadata objext
+            #stock metadata object
             my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $username);
             $metadata->set_create_date($create_date) if $create_date;
             $metadata->set_modified_date($modified_date) if $modified_date;
