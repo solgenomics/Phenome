@@ -1320,7 +1320,7 @@ sub get_individuals {
 sub get_stock_ids {
     my $self  = shift;
     my $query = "select distinct stock_id FROM phenome.stock_allele
-             JOIN phenome.allele on allele USING (allele_id)
+             JOIN phenome.allele USING (allele_id)
              WHERE locus_id = ? AND allele.obsolete = ? ";
     my $ids = $self->get_dbh->selectcol_arrayref
         ( $query,
