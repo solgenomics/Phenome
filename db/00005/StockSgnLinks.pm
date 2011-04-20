@@ -122,7 +122,7 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
             if ($stock_id && $allele_id && $metadata_id) {
                 $self->dbh->do("INSERT INTO phenome.stock_allele (stock_id, allele_id, metadata_id) VALUES ($stock_id , $allele_id, $metadata_id)");
                 $allele_count++;
-            } else { warn "NULL VALUE FOUND! stock_id = $stock_id, allele_id = $allele_id , metadata_id = $metadata_id\n" ; }
+            } else { no warnings 'uninitialized'; warn "NULL VALUE FOUND! stock_id = $stock_id, allele_id = $allele_id , metadata_id = $metadata_id\n" ; }
         }
         print "Loaded $allele_count alleles \n";
 
