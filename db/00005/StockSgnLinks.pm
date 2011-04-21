@@ -88,6 +88,15 @@ stock_id integer not null REFERENCES public.stock(stock_id),
 sp_person_id integer not null REFERENCES sgn_people.sp_person(sp_person_id),
 metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
 
+        #
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_allele TO web_usr");
+        $self->dbh->do("GRANT USAGE ON phenome.stock_allele_stock_allele_id_seq TO web_usr");
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_image TO web_usr");
+        $self->dbh->do("GRANT USAGE ON phenome.stock_image_stock_image_id_seq TO web_usr");
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON phenome.stock_owner TO web_usr");
+        $self->dbh->do("GRANT USAGE ON phenome.stock_owner_stock_owner_id_seq TO web_usr");
+        $self->dbh->do("GRANT UPDATE, INSERT, SELECT ON metadata.md_metadata TO web_usr");
+        $self->dbh->do("GRANT USAGE ON metadata.md_metadata_metadata_id_seq TO web_usr");
 
         #select all stock-allele links
         my $q = "SELECT individual_allele.*, stock_id FROM phenome.individual_allele JOIN phenome.individual USING (individual_id)";
@@ -102,7 +111,7 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
             my $modified_date = $hashref->{modified_date};
             my $obsolete      = $hashref->{obsolete};
             my $username = CXGN::People::Person->new($self->dbh, $sp_person_id)->get_username;
-            #stock metadata objext
+            #stock metadata object
             my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $username);
             $metadata->set_create_date($create_date) if $create_date;
             $metadata->set_modified_date($modified_date) if $modified_date;
@@ -110,8 +119,10 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
             $metadata->set_create_person_id($sp_person_id) if $sp_person_id;
             my $metadata_id = $metadata->store->get_metadata_id; # we need a new metadata row for each object for future edit tracking
             #now store the stock_allele link
-            $self->dbh->do("INSERT INTO phenome.stock_allele (stock_id, allele_id, metadata_id) VALUES ($stock_id , $allele_id, $metadata_id)");
-            $allele_count++;
+            if ($stock_id && $allele_id && $metadata_id) {
+                $self->dbh->do("INSERT INTO phenome.stock_allele (stock_id, allele_id, metadata_id) VALUES ($stock_id , $allele_id, $metadata_id)");
+                $allele_count++;
+            } else { no warnings 'uninitialized'; warn "NULL VALUE FOUND! stock_id = $stock_id, allele_id = $allele_id , metadata_id = $metadata_id\n" ; }
         }
         print "Loaded $allele_count alleles \n";
 
@@ -130,8 +141,10 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
             #stock metadata objext
             #my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $username);
             #now store the stock_image link
-            $self->dbh->do("INSERT INTO phenome.stock_image (stock_id, image_id) VALUES ($stock_id , $image_id)");
-            $image_count++;
+            if ($stock_id && $image_id) {
+                $self->dbh->do("INSERT INTO phenome.stock_image (stock_id, image_id) VALUES ($stock_id , $image_id)");
+                $image_count++;
+            } else { warn "NULL VALUE FOUND! stock_id = $stock_id, image_id = $image_id \n" ; }
         }
         print "Loaded $image_count image-stock links! \n";
         ######
@@ -144,10 +157,10 @@ metadata_id integer REFERENCES metadata.md_metadata(metadata_id))" );
             my $stock_id      = $hashref->{stock_id};
             my $sp_person_id  = $hashref->{value};
             #now store the stock_image link
-            if ($sp_person_id) {
+            if ($sp_person_id && $stock_id ) {
                 $self->dbh->do("INSERT INTO phenome.stock_owner (stock_id, sp_person_id) VALUES ($stock_id , $sp_person_id)");
                 $owner_count++;
-            }
+            } else { warn "NULL VALUE FOUND! stock_id = $stock_id, person_id = $sp_person_id\n" ; }
         }
         print "Loaded $owner_count owner-stock links! \n";
 
