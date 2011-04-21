@@ -1,5 +1,8 @@
 package CXGN::Phenome::Schema;
 
+# Created by DBIx::Class::Schema::Loader
+# DO NOT MODIFY THE FIRST PART OF THIS FILE
+
 use strict;
 use warnings;
 
@@ -8,8 +11,8 @@ use base 'DBIx::Class::Schema';
 __PACKAGE__->load_classes;
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005 @ 2010-05-27 04:17:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:X+/Qrw+SfcWBFtwvULzcFQ
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2011-04-21 15:09:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:t3rTdhCmLWTOFDvuPOk4PA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -1,117 +1,270 @@
 package CXGN::Phenome::Schema::Individual;
 
+# Created by DBIx::Class::Schema::Loader
+# DO NOT MODIFY THE FIRST PART OF THIS FILE
+
 use strict;
 use warnings;
 
-use base 'DBIx::Class';
+use base 'DBIx::Class::Core';
 
-__PACKAGE__->load_components("Core");
+
+=head1 NAME
+
+CXGN::Phenome::Schema::Individual
+
+=cut
+
 __PACKAGE__->table("individual");
+
+=head1 ACCESSORS
+
+=head2 individual_id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'individual_individual_id_seq'
+
+=head2 name
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 100
+
+=head2 description
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 sp_person_id
+
+  data_type: 'bigint'
+  is_nullable: 1
+
+=head2 create_date
+
+  data_type: 'timestamp with time zone'
+  default_value: current_timestamp
+  is_nullable: 1
+  original: {default_value => \"now()"}
+
+=head2 modified_date
+
+  data_type: 'timestamp with time zone'
+  is_nullable: 1
+
+=head2 obsolete
+
+  data_type: 'boolean'
+  default_value: false
+  is_nullable: 1
+
+=head2 population_id
+
+  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 1
+
+=head2 updated_by
+
+  data_type: 'integer'
+  is_nullable: 1
+
+=head2 common_name_id
+
+  data_type: 'bigint'
+  is_nullable: 1
+
+=head2 accession_id
+
+  data_type: 'integer'
+  is_nullable: 1
+
+=head2 stock_id
+
+  data_type: 'integer'
+  is_nullable: 1
+
+=cut
+
 __PACKAGE__->add_columns(
   "individual_id",
   {
-    data_type => "integer",
-    default_value => "nextval('individual_individual_id_seq'::regclass)",
-    is_nullable => 0,
-    size => 4,
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "individual_individual_id_seq",
   },
   "name",
-  {
-    data_type => "character varying",
-    default_value => undef,
-    is_nullable => 1,
-    size => 100,
-  },
+  { data_type => "varchar", is_nullable => 1, size => 100 },
   "description",
-  {
-    data_type => "text",
-    default_value => undef,
-    is_nullable => 1,
-    size => undef,
-  },
+  { data_type => "text", is_nullable => 1 },
   "sp_person_id",
-  { data_type => "bigint", default_value => undef, is_nullable => 1, size => 8 },
+  { data_type => "bigint", is_nullable => 1 },
   "create_date",
   {
-    data_type => "timestamp with time zone",
-    default_value => "now()",
-    is_nullable => 1,
-    size => 8,
+    data_type     => "timestamp with time zone",
+    default_value => \"current_timestamp",
+    is_nullable   => 1,
+    original      => { default_value => \"now()" },
   },
   "modified_date",
-  {
-    data_type => "timestamp with time zone",
-    default_value => undef,
-    is_nullable => 1,
-    size => 8,
-  },
+  { data_type => "timestamp with time zone", is_nullable => 1 },
   "obsolete",
-  {
-    data_type => "boolean",
-    default_value => "false",
-    is_nullable => 1,
-    size => 1,
-  },
+  { data_type => "boolean", default_value => \"false", is_nullable => 1 },
   "population_id",
-  { data_type => "bigint", default_value => undef, is_nullable => 1, size => 8 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
+  { data_type => "integer", is_nullable => 1 },
   "common_name_id",
-  { data_type => "bigint", default_value => undef, is_nullable => 1, size => 8 },
+  { data_type => "bigint", is_nullable => 1 },
   "accession_id",
-  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
+  { data_type => "integer", is_nullable => 1 },
+  "stock_id",
+  { data_type => "integer", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("individual_id");
-__PACKAGE__->add_unique_constraint("individual_pkey", ["individual_id"]);
+
+=head1 RELATIONS
+
+=head2 genotypes
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::Genotype>
+
+=cut
+
 __PACKAGE__->has_many(
   "genotypes",
   "CXGN::Phenome::Schema::Genotype",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 germplasms
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::Germplasm>
+
+=cut
+
 __PACKAGE__->has_many(
   "germplasms",
   "CXGN::Phenome::Schema::Germplasm",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 population_id
+
+Type: belongs_to
+
+Related object: L<CXGN::Phenome::Schema::Population>
+
+=cut
+
 __PACKAGE__->belongs_to(
   "population_id",
   "CXGN::Phenome::Schema::Population",
   { population_id => "population_id" },
 );
+
+=head2 individual_alias
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualAlias>
+
+=cut
+
 __PACKAGE__->has_many(
   "individual_alias",
   "CXGN::Phenome::Schema::IndividualAlias",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 individual_alleles
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualAllele>
+
+=cut
+
 __PACKAGE__->has_many(
   "individual_alleles",
   "CXGN::Phenome::Schema::IndividualAllele",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 individual_dbxrefs
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualDbxref>
+
+=cut
+
 __PACKAGE__->has_many(
   "individual_dbxrefs",
   "CXGN::Phenome::Schema::IndividualDbxref",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 individual_histories
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualHistory>
+
+=cut
+
 __PACKAGE__->has_many(
   "individual_histories",
   "CXGN::Phenome::Schema::IndividualHistory",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 individual_images
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualImage>
+
+=cut
+
 __PACKAGE__->has_many(
   "individual_images",
   "CXGN::Phenome::Schema::IndividualImage",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
+
+=head2 loci
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualLocus>
+
+=cut
+
 __PACKAGE__->has_many(
   "loci",
   "CXGN::Phenome::Schema::IndividualLocus",
   { "foreign.individual_id" => "self.individual_id" },
+  {},
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005 @ 2010-05-27 04:17:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Eg1BRZyfGe04hxGTpSW8yA
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-04-21 15:09:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xRiKIkLu/hGLmKNB+g7H4g
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
