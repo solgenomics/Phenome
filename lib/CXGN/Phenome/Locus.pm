@@ -1534,8 +1534,7 @@ sub get_recent_annotated_loci {
     ###
     #get associated stocks
     ####
-    my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
-    );
+    my $schema= Bio::Chado::Schema->connect( $dbh->get_connection_parameters );
     my $stock_query = "SELECT *  FROM phenome.stock_allele  join metadata.md_metadata USING (metadata_id) WHERE create_date>? OR modified_data>? ORDER BY modified_date DESC, create_date DESC";
     my $stock_sth = $dbh->prepare($stock_query);
     $stock_sth->execute($date, $date);
