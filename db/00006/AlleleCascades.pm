@@ -2,6 +2,15 @@ package AlleleCascades;
 use Moose;
 extends 'CXGN::Metadata::Dbpatch';
 
+has '+description' => ( default => <<'' );
+Adding cascading delete to some unique constraints on stock_allele and allele tables.
+
+has '+prereq' => (
+    default => sub {
+        ['StockSgnLinks'],
+    },
+  );
+
 sub patch {
 
     shift->dbh->do(<<EOSQL);
