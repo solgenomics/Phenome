@@ -26,9 +26,7 @@ use File::Spec;
 use File::Path qw/ mkpath /;
 
 sub new {
-    my $class        = shift;
-    my $sp_person_id = shift;
-    my $params_ref   = shift;
+    my ($class, $sp_person_id, $params_ref) = @_;
     my $self         = bless {}, $class;
 
     # put the right control conditions for a hash ref $params_ref
@@ -230,9 +228,8 @@ sub user_stat_parameters {
 =cut
 
 sub user_stat_file {
-    my $self   = shift;
-    my $c      = shift;
-    my $pop_id = shift;
+    my ($self, $c, $pop_id) = @_;
+   
     my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
     my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
 
@@ -305,9 +302,10 @@ sub get_stat_file {
     #my $user_stat = $self->user_stat_file( $c, $pop_id );
     my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
     my $user_stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
-
+ print STDERR "\n\nstat file 1: $user_stat_file\n\n";
     #if ( $user_stat && -e $user_stat ) {
     if (-e $user_stat_file) {
+        print STDERR "\n\nstat file 2: $user_stat_file\n\n";
         return $user_stat_file;
     }
     else {
@@ -353,9 +351,9 @@ sub get_user_qtl_dir {
  
     my $bdir = $c->get_conf("basepath");
     my $tdir = $c->get_conf("tempfiles_subdir");
-    my $temp = File::Spec->catfile( $bdir, $tdir, "page_uploads" );
+    my $temp_qtl = File::Spec->catfile( $bdir, $tdir, "page_uploads", "qtl" );
 
-    my $temp_qtl = "$temp/qtl";
+   #my $temp_qtl = "$temp/qtl";
 
     my $dbh        = CXGN::DB::Connection->new();
     my $person     = CXGN::People::Person->new( $dbh, $sp_person_id );
