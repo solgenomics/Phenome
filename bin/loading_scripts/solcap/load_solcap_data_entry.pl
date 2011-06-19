@@ -85,7 +85,7 @@ my %seq  = (
     );
 
 # get the project
-my $project_name = $opt_p || 'solcap vintage tomatoes 2009, Fremont, OH';
+my $project_name = $opt_p || die 'Need project name! see load_genolocation_project.pl if you have not loaded the project\n';
 my $project = $schema->resultset("Project::Project")->find( {
     name => $project_name,
 } );
