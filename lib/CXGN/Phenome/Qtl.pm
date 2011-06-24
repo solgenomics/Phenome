@@ -299,19 +299,24 @@ sub default_stat_file {
 
 sub get_stat_file {
     my ($self, $c, $pop_id)  = @_;
-    #my $user_stat = $self->user_stat_file( $c, $pop_id );
-    my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
-    my $user_stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
- print STDERR "\n\nstat file 1: $user_stat_file\n\n";
-    #if ( $user_stat && -e $user_stat ) {
-    if (-e $user_stat_file) {
-        print STDERR "\n\nstat file 2: $user_stat_file\n\n";
-        return $user_stat_file;
+    
+    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
+    my $user_stat_file         = "$temp_user/user_stat_pop_$pop_id.txt";
+    my $stat_options           = "$temp_user/stat_options_pop_$pop_id.txt";
+
+    if (-e $stat_options && grep(/No/,  $stat_options)) {            
+        if (-e $user_stat_file) 
+        { 
+            return $user_stat_file 
+        } 
+        else 
+        { 
+            return $self->default_stat_file($c);
+        }
     }
     else {
-       return $self->default_stat_file($c);
+        return $self->default_stat_file($c);
     }
-
 }
 
 =head2 make_table
