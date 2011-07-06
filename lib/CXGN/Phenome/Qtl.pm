@@ -304,7 +304,8 @@ sub get_stat_file {
     my $user_stat_file         = "$temp_user/user_stat_pop_$pop_id.txt";
     my $stat_options           = "$temp_user/stat_options_pop_$pop_id.txt";
 
-    if (-e $stat_options && grep(/No/,  $stat_options)) {            
+    if (-e $stat_options && grep(/No/,  $stat_options)) 
+    {            
         if (-e $user_stat_file) 
         { 
             return $user_stat_file 
@@ -314,7 +315,8 @@ sub get_stat_file {
             return $self->default_stat_file($c);
         }
     }
-    else {
+    else 
+    {
         return $self->default_stat_file($c);
     }
 }
