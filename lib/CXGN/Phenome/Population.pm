@@ -1077,6 +1077,7 @@ sub get_cvterm_acronyms {
 
 
     }
+    my @cvterm_acronym_pairs=();
     my $query = "SELECT DISTINCT(observable_id), $name  
                       FROM public.phenotype
                       LEFT JOIN phenome.individual USING (individual_id)  
@@ -1088,10 +1089,7 @@ sub get_cvterm_acronyms {
     my $sth = $self->get_dbh()->prepare($query);
    
     $sth->execute($population_id);
-    
-    my (@cvterms, @cvterm_acronyms);
-
-   
+  
     while (my ($observable_id, $cvterm) =$sth->fetchrow_array()) {
 	my @words = split(/\s/, $cvterm);
 	my $acronym;
@@ -1114,11 +1112,10 @@ sub get_cvterm_acronyms {
 	    }
 	    
 	}
-	push @cvterm_acronyms, $acronym;
-	push @cvterms, $cvterm;
+        push @cvterm_acronym_pairs, [$cvterm, $acronym];
     }
 
-    return \@cvterms, \@cvterm_acronyms;
+    return  \@cvterm_acronym_pairs;
 }
 
 =head2 cvterm_acronym
