@@ -1466,9 +1466,16 @@ sub phenotype_dataset {
     my ($pop_name, $ind_id, $ind_name, $obs_id, $cvterm, $definition, $value);
     ($pop_id, $pop_name, $ind_id, $ind_name, $obs_id, $cvterm, $definition, $value) = $self->get_pop_raw_data($pop_id);
     
-    my ($cvterms2, $cvterm_acronyms) = $self->get_cvterm_acronyms();
-    my @cvterms2 = @{$cvterms2};
-    my @cvterm_acronyms = @{$cvterm_acronyms};
+    my (@cvterms2, @cvterm_acronyms);
+    my $cvterm_acronym_pairs = $self->get_cvterm_acronyms();
+    for my $pair (@{$cvterm_acronym_pairs}) {
+       push @cvterms2, $pair->[0];
+       push @cvterm_acronyms, $pair->[1];
+    }
+       
+    # my ($cvterms2, $cvterm_acronyms) = $self->get_cvterm_acronyms();
+   # my @cvterms2 = @{$cvterms2};
+   # my @cvterm_acronyms = @{$cvterm_acronyms};
     
     for (my $i = 0; $i<@cvterms; $i++){
 	if  ($cvterms[$i] eq $cvterms2[$i]) {
