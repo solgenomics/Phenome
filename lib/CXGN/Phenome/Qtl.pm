@@ -24,6 +24,7 @@ use CXGN::Phenome::Population;
 use File::Spec;
 
 use File::Path qw/ mkpath /;
+use File::Slurp qw / read_file /;
 
 sub new {
     my ($class, $sp_person_id, $params_ref) = @_;
@@ -303,12 +304,12 @@ sub get_stat_file {
     my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
     my $user_stat_file         = "$temp_user/user_stat_pop_$pop_id.txt";
     my $stat_options           = "$temp_user/stat_options_pop_$pop_id.txt";
-
-    if (-e $stat_options && grep(/No/,  $stat_options)) 
+    
+    if (-e $stat_options &&  grep(/No/, read_file($stat_options))) 
     {            
         if (-e $user_stat_file) 
         { 
-            return $user_stat_file 
+            return $user_stat_file; 
         } 
         else 
         { 
@@ -351,16 +352,13 @@ sub make_table {
 }
 
 sub get_user_qtl_dir {
-    my $self         = shift;
-    my $c           = shift;
+    my ($self, $c)   = @_;        
     my $sp_person_id = $self->get_sp_person_id();
 
  
     my $bdir = $c->get_conf("basepath");
     my $tdir = $c->get_conf("tempfiles_subdir");
     my $temp_qtl = File::Spec->catfile( $bdir, $tdir, "page_uploads", "qtl" );
-
-   #my $temp_qtl = "$temp/qtl";
 
     my $dbh        = CXGN::DB::Connection->new();
     my $person     = CXGN::People::Person->new( $dbh, $sp_person_id );
