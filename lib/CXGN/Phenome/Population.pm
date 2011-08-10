@@ -1871,7 +1871,7 @@ sub genotype_file {
     my $key_gen          = "popid_" . $pop_id . "_genodata";
     my $gen_dataset_file = $file_cache->get($key_gen);
 
-    unless ($gen_dataset_file)
+    unless ( -e $gen_dataset_file)
     {
         my $genodata     = $self->genotype_dataset();
         my $geno_dataset = ${$genodata};
@@ -1912,7 +1912,7 @@ sub phenotype_file {
     my $key_gen          = "popid_" . $pop_id . "_phenodata";
     my $phe_dataset_file = $file_cache->get($key_gen);
 
-    unless ($phe_dataset_file)
+    unless (-e $phe_dataset_file)
     {
         my $phenodata     = $self->phenotype_dataset();
         my $pheno_dataset = ${$phenodata};
