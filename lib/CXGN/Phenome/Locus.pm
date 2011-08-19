@@ -21,21 +21,25 @@ Naama Menda <nm249@cornell.edu>
 use strict;
 use warnings;
 
+use Bio::Chado::Schema;
+
 use CXGN::DB::Connection;
+use CXGN::DB::Object;
+
+use CXGN::Image;
+use CXGN::Chado::Dbxref;
+use CXGN::Transcript::Unigene;
+
 use CXGN::Phenome::Allele;
 use CXGN::Phenome::LocusSynonym;
 use CXGN::Phenome::LocusMarker;
-use CXGN::Phenome::Locus::LocusHistory;
-
 use CXGN::Phenome::LocusDbxref;
-use CXGN::Phenome::Locus::LocusRanking;
-use CXGN::Transcript::Unigene;
-use CXGN::Phenome::Schema;
 use CXGN::Phenome::LocusGroup;
-use CXGN::DB::Object;
-use CXGN::Chado::Dbxref;
-use CXGN::Image;
-use Bio::Chado::Schema;
+use CXGN::Phenome::Schema;
+
+use CXGN::Phenome::Locus::LocusHistory;
+use CXGN::Phenome::Locus::LocusRanking;
+
 
 use base qw /  CXGN::DB::ModifiableI CXGN::Phenome::Locus::LocusRanking /;
 
@@ -54,17 +58,17 @@ sub new {
     my $class = shift;
     my $dbh = shift;
     my $id= shift; # the primary key in the databaes of this object
-    
-    unless( $dbh->can('selectall_arrayref') ) {
-	die "First argument to CXGN::Phenome::Locus constructor needs to be a database handle.";
-    }
+
+    die "First argument to CXGN::Phenome::Locus constructor should be a dbh."
+        unless $dbh->can('selectall_arrayref');
+
     my $self=$class->SUPER::new($dbh);   
-   
+
     $self->set_locus_id($id);
     
     if ($id) {
 	$self->fetch($id); #get the locus details   
-	
+
 	#associated markers
 	my $locus_marker_query=$self->get_dbh()->prepare(
             "SELECT distinct locus_marker_id from phenome.locus_marker 

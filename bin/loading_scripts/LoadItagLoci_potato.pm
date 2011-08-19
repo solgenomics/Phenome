@@ -1,4 +1,4 @@
-package LoadItagLoci;
+package LoadItagLoci_potato;
 
 =head1 NAME
 
@@ -37,7 +37,7 @@ The database that you want to load into.
 
 =head1 AUTHOR
 
-Naama
+Naama and Dan
 
 =head1 SEE ALSO
 
@@ -48,7 +48,6 @@ CXGN::DB::Connection
 
 use Modern::Perl;
 use CXGN::DB::InsertDBH;
-use File::Slurp;
 use CXGN::Phenome::Locus;
 use CXGN::Phenome::LocusSynonym;
 use CXGN::Tools::Organism;
@@ -114,48 +113,93 @@ sub run {
     $self->dbh($dbh);
 
     my %common_names = CXGN::Tools::Organism::get_existing_organisms($dbh, 1);
-    my $tomato_cname_id = $common_names{Tomato};
+    my $potato_cname_id = $common_names{Potato};
 
     my $file = $self->infile;
-    my @lines = read_file( $file ) ;
-    foreach my $line (@lines) {
-        chomp $line;
-        my ($locus_id, $itag, $annotation) = split (/\t/ , $line ) ;
-        my ( $chromosome ) = $itag =~ /^Solyc0?(\d+)g/ or die "cannot parse itag gene name '$itag'\n";
-        my $locus = CXGN::Phenome::Locus->new($dbh, $locus_id);
-        if ($locus->get_locus_id) {
+    open INFILE, '<', $file
+      or die "cant open file '$file' for reading : $!\n";
+
+    while (<INFILE>) {
+        chomp;
+        my ($pgsc_gene_id, $annotation) = split /\t/;
+
+        $pgsc_gene_id =~ /^PGSC0003DMG(\d{9})$/
+            or die "cant recognize gene id '$pgsc_gene_id'\n";
+
+        # For now...
+        my $itag = $pgsc_gene_id;
+
+        # TODO: Map genes via a given AGP
+        my $chromosome = 0;
+
+        #my $locus = CXGN::Phenome::Locus->new($dbh);
+        my $locus = CXGN::Phenome::Locus->
+          new_with_symbol_and_species($dbh, $itag, 'Potato');
+        #print $locus->get_locus_id, "\n"; exit;
+
+        # Update
+        if ($locus->get_locus_id){
             next if $locus->get_obsolete eq 't';
-            print "locus_id = " . $locus->get_locus_id . "name = " . $locus->get_locus_name . "\n";
+
+            print
+              "locus_id = ". $locus->get_locus_id .
+              ", name = ". $locus->get_locus_name . "\n";
+
             my $locus_chr = $locus->get_linkage_group;
-            if ($locus_chr && $locus_chr != $chromosome) {
-                warn("ERROR: ITAG chromosome is $chromosome, but the matching locus (id=" . $locus->get_locus_id . ") is on chromosome $locus_chr. Please fix the locus chromosome in the database, or change the ITAG match\n");
-            }elsif (!$locus_chr) {
-                print "Updating chromosome = $chromosome for locus_id " . $locus->get_locus_id . "\n";
+
+            if ($locus_chr && $locus_chr != $chromosome){
+                warn
+                  "ERROR: ITAG chromosome is $chromosome, ".
+                  "but the matching locus (id=". $locus->get_locus_id.
+                  ") is on chromosome $locus_chr.\n"
+            }
+            elsif (!defined( $locus_chr )){
+                print
+                  "Updating chromosome = $chromosome for locus_id ".
+                  $locus->get_locus_id . "\n";
                 $locus->set_linkage_group($chromosome);
                 $locus->store;
             }
+        }
+
+        # Create
+        else {
+            $locus->set_locus_name($itag);
+            $locus->set_locus_symbol($itag);
+            $locus->set_description($annotation);
+            $locus->set_common_name_id($potato_cname_id);
+            $locus->set_linkage_group( $chromosome ) if defined( $chromosome );
+            $locus->set_sp_person_id('1203');
+
+            $locus->store();
+
+            my $locus_id = $locus->get_locus_id;
+            print "STORED new locus $itag (id = $locus_id)\n";
+
+            # Add a synonym
             my $itag_synonym = CXGN::Phenome::LocusSynonym->new($dbh);
             $itag_synonym->set_locus_id($locus_id);
             $itag_synonym->set_locus_alias($itag);
             $itag_synonym->set_preferred('f');
             $itag_synonym->store();
+
             my $alias_id = $locus->add_locus_alias($itag_synonym);
-            print "Added synonym $itag (id = $alias_id) to locus " . $locus->get_locus_symbol . " (id = $locus_id)\n";
-        } else {
-            $locus->set_locus_name($itag);
-            $locus->set_locus_symbol($itag);
-            $locus->set_description($annotation);
-            $locus->set_common_name_id($tomato_cname_id);
-            $locus->set_linkage_group( $chromosome ) if $chromosome;
-            $locus->set_sp_person_id('329');
-            $locus->store();
-            print "STORED new locus $itag (id = " . $locus->get_locus_id . ")\n";
+            print
+              "Added synonym $itag (id = $alias_id) to locus ".
+              $locus->get_locus_symbol. " (id = $locus_id)\n";
+
         }
+
+        # Debugging
+        #last;
     }
+
     if ( $self->trial) {
-        print "Trial mode! Not locus synonyms and new loci in the database \n";
+        print
+          "Trial mode! Not storing locus synonyms and new loci in the database \n";
         $dbh->rollback;
-    } else {
+    }
+    else {
         print "COMMITING\n";
         $dbh->commit;
     }
