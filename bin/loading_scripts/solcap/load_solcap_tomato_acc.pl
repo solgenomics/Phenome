@@ -1,6 +1,8 @@
 
 =head1
 
+DEPRECATED! NEEDS UPDATING- see bellow.
+
 load_solcap_tomato_acc.pl
 
 =head1 SYNOPSIS
@@ -9,9 +11,9 @@ load_solcap_tomato_acc.pl
 
 =head1 COMMAND-LINE OPTIONS
 
- -H  host name 
- -D  database name 
- -i infile 
+ -H  host name
+ -D  database name
+ -i infile
  -t  Test run . Rolling back at the end.
 
 
@@ -22,7 +24,14 @@ load_solcap_tomato_acc.pl
 Naama Menda (nm249@cornell.edu)
 
     July 2010
- 
+
+    June 2011: This script is OUTDATED!
+    DO NOT RUN IT AGAIN, since the way we store data has changed.
+    phenome.individual and population tables are deprecated. We now use only chado stock.
+    The owners of hte stock accession are not stored in stockprop, but in phenome.stock_owner.
+    REFACTOR this loading script when new tomato solcap accessions arrive, if ever.
+    Just remember to make sure the column headers are consistant with the ones sent to SGN from SolCAP on 2010 (this is very unlikely...)
+
 =cut
 
 
