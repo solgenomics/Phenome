@@ -24,11 +24,10 @@ use CXGN::Phenome::Population;
 use File::Spec;
 
 use File::Path qw/ mkpath /;
+use File::Slurp qw / read_file /;
 
 sub new {
-    my $class        = shift;
-    my $sp_person_id = shift;
-    my $params_ref   = shift;
+    my ($class, $sp_person_id, $params_ref) = @_;
     my $self         = bless {}, $class;
 
     # put the right control conditions for a hash ref $params_ref
@@ -230,13 +229,12 @@ sub user_stat_parameters {
 =cut
 
 sub user_stat_file {
-    my $self   = shift;
-    my $c      = shift;
-    my $pop_id = shift;
+    my ($self, $c, $pop_id) = @_;
+   
     my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
     my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
 
-    unless ( -e $stat_file ) {
+    #unless ( -e $stat_file ) {
         my $stat_ref = $self->user_stat_parameters();
         if ($stat_ref) {
             my $stat_table = $self->make_table($stat_ref);
@@ -245,7 +243,7 @@ sub user_stat_file {
             $f->print($stat_table);
         }
         else { $stat_file = undef; }
-    }
+   # }
 
     return $stat_file;
 }
@@ -301,27 +299,35 @@ sub default_stat_file {
 =cut
 
 sub get_stat_file {
-    my $self      = shift;
-    my $c         = shift;
-    my $pop_id    = shift;
-    my $user_stat = $self->user_stat_file( $c, $pop_id );
-
-    if ( $user_stat && -e $user_stat ) {
-        return $user_stat;
+    my ($self, $c, $pop_id)  = @_;
+    
+    my ($temp_qtl, $temp_user) = $self->get_user_qtl_dir($c);
+    my $user_stat_file         = "$temp_user/user_stat_pop_$pop_id.txt";
+    my $stat_options           = "$temp_user/stat_options_pop_$pop_id.txt";
+    
+    if (-e $stat_options &&  grep(/No/, read_file($stat_options))) 
+    {            
+        if (-e $user_stat_file) 
+        { 
+            return $user_stat_file; 
+        } 
+        else 
+        { 
+            return $self->default_stat_file($c);
+        }
     }
-    else {
-        my $default_stat = $self->default_stat_file($c);
-        return $default_stat;
+    else 
+    {
+        return $self->default_stat_file($c);
     }
-
 }
 
 =head2 make_table
 
- Usage: my $make_table = $qtl->make_table()
- Desc: makes a tab delimited file out of a hash file.
+ Usage: my $make_table = $qtl->make_table($param_ref)
+ Desc: makes a tab delimited file out of a hash ref file.
  Ret: tab delimited file or undef
- Args: None
+ Args: hash ref of parameters
  Side Effects:
  Example:
 
@@ -332,14 +338,11 @@ sub make_table {
     my $param_ref = shift;
 
     if ($param_ref) {
-        my %parameters = %$param_ref;
-
         my $table;
-        foreach my $k ( keys %parameters ) {
-            my $v = $parameters{$k};
+        foreach my $k ( keys %{$param_ref} ) {
+            my $v = $param_ref->{$k};
             $table .= $k . "\t" . $v . "\n";
         }
-
         return $table;
     }
     else {
@@ -349,16 +352,13 @@ sub make_table {
 }
 
 sub get_user_qtl_dir {
-    my $self         = shift;
-    my $c           = shift;
+    my ($self, $c)   = @_;        
     my $sp_person_id = $self->get_sp_person_id();
 
  
     my $bdir = $c->get_conf("basepath");
     my $tdir = $c->get_conf("tempfiles_subdir");
-    my $temp = File::Spec->catfile( $bdir, $tdir, "page_uploads" );
-
-    my $temp_qtl = "$temp/qtl";
+    my $temp_qtl = File::Spec->catfile( $bdir, $tdir, "page_uploads", "qtl" );
 
     my $dbh        = CXGN::DB::Connection->new();
     my $person     = CXGN::People::Person->new( $dbh, $sp_person_id );

@@ -1077,6 +1077,7 @@ sub get_cvterm_acronyms {
 
 
     }
+    my @cvterm_acronym_pairs=();
     my $query = "SELECT DISTINCT(observable_id), $name  
                       FROM public.phenotype
                       LEFT JOIN phenome.individual USING (individual_id)  
@@ -1088,10 +1089,7 @@ sub get_cvterm_acronyms {
     my $sth = $self->get_dbh()->prepare($query);
    
     $sth->execute($population_id);
-    
-    my (@cvterms, @cvterm_acronyms);
-
-   
+  
     while (my ($observable_id, $cvterm) =$sth->fetchrow_array()) {
 	my @words = split(/\s/, $cvterm);
 	my $acronym;
@@ -1114,11 +1112,10 @@ sub get_cvterm_acronyms {
 	    }
 	    
 	}
-	push @cvterm_acronyms, $acronym;
-	push @cvterms, $cvterm;
+        push @cvterm_acronym_pairs, [$cvterm, $acronym];
     }
 
-    return \@cvterms, \@cvterm_acronyms;
+    return  \@cvterm_acronym_pairs;
 }
 
 =head2 cvterm_acronym
@@ -1463,19 +1460,21 @@ sub phenotype_dataset {
 
     my @individuals = $self->get_individuals();
     my $individual_obj = $individuals[1];
-    #my $ind_id = $individual_obj->get_individual_id();
-
+   
     my @cvterms = $individual_obj->get_unique_cvterms( $individual_obj->get_individual_id());
     my ($pop_name, $ind_id, $ind_name, $obs_id, $cvterm, $definition, $value);
     ($pop_id, $pop_name, $ind_id, $ind_name, $obs_id, $cvterm, $definition, $value) = $self->get_pop_raw_data($pop_id);
     
-    my ($cvterms2, $cvterm_acronyms) = $self->get_cvterm_acronyms();
-    my @cvterms2 = @{$cvterms2};
-    my @cvterm_acronyms = @{$cvterm_acronyms};
-    
+    my (@cvterms2, @cvterm_acronyms);
+    my $cvterm_acronym_pairs = $self->get_cvterm_acronyms();
+   
+    for my $pair (@{$cvterm_acronym_pairs}) {
+       push @cvterms2, $pair->[0];
+       push @cvterm_acronyms, $pair->[1];
+    }
+          
     for (my $i = 0; $i<@cvterms; $i++){
-	if  ($cvterms[$i] eq $cvterms2[$i]) {
-	 #print "cvterms match \n"; 
+	if  ($cvterms[$i] eq $cvterms2[$i]) { 
 	 #do nothing
 	} else { print  "There is a mismatch between $cvterms[$i] and $cvterms2[$i]\n";
 		   exit();
@@ -1705,7 +1704,7 @@ sub linkage_groups {
 =head2 store_data_privacy
 
  Usage: $is_public = $pop->store_data_privacy($is_public);
- Desc: sets the whether the population data is for public or private
+ Desc: sets whether the population data is for public or private use
  Ret: undef if not given a population_id; otherwise, true or false value      
  Args: true or false
  Side Effects: accesseses db
@@ -1714,11 +1713,10 @@ sub linkage_groups {
 =cut
 
 sub store_data_privacy {
-    my $self = shift;
-    my $is_public  = shift;   
-    my $dbh = $self->get_dbh();
-    my $pop_id = $self->get_population_id();
-    my $owner_id = $self->get_sp_person_id();
+    my ($self, $is_public) = @_;  
+    my $dbh                = $self->get_dbh();
+    my $pop_id             = $self->get_population_id();
+    my $owner_id           = $self->get_sp_person_id();
     my $sth;
     if ($pop_id) {
 	$sth = $dbh->prepare("SELECT population_id 
@@ -1741,8 +1739,6 @@ sub store_data_privacy {
                                      (population_id, is_public, owner_id) 
                                      VALUES (?, ?, ?)"
                             );
-
-	    #print STDERR "is_public: $is_public\n";
 
 	    $sth->execute($pop_id, $is_public, $owner_id);
 	}
@@ -1769,7 +1765,8 @@ sub get_privacy_status {
     my $self = shift;    
     my $dbh = $self->get_dbh();   
  
-    if ($self->get_population_id()) {
+    if ($self->get_population_id()) 
+    {
 	my $sth = $dbh->prepare("SELECT is_public 
                                     FROM phenome.is_public
                                     WHERE population_id = ?" 
@@ -1778,13 +1775,16 @@ sub get_privacy_status {
 	$sth->execute($self->get_population_id());
 	my $status = $sth->fetchrow_array();
 	
-	if (!defined($status)) {$status = 't';}
-
-	#print STDERR "privacy status: $status\n";
-
-	return $status;
+	if ( !defined $status ) 
+        {
+            $status = 't';
+            return $status;	
+        }       
     }
-    else {return 0;}
+    else 
+    {
+        return undef;
+    }
   
 }
 
@@ -1871,7 +1871,7 @@ sub genotype_file {
     my $key_gen          = "popid_" . $pop_id . "_genodata";
     my $gen_dataset_file = $file_cache->get($key_gen);
 
-    unless ($gen_dataset_file)
+    unless ( -e $gen_dataset_file)
     {
         my $genodata     = $self->genotype_dataset();
         my $geno_dataset = ${$genodata};
@@ -1912,7 +1912,7 @@ sub phenotype_file {
     my $key_gen          = "popid_" . $pop_id . "_phenodata";
     my $phe_dataset_file = $file_cache->get($key_gen);
 
-    unless ($phe_dataset_file)
+    unless (-e $phe_dataset_file)
     {
         my $phenodata     = $self->phenotype_dataset();
         my $pheno_dataset = ${$phenodata};
