@@ -68,13 +68,19 @@ sub run {
 
     #$dbh->{AutoCommit} = 1;
     $self->dbh($dbh);
-
+    my $schema= Bio::Chado::Schema->connect(  sub { $dbh } ,  { on_connect_do => ['SET search_path TO  public;'] }
+        );
     my %common_names = CXGN::Tools::Organism::get_all_organisms($dbh, 1);
     my $cname_id = $common_names{Arabidopsis};
 
     my $file = $self->infile;
     my @lines = read_file( $file ) ;
     shift(@lines);
+
+    my $db = $schema->resultset("General::Db")->find_or_create( {
+        name => 'TAIR locus',
+        urlprefix => 'http://',
+        url => 'arabidopsis.org/servlets/TairObject?type=locus&name=',                                                                });
     foreach my $line (@lines) {
         chomp $line;
         my ($gene_model, $type, $short_desc, $curator_desc, $comp_desc) = split (/\t/ , $line ) ;
@@ -116,6 +122,14 @@ sub run {
         $at_synonym->store();
         my $alias_id = $locus->add_locus_alias($at_synonym);
         print "Added synonym $gene_model (id = $alias_id) to locus " . $locus->get_locus_symbol . " (id = $locus_id)\n";
+        #add the link to TAIR via dbxref
+        my $dbxref = $db->find_or_create_related('dbxrefs' , {
+            accession => $locus_symbol,
+                                                 });
+        my $dbxref_object = CXGN::Chado::Dbxref->new($dbh, $dbxref->dbxref_id);
+        $locus->add_locus_dbxref($dbxref_object,
+                                 undef,
+                                 $locus->get_sp_person_id);
     }
     if ( $self->trial) {
         print "Trial mode! rolling back \n";

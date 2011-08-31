@@ -220,7 +220,30 @@ eval {
 		##print "***Changing date $date \n\n ";
 		#make sure extra 'date' colums have sequencial numeric suffix starting at 1
                 $date = $spreadsheet->value_at($accession, "date" . $date_count);
+                ########################
+                # when the date changes, need to store a new nd_experiment_id
+                $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
+                    {
+                        nd_geolocation_id => $geolocation->nd_geolocation_id(),
+                        type_id => $pheno_cvterm->cvterm_id(),
+                    } );
+                #link to the project
+                $experiment->find_or_create_related('nd_experiment_projects', {
+                    project_id => $project->project_id()
+                                                    } );
+                #link the experiment to the stock
+                $experiment->find_or_create_related('nd_experiment_stocks' , {
+                    stock_id => $plot_stock->stock_id(),
+                    type_id  =>  $pheno_cvterm->cvterm_id(),
+                                                    });
+
+                #########################
 	    }
+            ##The date is the nd_experimentprop
+            $nd_experiment->create_nd_experimentprops( 
+                { date => $date } , 
+                { autocreate => 1 , cv_name => 'local' } 
+                );
             #sp terms have a lable to determine if these have a scale or a quantitative unit
             my ($term, $type) = split (/\|/ , $label) ;
             #db_name = SP , accession = 0000NNN 
