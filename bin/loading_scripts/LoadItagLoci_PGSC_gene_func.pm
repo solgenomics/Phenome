@@ -1,14 +1,14 @@
-package LoadItagLoci_potato;
+package LoadItagLoci_PGSC_gene;
 
 =head1 NAME
 
-  LoadItagLoci - reads loci data from file and loads (or updates) them into the database
+  LoadItagLoci - reads potato loci data from GFF and loads (or updates) them into the database
 
 =head1 SYNOPSIS
 
 Invoke this module directly with mx-run (MooseX::Runnable):
 
-  mx-run LoadItagLoci.pm [options] <file>
+  mx-run LoadItagLoci_PGSC_gene [options] <file>
 
 
 Note, you may need to include the following two libraries:
@@ -17,9 +17,11 @@ Note, you may need to include the following two libraries:
 
 =head1 DESCRIPTION
 
-The script(?) uses CXGN::DB::InsertDBH to connect to the database, so it will prompt for a username and password when run.
+The script(?) uses CXGN::DB::InsertDBH to connect to the database, so
+it will prompt for a username and password when run.
 
-I'm guessing the appropriate tables have to already exist in the given database?
+I'm guessing the appropriate tables have to already exist in the given
+database?
 
 =head2 OPTIONS
 
@@ -121,52 +123,60 @@ sub run {
 
     while (<INFILE>) {
         chomp;
-        my ($pgsc_gene_id, $annotation) = split /\t/;
+        my ($seq_id, $source, $type, $start, $end,
+            $score, $strand, $phase, $attrs
+           ) = split/\t/;
 
-        $pgsc_gene_id =~ /^PGSC0003DMG(\d{9})$/
-            or die "cant recognize gene id '$pgsc_gene_id'\n";
+        next unless $type eq 'gene';
+
+        ## Gene ID
+        $attrs =~ /(?:;|\t)ID=(PGSC0003DMG4\d{8})(?:;|$)/
+          or die "cant recognize gene id in '$attrs'\n";
+        my $gene_id = $1;
 
         # For now...
-        my $itag = $pgsc_gene_id;
+        my $itag = $gene_id;
 
-        # TODO: Map genes via a given AGP
-        my $chromosome = 0;
+        ## Chromosome
+        $seq_id =~ /^chr(\d\d)$/
+          or die "cant recognize chromosome in '$seq_id'\n";
+        my $chromosome = $1;
 
         #my $locus = CXGN::Phenome::Locus->new($dbh);
         my $locus = CXGN::Phenome::Locus->
           new_with_symbol_and_species($dbh, $itag, 'Potato');
-        #print $locus->get_locus_id, "\n"; exit;
 
-        # Update
-        if ($locus->get_locus_id){
+        ## Update
+        if (my $locus_id = $locus->get_locus_id){
+            ## Dont bother to update obsolete loci (I guess)
             next if $locus->get_obsolete eq 't';
 
             print
-              "locus_id = ". $locus->get_locus_id .
-              ", name = ". $locus->get_locus_name . "\n";
+              "locus_id = $locus_id, name = ". $locus->get_locus_name. "\n";
 
             my $locus_chr = $locus->get_linkage_group;
-
-            if ($locus_chr && $locus_chr != $chromosome){
+            if (defined( $locus_chr ) && $locus_chr != $chromosome){
                 warn
-                  "ERROR: ITAG chromosome is $chromosome, ".
-                  "but the matching locus (id=". $locus->get_locus_id.
-                  ") is on chromosome $locus_chr.\n"
+                  "ERROR: $locus_id is on ITAG Chr. $locus_chr, but the ".
+                    "locus is on chromosome $chromosome.\n";
             }
             elsif (!defined( $locus_chr )){
                 print
-                  "Updating chromosome = $chromosome for locus_id ".
-                  $locus->get_locus_id . "\n";
+                  "Updating chromosome = $chromosome for locus_id $locus_id\n";
                 $locus->set_linkage_group($chromosome);
                 $locus->store;
             }
         }
 
-        # Create
+        ## Create
         else {
+            ## Debugging
+            die "how did we get here?\n";
+
             $locus->set_locus_name($itag);
             $locus->set_locus_symbol($itag);
-            $locus->set_description($annotation);
+            # TODO: get this from the 'Note' attribute
+            #$locus->set_description($annotation);
             $locus->set_common_name_id($potato_cname_id);
             $locus->set_linkage_group( $chromosome ) if defined( $chromosome );
             $locus->set_sp_person_id('1203');
@@ -191,12 +201,12 @@ sub run {
         }
 
         # Debugging
-        #last;
+        last;
     }
 
     if ( $self->trial) {
         print
-          "Trial mode! Not storing locus synonyms and new loci in the database \n";
+          "Trial mode! Not storing in the database \n";
         $dbh->rollback;
     }
     else {
@@ -206,6 +216,5 @@ sub run {
 
     return 0;
 }
-
 
 return 1;
