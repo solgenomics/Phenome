@@ -1,4 +1,4 @@
-package LoadItagLoci_PGSC_gene;
+package LoadItagLoci_PGSC_gene_func;
 
 =head1 NAME
 
@@ -111,9 +111,9 @@ sub run {
             dbhost => $self->dbhost,
           })->get_actual_dbh();
 
-    #$dbh->{AutoCommit} = 1;
     $self->dbh($dbh);
 
+    ## This 'just works'
     my %common_names = CXGN::Tools::Organism::get_existing_organisms($dbh, 1);
     my $potato_cname_id = $common_names{Potato};
 
@@ -138,13 +138,14 @@ sub run {
         my $itag = $gene_id;
 
         ## Chromosome
-        $seq_id =~ /^chr(\d\d)$/
+        $seq_id =~ /^ST3-2.1.9ch(\d\d)$/
           or die "cant recognize chromosome in '$seq_id'\n";
         my $chromosome = $1;
 
-        #my $locus = CXGN::Phenome::Locus->new($dbh);
-        my $locus = CXGN::Phenome::Locus->
+         my $locus = CXGN::Phenome::Locus->
           new_with_symbol_and_species($dbh, $itag, 'Potato');
+
+
 
         ## Update
         if (my $locus_id = $locus->get_locus_id){
@@ -152,7 +153,7 @@ sub run {
             next if $locus->get_obsolete eq 't';
 
             print
-              "locus_id = $locus_id, name = ". $locus->get_locus_name. "\n";
+              "Updating locus_id $locus_id, name = ". $locus->get_locus_name. "\n";
 
             my $locus_chr = $locus->get_linkage_group;
             if (defined( $locus_chr ) && $locus_chr != $chromosome){
