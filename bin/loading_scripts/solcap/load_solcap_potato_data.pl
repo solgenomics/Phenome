@@ -13,7 +13,8 @@ load_solcap_potato_data.pl
  -D  database name
  -i infile
  -t  Test run . Rolling back at the end.
-
+ -p  project name as loaded in the project table
+ -g  geolocation description as loaded in the nd_geolocation table
 
 =head2 DESCRIPTION
 
@@ -240,7 +241,7 @@ eval {
                 #########################
 	    }
             ##The date is the nd_experimentprop
-            $nd_experiment->create_nd_experimentprops( 
+            $experiment->create_nd_experimentprops( 
                 { date => $date } , 
                 { autocreate => 1 , cv_name => 'local' } 
                 );
