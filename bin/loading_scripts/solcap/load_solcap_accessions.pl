@@ -57,7 +57,7 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
     );
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
 					  );
-my $phenome_schema= CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh->clone } , { on_connect_do => ['set search_path to phenome;'] }  );
+my $phenome_schema= CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh } , { on_connect_do => ['set search_path to public,phenome;'] }  );
 
 
 #getting the last database ids for resetting at the end in case of rolling back
