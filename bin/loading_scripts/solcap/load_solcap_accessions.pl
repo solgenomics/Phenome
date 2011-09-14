@@ -57,7 +57,7 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
     );
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
 					  );
-my $phenome_schema= CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh() , { on_connect_do => ['set search_path to phenome;'] } } );
+my $phenome_schema= CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh->clone } , { on_connect_do => ['set search_path to phenome;'] }  );
 
 
 #getting the last database ids for resetting at the end in case of rolling back
@@ -181,9 +181,11 @@ eval {
         my $stock_id = $stock->stock_id;
         print "Adding owner $sp_person_id \n";
 	#add the owner for this stock
-        my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
-        my $sth = $dbh->prepare($owner_insert);
-        $sth->execute($sp_person_id, $stock->stock_id);
+        $phenome_schema->resultset("StockOwner")->find_or_create( 
+            {
+                stock_id     => $stock->stock_id,
+                sp_person_id => $sp_person_id,
+            });
         #####################
 
 
