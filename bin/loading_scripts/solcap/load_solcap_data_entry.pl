@@ -13,9 +13,8 @@ load_solcap_data_entry.pl
  -D  database name
  -i infile
  -t  Test run . Rolling back at the end.
- -p project name
- -g geolocation description
-(g and p must match the name as loaded with load_geolocation_project.pl)
+
+(geolocation  and project names  will be loaded from the metadata.txt file in the same directory. Must be the same file used with load_geolocation_project.pl)
 
 =head2 DESCRIPTION
 
@@ -38,6 +37,7 @@ use strict;
 use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
 use CXGN::People::Person;
+use File::Basename;
 
 use Bio::Chado::Schema;
 use CXGN::DB::InsertDBH;
@@ -47,9 +47,9 @@ use Date::Calc qw(
 		  );
 use Carp qw /croak/ ;
 
-our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_g);
+our ($opt_H, $opt_D, $opt_i, $opt_t);
 
-getopts('H:i:tD:p:g:');
+getopts('H:i:tD:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -84,13 +84,20 @@ my %seq  = (
     'phenotype_phenotype_id_seq' => $last_phenotype_id,
     );
 
+
+#new spreadsheet, skip first column
+my $gp_file = dirname($file) . "/metadata.txt";
+my $gp = CXGN::Tools::File::Spreadsheet->new($gp_file, 1);
+my @gp_row = $gp->row_labels();
+
 # get the project
-my $project_name = $opt_p || die 'Need project name! see load_genolocation_project.pl if you have not loaded the project\n';
+my $project_name = $gp->value_at($gp_row[0], "project_name");
+
 my $project = $schema->resultset("Project::Project")->find( {
     name => $project_name,
 } );
 # get the geolocation
-my $geo_description = $opt_g || 'OSU-OARDC Fremont, OH';
+my $geo_description = $gp->value_at($gp_row[0], "geo_description");
 my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( {
     description => $geo_description ,
 } );
@@ -120,34 +127,41 @@ my $person_id_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
 #new spreadsheet, skip 3 first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 3);
 
+# for this Unit Ontology has to be loaded!
+my $unit_cv = $schema->resultset("Cv::Cv")->find(
+    { name => 'unit.ontology' } );
+
 
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
 
 eval {
 
-    foreach my $sct (@rows ) {
-	my $plot = $spreadsheet->value_at($sct, "Plot Number");
-	my $rep = $spreadsheet->value_at($sct, "Replicate Number");
+    foreach my $uniq_id (@rows ) {
+	my $sct = $spreadsheet->value_at($uniq_id, "Line #");
+        my $plot = $spreadsheet->value_at($uniq_id, "Plot Number");
+	my $rep = $spreadsheet->value_at($uniq_id, "Replicate Number");
 	#find the stock for this plot # The sct# is the parent!!#
 	print "looking at sct# $sct \n";
-	my ($parent_stock) = $schema->resultset("Stock::Stockprop")->find( {
-	    value => $sct
-	    })->search_related('stock');
-	my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
-	    object_id => $parent_stock->stock_id() } )->search_related('subject');
-
-	my $comment = $spreadsheet->value_at($sct, "Comment");
+        my ($parent_stock) = $schema->resultset("Cv::Cvterm")->search( {
+	    'me.name' => 'solcap number' } )->search_related('stockprops', {
+		value => $sct } )->search_related('stock');
+	die "No stock found for sct# $sct. Check your database! \n" if !$parent_stock ;
+        
+        #find the stock object
+        my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
+	    object_id => $parent_stock->stock_id() } )->search_related('subject', { name =>  $plot } );
+        
+	my $comment = $spreadsheet->value_at($uniq_id, "Comment");
 	my $prop_type = $schema->resultset("Cv::Cv")->find( {
 	    'me.name' => 'project_property' } )->find_related('cvterms', {
 		'me.name' => 'project transplanting date' } );
 	my $tp_date = $project->find_related('projectprops' , {
-	    type_id => $prop_type->cvterm_id()
-	    } )->value();
+	    type_id => $prop_type->cvterm_id() } )->value();
 	my ($tp_year, $tp_month, $tp_day) = split /\// , $tp_date;
 
         ###store a new nd_experiment. One experiment per stock
-        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( 
+        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
             {
                 nd_geolocation_id => $geolocation->nd_geolocation_id(),
                 type_id => $pheno_cvterm->cvterm_id(),
@@ -170,100 +184,110 @@ eval {
                                             });
 
       COLUMN: foreach my $label (@columns) {
-	    my $value =  $spreadsheet->value_at($sct, $label);
+          my $value =  $spreadsheet->value_at($uniq_id, $label);
+          ($value, undef) = split (/\s/, $value) ;
+          $value = undef if $value =~ /\./ ; #for some reason data files came with '.' instead of empty cells.
+          
+          #sp terms have a label to determine if these have a scale or a quantitative unit
+          my ($term, $type) = split (/\|/ , $label) ;
 
-	    ($value, undef) = split (/\s/, $value) ;
+          my ($db_name, $sp_accession) = split (/\:/ , $term);
+          if (!$sp_accession) {
+              print "NO sp_accession found for label $label!!\n";
+              next;
+          }
+          if ( ($label =~ /SP:0000366/) || ($label =~ /SP:0000126/) )  {
+              my ($m_year, $m_month, $m_day) = split /\//, $value ;
+              next() if !( check_date($m_year,$m_month,$m_day) ) ;
+              $value  = Delta_Days($tp_year,$tp_month,$tp_day, $m_year,$m_month,$m_day);
+              print "Year = $m_year ($tp_year) , month = $m_month ($tp_month), day = $m_day ($tp_day), delta = $value!\n";
+          }
+          ######################
+          next() if !$value; #skip empty cells
+          my ($value_type, $unit_name) = split (/\:/, $type) ;
 
-	    my ($db_name, $sp_accession) = split (/\:/ , $label);
-	    next() if (!$sp_accession);
+          #SP id is the column header, and will be used as the parent term
+          #in case of qualitative phenotypes which have a specific SP term 
+          #(e.g. plant habit: determinate, indeterminate)
+          my $parent_cvterm = $schema->resultset("General::Db")->find( {
+              name => $db_name } )->find_related("dbxrefs", {
+                  accession=>$sp_accession , } )->find_related("cvterm" , {});
 
-	    if ($label =~ /SP:0000366/) {
-		my ($m_year, $m_month, $m_day) = split /\//, $value ;
+          my $sp_term = $parent_cvterm;
+          my $observable_term = $parent_cvterm;
+          # if the type is a boolean then we store 0 or 1 as the phenotype value
+          if ($value_type eq 'boolean') {
+              $value = 0 if $value =~ /a/i ;
+              $value = 1 if $value =~ /p/i ;
+          }
+          my $unit_cvterm; # cvterm for the unit specified in the file
 
-		next() if !( check_date($m_year,$m_month,$m_day) ) ; 
-		$value  = Delta_Days($tp_year,$tp_month,$tp_day, $m_year,$m_month,$m_day);
-	    }
-	    ######################
-	    next() if !$value;
-	    my $parent_cvterm = $schema->resultset("General::Db")->find( {
-		name => $db_name } )->find_related("dbxrefs", { 
-		    accession=>$sp_accession , } )->find_related("cvterm" , {});
+          #if the type is qualitative observation, we need to store the matching sp term
+          # currently tomato solcap files have these qualitative terms:
+          # inflorescence structure (simple/compound/intermediate)
+          # growth type (determinate/indeterminate)
+          if ($value_type eq 'qual') {
+            #SP:0000128|qual	SP:0000071|qual
+              my ($child_term)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject' , {
+                  'lower(subject.name)' =>  { like => lc($value) . '%' } } );
+              if (!$child_term) {
+                  warn("NO child term found for term '$term' , value '$value'! Cannot proceed! Check your input!!") ;
+                  next LABEL;
+              }
+              $observable_term = $child_term;
+              print "Found child term " . $child_term->name . "\n";
+          } elsif ($value_type eq 'unit') { # unit:milimeter
+              ($unit_cvterm) = $unit_cv->find_related(
+                  "cvterms" , { name => $unit_name } ) if $unit_cv ;
+              #$observable_term = $sp_term;
+          }
+          my ($pato_term) = $schema->resultset("General::Db")->find( {
+              name => 'PATO' , } )->search_related
+                  ("dbxrefs")->search_related
+                  ("cvterm_dbxrefs", {
+                      cvterm_id => $sp_term->cvterm_id() ,
+                   });
+          my $pato_id = undef;
+          $pato_id = $pato_term->cvterm_id() if $pato_term;
 
-            my $sp_term = $parent_cvterm;
-            # if the value type is 'unit' we use the actual parent term for 
-	    # the annotation. If it's a 'scale' we need to find out the appropriate
-	    #child term, as stored in cvtermprop.
-	    # cvtermprops need to be pre-loaded using load_scale_cvtermprops.pl
-
-	    ##my $unit_cvterm; # cvterm for the unit specified in the file 
-	    ##if ($value_type eq 'scale') {
-	    ##	my $cvterm_type = $schema->resultset("Cv::Cv")->find(
-	    ##	    { name => 'breeders scale' } )->find_related(
-	    ##	    'cvterms' , { name  => $unit_name} );   
-	    ##	my $type_id = $cvterm_type->cvterm_id() if $cvterm_type || croak 'NO CVTERM FOUND FOR breeders_scale $unit_name! Cvterms for scales must be pre-loaded.  Cannot proceed';
-
-	    # find the mapped value for relevant sp terms 
-	    # some values are used outside the definitions of trait scales
-	    # For such cases I've mapped numeric values to the most relevant
-	    # existing value from the pre-defined scale.
-	    # this usually happens for logically contineuos scales (e.g. 1=very poor, 9 =excellent) thus the actual value used for scoring the phenotype is stored in the phenotype table for allowing more acurate quantitative analysis, 
-	    # although these scores may be very subjective.
-	    ##$value = $value_map{$term}{$value} if $value_map{$term};
-
-	    ##my ($cvtermprop)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject')->search_related(
-	    ##    "cvtermprops", { 'cvtermprops.type_id' => $type_id,
-	    ##		     'cvtermprops.value' => $value , 
-	    ##   } );
-
-	    ##print "parent term is " . $parent_cvterm->name() . "\n";
-	    ##	print "Found cvtermprop " . $cvtermprop->get_column('value') . " for child cvterm '" . $cvtermprop->find_related("cvterm" , {} )->name() . "'\n\n" if $cvtermprop ; 
-	    ##croak("NO cvtermprop found for term '$term' , value '$value'! Cannot proceed! Check your input!!") if !$cvtermprop;
-	    ##$sp_term = $cvtermprop->cvterm() ;
-	    ##} elsif ($value_type eq 'unit') {
-	    ##	$unit = "unit: " . $unit_name ;
- 
-	    ##($unit_cvterm) = $unit_cv->find_related("cvterms" , {
-	    ##name => $unit_name } ) if $unit_cv ; 
-	    ##
-	    ##}
-
-	    my ($pato_term) = $schema->resultset("General::Db")->find( {
-		name => 'PATO' , } )->search_related
-		    ("dbxrefs")->search_related
-		    ("cvterm_dbxrefs", {
-			cvterm_id => $sp_term->cvterm_id() ,
-		    });
-	    my $pato_id = undef;
-	    $pato_id = $pato_term->cvterm_id() if $pato_term;
-
-	    #store the phenotype
-	    my $phenotype = $sp_term->find_or_create_related("phenotype_observables", {
-		attr_id => $sp_term->cvterm_id(),
-		value => $value ,
-		cvalue_id => $pato_id,
-		uniquename => "$project_name, Replicate: $rep, plot: $plot, Term: " . $sp_term->name() ,
-	    });
+          #store the phenotype
+          
+          ##my $phenotype = $sp_term->find_or_create_related("phenotype_observables", {
+           ##   attr_id => $sp_term->cvterm_id(),
+            ##  value => $value ,
+             ## cvalue_id => $pato_id,
+              ##uniquename => "$project_name, Replicate: $rep, plot: $plot, Term: " . $sp_term->name() ,
+               ##                                            });
+          
+          my $phenotype = $sp_term->find_or_create_related(
+              "phenotype_cvalues", {
+                    observable_id => $observable_term->cvterm_id, #sp_term
+		    attr_id => $pato_id,
+		    value => $value ,
+                    uniquename => "Stock: " . $stock->stock_id . ", Replicate: $rep, plot: $plot," . ", Term: " . $sp_term->name() . ", parent:  $term",
+              });
+          
 
 
-	    #check if the phenotype is already associated with an experiment
-	    # which means this loading script has been run before .
-	    if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
-		warn "This experiment has been stored before! Skipping! \n";
-		next();
-	    }
-	    print STDOUT "db_name = '$db_name' sp_accession = '$sp_accession'\n";
-	    print "Value $value \n";
-	    print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n";
-	    ########################################################
+          #check if the phenotype is already associated with an experiment
+          # which means this loading script has been run before .
+          if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
+              warn "This experiment has been stored before! Skipping! \n";
+              next();
+          }
+          print STDOUT "db_name = '$db_name' sp_accession = '$sp_accession'\n";
+          print "Value $value \n";
+          print "Stored phenotype " . $phenotype->phenotype_id() . " with attr " . $sp_term->name . " value = $value, cvalue = PATO " . $pato_id . "\n\n";
+          ########################################################
 
-	    # link the phenotype with the experiment
-	    my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
+          # link the phenotype with the experiment
+          my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
 
-	    # store the unit for the measurement (if exists) in phenotype_cvterm
-	    #$phenotype->find_or_create_related("phenotype_cvterms" , {
-	    #	cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
-	    #print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ; 
-	}
+          # store the unit for the measurement (if exists) in phenotype_cvterm
+          $phenotype->find_or_create_related("phenotype_cvterms" , {
+              cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
+          print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ;
+      }
     }
 };
 
