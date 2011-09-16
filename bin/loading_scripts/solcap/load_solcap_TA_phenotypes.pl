@@ -9,13 +9,12 @@ load_solcap_TA_phenotypes.pl
 
 =head1 COMMAND-LINE OPTIONS
 
- -H  host name 
- -D  database name 
- -i infile 
+ -H  host name
+ -D  database name
+ -i infile
  -t  Test run . Rolling back at the end.
- -p project name
- -g geolocation description
-(g and p must match the name as loaded with load_geolocation_project.pl)
+ -l location (e.g. 'Davis, California'). Confirm location as stored from the plot file into stockprop.
+  geolocation description and project name must match the names in a metadata.txt file
 
 
 =head2 DESCRIPTION
@@ -31,13 +30,13 @@ See the solCap template for the 'TA_color', 'Longitudinal' and Latitudinal' spre
 Naama Menda (nm249@cornell.edu)
 
 August 2010
- 
+
 =cut
 
 
 #!/usr/bin/perl
 use strict;
-use Getopt::Std; 
+use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
 use CXGN::People::Person;
 
@@ -47,13 +46,15 @@ use Date::Calc qw(
 		  Delta_Days
 		  check_date
 		  );
+use File::Basename;
+
 use Carp qw /croak/ ;
 
 
 
-our ($opt_H, $opt_D, $opt_i, $opt_t,$opt_p, $opt_g);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_l);
 
-getopts('H:i:tD:p:g:');
+getopts('H:i:tD:l:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -88,16 +89,24 @@ my %seq  = (
     'phenotype_phenotype_id_seq' => $last_phenotype_id, 
     );
 
-# get the project 
-my $project_name = $opt_p || 'solcap vintage tomatoes 2009, Fremont, OH';
+
+#new spreadsheet, skip first column
+my $gp_file = dirname($file) . "/metadata.txt";
+my $gp = CXGN::Tools::File::Spreadsheet->new($gp_file, 1);
+my @gp_row = $gp->row_labels();
+
+# get the project
+my $project_name = $gp->value_at($gp_row[0], "project_name");
+
 my $project = $schema->resultset("Project::Project")->find( {
     name => $project_name,
-                                                            } );
+} );
 # get the geolocation
-my $geo_description = $opt_g || 'OSU-OARDC Fremont, OH';
-my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( {
-    description => $geo_description ,
-                                                                               } );
+my $geo_description = $gp->value_at($gp_row[0], "geo_description");
+my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( 
+    { description => $geo_description , } );
+
+my $location = $opt_l || die "Need the location for these plots. See load_solcap_plots.pl\n";
 
 # find the cvterm for a phenotyping experiment
 my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
@@ -134,9 +143,7 @@ eval {
 	print "label # = $row_label\n";
 
         my $plot = $spreadsheet->value_at($row_label, "Plot #");
-        #get these 2 params from the user, or from the database based on project input.
-	my $year = '2009';
-	my $location = "Fremont, Ohio";
+       
 	##########################################
 	# find the child stock based on plot name 
 	my ($stock) = $schema->resultset("Stock::Stockprop")->search( {
@@ -150,10 +157,11 @@ eval {
 	my $fruit_number =$spreadsheet->value_at($row_label, 'Fruit');
         ##
         ###store a new nd_experiment. One experiment per stock
-        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create( {
-            nd_geolocation_id => $geolocation->nd_geolocation_id(),
-            type_id => $pheno_cvterm->cvterm_id(),
-                                                                                       } );
+        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
+            {
+                nd_geolocation_id => $geolocation->nd_geolocation_id(),
+                type_id => $pheno_cvterm->cvterm_id(),
+            } );
         #link to the project
         $experiment->find_or_create_related('nd_experiment_projects', {
             project_id => $project->project_id()
@@ -176,7 +184,7 @@ eval {
 
 	  my ($db_name, $sp_accession) = split (/\:/ , $label);
 	  next() if (!$sp_accession);
-	  next() if !$value;
+          if (!$value || $value =~ /\./) { next; } ;
 
 	  my ($sp_term) = $schema->resultset("General::Db")->find( {
 	      name => $db_name } )->find_related("dbxrefs", { 
