@@ -49,7 +49,7 @@ use Date::Calc qw(
 use File::Basename;
 
 use Carp qw /croak/ ;
-
+use Try::Tiny;
 
 
 our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_l);
@@ -136,15 +136,14 @@ my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 2);
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
 
-eval {
+my $coderef = sub {
 
     foreach my $row_label (@rows ) { 
 	#$plot number is the row label. Need to get the matching stock 
 	print "label # = $row_label\n";
 
         my $plot = $spreadsheet->value_at($row_label, "Plot #");
-       
-	##########################################
+       	##########################################
 	# find the child stock based on plot name 
 	my ($stock) = $schema->resultset("Stock::Stockprop")->search( {
 	    value => $location,
@@ -184,9 +183,9 @@ eval {
 
 	  my ($db_name, $sp_accession) = split (/\:/ , $label);
 	  next() if (!$sp_accession);
-          if (!$value || $value =~ /\./) { next; } ;
+          if (!$value || $value =~ /^\.$/) { next; } ;
 
-	  my ($sp_term) = $schema->resultset("General::Db")->find( {
+          my ($sp_term) = $schema->resultset("General::Db")->find( {
 	      name => $db_name } )->find_related("dbxrefs", { 
 		  accession=>$sp_accession , } )->search_related("cvterm");
 
@@ -227,18 +226,21 @@ eval {
 	  #print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ;
       }
     }
+    if ($opt_t) {
+        die "TEST RUN! rolling back\n";
+    }
 };
 
-if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
-elsif ($opt_t) {
-    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
+
+try {
+    $schema->txn_do($coderef);
+    print "Transaction succeeded! Commiting phenotyping experiments! \n\n" if !$opt_t;
+} catch {
+    # Transaction failed
     foreach my $value ( keys %seq ) {
-	my $maxval= $seq{$value} || 0;
-	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
-	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+        my $maxval= $seq{$value} || 0;
+        if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+        else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
     }
-    $dbh->rollback;
-}else {
-    print "Transaction succeeded! Commiting phenotyping experiments! \n\n";
-    $dbh->commit();
-}
+    die "An error occured! Rolling back  and reseting database sequences! " . $_ . "\n";
+};

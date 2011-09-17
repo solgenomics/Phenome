@@ -46,6 +46,7 @@ use Date::Calc qw(
 		  check_date
 		  );
 use Carp qw /croak/ ;
+use Try::Tiny;
 
 our ($opt_H, $opt_D, $opt_i, $opt_t);
 
@@ -135,8 +136,7 @@ my $unit_cv = $schema->resultset("Cv::Cv")->find(
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
 
-eval {
-
+my $coderef = sub {
     foreach my $uniq_id (@rows ) {
 	my $sct = $spreadsheet->value_at($uniq_id, "Line #");
         my $plot = $spreadsheet->value_at($uniq_id, "Plot Number");
@@ -186,7 +186,7 @@ eval {
       COLUMN: foreach my $label (@columns) {
           my $value =  $spreadsheet->value_at($uniq_id, $label);
           ($value, undef) = split (/\s/, $value) ;
-          $value = undef if $value =~ /\./ ; #for some reason data files came with '.' instead of empty cells.
+          $value = undef if $value =~ /^\.$/ ; #for some reason data files came with '.' instead of empty cells.
           
           #sp terms have a label to determine if these have a scale or a quantitative unit
           my ($term, $type) = split (/\|/ , $label) ;
@@ -289,20 +289,21 @@ eval {
           print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ;
       }
     }
+    if ($opt_t) {
+        die "TEST RUN! rolling back\n";
+    }
 };
 
 
-if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
-elsif ($opt_t) {
-    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
-    foreach my $value ( keys %seq ) { 
-	my $maxval= $seq{$value} || 0;
-	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
-	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+try {
+    $schema->txn_do($coderef);
+    if (!$opt_t) { print "Transaction succeeded! Commiting phenotyping experiments! \n\n"; }
+} catch {
+    # Transaction failed
+    foreach my $value ( keys %seq ) {
+        my $maxval= $seq{$value} || 0;
+        if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+        else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
     }
-    $dbh->rollback;
-
-}else {
-    print "Transaction succeeded! Commiting phenotyping experiments! \n\n";
-    $dbh->commit();
-}
+    die "An error occured! Rolling back  and reseting database sequences!" . $_ . "\n";
+};
