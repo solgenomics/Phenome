@@ -181,7 +181,7 @@ eval {
         my $stock_id = $stock->stock_id;
         print "Adding owner $sp_person_id \n";
 	#add the owner for this stock
-        $phenome_schema->resultset("StockOwner")->find_or_create( 
+        $phenome_schema->resultset("StockOwner")->find_or_create(
             {
                 stock_id     => $stock->stock_id,
                 sp_person_id => $sp_person_id,
@@ -194,12 +194,7 @@ eval {
         #this prop will be used for looking up the variety for storing experiment data
 	#into the natural diversity module
 	$stock->create_stockprops( { 'solcap number' => $sct }, { autocreate => 1 } );
-        #add the the sct# as synonym
-        $stock->create_stockprops({ synonym => $sct },
-                                  {autocreate => 1,
-                                   cv_name => 'null',
-                                   allow_duplicate_values => 1
-                                  });
+
 	#the stock belongs to the population:
         #add new stock_relationship
 	#the cvterm for the relationship type
@@ -223,19 +218,29 @@ eval {
 	my $syn = $spreadsheet->value_at($sct, "Synonyms:");
 	chomp($syn);
 
-	my @synonyms = ($la, $pi, $syn);
+        #add the the sct#, LA#, PI#  as synonyms
+	my @synonyms = ($la, $pi, $syn, $sct);
 
         foreach my $s (@synonyms) {
 	    if ($s && defined($s) ) {
-		print STDOUT "Adding synonym: $s \n"  ;
-		#add the synonym as a stockprop
-		$stock->create_stockprops({ synonym => $s},
-					  {autocreate => 1,
-					   cv_name => 'null',
-                                           allow_duplicate_values=> 1
-                                          });
-	    }
-	}
+		my $existing_synonym = $stock->search_related(
+                    'stockprops' , {
+                        'me.value'   => $s,
+                        'type.name'  => 'synonym'
+                    },
+                    { join =>  'type' }
+                    )->single;
+                if (!$existing_synonym) {
+                    print STDOUT "Adding synonym: $s \n"  ;
+                    #add the synonym as a stockprop
+                    $stock->create_stockprops({ synonym => $s},
+                                              {autocreate => 1,
+                                               cv_name => 'null',
+                                               allow_duplicate_values=> 1
+                                              });
+                }
+            }
+        }
 	$stock->create_stockprops( { variety => $var_type }, { autocreate => 1 } );
 ##
 	my $donor = $spreadsheet->value_at($sct,"Name of Donor:");
