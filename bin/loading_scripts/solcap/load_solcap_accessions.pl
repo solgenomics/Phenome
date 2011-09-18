@@ -40,6 +40,7 @@ use Carp qw /croak/ ;
 use CXGN::Chado::Dbxref;
 use CXGN::Chado::Phenotype;
 use CXGN::People::Person;
+use Try::Tiny;
 
 our ($opt_H, $opt_D, $opt_i, $opt_t);
 
@@ -51,7 +52,7 @@ my $file = $opt_i;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
-				      dbargs => {AutoCommit => 0,
+				      dbargs => {AutoCommit => 1,
 						 RaiseError => 1}
 				    }
     );
@@ -129,6 +130,24 @@ my $population = $stock_rs->find_or_create(
     { join => 'type' }
     );
 
+#the cvterm for the accession
+print "Finding/creating cvtem for 'stock type' \n"; 
+my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'accession',
+      cv     => 'stock type',
+      db     => 'null',
+      dbxref => 'accession',
+    });
+
+#the cvterm for the relationship type
+print "Finding/creating cvtem for stock relationship 'is_member_of' \n";
+
+my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'is_member_of',
+      cv     => 'stock relationship',
+      db     => 'null',
+      dbxref => 'is_member_of',
+    });
 ## For the stock module:
 ################################
 
@@ -138,7 +157,7 @@ my @columns = $spreadsheet->column_labels();
 
 my $count;
 
-eval {
+my $coderef= sub  {
     foreach my $sct (@rows ) {
 	print "label is $sct \n\n";
 	#Tomato Germplast Passport sheet . Rows are SCT#s, which are accession synonyms.
@@ -163,14 +182,7 @@ eval {
             warn "!!No organism found for organism $species! \n";
             $description = $var_type . " "  . $species;
         }
-	#the cvterm for the accession
-	print "Finding/creating cvtem for 'stock type' \n"; 
-	my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
-	    { name   => 'accession',
-	      cv     => 'stock type',
-	      db     => 'null',
-	      dbxref => 'accession',
-	    });
+
 	my $stock = $schema->resultset("Stock::Stock")->find_or_create( 
 	    { organism_id => $organism_id,
 	      name  => $accession,
@@ -187,7 +199,22 @@ eval {
                 sp_person_id => $sp_person_id,
             });
         #####################
-
+        print "deleting props\n" ;
+        #get rid of all old stockprops:
+        my @props = $stock->stockprops->search( {
+            -or => [
+                 name => 'variety',
+                 name => 'donor',
+                 name => 'donor institution',
+                 name => 'state',
+                 name => 'adaptation',
+                 name => 'male parent',
+                 name => 'female parent',
+                 name => 'pedigree',
+                 name => 'notes',
+                ], },
+                                                { join => 'type' } );
+        foreach my $p(@props) { $p->delete; }
 
         print "Adding SCT #\n";
 	#add the sct# as a stockprop with type = 'solcap number'.
@@ -197,15 +224,7 @@ eval {
 
 	#the stock belongs to the population:
         #add new stock_relationship
-	#the cvterm for the relationship type
-	print "Finding/creating cvtem for stock relationship 'is_member_of' \n";
 
-	my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
-           { name   => 'is_member_of',
-	     cv     => 'stock relationship',
-	     db     => 'null',
-	     dbxref => 'is_member_of',
-	 });
 	$population->find_or_create_related('stock_relationship_objects', {
 	    type_id => $member_of->cvterm_id(),
 	    subject_id => $stock->stock_id(),
@@ -278,24 +297,21 @@ eval {
 	}
 	#########
     }
+    if ($opt_t) {
+        die "TEST RUN! rolling back\n";
+    }
 };
 
 
-if ($@) {
-    print "An error occured! Rolling backl!\n\n $@ \n\n ";
-    $dbh->rollback();
-}
-elsif ($opt_t) {
-    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
+try {
+    $schema->txn_do($coderef);
+    if (!$opt_t) { print "Transaction succeeded! Commiting stocks and their properties! \n\n"; }
+} catch {
+    # Transaction failed
     foreach my $value ( keys %seq ) {
-	my $maxval= $seq{$value} || 0;
-	#print  "$key: $value, $maxval \n";
-	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
-	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+        my $maxval= $seq{$value} || 0;
+        if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+        else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
     }
-    $dbh->rollback();
-
-}else {
-    print "Transaction succeeded! Commiting cvtermprops! \n\n";
-    $dbh->commit();
-}
+    die "An error occured! Rolling back  and reseting database sequences!" . $_ . "\n";
+};
