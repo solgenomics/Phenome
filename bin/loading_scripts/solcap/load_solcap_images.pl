@@ -182,8 +182,8 @@ foreach my $file (@files) {
 	#    stock_id => $name2id{ lc($name) }  } );
 	my ($stock) = $schema->resultset("Stock")->search(
             {
-                name => $plot,
-                uniquename => { 'ilike' => $plot . '%' . $year . '%' . $location . '%'}
+                name => $name,
+                uniquename => { 'ilike' => $name . '%' . $year . '%' . $location . '%'}
             } );
 
 	if (!$stock) {
