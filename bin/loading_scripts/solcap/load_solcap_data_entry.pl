@@ -156,8 +156,9 @@ my $coderef = sub {
 	my $prop_type = $schema->resultset("Cv::Cv")->find( {
 	    'me.name' => 'project_property' } )->find_related('cvterms', {
 		'me.name' => 'project transplanting date' } );
-	my $tp_date = $project->find_related('projectprops' , {
-	    type_id => $prop_type->cvterm_id() } )->value();
+	my $tp_date_prop = $project->find_related('projectprops' , {
+	    type_id => $prop_type->cvterm_id() } );
+        my $tp_date =  $tp_date_prop->value() if $tp_date_prop;
 	my ($tp_year, $tp_month, $tp_day) = split /\// , $tp_date;
 
         ###store a new nd_experiment. One experiment per stock
