@@ -31,7 +31,7 @@ a dirname that contains image filenames or subdirectories named after database a
 
 =item -u
 
-use name - from sgn_people.sp_person.
+user_name - from sgn_people.sp_person.
 
 =item -l
 
@@ -76,14 +76,15 @@ use SGN::Context;
 use Getopt::Std;
 
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_d, $opt_e, $opt_f, $opt_l);
-getopts('H:D:u:i:e:f:tdl:');
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_d, $opt_e, $opt_f, $opt_l, $opt_y);
+getopts('H:D:u:i:e:f:tdl:y:');
 
 my $dbhost    = $opt_H;
 my $dbname    = $opt_D;
 my $dirname   = $opt_i;
 my $sp_person = $opt_u;
 my $location  = $opt_l;
+my $year      = $opt_y;
 
 my $ext = $opt_e || 'jpg';
 
@@ -179,8 +180,11 @@ foreach my $file (@files) {
 
         #my $stock = $schema->resultset("Stock::Stock")->find( {
 	#    stock_id => $name2id{ lc($name) }  } );
-	my ($stock) = $schema->resultset("Stock::Stockprop")->search(
-            { value => $location, })->search_related('stock', { name=> $name } );
+	my ($stock) = $schema->resultset("Stock")->search(
+            {
+                name => $plot,
+                uniquename => { 'ilike' => $plot . '%' . $year . '%' . $location . '%'}
+            } );
 
 	if (!$stock) {
 	    warn "no stock found for plot # $name ! Skipping !!\n\n";

@@ -14,6 +14,7 @@ load_solcap_TA_phenotypes.pl
  -i infile
  -t  Test run . Rolling back at the end.
  -l location (e.g. 'Davis, California'). Confirm location as stored from the plot file into stockprop.
+  -y year of the experiment (e.g. 2009)
   geolocation description and project name must match the names in a metadata.txt file
 
 
@@ -52,9 +53,9 @@ use Carp qw /croak/ ;
 use Try::Tiny;
 
 
-our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_l);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_l, $opt_y);
 
-getopts('H:i:tD:l:');
+getopts('H:i:tD:l:y:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -107,7 +108,7 @@ my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find(
     { description => $geo_description , } );
 
 my $location = $opt_l || die "Need the location for these plots. See load_solcap_plots.pl\n";
-
+my $year = $opt_y || die "Need the year for the experiment. See load_solcap_plots.pl\n";
 # find the cvterm for a phenotyping experiment
 my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
     { name   => 'phenotyping experiment',
@@ -138,18 +139,18 @@ my @columns = $spreadsheet->column_labels();
 
 my $coderef = sub {
 
-    foreach my $row_label (@rows ) { 
-	#$plot number is the row label. Need to get the matching stock 
+    foreach my $row_label (@rows ) {
+	#$plot number is the row label. Need to get the matching stock
 	print "label # = $row_label\n";
 
         my $plot = $spreadsheet->value_at($row_label, "Plot #");
        	##########################################
-	# find the child stock based on plot name 
-	my ($stock) = $schema->resultset("Stock::Stockprop")->search( {
-	    value => $location,
-	})->search_related('stock', { name=> $plot } );
-
-	if (!$stock) {
+	# find the child stock based on plot name
+        my ($stock) = $schema->resultset("Stock::Stock")->search(
+            { uniquename => { 'ilike' => $plot . '%' . $year . '%' . $location . '%'},
+              name       => $plot
+            } );
+        if (!$stock) {
 	    warn "no stock found for plot # $plot ! Skipping !!\n\n";
             next();
 	}
@@ -209,7 +210,7 @@ my $coderef = sub {
 	  #check if the phenotype is already associated with an experiment
 	  # which means this loading script has been run before .
 	  if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
-	      warn "This experiment has been stored before! Skipping! \n";
+	      warn "This experiment has been stored before! Skipping! \n phenotype attr=" . $sp_term->name  . "value = $value, PATO cvalue = $pato_id , uniquename = " . $phenotype->uniquename ."\n\n";
 	      next();
 	  }
 	  print STDOUT "db_name = '$db_name' sp_accession = '$sp_accession'\n";
