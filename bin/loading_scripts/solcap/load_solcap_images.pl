@@ -180,7 +180,7 @@ foreach my $file (@files) {
 
         #my $stock = $schema->resultset("Stock::Stock")->find( {
 	#    stock_id => $name2id{ lc($name) }  } );
-	my ($stock) = $schema->resultset("Stock")->search(
+	my ($stock) = $schema->resultset("Stock:Stock")->search(
             {
                 name => $name,
                 uniquename => { 'ilike' => $name . '%' . $year . '%' . $location . '%'}
