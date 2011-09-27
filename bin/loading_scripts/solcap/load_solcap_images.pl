@@ -249,8 +249,6 @@ foreach my $file (@files) {
             my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
             my $sth  = $dbh->prepare($q);
             $sth->execute($stock->stock_id, $image_id, $metadata_id);
-        } else {
-            print "image $image_id is already linked with stock " . $stock->stock_id . "\n";
         }
     };
     if ($@) {
