@@ -151,7 +151,7 @@ my $coderef = sub {
         #find the stock object
         my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
 	    object_id => $parent_stock->stock_id() } )->search_related('subject', { name =>  $plot } );
-        
+        die "No stock found for plot $plot with parent " . $parent_stock->name . "\n" if !$stock;
 	my $comment = $spreadsheet->value_at($uniq_id, "Comment");
 	my $prop_type = $schema->resultset("Cv::Cv")->find( {
 	    'me.name' => 'project_property' } )->find_related('cvterms', {

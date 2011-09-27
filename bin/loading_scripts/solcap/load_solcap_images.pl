@@ -246,10 +246,20 @@ foreach my $file (@files) {
             my $metadata_id = $metadata->store()->get_metadata_id();
             die "NO METADATA ID FOUND\n" if !$metadata_id; 
 #store the image_id - stock_id link
-	    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
-            my $sth  = $dbh->prepare($q);
-            $sth->execute($stock->stock_id, $image_id, $metadata_id);
-	}
+	    #test first if the link exists 
+            my $existing_ids = $dbh->selectcol_arrayref(
+                "SELECT stock_image_id from phenome.stock_image where stock_id = ? and image_id = ? and metadata_id = ? " ,
+                undef,
+                $stock->stock_id, $image_id, $metadata_id,
+                );
+            if (!$existing_ids) {
+                my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
+                my $sth  = $dbh->prepare($q);
+                $sth->execute($stock->stock_id, $image_id, $metadata_id);
+            } else {
+                print "image $image_id is already linked with stock " . $stock->stock_id . "\n";
+            }
+        }
     };
     if ($@) {
 	print STDOUT "ERROR OCCURRED WHILE SAVING NEW INFORMATION. $@\n";
