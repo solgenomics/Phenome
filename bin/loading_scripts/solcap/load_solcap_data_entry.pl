@@ -152,7 +152,7 @@ my $coderef = sub {
         my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
 	    object_id => $parent_stock->stock_id() } )->search_related('subject', { name =>  $plot } );
         if (!$stock) {
-	    warn "No stock found for plot $plot with parent " . $parent_stock->name . " Skipping!\n"
+	    warn "No stock found for plot $plot with parent " . $parent_stock->name . " Skipping!\n";
             next();
 	}
 	my $comment = $spreadsheet->value_at($uniq_id, "Comment");
