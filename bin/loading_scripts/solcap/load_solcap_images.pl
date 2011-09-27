@@ -209,14 +209,14 @@ foreach my $file (@files) {
 	    else {
 		print ERR "Adding $filename...\n";
 		if (exists($image_hash{$filename})) {
-		    print ERR "$filename is already loaded into the database...\n";
+		    message("$filename is already loaded into the database...\n");
 		    $image_id = $image_hash{$filename}->get_image_id();
 		    $connections{$image_id."-".$name2id{lc($name)}}++;
 		    if ($connections{$image_id."-".$name2id{lc($name)}} > 1) {
-			print ERR "The connection between $name and image $filename has already been made. Skipping...\n";
+			message("The connection between $name and image $filename has already been made. Skipping...\n");
 		    }
 		    elsif ($image_hash{$filename}) {
-			print ERR qq  { Associating stock $name2id{lc($name)} with already loaded image $filename...\n };
+			message("Associating stock " . $name2id{lc($name)} . "with already loaded image $filename...\n") ;
                         ################################
 		    }
 		}
@@ -246,19 +246,11 @@ foreach my $file (@files) {
             my $metadata_id = $metadata->store()->get_metadata_id();
             die "NO METADATA ID FOUND\n" if !$metadata_id; 
 #store the image_id - stock_id link
-	    #test first if the link exists 
-            my $existing_ids = $dbh->selectcol_arrayref(
-                "SELECT stock_image_id from phenome.stock_image where stock_id = ? and image_id = ? and metadata_id = ? " ,
-                undef,
-                $stock->stock_id, $image_id, $metadata_id,
-                );
-            if (!$existing_ids) {
-                my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
-                my $sth  = $dbh->prepare($q);
-                $sth->execute($stock->stock_id, $image_id, $metadata_id);
-            } else {
-                print "image $image_id is already linked with stock " . $stock->stock_id . "\n";
-            }
+            my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
+            my $sth  = $dbh->prepare($q);
+            $sth->execute($stock->stock_id, $image_id, $metadata_id);
+        } else {
+            print "image $image_id is already linked with stock " . $stock->stock_id . "\n";
         }
     };
     if ($@) {
