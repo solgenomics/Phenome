@@ -193,9 +193,9 @@ foreach my $file (@files) {
 
         foreach my $filename (@sub_files) {
 	    chomp $filename;
+            my $file_basename =  basename($filename, ".$ext");
 	    print STDOUT "Processing file $file...\n";
-	    print STDOUT "Loading $name, image $filename\n";
-	    print ERR "Loading $name, image $filename\n";
+	    message( "Loading $name, image $filename\n");
 	    my $image_id; # this will be set later, depending if the image is new or not
 	    if (! -e $filename) {
 		warn "The specified file $filename does not exist! Skipping...\n";
@@ -207,21 +207,22 @@ foreach my $file (@files) {
 	    }
 
 	    else {
-		print ERR "Adding $filename...\n";
-		if (exists($image_hash{$filename})) {
+		message( "Adding $filename...\n");
+		if (exists($image_hash{$file_basename})) {
 		    message("$filename is already loaded into the database...\n");
-		    $image_id = $image_hash{$filename}->get_image_id();
-		    $connections{$image_id."-".$name2id{lc($name)}}++;
+		    $image_id = $image_hash{$file_basename}->get_image_id();
+		    print "name = $name , stock id = " . $name2id{lc($name)} . "\n\n";
+                    $connections{$image_id."-".$name2id{lc($name)}}++;
 		    if ($connections{$image_id."-".$name2id{lc($name)}} > 1) {
 			message("The connection between $name and image $filename has already been made. Skipping...\n");
 		    }
-		    elsif ($image_hash{$filename}) {
+		    elsif ($image_hash{$file_basename}) {
 			message("Associating stock " . $name2id{lc($name)} . "with already loaded image $filename...\n") ;
                         ################################
 		    }
 		}
 		else {
-		    print ERR qq { Generating new image object for image $filename and associating it with stock $name, id $name2id{lc($name) } ...\n };
+		    message(" Generating new image object for image $filename and associating it with stock $name, id " . $name2id{lc($name) } ." ...\n");
 		    my $caption = $name;
 
 		    if ($opt_t)  {
@@ -230,7 +231,7 @@ foreach my $file (@files) {
 		    }
 		    else {
 			my $image = SGN::Image->new($dbh);
-			$image_hash{$filename}=$image;
+			$image_hash{$file_basename}=$image;
 
 			$image->process_image("$filename", undef, undef);
 			$image->set_description("$caption");
@@ -240,15 +241,15 @@ foreach my $file (@files) {
 			$image_id = $image->store();
 			$new_image_count++;
 		    }
-		}
-	    }
-            my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $sp_person);
-            my $metadata_id = $metadata->store()->get_metadata_id();
-            die "NO METADATA ID FOUND\n" if !$metadata_id; 
+	            my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $sp_person);
+                    my $metadata_id = $metadata->store()->get_metadata_id();
+                    die "NO METADATA ID FOUND\n" if !$metadata_id; 
 #store the image_id - stock_id link
-            my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
-            my $sth  = $dbh->prepare($q);
-            $sth->execute($stock->stock_id, $image_id, $metadata_id);
+                    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
+                    my $sth  = $dbh->prepare($q);
+                    $sth->execute($stock->stock_id, $image_id, $metadata_id);
+                }
+            }
         }
     };
     if ($@) {
