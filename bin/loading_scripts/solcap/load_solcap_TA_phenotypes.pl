@@ -14,9 +14,7 @@ load_solcap_TA_phenotypes.pl
  -i infile
  -t  Test run . Rolling back at the end.
  -l location (e.g. 'Davis, California'). Confirm location as stored from the plot file into stockprop.
-  -y year of the experiment (e.g. 2009)
-  geolocation description and project name must match the names in a metadata.txt file
-
+ 
 
 =head2 DESCRIPTION
 
@@ -108,7 +106,9 @@ my ($geolocation) = $schema->resultset("NaturalDiversity::NdGeolocation")->searc
     { description => $geo_description , } );
 
 my $location = $opt_l || die "Need the location for these plots. See load_solcap_plots.pl\n";
-my $year = $opt_y || die "Need the year for the experiment. See load_solcap_plots.pl\n";
+my $year =  $gp->value_at($gp_row[0], "year");
+
+
 # find the cvterm for a phenotyping experiment
 my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
     { name   => 'phenotyping experiment',
