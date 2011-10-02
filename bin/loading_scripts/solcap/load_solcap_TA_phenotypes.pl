@@ -104,7 +104,7 @@ my $project = $schema->resultset("Project::Project")->find( {
 } );
 # get the geolocation
 my $geo_description = $gp->value_at($gp_row[0], "geo_description");
-my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( 
+my ($geolocation) = $schema->resultset("NaturalDiversity::NdGeolocation")->search(
     { description => $geo_description , } );
 
 my $location = $opt_l || die "Need the location for these plots. See load_solcap_plots.pl\n";
