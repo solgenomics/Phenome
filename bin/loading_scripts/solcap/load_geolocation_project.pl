@@ -88,7 +88,7 @@ foreach my $name (@rows ) {
     my $geo_description = $spreadsheet->value_at($name, "geo_description");
 
     #Degrees and minutes followed by N(North) or S(South) 	41 20 56 N
-    my $latitude = $spreadsheet->value_at($name, "latitude");;
+    my $latitude = $spreadsheet->value_at($name, "latitude");
 
     #Degrees and minutes followed by E(East) or W(West)	83 7 2 W
     my $longitude =$spreadsheet->value_at($name, "longitude");
@@ -108,7 +108,7 @@ foreach my $name (@rows ) {
 
     my $year = $spreadsheet->value_at($name, "year");
 
-    $geolocation->create_geolocationprops( { 'geolocation year' => $year }, { autocreate => 1 } );
+    $geolocation->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
     my $address = $spreadsheet->value_at($name, "address");
 
     $geolocation->create_geolocationprops( { 'geolocation address' => $address }, { autocreate => 1 } );
