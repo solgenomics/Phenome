@@ -177,7 +177,7 @@ foreach my $file (@files) {
 	#my ($year, $place, $plot, undef) = split /_/ , $object_name;
         #2009_ca_2138_fruit_c.jpg
         my ($year, $place, $name, undef,undef) = split /_/ , $object_name;
-
+        ($name, undef) = split /-/ , $name;
         #my $stock = $schema->resultset("Stock::Stock")->find( {
 	#    stock_id => $name2id{ lc($name) }  } );
 	my ($stock) = $schema->resultset("Stock::Stock")->search(
