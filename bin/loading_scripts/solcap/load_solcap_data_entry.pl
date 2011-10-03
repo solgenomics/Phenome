@@ -146,8 +146,10 @@ my $coderef = sub {
         my ($parent_stock) = $schema->resultset("Cv::Cvterm")->search( {
 	    'me.name' => 'solcap number' } )->search_related('stockprops', {
 		value => $sct } )->search_related('stock');
-	die "No stock found for sct# $sct. Check your database! \n" if !$parent_stock ;
-        
+        if (!$parent_stock) {
+            warn "No stock found for sct# $sct. Check your database! \n" ;
+            next()
+        }
         #find the stock object
         my ($stock) = $schema->resultset("Stock::StockRelationship")->search( {
 	    object_id => $parent_stock->stock_id() } )->search_related('subject', { name =>  $plot } );
