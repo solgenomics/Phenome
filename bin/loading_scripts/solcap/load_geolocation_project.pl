@@ -108,7 +108,7 @@ foreach my $name (@rows ) {
 
     my $year = $spreadsheet->value_at($name, "year");
 
-    $geolocation->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
+    $project->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
     my $address = $spreadsheet->value_at($name, "address");
 
     $geolocation->create_geolocationprops( { 'geolocation address' => $address }, { autocreate => 1 } );
