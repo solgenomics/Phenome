@@ -131,6 +131,10 @@ my $person_id_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
       dbxref => 'autocreated:sp_person_id',
     });
 
+#Unit Ontology has to be loaded!
+my $unit_cv = $schema->resultset("Cv::Cv")->find(
+    { name => 'unit.ontology' } );
+
 #new spreadsheet, skip  first columns
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 2);
 
@@ -181,13 +185,23 @@ my $coderef = sub {
         ##
       COLUMN: foreach my $label (@columns) { 
 	  my $value =  $spreadsheet->value_at($row_label, $label);
+           #sp terms have a label to determine if these have a scale or a quantitative unit
+          my ($term, $type) = split (/\|/ , $label) ;
+          my ($db_name, $sp_accession) = split (/\:/ , $term);
+          next() if (!$sp_accession);
 
-	  my ($db_name, $sp_accession) = split (/\:/ , $label);
-	  next() if (!$sp_accession);
-          if (!$value || $value =~ /^\.$/) { next; } ;
-
+          if ( $value =~ /^\.$/) { next; } #do not skip '0' values
+          my ($value_type, $unit_name) = split (/\:/, $type) ; # unit:sq(cm)
+          my $unit_cvterm; # cvterm for the unit specified in the file
+          if ($value_type eq 'unit') {
+              if ( $unit_cv) {
+                  ($unit_cvterm) = $unit_cv->find_related(
+                      "cvterms" , { name => $unit_name } ) || warn "**Looks like you did not load unit ontology! Can't load unit term $unit_name!\n";
+              } else { warn "***No unit cvterm found for term $unit_name! Is this a valid term from Unit Ontology? \n";
+              }
+          }
           my ($sp_term) = $schema->resultset("General::Db")->find( {
-	      name => $db_name } )->find_related("dbxrefs", { 
+	      name => $db_name } )->find_related("dbxrefs", {
 		  accession=>$sp_accession , } )->search_related("cvterm");
 
 	  my ($pato_term) = $schema->resultset("General::Db")->find( {
@@ -206,7 +220,12 @@ my $coderef = sub {
 	      cvalue_id => $pato_id,
 	      uniquename => "$project_name, Fruit number: $fruit_number, plot: $plot, Term: " . $sp_term->name() ,
                                                            });
-
+          # store the unit for the measurement (if exists) in phenotype_cvterm
+          if ( $unit_cvterm ) {
+              $phenotype->find_or_create_related("phenotype_cvterms" , {
+                  cvterm_id => $unit_cvterm->cvterm_id() } ) ;
+              print "*Loaded phenotype_cvterm with unit '" . $unit_cvterm->name() . "'\n";
+          }
 	  #check if the phenotype is already associated with an experiment
 	  # which means this loading script has been run before .
 	  if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
@@ -220,11 +239,6 @@ my $coderef = sub {
 
 	  # link the phenotype with the experiment
 	  my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
-
-	  # store the unit for the measurement (if exists) in phenotype_cvterm
-	  #$phenotype->find_or_create_related("phenotype_cvterms" , {
-	  #	cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
-	  #print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ;
       }
     }
     if ($opt_t) {
