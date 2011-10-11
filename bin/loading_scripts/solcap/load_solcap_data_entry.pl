@@ -192,8 +192,7 @@ my $coderef = sub {
       COLUMN: foreach my $label (@columns) {
           my $value =  $spreadsheet->value_at($uniq_id, $label);
           ($value, undef) = split (/\s/, $value) ;
-          $value = undef if $value =~ /^\.$/ ; #for some reason data files came with '.' instead of empty cells.
-          
+
           #sp terms have a label to determine if these have a scale or a quantitative unit
           my ($term, $type) = split (/\|/ , $label) ;
 
@@ -209,7 +208,7 @@ my $coderef = sub {
               print "Year = $m_year ($tp_year) , month = $m_month ($tp_month), day = $m_day ($tp_day), delta = $value!\n";
           }
           ######################
-          next() if !$value; #skip empty cells
+          next() if $value =~ /^\.$/; #skip NA values (label is '.')
           my ($value_type, $unit_name) = split (/\:/, $type) ;
 
           #SP id is the column header, and will be used as the parent term
@@ -223,8 +222,8 @@ my $coderef = sub {
           my $observable_term = $parent_cvterm;
           # if the type is a boolean then we store 0 or 1 as the phenotype value
           if ($value_type eq 'boolean') {
-              $value = 0 if $value =~ /a/i ;
-              $value = 1 if $value =~ /p/i ;
+              $value = 'absent' if ( $value =~ /a/i || $value == 0 ) ;
+              $value = 'present' if ( $value =~ /p/i || $value ==1 ) ;
           }
           my $unit_cvterm; # cvterm for the unit specified in the file
 
@@ -232,16 +231,20 @@ my $coderef = sub {
           # currently tomato solcap files have these qualitative terms:
           # inflorescence structure (simple/compound/intermediate)
           # growth type (determinate/indeterminate)
+          my $child_term;
           if ($value_type eq 'qual') {
             #SP:0000128|qual	SP:0000071|qual
-              my ($child_term)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject' , {
+              ($child_term)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject' , {
                   'lower(subject.name)' =>  { like => lc($value) . '%' } } );
               if (!$child_term) {
                   warn("NO child term found for term '$term' , value '$value'! Cannot proceed! Check your input!!") ;
                   next LABEL;
               }
-              $observable_term = $child_term;
+              ##load the parent term as observable_id, value is the actual value,
+              ##and child term is loaded into phenotyep_cvterm
+              #####################################################
               print "Found child term " . $child_term->name . "\n";
+              $value = $child_term->name;
           } elsif ($value_type eq 'unit') { # unit:milimeter
               ($unit_cvterm) = $unit_cv->find_related(
                   "cvterms" , { name => $unit_name } ) if $unit_cv ;
@@ -272,9 +275,13 @@ my $coderef = sub {
 		    value => $value ,
                     uniquename => "Stock: " . $stock->stock_id . ", Replicate: $rep, plot: $plot," . ", Term: " . $sp_term->name() . ", parent:  $term",
               });
-          
-
-
+          #for qualitative traits, store the value also in phenotyep_cvterm
+          if ($child_term) {
+              $phenotype->find_or_create_related(
+                  "phenotype_cvterms" , {
+                      cvterm_id => $child_term->cvterm_id,
+                  } );
+          }
           #check if the phenotype is already associated with an experiment
           # which means this loading script has been run before .
           if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {
