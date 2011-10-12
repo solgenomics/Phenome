@@ -232,6 +232,10 @@ my $coderef = sub {
           # inflorescence structure (simple/compound/intermediate)
           # growth type (determinate/indeterminate)
           my $child_term;
+          if  ($label =~ /SP:0000128/) { #mapping of child term values for plant habit
+              $value = 'determinate' if $value =~ /^d/i ;
+              $value = 'indeterminate' if $value =~/^i/i ;
+          }
           if ($value_type eq 'qual') {
               #SP:0000128|qual	SP:0000071|qual
               ($child_term)= $parent_cvterm->direct_children->search(  {
