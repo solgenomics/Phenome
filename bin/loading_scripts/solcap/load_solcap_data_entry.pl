@@ -233,9 +233,9 @@ my $coderef = sub {
           # growth type (determinate/indeterminate)
           my $child_term;
           if ($value_type eq 'qual') {
-            #SP:0000128|qual	SP:0000071|qual
-              ($child_term)= $parent_cvterm->search_related("cvtermpath_objects")->search_related('subject' , {
-                  'lower(subject.name)' =>  { like => lc($value) . '%' } } );
+              #SP:0000128|qual	SP:0000071|qual
+              ($child_term)= $parent_cvterm->direct_children->search(  {
+                  'lower(name)' =>  { like => lc($value) . '%' } } );
               if (!$child_term) {
                   warn("NO child term found for term '$term' , value '$value'! Cannot proceed! Check your input!!") ;
                   next LABEL;
