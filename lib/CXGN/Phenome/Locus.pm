@@ -2101,30 +2101,28 @@ sub merge_locus {
 
 	if ($groups[0]) { $schema = $groups[0]->get_schema(); }
 	foreach my $group (@groups) {
-	    my $m_lgm=$group->get_object_row()->
-		find_related('locusgroup_members', { locus_id => $m_locus->get_locus_id() } ); 
+	    my $m_lgm = $group->get_object_row()->
+		find_related('locusgroup_members', { locus_id => $m_locus->get_locus_id() } );
 	    #see if the locus is already a member of the group
 	    my $existing_member= $group->get_object_row()->
 		find_related('locusgroup_members', { locus_id => $self->get_locus_id() } );
-	    if (!$existing_member) {
-		my $lgm=CXGN::Phenome::LocusgroupMember->new($schema);
-
-		$lgm->set_locusgroup_id($m_lgm->locusgroup_id() );
-		$lgm->set_locus_id($self->get_locus_id() );
-		$lgm->set_evidence_id($m_lgm->evidence_id());
-		$lgm->set_reference_id($m_lgm->reference_id());
-		$lgm->set_sp_person_id($m_lgm->sp_person_id());
-		$lgm->set_direction($m_lgm->direction());
-		$lgm->set_obsolete($m_lgm->obsolete());
-		$lgm->set_create_date($m_lgm->create_date());
-		$lgm->set_modified_date($m_lgm->modified_date());
-
-		my $lgm_id= $lgm->store();
-	    }
-	    $self->d( "obsoleting group member... \n");
-	    $m_lgm->set_column(obsolete => 't');
-	    $m_lgm->update();
-	}
+            if (!$existing_member) {
+                my $lgm=CXGN::Phenome::LocusgroupMember->new($schema);
+                $lgm->set_locusgroup_id($m_lgm->get_column('locusgroup_id') );
+                $lgm->set_locus_id($self->get_locus_id() );
+                $lgm->set_evidence_id($m_lgm->get_column('evidence_id'));
+                $lgm->set_reference_id($m_lgm->get_column('reference_id'));
+                $lgm->set_sp_person_id($m_lgm->get_column('sp_person_id'));
+                $lgm->set_direction($m_lgm->get_column('direction'));
+                $lgm->set_obsolete($m_lgm->get_column('obsolete'));
+                $lgm->set_create_date($m_lgm->get_column('create_date'));
+                $lgm->set_modified_date($m_lgm->get_column('modified_date'));
+                my $lgm_id= $lgm->store();
+            }
+            $self->d( "obsoleting group member... \n");
+            $m_lgm->set_column(obsolete => 't');
+            $m_lgm->update();
+        }
 	$self->d( "Obsoleting merged locus... \n");
 	#last step is to obsolete the old locus. All associated objects (images, alleles, individuals..) should not display obsolete objects on the relevant pages! 
 	$m_locus->delete();
