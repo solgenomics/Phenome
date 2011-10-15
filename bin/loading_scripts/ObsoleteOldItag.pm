@@ -86,11 +86,16 @@ sub run {
             my $q = "Select locus_id from phenome.locus_alias where alias ilike ? and preferred = false";
             my $sth = $dbh->prepare($q);
             $sth->execute($itag);
-            ($locus_id) = $sth->fetchrow_array; # should be one match
-            if ($locus_id) { $locus = CXGN::Phenome::Locus->new($dbh, $locus_id) ; }
-            else { warn "NO LOCUS FOUND FOR IDENTIFIER $itag!!\n\n"; next ITAG ; }
+            while (my $id = $sth->fetchrow_array) {
+                $locus = CXGN::Phenome::Locus->new($dbh, $id) ;
+                # just delete the synonym
+                my $del_q = "DELETE  FROM phenome.locus_alias WHERE locus_id = ? and alias = ?";
+                my $del_sth = $dbh->prepare($del_q);
+                $del_sth->execute($id, $itag);
+                print "DELETEDLOCUS ALIAS $itag from locus " . $locus->get_locus_name . " (id = $id) .\n UPDATE with new ITAG locus identifier!!\n\n";
+            }
         }
-        next if $locus->get_obsolete eq 't'; #locus is already obsolete
+        next ITAG if $locus->get_obsolete eq 't'; #locus is already obsolete
         #now we should have locus_id from symbol or synonym
         if ($locus_id) {
             print "locus_id = " . $locus->get_locus_id . "name = " . $locus->get_locus_name . "\n";
