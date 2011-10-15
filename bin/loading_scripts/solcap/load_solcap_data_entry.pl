@@ -250,6 +250,9 @@ my $coderef = sub {
               print "Found child term " . $child_term->name . "\n";
               $value = $child_term->name;
           } elsif ($value_type eq 'unit') { # unit:milimeter
+              #remove trailing spaces
+              $unit_name =~ s/^\s+//;
+              $unit_name =~ s/\s+$//;
               ($unit_cvterm) = $unit_cv->find_related(
                   "cvterms" , { name => $unit_name } ) if $unit_cv ;
               #$observable_term = $sp_term;
