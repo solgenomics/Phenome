@@ -195,6 +195,8 @@ my $coderef = sub {
           my $unit_cvterm; # cvterm for the unit specified in the file
           if ($value_type eq 'unit') {
               if ( $unit_cv) {
+                  $unit_name =~ s/^\s+//;
+                  $unit_name =~ s/\s+$//;
                   ($unit_cvterm) = $unit_cv->find_related(
                       "cvterms" , { name => $unit_name } ) || warn "**Looks like you did not load unit ontology! Can't load unit term $unit_name!\n";
               } else { warn "***No unit cvterm found for term $unit_name! Is this a valid term from Unit Ontology? \n";
