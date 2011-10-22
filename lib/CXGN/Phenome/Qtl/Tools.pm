@@ -397,8 +397,7 @@ sub browse_traits {
 =cut
 
 sub is_from_qtl {
-    my $self = shift;
-    my $id = shift;
+    my ($self, $id) = @_;
     my $query = "SELECT DISTINCT (population_id) FROM phenome.genotype
                         LEFT JOIN phenome.individual USING (individual_id)
                         LEFT JOIN public.phenotype USING (individual_id) 
@@ -407,19 +406,19 @@ sub is_from_qtl {
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($id);
     
-    my @pop_ids;
-    while (my ($pop_id) = $sth->fetchrow_array()) {
-
-	push @pop_ids, $pop_id;
-
+    my @pops;
+    while (my $pop_id  = $sth->fetchrow_array()) 
+    {
+	push @pops, CXGN::Phenome::Population->new($self->get_dbh(), $pop_id);
     }
     
-    if (@pop_ids) { 
-	return 1; 
-    } else { return 0;
-	 }
-    
-
+    if (@pops) 
+    { 
+	return @pops; 
+    } else 
+    { 
+        return;
+    }
 }
 
 =head2 search_usertrait
