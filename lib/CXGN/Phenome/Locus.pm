@@ -2180,9 +2180,10 @@ sub get_locusgroups {
     my $self=shift;
     my $locus_id = $self->get_locus_id();
     my $schema= CXGN::Phenome::Schema->connect(
-        $self->get_dbh->get_connection_parameters,
+        #$self->get_dbh->get_connection_parameters,
+        sub { $self->get_dbh->clone },
         { on_connect_do => ['set search_path to phenome'] },
-       );
+        );
     my @members= $schema->resultset('LocusgroupMember')->search( 
 	{
 	    locus_id => $locus_id ,
