@@ -356,19 +356,26 @@ sub get_user_qtl_dir {
     my $sp_person_id = $self->get_sp_person_id();
 
  
-    my $bdir = $c->get_conf("basepath");
-    my $tdir = $c->get_conf("tempfiles_subdir");
+    my $bdir     = $c->get_conf("basepath");
+    my $tdir     = $c->get_conf("tempfiles_subdir");
     my $temp_qtl = File::Spec->catfile( $bdir, $tdir, "page_uploads", "qtl" );
+    my $dbh      = CXGN::DB::Connection->new();
+    my $person   = CXGN::People::Person->new( $dbh, $sp_person_id );
+    
+    if ($person)
+    {
+        my $last_name  = $person->get_last_name();
+        my $first_name = $person->get_first_name();
+        $last_name     =~ s/\s//g;
+        $first_name    =~ s/\s//g;
+        my $temp_user  = "$temp_qtl/user_" . $first_name . $last_name;
 
-    my $dbh        = CXGN::DB::Connection->new();
-    my $person     = CXGN::People::Person->new( $dbh, $sp_person_id );
-    my $last_name  = $person->get_last_name();
-    my $first_name = $person->get_first_name();
-    $last_name  =~ s/\s//g;
-    $first_name =~ s/\s//g;
-    my $temp_user = "$temp_qtl/user_" . $first_name . $last_name;
-
-    return $temp_qtl, $temp_user;
+        return $temp_qtl, $temp_user;
+    } 
+    else
+    {
+    return;
+    }
 
 }
 
@@ -377,17 +384,17 @@ sub create_user_qtl_dir {
     my $c            = shift;
     my $sp_person_id = $self->get_sp_person_id();
 
-    my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
-
-    if ($sp_person_id) {
+    if ($sp_person_id) 
+    {
+        my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
         mkpath ( [ $temp_qtl, $temp_user ], 0, 0755 );
+        
         return $temp_qtl, $temp_user;
-
     }
-    else {
-        return 0;
+    else 
+    {
+        die "Can't create qtl dir for a user not logged in";
     }
-
 }
 
 1;
