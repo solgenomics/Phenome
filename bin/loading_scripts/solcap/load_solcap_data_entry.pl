@@ -282,6 +282,13 @@ my $coderef = sub {
 		    value => $value ,
                     uniquename => "Stock: " . $stock->stock_id . ", Replicate: $rep, plot: $plot," . ", Term: " . $sp_term->name() . ", parent:  $term",
               });
+          #add phenotype prop for quality terms (yield, brix, ph, acids)
+          if ($label =~ m/SP:0000198|SP:0000165|SP:0000170|SP:0000345/) {
+              my $method = 'quality';
+              ##not sure if this should be phenotypeprop 
+              $phenotype->create_phenotypeprops(
+                  { method => $method } , { autocreate => 1 } ) ;
+          }
           #for qualitative traits, store the value also in phenotyep_cvterm
           if ($child_term) {
               $phenotype->find_or_create_related(
