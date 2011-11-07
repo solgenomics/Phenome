@@ -21,7 +21,6 @@ Naama Menda <nm249@cornell.edu>
 use strict;
 use warnings;
 
-use CXGN::DB::Connection;
 use CXGN::Phenome::Allele;
 use CXGN::Phenome::LocusSynonym;
 use CXGN::Phenome::LocusMarker;
@@ -1534,7 +1533,7 @@ sub get_recent_annotated_loci {
     ###
     #get associated stocks
     ####
-    my $schema= Bio::Chado::Schema->connect( $dbh->get_connection_parameters );
+    my $schema= Bio::Chado::Schema->connect( sub { $dbh->clone } ) ;
     my $stock_query = "SELECT *  FROM phenome.stock_allele  join metadata.md_metadata USING (metadata_id) WHERE create_date>? OR modified_data>? ORDER BY modified_date DESC, create_date DESC";
     my $stock_sth = $dbh->prepare($stock_query);
     $stock_sth->execute($date, $date);
@@ -2180,8 +2179,7 @@ sub get_locusgroups {
     my $self=shift;
     my $locus_id = $self->get_locus_id();
     my $schema= CXGN::Phenome::Schema->connect(
-        #$self->get_dbh->get_connection_parameters,
-        sub { $self->get_dbh->clone },
+        sub { $self->get_dbh->clone } ,
         { on_connect_do => ['set search_path to phenome'] },
         );
     my @members= $schema->resultset('LocusgroupMember')->search( 
