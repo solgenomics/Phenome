@@ -79,7 +79,7 @@ sub new {
 	    push @locus_marker, $lm;
 	}
 	for my $lm_id (@locus_marker) {
-	   
+
 	    my $locus_marker_obj = CXGN::Phenome::LocusMarker->new($dbh, $lm_id);
 	    $self->add_locus_marker($locus_marker_obj);
 	}
@@ -189,19 +189,18 @@ sub get_locus_ids_by_annotator {
 sub fetch {
     my $self=shift;
     my $dbh=$self->get_dbh();
-    
-    my $locus_query = "SELECT locus_id,locus_name, locus_symbol, original_symbol, gene_activity, description,  locus.sp_person_id, locus.create_date, locus.modified_date, linkage_group, lg_arm, common_name, common_name_id,  updated_by, locus.obsolete 
-                    FROM phenome.locus 
+    my $locus_query = "SELECT locus_id,locus,locus_name, locus_symbol, original_symbol, gene_activity, description,  locus.sp_person_id, locus.create_date, locus.modified_date, linkage_group, lg_arm, common_name, common_name_id,  updated_by, locus.obsolete 
+                    FROM phenome.locus
                     JOIN sgn.common_name USING(common_name_id)
                     WHERE locus_id=?";
     my $sth=$dbh->prepare($locus_query);
     $sth->execute($self->get_locus_id());
 
-    my ($locus_id,$locus_name,$locus_symbol,$original_symbol, $gene_activity, $description, $sp_person_id, $create_date, $modified_date, $chromosome, $arm, $common_name, $common_name_id, $updated_by, $obsolete)=$sth->fetchrow_array();
+    my ($locus_id,$genome_locus, $locus_name,$locus_symbol,$original_symbol, $gene_activity, $description, $sp_person_id, $create_date, $modified_date, $chromosome, $arm, $common_name, $common_name_id, $updated_by, $obsolete)=$sth->fetchrow_array();
     $self->set_locus_id($locus_id);
+    $self->set_genome_locus($genome_locus);
     $self->set_locus_name($locus_name);
     $self->set_locus_symbol($locus_symbol);
-   
     $self->set_original_symbol($original_symbol);
     $self->set_gene_activity($gene_activity);
     $self->set_description($description);
@@ -222,7 +221,7 @@ sub fetch {
  Usage: my $existing_locus_id = CXGN::Phenome::Locus::exists_in_database();
  Desc:  check if a locus symbol or name for a given organism exists in the database  
  Ret:   an error message for the given symbol, name, and common_name_id
- Args:   
+ Args:
  Side Effects: none
  Example:
 
@@ -233,29 +232,27 @@ sub exists_in_database {
     my $self = shift;
     my $locus_name=shift;
     my $locus_symbol=shift;
-      
+
     my $locus_id= $self->get_locus_id();
     my $common_name_id= $self->get_common_name_id();
     if (!$locus_name) { $locus_name=$self->get_locus_name(); }
     if (!$locus_symbol) { $locus_symbol=$self->get_locus_symbol(); }
     $self->d("Locus.pm: exists_in _database--**$locus_name, $locus_symbol \n");
-    
-    
-    my $name_query = "SELECT locus_id, obsolete 
+
+    my $name_query = "SELECT locus_id, obsolete
                         FROM phenome.locus
                         WHERE locus_name ILIKE ? and common_name_id = ? ";
     my $name_sth = $self->get_dbh()->prepare($name_query);
     $name_sth->execute($locus_name, $common_name_id );
     my ($name_id, $name_obsolete)= $name_sth->fetchrow_array();
-    
+
     my $symbol_query = "SELECT locus_id, obsolete
                          FROM phenome.locus
                          WHERE locus_symbol ILIKE ? and common_name_id = ? ";
     my $symbol_sth = $self->get_dbh()->prepare($symbol_query);
     $symbol_sth->execute($locus_symbol, $common_name_id );
     my ($symbol_id, $symbol_obsolete)  = $symbol_sth->fetchrow_array();
-    
-    
+
     #loading new locus- $locus_id is undef
     if (!$locus_id && ($name_id || $symbol_id) ) {
 	my $message = 1;
@@ -266,14 +263,14 @@ sub exists_in_database {
 	    $message = "Existing symbol $symbol_id";
 	}
 	$self->d("***$message\n");
-	return ( $message ) ; 
+	return ( $message ) ;
     }
     #trying to update a locus.. if both the name and symbol remain- it's probably an update of 
     #the other fields in the form
     if ($locus_id && $symbol_id) {
 	if ( ($name_id==$locus_id) && ($symbol_id==$locus_id) ) {
 	    $self->d("--locus.pm exists_in_database returned 0.......\n"); 
-	    return 0; 
+	    return 0;
 	    #trying to update the name and/or the symbol
 	} elsif ( ($name_id!=$locus_id && $name_id) || ($symbol_id!=$locus_id && $symbol_id)) {
 	    my $message = " Can't update an existing locus $locus_id name:$name_id symbol:$symbol_id.";
@@ -282,24 +279,24 @@ sub exists_in_database {
 	    # if the new name or symbol we're trying to update/insert do not exist in the locus table.. 
 	} else {
 	    $self->d("--locus.pm exists_in_database returned 0.......\n");
-	    return 0; 
+	    return 0;
 	}
     }
 }
 
-sub store { 
+sub store {
     my $self = shift;
 
     #add another check here with a die/error message for loading scripts
     my $exists=  $self->exists_in_database();
     die "Locus exists in database! Cannot insert or update! \n $exists \n " if $exists;
-    
     my $locus_id=$self->get_locus_id();
-    
+
     if ($locus_id) {
 	$self->store_history();
-	
+
     	my $query = "UPDATE phenome.locus SET
+                       locus = ?,
                        locus_name = ?,
                        locus_symbol = ?,
                        original_symbol = ?,
@@ -311,10 +308,8 @@ sub store {
                        modified_date = now(),
                        obsolete=?
                        where locus_id= ?";
-	
-	
 	my $sth= $self->get_dbh()->prepare($query);
-	$sth->execute($self->get_locus_name, $self->get_locus_symbol,  $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_updated_by(), $self->get_obsolete(), $locus_id );
+	$sth->execute($self->get_genome_locus,$self->get_locus_name, $self->get_locus_symbol,  $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_updated_by(), $self->get_obsolete(), $locus_id );
 
 	foreach my $dbxref ( @{$self->{locus_dbxrefs}} )   {
 	    my $locus_dbxref_obj= CXGN::Phenome::LocusDbxref->new($self->get_dbh());
@@ -326,10 +321,9 @@ sub store {
     }
     else {
 	eval {
-	    my $query = "INSERT INTO phenome.locus (locus_name, locus_symbol, original_symbol, gene_activity, description, linkage_group, lg_arm,  common_name_id, create_date) VALUES(?,?,?,?,?,?,?,?, now()) RETURNING locus_id";
-
+	    my $query = "INSERT INTO phenome.locus (locus,locus_name, locus_symbol, original_symbol, gene_activity, description, linkage_group, lg_arm,  common_name_id, create_date) VALUES(?,?,?,?,?,?,?,?, now()) RETURNING locus_id";
 	    my $sth= $self->get_dbh()->prepare($query);
-	    $sth->execute($self->get_locus_name, $self->get_locus_symbol, $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_common_name_id);
+	    $sth->execute($self->get_genome_locus, $self->get_locus_name, $self->get_locus_symbol, $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_common_name_id);
 
             ($locus_id) = $sth->fetchrow_array;
 	    $self->set_locus_id($locus_id);
@@ -355,10 +349,9 @@ sub store {
     }
     if ($@) { warn "locus.pm store failed! \n $@ \n" }
     return $locus_id;
-    
 }
 
-=head2 delete 
+=head2 delete
 
  Usage: $self->delete()
  Desc:  set the locus to obsolete=t
@@ -369,7 +362,7 @@ obsoletes the associated alleles (see Allele.pm: delete() )
  Example:
 =cut
 
-sub delete { 
+sub delete {
     my $self = shift;
     my ($symbol, $name);
     my $locus_id = $self->get_locus_id();
@@ -380,11 +373,10 @@ sub delete {
 	$self->d("Locus.pm is obsoleting locus  " . $self->get_locus_id() . "(obsolete=$ob)!!!!\n");
 	$self->set_obsolete('t');
 	$self->store();
-    }else { 
+    }else {
 	$self->d("trying to delete a locus that has not yet been stored to db.\n");
-    }    
-}		     
-
+    }
+}
 
 =head2 remove_allele
 
@@ -396,7 +388,7 @@ sub delete {
  Example:
 =cut
 
-sub remove_allele { 
+sub remove_allele {
     my $self = shift;
     my $allele_id = shift;
     my $query = "UPDATE phenome.allele
@@ -728,6 +720,7 @@ sub add_related_locus {
     lg_arm
     common_name
     common_name_id
+    genome_locus
 =cut
 
 sub get_locus_id {
@@ -811,16 +804,6 @@ sub set_linkage_group {
   $self->{linkage_group}=shift;
 }
 
-=head2 accessors get_lg_arm, set_lg_arm
-
- Usage:
- Desc:
- Property:     the position of the locus on the linkage group
-               in terms of linkage group arms ["long", "short", undef] 
- Side Effects:
- Example:
-
-=cut
 
 sub get_lg_arm {
   my $self=shift;
@@ -833,16 +816,6 @@ sub set_lg_arm {
   $self->{lg_arm}=shift;
 }
 
-=head2 accessors get_common_name, set_common_name
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
 
 sub get_common_name {
   my $self=shift;
@@ -865,6 +838,16 @@ sub get_common_name_id {
 sub set_common_name_id {
   my $self=shift;
   $self->{common_name_id}=shift;
+}
+
+sub get_genome_locus {
+  my $self = shift;
+  return $self->{genome_locus}; 
+}
+
+sub set_genome_locus {
+  my $self = shift;
+  $self->{genome_locus} = shift;
 }
 
 
@@ -935,7 +918,6 @@ sub get_locus_aliases {
 sub add_allele {
     my $self=shift;
     my $allele=shift; #allele object
-       
     $allele->set_locus_id($self->get_locus_id() );
     my $id = $allele->store();
     return $id;
