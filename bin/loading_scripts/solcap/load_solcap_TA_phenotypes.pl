@@ -58,6 +58,10 @@ getopts('H:i:tD:l:y:');
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
 my $file = $opt_i;
+my $method;
+$method = 'Fruit color' if $file =~ m/color/;
+$method = 'Fruit longitudinal section' if $file =~ m/long/;
+$method = 'Fruit cross section' if $file =~ m/lat/;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
@@ -228,6 +232,10 @@ my $coderef = sub {
                   cvterm_id => $unit_cvterm->cvterm_id() } ) ;
               print "*Loaded phenotype_cvterm with unit '" . $unit_cvterm->name() . "'\n";
           }
+          #store the appropriate method phenotypeprop
+          $phenotype->create_phenotypeprops(
+              { method => $method } , { autocreate => 1 } ) if $method;
+          ####
 	  #check if the phenotype is already associated with an experiment
 	  # which means this loading script has been run before .
 	  if ( $phenotype->find_related("nd_experiment_phenotypes", {} ) ) {

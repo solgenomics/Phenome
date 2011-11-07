@@ -407,6 +407,8 @@ sub to_html {
 					has_annotation has_reference
 					ontology_term genbank_accession
 					/};
+    no warnings 'uninitialized';
+
     my $advanced_search=
 	html_optional_show('advanced_search',
 			   'Advanced search options',
@@ -431,13 +433,9 @@ EOH
 					    __tableattrs => 'width="100%"',
 					    ) .qq|</div>|,
 			   $show_advanced_search);
-    $scalars{has_sequence}   ||= '';
-    $scalars{has_marker}     ||= '';
-    $scalars{has_annotation} ||= '';
-    $scalars{has_reference}  ||= '';
-    
+
     my $html_ret = <<EOHTML;
-    
+
     <table><tr>
 	<td colspan="2"><b>Search for any locus or allele</b>  (<a href="../help/gene_search_help.pl">gene search help page</a>)</td></tr>
 	<tr><td>$any_name_select</td>
@@ -454,7 +452,7 @@ sub quick_search {
     $self->any_name('ILIKE ?', "%$term%");
     $self->locus_obsolete('=?', "f");
     #$self->allele_obsolete('=?', "f");
-    return $self;		  
+    return $self;
 }
 
 ###
