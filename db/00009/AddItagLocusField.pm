@@ -54,6 +54,7 @@ sub patch {
     print STDOUT "\nExecuting the SQL commands.\n";
     try {
         #set the searchpath
+	$self->dbh->{AutoCommit} = 0;
         $self->dbh->do('set search_path to phenome, public');
         $self->dbh->do('ALTER TABLE phenome.locus ADD COLUMN locus varchar(24) DEFAULT null');
         $self->dbh->do('ALTER TABLE phenome.locus_history ADD COLUMN locus varchar(24) DEFAULT null');
