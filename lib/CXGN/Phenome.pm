@@ -37,7 +37,7 @@ my $sgn        = 'sgn';
 my $sgn_people = 'sgn_people';
 my $public     = 'public';
 
-__PACKAGE__->selects_data("$phenome.locus.locus_id","$phenome.locus.locus_name","$phenome.locus.locus_symbol",  "$phenome.allele.allele_name", "$phenome.allele.allele_symbol", "$phenome.allele.allele_synonym", "$phenome.allele.allele_phenotype", "$phenome.locus.obsolete", "$phenome.allele.obsolete", "$phenome.locus.sp_person_id", "$phenome.locus.description", "$phenome.locus.linkage_group", "$phenome.locus.lg_arm", "$sgn.common_name.common_name_id", "$sgn.common_name.common_name");
+__PACKAGE__->selects_data("$phenome.locus.locus_id", "$phenome.locus.locus_name","$phenome.locus.locus_symbol",  "$phenome.allele.allele_name", "$phenome.allele.allele_symbol", "$phenome.allele.allele_synonym", "$phenome.allele.allele_phenotype", "$phenome.locus.obsolete", "$phenome.allele.obsolete", "$phenome.locus.sp_person_id", "$phenome.locus.description", "$phenome.locus.linkage_group", "$phenome.locus.lg_arm", "$sgn.common_name.common_name_id", "$sgn.common_name.common_name");
 
 
 
@@ -70,6 +70,10 @@ __PACKAGE__->uses_joinpath('locusdbxrefpath',
 			   [ "$public.db", "$public.dbxref.db_id=$public.db.db_id"],
 			   );
 
+
+__PACKAGE__->has_parameter(name    => 'locus',
+                           columns => "$phenome.locus.locus",
+    );
 
 __PACKAGE__->has_parameter(name    => 'locus_name',
                            columns => "$phenome.locus.locus_name",
@@ -207,9 +211,10 @@ __PACKAGE__->has_parameter(name   =>'default_allele',
 			   );
 
 __PACKAGE__->has_complex_parameter( name => 'any_name',
-				    uses => [qw/locus_name locus_symbol locus_alias locus_description allele_symbol allele_name allele_synonym phenotype/],
+				    uses => [qw/locus locus_name locus_symbol locus_alias locus_description allele_symbol allele_name allele_synonym phenotype/],
 				    setter => sub {
 				      my ($self, @args) = @_;
+				      $self->locus(@args);
 				      $self->locus_name(@args);
 				      $self->locus_symbol(@args);
 				      $self->locus_alias(@args);
@@ -219,7 +224,7 @@ __PACKAGE__->has_complex_parameter( name => 'any_name',
 				      $self->allele_synonym(@args);
                                       $self->phenotype(@args);
 
-				      $self->compound('&t OR &t OR &t OR &t OR &t OR &t OR &t OR&t' ,'locus_name', 'locus_symbol', 'locus_alias', 'locus_description', 'allele_symbol','allele_name', 'allele_synonym', 'phenotype');
+				      $self->compound('&t OR &t OR &t OR &t OR &t OR &t OR &t OR &t OR&t' ,'locus' , 'locus_name', 'locus_symbol', 'locus_alias', 'locus_description', 'allele_symbol','allele_name', 'allele_synonym', 'phenotype');
 				    }
 				  );
 
