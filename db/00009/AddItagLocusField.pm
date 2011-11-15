@@ -75,11 +75,13 @@ sub patch {
             print "Trial mode! Rolling back transaction\n\n";
             $self->dbh->rollback;
         }
+	$self->dbh->commit;
         print "Data committed! \n";
     } catch {
         $self->dbh->rollback;
         die "Load failed! " . $_ . "\n" ;
     };
+    $self->dbh->disconnect;
 }
 
 return 1;
