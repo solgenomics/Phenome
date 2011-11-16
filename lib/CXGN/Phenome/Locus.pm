@@ -320,7 +320,7 @@ sub store {
     }
     else {
 	eval {
-	    my $query = "INSERT INTO phenome.locus (locus,locus_name, locus_symbol, original_symbol, gene_activity, description, linkage_group, lg_arm,  common_name_id, create_date) VALUES(?,?,?,?,?,?,?,?, now()) RETURNING locus_id";
+	    my $query = "INSERT INTO phenome.locus (locus,locus_name, locus_symbol, original_symbol, gene_activity, description, linkage_group, lg_arm,  common_name_id, create_date) VALUES(?,?,?,?,?,?,?,?,?, now()) RETURNING locus_id";
 	    my $sth= $self->get_dbh()->prepare($query);
 	    $sth->execute($self->get_genome_locus, $self->get_locus_name, $self->get_locus_symbol, $self->get_original_symbol, $self->get_gene_activity, $self->get_description, $self->get_linkage_group(), $self->get_lg_arm(), $self->get_common_name_id);
 

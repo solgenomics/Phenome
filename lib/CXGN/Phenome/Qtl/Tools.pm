@@ -371,7 +371,7 @@ sub browse_traits {
     
     my $links;
     foreach my $v_i (@valid_indices) {
-	$links .= qq | <a href=/phenome/qtl_traits.pl?index=$v_i>$v_i</a> |;
+        $links .= qq | <a href=/qtl/traits/$v_i>$v_i</a> |;
 	unless ($v_i eq $valid_indices[-1]) {
 	    $links .= " | ";
 	}
