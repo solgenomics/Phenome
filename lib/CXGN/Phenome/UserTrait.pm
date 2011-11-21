@@ -1,10 +1,8 @@
 =head1 NAME
 
-CXGN::Chado::UserTrait
-A class for handling user submitted trait objects.
+CXGN::Phenome::UserTrait;
 
-It implements an object for the  'user_trait, unit, 
-phenotype_user_trait' tables in the phenome schema.
+transitioning to qtl controller, new db tables and dbix class methods
    
 =head1 SYNOPSIS
 
@@ -46,85 +44,16 @@ sub new {
     my $trait_id=shift;
    
     my $self = $class->SUPER::new($dbh);
-       
-    
     
     if ($trait_id) {
-	$self->set_user_trait_id($trait_id);
-	$self->fetch();
+	$self->set_qtl_trait_id($trait_id);
     }
 
     return $self; 
-
-
 }
 
 
-sub fetch {
-    my $self = shift;
-    my $trait_id = $self->get_user_trait_id();
-    my $query = "SELECT user_trait_id, cv_id, name, definition,
-                        dbxref_id, sp_person_id 
-                        FROM phenome.user_trait 
-                        WHERE user_trait_id=?";
 
-    my $sth = $self->get_dbh()->prepare($query);
-    $sth->execute($trait_id);
-    
-    while (my ($trait_id, $cv_id, $name, $definition, 
-               $dbxref_id, $sp_person_id) = $sth->fetchrow_array()) { 
-	
-	$self->set_user_trait_id($trait_id);
-	$self->set_cv_id($cv_id);
-	$self->set_name($name);
-	$self->set_definition($definition);
-	$self->set_dbxref_id($dbxref_id);
-	$self->set_sp_person_id($sp_person_id);
-    }
-       
-}
-
-sub store {
-    my $self = shift;
-   
-    if ($self->get_user_trait_id()) { 
-	
-	my $query = "UPDATE phenome.user_trait SET
-                     cv_id=?, name=?, definition=?, dbxref_id=?, sp_person_id=?
-                     WHERE user_trait_id=?";
-	my $sth = $self->get_dbh()->prepare();
-	$sth->execute( $self->get_cv_id(),
-	               $self->get_name(),
-	               $self->get_definition(),
-	               $self->get_dbxref_id(),	              
-	               $self->get_sp_person_id()
-                    );
-
-
-	return $self->get_user_trait_id();
-         
-    }
-    else { 
-
-	my $query = "INSERT INTO phenome.user_trait (cv_id, name, definition, dbxref_id, sp_person_id) 
-                            VALUES (?, ?, ?, ?, ?)";
-
-	my $sth = $self->get_dbh()->prepare($query);
-
-	$sth->execute( $self->get_cv_id(),
-	               $self->get_name(),
-	               $self->get_definition(),
-	               $self->get_dbxref_id(),
-	               $self->get_sp_person_id()
-	               );
-
-
-		      
-	my $trait_id=$self->get_currval( "phenome.user_trait_user_trait_id_seq");
- 	$self->set_user_trait_id($trait_id);
- 	return $trait_id;
-    }
-}
 
 
 =head2 set_user_trait_id
@@ -138,13 +67,13 @@ sub store {
 
 =cut
 
-sub set_user_trait_id {
+sub set_qtl_trait_id {
     my $self=shift;
-    $self->{user_trait_id}=shift;
+    $self->{qtl_trait_id}=shift;
 
 }
 
-=head2 get_user_trait_id
+=head2 get_qtl_trait_id
 
  Usage:
  Desc:
@@ -155,203 +84,11 @@ sub set_user_trait_id {
 
 =cut
 
-sub get_user_trait_id {
+sub get_qtl_trait_id {
     my $self=shift;
-    return $self->{user_trait_id};
+    return $self->{qtl_trait_id};
 
 }
-=head2 set_cv_id
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub set_cv_id {
-    my $self=shift;
-    $self->{cv_id}=shift;
-
-}
-
-=head2 get_cv_id
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub get_cv_id {
-    my $self=shift;
-    return $self->{cv_id};
-
-}
-=head2 set_name
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub set_name {
-    my $self=shift;
-    $self->{name}=shift;
-
-}
-
-=head2 get_name
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub get_name {
-    my $self =shift;
-    return $self->{name};
-
-}
-
-=head2 set_definition
-
- Usage:        
- Desc:         
- Ret:
- Args:
- Side Effects:
- Example:      
-
-=cut
-
-sub set_definition {
-    my  $self = shift;
-    $self->{definition}=shift;
-
-}
-=head2 get_definition
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub get_definition {
-    my $self =shift;
-    return $self->{definition};
-}
-
-# =head2 set_unit_id
-
-#  Usage:
-#  Desc:            
-#  Ret:
-#  Args:
-#  Side Effects:
-#  Example:
-
-# =cut
-
-# sub set_unit_id {
-#     my $self=shift;
-#     $self->{unit_id}=shift;
-
-# }
-
-# =head2 get_unit_id
-
-#  Usage:
-#  Desc:
-#  Ret:
-#  Args:
-#  Side Effects:
-#  Example:
-
-# =cut
-
-# sub get_unit_id {
-#     my $self=shift;
-#     return $self->{unit_id};
-
-# }
-
-=head2 set_dbxref_id
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub set_dbxref_id {
-    my $self=shift;
-    $self->{dbxref_id}=shift;
-
-}
-
-=head2 get_dbxref_id
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub get_dbxref_id {
-    my $self=shift;
-    return $self->{dbxref_id};
-
-}
-
-
-
-=head2 set_sp_person_id, get_sp_person_id
-
- Usage:
- Desc:
- Ret:
- Args:
- Side Effects:
- Example:
-
-=cut
-
-sub set_sp_person_id {
-    my $self=shift;
-    $self->{sp_person_id}=shift;
-
-}
-
-sub get_sp_person_id {
-    my $self =shift;
-    return $self->{sp_person_id};
-}
-
-
 
 
 
@@ -459,24 +196,20 @@ sub insert_unit {
 =cut
 
 sub insert_user_trait_unit {
-    my $self = shift;  
-    my $trait_id = shift;     
-    my $unit_id = shift;
-    my $pop_id = shift;
-
+    my ($self, $trait_id, $unit_id, $pop_id) = shift;      
     my $dbh = $self->get_dbh();
 
-    my $user_trait_unit_id;
+    my $qtl_trait_unit_id;
     if (($trait_id) && ($pop_id) && ($unit_id)) {
-	    my $sth = $dbh->prepare("INSERT INTO phenome.user_trait_unit 
-                                                 (user_trait_id, unit_id, population_id) 
+	    my $sth = $dbh->prepare("INSERT INTO phenome.qtl_trait_unit 
+                                                 (cvterm_id, unit_id, population_id) 
                                                  VALUES (?, ?, ?)"
                                    );
 	    $sth->execute($trait_id, $unit_id, $pop_id);
 	    	   
-	    $user_trait_unit_id = $self->get_currval("phenome.user_trait_unit_user_trait_unit_id_seq");
-	    print STDERR "STORED user_trait_unit: $user_trait_unit_id! \n";
-	    return $user_trait_unit_id;
+	    $qtl_trait_unit_id = $self->get_currval("phenome.qtl_trait_unit_qtl_trait_unit_id_seq");
+	    print STDERR "STORED qtl_trait_unit: $qtl_trait_unit_id! \n";
+	    return $qtl_trait_unit_id;
     }
     else {
 	    print STDERR "No point in populating this table if there 
