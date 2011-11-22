@@ -537,15 +537,15 @@ sub add_unigene {
 	return $existing_id;
     }else {
 	$self->d( "Locus:add_unigene is inserting a new unigene $unigene_id for locus " . $self->get_locus_id() . " (by person $sp_person_id) !!!"); 
-	my $query="Insert INTO phenome.locus_unigene (locus_id, unigene_id,sp_person_id) VALUES (?,?,?)";
+	my $query="Insert INTO phenome.locus_unigene (locus_id, unigene_id,sp_person_id) VALUES (?,?,?) RETURNING locus_unigene_id " ;
 	my $sth=$self->get_dbh->prepare($query);
 	$sth->execute($self->get_locus_id(), $unigene_id, $sp_person_id);
-	my $id= $self->get_currval("phenome.locus_unigene_locus_unigene_id_seq");
+        my ($id) = $sth->fetchrow_array;
 	return $id;
     }
-    #se if the unigene has solcyc links
+    #see if the unigene has solcyc links
 
-    my $dbh;
+    my $dbh=$self->get_dbh;
     my $unigene= CXGN::Transcript::Unigene->new($dbh, $unigene_id);
     my @u_dbxrefs= $unigene->get_dbxrefs();
     foreach my $d(@u_dbxrefs) {
