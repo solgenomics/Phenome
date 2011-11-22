@@ -195,30 +195,37 @@ sub insert_unit {
 
 =cut
 
-sub insert_user_trait_unit {
-    my ($self, $trait_id, $unit_id, $pop_id) = shift;      
+sub insert_qtl_trait_unit {
+    my ($self, $trait_id, $unit_id, $pop_id) = @_;      
     my $dbh = $self->get_dbh();
 
-    my $qtl_trait_unit_id;
-    if (($trait_id) && ($pop_id) && ($unit_id)) {
-	    my $sth = $dbh->prepare("INSERT INTO phenome.qtl_trait_unit 
+    my $qtl_trait_unit_id;    
+    if ( $trait_id  &&  $pop_id  &&  $unit_id ) 
+    {
+        my $sth = $dbh->prepare("select qtl_trait_unit_id 
+                                        from phenome.qtl_trait_unit 
+                                        where cvterm_id = ? 
+                                              and unit_id = ? 
+                                              and population_id = ?"
+                               );
+        
+        $sth->execute($trait_id, $unit_id, $pop_id);
+        unless( $sth->fetchrow_array()) 
+        {
+	    $sth = $dbh->prepare("INSERT INTO phenome.qtl_trait_unit 
                                                  (cvterm_id, unit_id, population_id) 
                                                  VALUES (?, ?, ?)"
                                    );
 	    $sth->execute($trait_id, $unit_id, $pop_id);
 	    	   
 	    $qtl_trait_unit_id = $self->get_currval("phenome.qtl_trait_unit_qtl_trait_unit_id_seq");
-	    print STDERR "STORED qtl_trait_unit: $qtl_trait_unit_id! \n";
 	    return $qtl_trait_unit_id;
+        }       
     }
-    else {
-	    print STDERR "No point in populating this table if there 
-                         is no at least unit of measurement.\n";
-	}
-
-
-    
-
+    else 
+    {             
+        return;
+    }
 }
 
 
