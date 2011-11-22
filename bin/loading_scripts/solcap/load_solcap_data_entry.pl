@@ -284,7 +284,7 @@ my $coderef = sub {
               });
           #add phenotype prop for quality terms (yield, brix, ph, acids)
           if ($label =~ m/SP:0000198|SP:0000165|SP:0000170|SP:0000345/) {
-              my $method = 'quality';
+              my $method = 'Quality';
               ##not sure if this should be phenotypeprop 
               $phenotype->create_phenotypeprops(
                   { method => $method } , { autocreate => 1 } ) ;
