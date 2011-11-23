@@ -112,13 +112,13 @@ my @columns = $spreadsheet->column_labels();
 
 eval {
     #the cvterm for the relationship type
-    print "Finding/creating cvtem for stock relationship 'is_plot_of' \n";
+    print "Finding/creating cvtem for stock relationship 'plot_of' \n";
 
     my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
-        { name   => 'is_plot_of',
+        { name   => 'plot_of',
           cv     => 'stock relationship',
           db     => 'null',
-          dbxref => 'is_plot_of',
+          dbxref => 'plot_of',
         });
     foreach my $plot (@rows ) {
 	print "label is $plot \n\n";

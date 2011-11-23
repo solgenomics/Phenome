@@ -179,10 +179,10 @@ eval {
 	    });
         ##and create the stock_relationship with the accession
         my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
-            { name   => 'is_plot_of',
+            { name   => 'plot_of',
               cv     => 'stock relationship',
               db     => 'null',
-              dbxref => 'is_plot_of',
+              dbxref => 'plot_of',
             });
         $parent_stock->find_or_create_related('stock_relationship_objects', {
 	    type_id => $plot_of->cvterm_id(),

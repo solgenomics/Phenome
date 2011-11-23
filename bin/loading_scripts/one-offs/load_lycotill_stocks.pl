@@ -183,10 +183,10 @@ eval {
         #add new stock_relationship
 	#the cvterm for the relationship type
         my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
-           { name   => 'is_member_of',
+           { name   => 'member_of',
 	     cv     => 'stock relationship',
 	     db     => 'null',
-	     dbxref => 'is_member_of',
+	     dbxref => 'member_of',
 	 });
 
 	$stock_population->find_or_create_related('stock_relationship_objects', {

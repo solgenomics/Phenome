@@ -140,13 +140,13 @@ my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     });
 
 #the cvterm for the relationship type
-print "Finding/creating cvtem for stock relationship 'is_member_of' \n";
+print "Finding/creating cvtem for stock relationship 'member_of' \n";
 
 my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
-    { name   => 'is_member_of',
+    { name   => 'member_of',
       cv     => 'stock relationship',
       db     => 'null',
-      dbxref => 'is_member_of',
+      dbxref => 'member_of',
     });
 ## For the stock module:
 ################################
