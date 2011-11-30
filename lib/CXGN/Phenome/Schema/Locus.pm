@@ -104,6 +104,13 @@ __PACKAGE__->table("locus");
   data_type: 'integer'
   is_nullable: 1
 
+=head2 locus
+
+  data_type: 'varchar'
+  default_value: NULL::character varying
+  is_nullable: 1
+  size: 24
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -147,6 +154,13 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 0 },
   "updated_by",
   { data_type => "integer", is_nullable => 1 },
+  "locus",
+  {
+    data_type => "varchar",
+    default_value => \"NULL::character varying",
+    is_nullable => 1,
+    size => 24,
+  },
 );
 __PACKAGE__->set_primary_key("locus_id");
 __PACKAGE__->add_unique_constraint(
@@ -401,8 +415,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Y5Ysx9LVzo2lrNNWOMeGPQ
+# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 07:30:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fbJiTi0bkdpU2ZdO3TZcJg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
