@@ -3,6 +3,8 @@ use strict;
 use Getopt::Long;
 use CXGN::Phenome::Locus;
 use CXGN::Transcript::Unigene;
+use Bio::Chado::Schema;
+use SGN::View::Feature;
 
 my ( $help, $dbname, $dbhost, $outfile );
 
@@ -24,13 +26,12 @@ if ($help) {
 
   Usage:
 
-   
     -o <output filename>  - output FASTA file.
     -dbhost <server hostname>  - host running the database to be queried
     -dbname - name of the database (sandbox, cxgn...)
-   
+
     -t <title>            - BLAST database title for formatdb
-   
+
 EOF
     exit -1;
 }
@@ -43,6 +44,8 @@ EOF
 my $dbh = CXGN::DB::Connection->new();
 $dbh->add_search_path(qw/ sgn phenome /);
 
+my $schema= Bio::Chado::Schema->connect(  sub { $dbh } ,  { on_connect_do => ['SET search_path TO  public, phenome;'] } );
+
 open OF, ">/data/prod/ftpsite/loci/loci_sequences.fasta"
   or die "Can't open output file  ($!)";
 
@@ -53,6 +56,7 @@ while ( my ($locus_id) = $sth->fetchrow_array() ) {
     my $locus       = CXGN::Phenome::Locus->new( $dbh, $locus_id );
     my $common_name = $locus->get_common_name();
     my @unigenes    = $locus->get_unigenes( { full=>1, current=>1} );
+    #get the sequences of the unigenes
     foreach my $unigene_obj (@unigenes) {
         my $sgn_id      = $unigene_obj->get_sgn_id();
         my $unigene_seq = $unigene_obj->get_sequence();
@@ -61,6 +65,7 @@ while ( my ($locus_id) = $sth->fetchrow_array() ) {
             print OF ">$header\n$unigene_seq\n";
         }
     }
+    #get the sequences of the linked genbank accessions
     my @locus_dbxrefs = $locus->get_dbxrefs();
     foreach my $dbxref (@locus_dbxrefs) {
 
@@ -78,8 +83,23 @@ while ( my ($locus_id) = $sth->fetchrow_array() ) {
         if ($@) { print $@; }
 
     }
+    #get the ITAG gene model sequences
+    my $genome_locus = $locus->get_locus;
+    if ($genome_locus) {
+        my ($feature) = $schema->resultset("Sequence::Feature")->search(
+            {
+                'me.name'  => { 'like' => $genome_locus . '%' },
+                'type.name'=> 'mRNA',
+            } ,
+            { prefetch => 'type'   },
+            );
+        if ($feature) {
+            my $header = $common_name . "_SGNlocusID_" . $locus_id . "_" . $genome_locus;
+            my $mrna_seq = SGN::View::Feature::mrna_cds_protein_sequence($feature)->[0];
+            print OF ">$header\n$mrna_seq\n";
+        }
+    }
 }
-
 close OF;
 
 #system("formatdb -p F -i ${output_fname}.seq -n $output_fname -t \"$title\"");
