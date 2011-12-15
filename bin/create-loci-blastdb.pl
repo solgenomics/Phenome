@@ -5,6 +5,7 @@ use CXGN::Phenome::Locus;
 use CXGN::Transcript::Unigene;
 use Bio::Chado::Schema;
 use SGN::View::Feature;
+use File::Slurp ;
 
 my ( $help, $dbname, $dbhost, $outfile );
 
@@ -46,8 +47,11 @@ $dbh->add_search_path(qw/ sgn phenome /);
 
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh } ,  { on_connect_do => ['SET search_path TO  public, phenome;'] } );
 
-open OF, ">/data/prod/ftpsite/loci/loci_sequences.fasta"
-  or die "Can't open output file  ($!)";
+my $filename =  "/data/prod/ftpsite/loci/loci_sequences.fasta";
+#
+write_file( $filename, '');
+#  or die "Can't open output file  ($!)";
+my @lines ;
 
 my $loci_query = "SELECT locus_id FROM phenome.locus WHERE obsolete = 'f' ";
 my $sth        = $dbh->prepare($loci_query);
@@ -62,7 +66,9 @@ while ( my ($locus_id) = $sth->fetchrow_array() ) {
         my $unigene_seq = $unigene_obj->get_sequence();
         my $header = $common_name . "_SGNlocusID_" . $locus_id . "_" . $sgn_id;
         if ( $unigene_seq && length($unigene_seq) < 20000 ) {
-            print OF ">$header\n$unigene_seq\n";
+	    write_file( $filename, {append => 1 }, ">$header\n$unigene_seq\n" );
+	    $| = 1;
+#push @lines ,  ">$header\n$unigene_seq\n";
         }
     }
     #get the sequences of the linked genbank accessions
@@ -76,8 +82,9 @@ while ( my ($locus_id) = $sth->fetchrow_array() ) {
             my $length    = $feature->get_seqlen();
             if ( $seq && ( length($seq) < 20000 ) ) {
                 my $header =
-                  $common_name . "_SGNlocusID_" . $locus_id . "_" . $accession;
-                print OF ">$header\n$seq\n";
+		    $common_name . "_SGNlocusID_" . $locus_id . "_" . $accession;
+		write_file( $filename, {append => 1 }, ">$header\n$seq\n" );
+		#push @lines , ">$header\n$seq\n";
             }
         };
         if ($@) { print $@; }
@@ -98,11 +105,12 @@ while ( my ($locus_id) = $sth->fetchrow_array() ) {
             #for my $seq_ref ( SGN::View::Feature::mrna_cds_protein_sequence($feature) ) {  
 	    #my $mrna_seq = $seq_ref->[0];
 	    my $mrna_seq = $feature->residues;
-	    print OF ">$header\n$mrna_seq\n";
+	    write_file( $filename, {append => 1 }, ">$header\n$mrna_seq\n" );
+	  #  push @lines ,  ">$header\n$mrna_seq\n";
 	}
     }
 }
 
-close OF;
+#close OF;
 
 #system("formatdb -p F -i ${output_fname}.seq -n $output_fname -t \"$title\"");
