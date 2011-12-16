@@ -1,4 +1,4 @@
-package UpdatePotatoPgLoci;
+package updatePotatoPgLoci;
 
 use Modern::Perl;
 use CXGN::DB::InsertDBH;
@@ -80,7 +80,7 @@ sub run {
     my %common_names = CXGN::Tools::Organism::get_existing_organisms($dbh, 1);
     my $potato_cname_id = $common_names{Potato};
     my ($organism) = $schema->resultset("Organism::Organism")->search(
-        { species = 'Solanum tuberosum' } );
+        { species => 'Solanum tuberosum' } );
 
     my $file = $self->infile;
     my @lines = read_file( $file ) ;
@@ -102,6 +102,7 @@ sub run {
                 $locus->store;
             }
         } else {
+	    $locus = CXGN::Phenome::Locus->new_with_symbol_and_species($dbh, $genome_locus, 'Potato'); # this should find existing potato genes
             $locus->set_locus_name($genome_locus);
             $locus->set_locus_symbol($genome_locus);
             $locus->set_description($annotation);
