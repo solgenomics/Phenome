@@ -1516,7 +1516,7 @@ sub get_recent_annotated_loci {
     #get associated stocks
     ####
     my $schema= Bio::Chado::Schema->connect( sub { $dbh->clone } ) ;
-    my $stock_query = "SELECT *  FROM phenome.stock_allele  join metadata.md_metadata USING (metadata_id) WHERE create_date>? OR modified_data>? ORDER BY modified_date DESC, create_date DESC";
+    my $stock_query = "SELECT *  FROM phenome.stock_allele  join metadata.md_metadata USING (metadata_id) WHERE create_date>? OR modified_date>? ORDER BY modified_date DESC, create_date DESC";
     my $stock_sth = $dbh->prepare($stock_query);
     $stock_sth->execute($date, $date);
     while ( my $hashref = $stock_sth->fetchrow_hashref() ) {
