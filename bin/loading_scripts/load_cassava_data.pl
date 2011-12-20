@@ -32,6 +32,7 @@ December 2011
 use strict;
 use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
+use CXGN::People::Person;
 
 use Bio::Chado::Schema;
 use CXGN::DB::InsertDBH;
@@ -131,8 +132,11 @@ my $unit_cv = $schema->resultset("Cv::Cv")->find(
     { name => 'unit.ontology' } );
 
 
-my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
-    species => 'Manihot esculenta' } );
+my $organism = $schema->resultset("Organism::Organism")->find_or_create( 
+    {
+	genus   => 'Manihot',
+	species => 'Manihot esculenta',
+    } );
 my $organism_id = $organism->organism_id();
 
 my @rows = $spreadsheet->row_labels();
@@ -142,7 +146,7 @@ eval {
 ##order_ylrg	pegno	environ	location	year	rep	ploidy	entry	DNA Samp	ICASS	Year cloned	CO_334:0000008
     foreach my $num (@rows ) {
         my $plot = $spreadsheet->value_at($num, "pegno");
-        my $location = $spreadsheet->value_at($num, "environ_location");
+        my $location = $spreadsheet->value_at($num, "location");
         my $year     = $spreadsheet->value_at($num, "year");
         my $stock_name = $spreadsheet->value_at($num , "ICASS");
         my $replicate = $spreadsheet->value_at($num, "rep");
@@ -169,7 +173,7 @@ eval {
             { organism_id => $organism_id,
               name       => $stock_name,
               uniquename => $stock_name,
-              type_id     => $accession_cvterm,
+              type_id     => $accession_cvterm->cvterm_id,
             } );
         #store the plot in stock
         my $plot_stock = $schema->resultset("Stock::Stock")->find_or_create(
