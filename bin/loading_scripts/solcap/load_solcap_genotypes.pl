@@ -34,14 +34,18 @@ December 2011
 
 #!/usr/bin/perl
 use strict;
+
 use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
 use JSON::Any;
 use Bio::Chado::Schema;
 use CXGN::People::Person;
+use CXGN::Marker;
+use CXGN::Marker::Tools;
 
 use CXGN::DB::InsertDBH;
 use Carp qw /croak/ ;
+
 ##
 
 our ($opt_H, $opt_D, $opt_i, $opt_t);
@@ -59,7 +63,7 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				    }
     );
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } );
-$dbh->do('SET search_path TO public');
+$dbh->do('SET search_path TO public,sgn');
 
 #getting the last database ids for resetting at the end in case of rolling back
 ###############
@@ -154,19 +158,32 @@ eval {
 	    $base_calls =~ s/\s+//;
 	    #print "Value $value \n";
 	    next() if $base_calls !~ /A|T|C|G/i;
-            $json{$marker_name} = $base_calls;
+            ##make sure the marker name is the preffered one (the solcap identifier)
+
+            my @ids = CXGN::Marker::Tools::marker_name_to_ids($dbh, $marker_name);
+            if (!@ids) {
+                warn "No marker found for name $marker_name!!\n";
+                next;
+            }
+            elsif (scalar(@ids) > 1 ) {
+                croak "More than one id found for marker $marker_name! Please check your database and input!\n";
+            }
+            my $marker = CXGN::Marker->new($dbh, $ids[0]);
+            my $mname = $marker->get_name;
+            $json{$mname} = $base_calls;
         }
         my $json_obj = JSON::Any->new;
         my $json_string = $json_obj->objToJson(\%json);
-        print "Storing new genotype $json_string \n\n";
+        print "Storing new genotype for stock " . $solcap_stock->name . " \n\n";
         my $genotype = $schema->resultset("Genetic::Genotype")->find_or_create(
             {
                 name        => $solcap_stock->name . "|" . $experiment->nd_experiment_id,
-                uniquename  => $json_string,
+                uniquename  => $solcap_stock->name . "|" . $experiment->nd_experiment_id,
                 description => "Solcap Infinium array genotypes for stock $solcap_number (name = " . $solcap_stock->name . ", id = " . $solcap_stock->stock_id . ")",
                 type_id     => $infinium_array->cvterm_id,
             }
             );
+        $genotype->create_genotypeprops( { 'infinium array' => $json_string } , {autocreate =>1 , allow_duplicate_values => 1 } );
         #link the genotype to the nd_experiment
         my $nd_experiment_genotype = $experiment->find_or_create_related('nd_experiment_genotypes', { genotype_id => $genotype->genotype_id() } );
     }
