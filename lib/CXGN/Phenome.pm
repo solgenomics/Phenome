@@ -243,8 +243,10 @@ sub request_to_params {
     $self->locus_obsolete("='f'");
 
     if($params{any_name}) {
+        my $any_name = $params{any_name};
+        if ($any_name =~ m/(^solyc\d\dg\d{6})(\.*)/i ) { $any_name = substr($any_name, 0, 14); } #remove versions from solyc ids
 	$self->conditional_like_from_scalars('any_name',
-					     @params{qw/any_name_matchtype any_name/}
+					     @params{qw/any_name_matchtype/} , $any_name
 					     );
     }
 
