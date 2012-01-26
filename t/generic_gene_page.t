@@ -2,10 +2,11 @@
 use strict;
 use warnings;
 
+use lib '../sgn/t/lib';
+use SGN::Test::WWW::Mechanize;
 use Test::More tests => 4;
 use Test::Exception;
 
-use CXGN::DB::Connection;
 use CXGN::Phenome::GenericGenePage;
 
 $SIG{__DIE__} = \&Carp::confess;
@@ -14,8 +15,10 @@ throws_ok {
     CXGN::Phenome::GenericGenePage->new( -id => 428 )
 } qr/-dbh/, 'dies without dbh param';
 
+my $m = SGN::Test::WWW::Mechanize->new();
 
-my $dbh = CXGN::DB::Connection->new;
+my $dbh = $m->context->dbc->dbh;
+
 my $ggp = CXGN::Phenome::GenericGenePage
     ->new( -id => 428,
 	   -dbh => $dbh,
@@ -30,4 +33,4 @@ sub test_xml {
     like( $x, qr/<data_provider>/, 'result looks OK');
 }
 
-$dbh->disconnect(42);
+#$dbh->disconnect(42);
