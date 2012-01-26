@@ -70,7 +70,7 @@ sub synonyms {
 
 sub map_locations {
   my ($self) = @_;
-  $self->_dbh->add_search_path('sgn');
+  #$self->_dbh->add_search_path('sgn');  ### this is not always a CXGN::DB::Connection... (testing, etc)
   return map {
     my $lmo = $_;
 
