@@ -57,8 +57,10 @@ use strict;
 use warnings;
 use autodie;
 
-use Test::More tests=>35; #qw / no_plan / ; 
-use CXGN::DB::Connection;
+use Test::More tests=>34; #qw / no_plan / ; 
+
+use lib '../sgn/t/lib';
+use SGN::Test::WWW::Mechanize;
 use CXGN::Phenome::Locus;
 use CXGN::Phenome::LocusgroupMember;
 use CXGN::Phenome::LocusGroup;
@@ -66,17 +68,17 @@ use CXGN::Chado::CV;
 use CXGN::Chado::Cvterm;
 
 BEGIN {
-    use_ok('CXGN::Phenome::Schema');
     use_ok('CXGN::Phenome::LocusgroupMember');
 }
 
-#if we cannot load the CXGN::Phenome::Schema module, no point in continuing
-CXGN::Phenome::Schema->can('connect')
-    or BAIL_OUT('could not load the CXGN::Phenome::Schema  module');
+#$dbh->add_search_path(qw/ phenome public / );
+my $mech = SGN::Test::WWW::Mechanize->new();
 
-my $dbh=CXGN::DB::Connection->new();
-$dbh->add_search_path(qw/ phenome public / );
-my $schema=  CXGN::Phenome::Schema->connect(  sub { $dbh->get_actual_dbh() } );
+my $schema = $mech->context->dbic_schema('CXGN::Phenome::Schema', 'sgn_test');
+
+my $dbh = $mech->context->dbc->dbh('sgn_test');
+
+$schema->txn_begin;
 
 my $last_lgm_id= $schema->resultset('LocusgroupMember')->get_column('locusgroup_member_id')->max; 
 my $last_lg_id= $schema->resultset('Locusgroup')->get_column('locusgroup_id')->max; 
@@ -127,7 +129,7 @@ $associated_lgm->set_locusgroup_id($lg_id);
 
 my $lgm_id= $lgm->store();
 my $algm_id=$associated_lgm->store();
-    
+
 my $re_lgm= CXGN::Phenome::LocusgroupMember->new($schema, $lgm_id);
 is($re_lgm->get_locus_id(), $locus_id, "Locus id test");
 is($re_lgm->get_locusgroup_id(), $locusgroup->get_locusgroup_id(), "Locusgroup id test");
@@ -159,7 +161,7 @@ $associated_lgm->set_locusgroup_id($lg_id);
 
 my $stored_lgm_id= $lgm->store();            # this should store nothing since the locus is already a group member
 my $stored_algm_id=$associated_lgm->store(); # this should store nothing since the locus is already a group member
-    
+
 is($stored_lgm_id, $lgm_id, "Locus member exists  test");
 is($stored_algm_id, $algm_id, "Associated locus member exists  test");
 
@@ -170,14 +172,9 @@ is($re_lgm->get_evidence_id(), $ev_id, "evidence id test");
 is($re_lgm->get_direction(), $d1, "Direction test");
 is($re_lgm->get_locusgroup()->get_relationship_id(), $relationship_id, "Relationship id test");
 
-#######################
+
 #3. Store another locus downstream. A new group should be created since only 2 members can live in 1 directional group! 
-
-############################
-#######################
-################
-##############
-
+    
 #diag("Create 2nd directional group test! \n");
 $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
 $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
@@ -256,7 +253,7 @@ $lgm = CXGN::Phenome::LocusgroupMember->new($schema);
 $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
 
 ##########
-    
+
 $lgm->set_locus_id($associated_locus_id);
 $lgm->set_evidence_id($ev_id);
 $lgm->set_direction($d1);
@@ -299,7 +296,7 @@ $associated_lgm->set_locusgroup_id($lg_id);
 
 $lgm_id= $lgm->store();           
 $algm_id=$associated_lgm->store(); 
-    
+
 
 $re_lgm= CXGN::Phenome::LocusgroupMember->new($schema, $lgm_id);
 is($re_lgm->get_locus_id(), $locus_id, "Locus id test");
@@ -347,17 +344,17 @@ is($re_lgm->get_locus_id(), $associated_locus_id, "Locus id test");
 is($re_lgm->get_locusgroup_id(), $exists_locusgroup->get_locusgroup_id(), "Locusgroup id test");
 is($re_lgm->get_evidence_id(), $ev_id, "evidence id test");
 is($re_lgm->get_locusgroup()->get_relationship_id(), $relationship_id, "Relationship id test");
-
+    
 ##########
 #7 Merge 2 groups 
 #The new link creates a new connection between 2 existing groups.
 #The 2 groups will be merged, all members will get the id of the first group, and the latter group will be obsolete.
-
+    
 #first create a group with 2 new members
 $new_locus_id= 4;
 $associated_locus_id=5;
 #diag("Testing merging 2  groups!\n");
-
+    
 my $new_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
 $associated_lgm = CXGN::Phenome::LocusgroupMember->new($schema);
 
@@ -368,11 +365,11 @@ $new_lgm->set_evidence_id($ev_id);
 
 $associated_lgm->set_locus_id($associated_locus_id);
 $associated_lgm->set_evidence_id($ev_id);
-
+    
 $new_locusgroup= $new_lgm->find_or_create_group($relationship_id, $associated_lgm); #this should create a new group!
 
 $new_lg_id= $new_locusgroup->get_locusgroup_id();
-    
+
 $new_lgm->set_locusgroup_id($new_lg_id);
 $associated_lgm->set_locusgroup_id($new_lg_id);
 
@@ -393,20 +390,5 @@ my $ob_group = CXGN::Phenome::LocusGroup->new($schema, $new_locusgroup->get_locu
 is($ob_group->get_obsolete(), '1', "Merged group " . $ob_group->get_locusgroup_id() . " obsolete=true test");
 is($merged_group->get_obsolete(), '0', "Merged group " . $merged_group->get_locusgroup_id() . "obsolete=false test");
 
-
-# rollback in any case
-$dbh->rollback();
-
-#reset locusgroup table sequence
-if ($last_lg_id) {
-    $dbh->do("SELECT setval ('phenome.locusgroup_locusgroup_id_seq', $last_lg_id, true)");
-}else {
-    $dbh->do("SELECT setval ('phenome.locusgroup_locusgroup_id_seq', 1, false)");
-}
-
-#reset the locusgroup_member table sequence
-if ($last_lgm_id) {
-    $dbh->do("SELECT setval ('phenome.locusgroup_member_locusgroup_member_id_seq', $last_lgm_id, true)");
-}else {
-    $dbh->do("SELECT setval ('phenome.locusgroup_member_locusgroup_member_id_seq', 1, false)");
-}
+$schema->txn_rollback(); 
+    
