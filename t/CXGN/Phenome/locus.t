@@ -32,7 +32,9 @@ use warnings;
 use autodie;
 
 use Test::More  tests => 35;
-use CXGN::DB::Connection;
+
+use lib '../sgn/t/lib';
+use SGN::Test::WWW::Mechanize;
 use CXGN::Phenome::Locus;
 use CXGN::Phenome::Schema;
 
@@ -45,8 +47,11 @@ BEGIN {
 CXGN::Phenome::Schema->can('connect')
     or BAIL_OUT('could not load the CXGN::Phenome::Schema  module');
 
-my $dbh =CXGN::DB::Connection->new();
-my $schema=  CXGN::Phenome::Schema->connect(  sub { $dbh->get_actual_dbh() } );
+my $m = SGN::Test::WWW::Mechanize->new();
+my $dbh = $m->context->dbc->dbh;
+
+#my $schema=  CXGN::Phenome::Schema->connect(  sub { $dbh->get_actua
+my $schema = $m->context->dbic_schema('CXGN::Phenome::Schema');
 
 my $last_locus_id= $schema->resultset('Locus')->get_column('locus_id')->max; 
 my $last_allele_id = $schema->resultset('Allele')->get_column('allele_id')->max;
