@@ -83,9 +83,8 @@ sub cross_types {
 =cut
 
 sub check_pop_fields {
-    my $self     = shift;
-    my $args_ref = shift;
-    my %args     = %{$args_ref};
+    my ($self, $args_ref) = @_;
+    my %args              = %{$args_ref};
 
     my @messages       = ();
     my %error_messages = ( 
@@ -94,8 +93,7 @@ sub check_pop_fields {
 	           pop_type           => 'Cross type',
 	           pop_male_parent    => 'Male parent',
                    pop_female_parent  => 'Female parent',
-                   pop_common_name_id => 'Organism common name',
-                   pop_mating_type    => 'Mating type for RILs'
+                   pop_common_name_id => 'Organism common name'
 	        );
 
     foreach my $k (keys (%args)) 
@@ -106,10 +104,7 @@ sub check_pop_fields {
 	    my $error_message = $error_messages{$k};
 	    if ($error_message) 
             {
-                unless ($error_message =~ /Mating type/ && $args{'pop_type'} =~ /1|2/)
-                {
-                    push @messages, $error_message;
-                }
+                push @messages, $error_message;
 	    }
 	}
     }
