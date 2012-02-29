@@ -153,23 +153,23 @@ sub user_pop_details {
     my $self     = shift;
     my $args_ref = $self->get_all_parameters();
 
-    if ($args_ref) {
+    if ($args_ref) 
+    {
         my %args = %$args_ref;
-
         my %pop_args;
 
-        foreach my $k ( keys %args ) {
+        foreach my $k ( keys %args ) 
+        {
             my $v = $args{$k};
-
-            if ( $k =~ /^pop/ ) {
+            if ( $k =~ /^pop/ ) 
+            {
                 $pop_args{$k} = $v;
             }
-
         }
-
         return \%pop_args;
     }
-    else {
+    else 
+    {
         return undef;
     }
 }
@@ -234,16 +234,17 @@ sub user_stat_file {
     my ( $temp_qtl, $temp_user ) = $self->get_user_qtl_dir($c);
     my $stat_file = "$temp_user/user_stat_pop_$pop_id.txt";
 
-    #unless ( -e $stat_file ) {
-        my $stat_ref = $self->user_stat_parameters();
-        if ($stat_ref) {
-            my $stat_table = $self->make_table($stat_ref);
-
-            open my $f, '>', $stat_file or die "Can't create file: $! \n";
-            $f->print($stat_table);
-        }
-        else { $stat_file = undef; }
-   # }
+    my $stat_ref = $self->user_stat_parameters();
+    if ($stat_ref) 
+    {
+        my $stat_table = $self->make_table($stat_ref);
+        open my $f, '>', $stat_file or die "Can't create file: $! \n";
+        $f->print($stat_table);
+    }       
+    else 
+    { 
+        $stat_file = undef;
+    }
 
     return $stat_file;
 }
