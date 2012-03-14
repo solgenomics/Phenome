@@ -1091,26 +1091,30 @@ sub get_cvterm_acronyms {
     $sth->execute($population_id);
   
     while (my ($observable_id, $cvterm) =$sth->fetchrow_array()) {
-	my @words = split(/\s/, $cvterm);
-	my $acronym;
+	my @words = split(/\s/, $cvterm);	
+        my $acronym;
 	
-	if (scalar(@words)== 1) {
-	    my $word =shift(@words);
-		my $l = substr($word,0,2,q{}); 
-		$acronym .= $l;
-	     $acronym = uc($acronym);
-	 }  else {
-	    foreach my $word (@words) {
-		if ($word=~/^\D/){
-		    my $l = substr($word,0,1,q{});
-		    
+	if (scalar(@words) == 1) 
+        {
+            $acronym .= shift(@words);
+        }  
+        else 
+        {
+	    foreach my $word (@words) 
+            {
+		if ($word=~/^\D/)
+                {
+		    my $l = substr($word,0,1,q{});	    
 		    $acronym .= $l;
-		} else {$acronym .= $word;}
+		} 
+                else 
+                {
+                    $acronym .= $word;
+                }
 		$acronym = uc($acronym);
 		$acronym =~/(\w+)/;
 		$acronym = $1;
-	    }
-	    
+	    }	    
 	}
         push @cvterm_acronym_pairs, [$cvterm, $acronym];
     }
@@ -1131,28 +1135,31 @@ sub get_cvterm_acronyms {
 sub cvterm_acronym {
     my $self=shift;
     my $cvterm = shift;
-   
-   
-   
+      
     my @words = split(/\s/, $cvterm);
     my $acronym;
 	
-    if (scalar(@words)== 1) {
-	my $word =shift(@words);
-	my $l = substr($word,0,2,q{}); 
-	$acronym .= $l;
-	$acronym = uc($acronym);
-    }  else {
-	foreach my $word (@words) {
-	    if ($word=~/^\D/){
+    if (scalar(@words)== 1) 
+    {
+	$acronym .= shift(@words);
+    }  
+    else 
+    {
+	foreach my $word (@words) 
+        {
+	    if ($word=~/^\D/)
+            {
 		my $l = substr($word,0,1,q{}); 
 		$acronym .= $l;
-	    } else {$acronym .= $word;}
+	    } 
+            else 
+            {
+                $acronym .= $word;
+            }
 	    $acronym = uc($acronym);
 	    $acronym =~/(\w+)/;
 	    $acronym = $1;
-	}
-	   
+	}	   
     }
     return $acronym;
 
