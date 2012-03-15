@@ -436,7 +436,7 @@ sub print_pheno_annotations {
         if ($db_reference eq 'SGN_ref') {
             $db_reference .= ":" . $reference->pub_id;
         }elsif ($db_reference) {
-            $db_reference .= ":" . $reference->dbxrefs->first->accession;
+            $db_reference .= ":" . $reference->pub_dbxrefs->search_related('dbxref')->first->accession;
         } else {
             $db_reference = 'SGN_ref:861';
             # warn "!!!No reference found for annotation $ontology_id stock $object_id ($symbol)\n";
