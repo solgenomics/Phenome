@@ -27,9 +27,9 @@ verbose output
 
 optional- common_name. Limit results to one organism (e.g. tomato)
 
-=item -o 
+=item -o
 
-output file 
+output file
 
 
 =back
@@ -45,7 +45,7 @@ Naama Menda <nm249@cornell.edu>
 
 =head1 VERSION AND DATE
 
-Version 0.1, March 2009.
+Version 0.2, March 2012.
 
 =cut
 
@@ -61,9 +61,8 @@ use CXGN::Chado::Organism;
 use CXGN::DB::InsertDBH;
 use CXGN::Chado::Dbxref;
 
-#use CXGN::Chado::Cvterm;
-#use CXGN::Chado::Ontology;
-#use CXGN::Chado::Relationship;
+use File::Slurp;
+use Bio::Chado::Schema;
 
 our ($opt_H, $opt_D, $opt_v, $opt_o, $opt_n);
 
@@ -105,22 +104,30 @@ my $common_name = $opt_n || undef;
 my $count=0;
 my $sth=$dbh->prepare($query);
 $sth->execute($common_name);
-print OUT "common_name\tlocus_id\tlocus_name\tlocus_symbol\tSGN-unigenes\tGenBank accessions\n";
+print OUT "common_name\tlocus_id\tlocus_name\tlocus_symbol\tgene_model\tSGN-unigenes\tGenBank accessions\t\tGO_annotations\tPO_annotations\tSP_annotations\n";
 while (my ($locus_id) = $sth->fetchrow_array()) {
     my $count++;
     my $locus=CXGN::Phenome::Locus->new($dbh, $locus_id) ;
     my $symbol=$locus->get_locus_symbol();
     my $name= $locus->get_locus_name();
     my $common_name = $locus->get_common_name();
-    my @u_objects= $locus->get_unigenes(); #unigene ids 
+    my @u_objects= $locus->get_unigenes( {current=>1} ); #unigene ids 
     my @unigenes = map {'SGN-U' . $_->get_unigene_id()  } @u_objects;
     my $unigene_string= join '|', @unigenes;
-    my @dbxrefs= $locus->get_dbxrefs_by_type('genbank'); #dbxref objects
-    
-    my @gb_accs= map {$_->get_feature()->get_uniquename()  }  @dbxrefs;
-    my $gb_string = join '|', @gb_accs; 
-    print OUT "$common_name \t $locus_id \t $name \t $symbol \t $unigene_string \t $gb_string \n";
-    print STDERR "$common_name \t $locus_id \t $name \t $symbol \t $unigene_string \t $gb_string \n";
+    my %dbxrefs= $locus->get_dbxref_lists(); #dbxref objects
+
+    my @gb_accs= map {$_->[0]->get_feature->get_uniquename()  }  @{ $dbxrefs{'DB:GenBank_GI'} };
+    my $gb_string = join '|', @gb_accs;
+    my $genome_locus = $locus->get_genome_locus;
+    my @go =  map { 'GO:' . $_->[0]->get_accession  }  @{ $dbxrefs{'GO'} };
+    my $go_string = join '|' , @go;
+    my @po =  map {'PO:' . $_->[0]->get_accession  }  @{ $dbxrefs{'PO'} };
+    my $po_string = join '|' , @po;
+    my @sp =  map {'SP:' . $_->[0]->get_accession  }  @{ $dbxrefs{'SP'} };
+    my $sp_string = join '|' , @sp;
+
+    print OUT "$common_name\t$locus_id\t$name\t$symbol\t$genome_locus\t$unigene_string\t$gb_string\t$go_string\t$po_string\t$sp_string \n";
+    print STDERR "$common_name \t $locus_id \t $name \t $symbol \t $genome_locus\t $unigene_string \t $gb_string \n";
 
 }
 
