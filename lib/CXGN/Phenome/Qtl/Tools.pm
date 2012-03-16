@@ -83,38 +83,32 @@ sub cross_types {
 =cut
 
 sub check_pop_fields {
-    my $self=shift;
-    my $args_ref = shift;
-    my %args = %{$args_ref};
+    my ($self, $args_ref) = @_;
+    my %args              = %{$args_ref};
 
-    my @messages=();
-  
+    my @messages       = ();
     my %error_messages = ( 
-	           pop_name    => 'Population name',
-	           pop_desc    => 'Population description',
-	           pop_type    => 'Cross type',
-	           pop_male_parent => 'Male parent',
-                   pop_female_parent => 'Female parent',
+	           pop_name           => 'Population name',
+	           pop_desc           => 'Population description',
+	           pop_type           => 'Cross type',
+	           pop_male_parent    => 'Male parent',
+                   pop_female_parent  => 'Female parent',
                    pop_common_name_id => 'Organism common name'
 	        );
-                  # pop_donor_parent  => 'Donor parent',
-                  # pop_recurrent_parent => 'Recurrent parent'
-   	          # organism    => 'Organism', 
-                   #traits_file       => 'Traits file',
-                   #pheno_file        => 'Phenotype data file',
-                   #geno_file         => 'Genotype data file',
 
-    foreach my $k (keys (%args)) {
+    foreach my $k (keys (%args)) 
+    {
 	my $v = $args{$k};
-	unless ($v) {
+	unless ($v) 
+        {
 	    my $error_message = $error_messages{$k};
-	    if ($error_message) {
-		push @messages, $error_message;
+	    if ($error_message) 
+            {
+                push @messages, $error_message;
 	    }
 	}
     }
     
-    	
 return @messages;			   
 
 }
