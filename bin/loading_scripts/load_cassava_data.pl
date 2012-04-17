@@ -164,8 +164,8 @@ eval {
         #store a project- combination of location and year
         my $project = $schema->resultset("Project::Project")->find_or_create(
             {
-                name => "Cassava $location $year replicate $replicate",
-                description => "Plants assayed at $location in $year (replicate $replicate)",
+                name => "Cassava $location $year",
+                description => "Plants assayed at $location in $year",
             } ) ;
         $project->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
         #store the plant accession in the plot table
@@ -247,7 +247,7 @@ eval {
                     observable_id => $observable_term->cvterm_id, #co_term
 		    #attr_id => $pato_id,
 		    value => $value ,
-                    uniquename => "Stock: " . $plot_stock->stock_id . ", Replicate: $replicate, plot: $plot," . ", Term: " . $co_term->name() ,
+                    uniquename => "Stock: " . $plot_stock->stock_id . ", Replicate: $replicate, plot: $plot," . " Term: " . $co_term->name() ,
                 });
 	    print "Stored phenotype " . $phenotype->phenotype_id() . " (observable = " . $observable_term->name . ") with cvalue " . $co_term->name . " value = $value \n\n" ;
             # store the unit for the measurement (if exists) in phenotype_cvterm
