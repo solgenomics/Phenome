@@ -188,10 +188,18 @@ eval {
 	    subject_id => $plot_stock->stock_id(),
                                               } );
         #add the owner for this stock
-	my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
+	#check first if it exists
+        my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
         my $sth = $dbh->prepare($owner_insert);
-        $sth->execute($sp_person_id, $plot_stock->stock_id);
-        $sth->execute($sp_person_id, $parent_stock->stock_id);
+        my $check_query = "SELECT sp_person_id FROM phenome.stock_owner WHERE ( sp_person_id = ? AND stock_id = ? ";
+        my $person_ids = $dbh->selectcol_arrayref($check_query, undef, ($sp_person_id, $plot_stock->stock_id) );
+        if (!@$person_ids) {
+            $sth->execute($sp_person_id, $plot_stock->stock_id);
+        }
+        $person_ids = $dbh->selectcol_arrayref($check_query, undef, ( $sp_person_id, $parent_stock->stock_id) );
+        if (!@$person_ids) {
+            $sth->execute($sp_person_id, $parent_stock->stock_id);
+        }
         #################
         ###store a new nd_experiment. One experiment per stock
         my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
