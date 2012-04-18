@@ -191,7 +191,7 @@ eval {
 	#check first if it exists
         my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
         my $sth = $dbh->prepare($owner_insert);
-        my $check_query = "SELECT sp_person_id FROM phenome.stock_owner WHERE ( sp_person_id = ? AND stock_id = ? ";
+        my $check_query = "SELECT sp_person_id FROM phenome.stock_owner WHERE ( sp_person_id = ? AND stock_id = ? )";
         my $person_ids = $dbh->selectcol_arrayref($check_query, undef, ($sp_person_id, $plot_stock->stock_id) );
         if (!@$person_ids) {
             $sth->execute($sp_person_id, $plot_stock->stock_id);
