@@ -12,6 +12,7 @@ load_cassava_data.pl
  -H  host name
  -D  database name
  -i infile
+ -u sgn user name
  -t  Test run . Rolling back at the end.
 
 
@@ -40,9 +41,9 @@ use Carp qw /croak/ ;
 ##
 ##
 
-our ($opt_H, $opt_D, $opt_i, $opt_t);
+our ($opt_H, $optD, $opt_i, $opt_t, $opt_u);
 
-getopts('H:i:tD:');
+getopts('H:i:tD:u:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -96,7 +97,7 @@ my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
       dbxref => 'phenotyping experiment',
     });
 
-my $username = 'kulakow' ; #'cassavabase';
+my $username = $opt_u || 'kulakow' ; #'cassavabase';
 my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
 
 die "User $username for cassavabase must be pre-loaded in the database! \n" if !$sp_person_id ;
@@ -132,7 +133,7 @@ my $unit_cv = $schema->resultset("Cv::Cv")->find(
     { name => 'unit.ontology' } );
 
 
-my $organism = $schema->resultset("Organism::Organism")->find_or_create( 
+my $organism = $schema->resultset("Organism::Organism")->find_or_create(
     {
 	genus   => 'Manihot',
 	species => 'Manihot esculenta',
