@@ -2022,8 +2022,8 @@ sub merge_locus {
     $self->d( "*****locus.pm: calling merge_locus...merging locus " . $m_locus->get_locus_id() . " with locus ". $self->get_locus_id() . " \n");
     eval {
 	my @m_owners=$m_locus->get_owners();
-	foreach my $o (@m_owners) { 
-	    my $o_id= $self->add_owner($o, $sp_person_id);  
+	foreach my $o (@m_owners) {
+	    my $o_id= $self->add_owner($o, $sp_person_id);
 	    $self->d( "merge_locus is adding owner $o to locus " . $self->get_locus_id() . "\n**") if $o_id;
 	}
         $self->d( "merge_locus checking for aliases ....\n");
@@ -2033,13 +2033,13 @@ sub merge_locus {
 	    $self->d( "merge_locus is adding alias " . $alias->get_locus_alias() . " to locus " . $self->get_locus_id() . "\n**");
 	}
 	my @unigenes=$m_locus->get_unigenes();
-	foreach my $u(@unigenes) { 
+	foreach my $u(@unigenes) {
 	    my $u_id= $u->get_unigene_id();
-	    $self->add_unigene($u_id, $sp_person_id); 
+	    $self->add_unigene($u_id, $sp_person_id);
 	    $self->d( "merge_locus is adding unigene $u to locus" . $self->get_locus_id() . "\n**");
 	}
 	my @alleles=$m_locus->get_alleles();
-	foreach my $allele(@alleles) { 
+	foreach my $allele(@alleles) {
 	    $self->d( "adding allele ........\n");
 	    #reset allele id for storing a new one for the current locus
 	    $allele->set_allele_id(undef);
@@ -2056,7 +2056,7 @@ sub merge_locus {
 	}
 
 	my @figures=$m_locus->get_figures();
-	foreach my $image(@figures) { 
+	foreach my $image(@figures) {
 	    $self->add_figure($image->get_image_id(), $sp_person_id);
 	    $self->d( "merge_locus is adding figure" . $image->get_image_id() . " to locus " . $self->get_locus_id() . "\n**");
 	}
@@ -2104,17 +2104,29 @@ sub merge_locus {
             $m_lgm->set_column(obsolete => 't');
             $m_lgm->update();
         }
-	$self->d( "Obsoleting merged locus... \n");
-	#last step is to obsolete the old locus. All associated objects (images, alleles, individuals..) should not display obsolete objects on the relevant pages! 
+        #concatenate description
+        my $self_description = $self->get_description . "\n" if $self->get_description ;
+        $self->set_description($self_description  . $m_locus->get_description) ;
+        #update chromosome and arm, but only if null in $self locus
+        $self->set_linkage_group($m_locus->get_linkage_group) if !$self->get_linkage_group;
+        $self->set_lg_arm($m_locus->get_lg_arm) if !$self->get_lg_arm;
+        ##update genome locus identifier
+        $self->set_genome_locus($m_locus->get_genome_locus) if !$self->get_genome_locus;
+        #update gene activity
+        $self->set_gene_activity($m_locus->get_gene_activity) if !$self->get_gene_activity;
+        #
+        $self->store();
+        $self->d( "Obsoleting merged locus... \n");
+	#last step is to obsolete the old locus. All associated objects (images, alleles, individuals..) should not display obsolete objects on the relevant pages!
 	$m_locus->delete();
     };
-    if ($@) { 
+    if ($@) {
 	my $error = "Merge locus failed! \n $@\n\nCould not merge locus $merged_locus_id with locus " . $self->get_locus_id() . "\n";
 	return $error;
     } else {
-	$self->d( "merging locus succeded ! \n"); 
+	$self->d( "merging locus succeded ! \n");
 	return undef;
-    } 
+    }
 }
 
 =head2 get_locus_stats
@@ -2122,7 +2134,7 @@ sub merge_locus {
  Usage: CXGN::Phenome::Locus->get_locus_stats($dbh)
  Desc:  class function. Find the status of the locus database by month.
  Ret:   List of lists [locus_count], [month/year]]
- Args:  dbh 
+ Args:  dbh
  Side Effects: none
  Example:
 
