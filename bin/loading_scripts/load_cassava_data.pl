@@ -41,7 +41,7 @@ use Carp qw /croak/ ;
 ##
 ##
 
-our ($opt_H, $optD, $opt_i, $opt_t, $opt_u);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_u);
 
 getopts('H:i:tD:u:');
 
