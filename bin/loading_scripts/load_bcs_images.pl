@@ -66,6 +66,7 @@ Naama Menda (nm249@cornell.edu) October 2010.
 use strict;
 
 use CXGN::Metadata::Schema;
+use CXGN::Metadata::Metadbdata;
 use CXGN::DB::InsertDBH;
 use SGN::Image;
 use Bio::Chado::Schema;
@@ -102,10 +103,15 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] }
     );
-my $metadata_schema = CXGN::Metadata::Schema->connect(
-    sub { $dbh },
-    { on_connect_do => ['SET search_path TO metadata;'] },
-    );
+
+
+print STDERR "Generate metadata_id... ";
+my $metadata_schema = CXGN::Metadata::Schema->connect("dbi:Pg:database=$dbname;host=localhost", "postgres", $dbh->dbpass(), {on_connect_do => "SET search_path TO 'metadata', 'public'", });
+
+# my $metadata_schema = CXGN::Metadata::Schema->connect(
+#     sub { $dbh },
+#     { on_connect_do => ['SET search_path TO metadata;'] },
+#     );
 my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $sp_person);
 my %name2id = ();
 
@@ -148,7 +154,7 @@ $sth->execute();
 while ( my $hashref = $sth->fetchrow_hashref() ) {
     my $image_id = $hashref->{image_id};
     my $chado_table_id = $hashref->{stock_id};  ##### table specific
-    my $i = SGN::Image->new($dbh, $image_id);
+    my $i = SGN::Image->new($dbh, $image_id, $ch);
     my $original_filename = $i->get_original_filename();
     $image_hash{$original_filename} = $i; # this doesn't have the file extension
     $connections{$image_id."-".$chado_table_id}++;
@@ -161,6 +167,9 @@ my @files = glob "$dirname/*.$ext";
 my @sub_files;
 
 my $new_image_count = 0;
+
+my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $sp_person);
+my $metadata_id = $metadata->store()->get_metadata_id();
 
 
 foreach my $file (@files) {
@@ -178,10 +187,10 @@ foreach my $file (@files) {
 
 	#lycotill images 
 	#
-	if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
-	    $object_name = $1;
-	}
-	my $plot = "LycoTILL:" . $object_name;
+	#if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
+	#    $object_name = $1;
+	#}
+	my $plot =  $object_name;
 	print  "plot = $plot \n";
 
 	if (!$plot) { die "File $file has no object name in it!"; }
@@ -226,7 +235,7 @@ foreach my $file (@files) {
 			$new_image_count++;
 		    }
 		    else { 
-			my $image = SGN::Image->new($dbh);   
+			my $image = SGN::Image->new($dbh, undef, $ch);   
 			$image_hash{$filename}=$image;
 
 			$image->process_image("$filename", undef, undef); 
@@ -240,8 +249,6 @@ foreach my $file (@files) {
 		    }
 		}
 	    }
-            my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $sp_person);
-            my $metadata_id = $metadata->store()->get_metadata_id();
             #store the image_id - stock_id link
 	    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
             my $sth  = $dbh->prepare($q);
