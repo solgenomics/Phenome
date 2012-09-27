@@ -106,7 +106,7 @@ my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on
 
 
 print STDERR "Generate metadata_id... ";
-my $metadata_schema = CXGN::Metadata::Schema->connect("dbi:Pg:database=$dbname;host=localhost", "postgres", $dbh->dbpass(), {on_connect_do => "SET search_path TO 'metadata', 'public'", });
+my $metadata_schema = CXGN::Metadata::Schema->connect("dbi:Pg:database=$dbname;host=".$dbh->dbhost(), "postgres", $dbh->dbpass(), {on_connect_do => "SET search_path TO 'metadata', 'public'", });
 
 # my $metadata_schema = CXGN::Metadata::Schema->connect(
 #     sub { $dbh },
