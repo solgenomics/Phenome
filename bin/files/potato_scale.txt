@@ -75,18 +75,18 @@ SP:0000285	PVP	2	medium thick	tuber thickness
 SP:0000286	PVP	3	slightly flattened	tuber thickness
 SP:0000287	PVP	4	flattened	tuber thickness
 SP:0000233	PVP	5	other	tuber thickness
-SP:0000297	PVP	1	white	ruber flesh color
-SP:0000289	PVP	2	light yellow	ruber flesh color
-SP:0000298	PVP	3	yellow	ruber flesh color
-SP:0000294	PVP	4	buff	ruber flesh color
-SP:0000291	PVP	5	tan	ruber flesh color
-SP:0000288	PVP	6	brown	ruber flesh color
-SP:0000295	PVP	7	pink	ruber flesh color
-SP:0000296	PVP	8	red	ruber flesh color
-SP:0000290	PVP	9	purplish-red	ruber flesh color
-SP:0000293	PVP	10	purple	ruber flesh color
-SP:0000292	PVP	11	dark purple-black	ruber flesh color
-SP:0000188	PVP	12	other	ruber flesh color
+SP:0000297	PVP	1	white	tuber flesh color
+SP:0000289	PVP	2	light yellow	tuber flesh color
+SP:0000298	PVP	3	yellow	tuber flesh color
+SP:0000294	PVP	4	buff	tuber flesh color
+SP:0000291	PVP	5	tan	tuber flesh color
+SP:0000288	PVP	6	brown	tuber flesh color
+SP:0000295	PVP	7	pink	tuber flesh color
+SP:0000296	PVP	8	red	tuber flesh color
+SP:0000290	PVP	9	purplish-red	tuber flesh color
+SP:0000293	PVP	10	purple	tuber flesh color
+SP:0000292	PVP	11	dark purple-black	tuber flesh color
+SP:0000188	PVP	12	other	tuber flesh color
 SP:0000299	PVP	1	protruding	tuber eye depth
 SP:0000300	PVP	3	shallow	tuber eye depth
 SP:0000301	PVP	5	intermediate	tuber eye depth

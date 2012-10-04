@@ -40,13 +40,15 @@ This works mostly for colors and shape names. Other scales, usually describing l
 Naama Menda (nm249@cornell.edu)
 
 May 2010
- 
+
 =cut
 
 
 #!/usr/bin/perl
 use strict;
-use Getopt::Std; 
+use Getopt::Std;
+use Try::Tiny;
+use File::Slurp;
 
 use Bio::Chado::Schema;
 use CXGN::DB::InsertDBH;
@@ -62,7 +64,7 @@ my $file = $opt_i;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
-				      dbargs => {AutoCommit => 0,
+				      dbargs => {AutoCommit => 1,
 						 RaiseError => 1}
 				    }
     );
@@ -72,56 +74,54 @@ my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } );
 #getting the last database ids for resetting at the end in case of rolling back
 my $last_cvtermprop_id= $schema->resultset('Cv::Cvtermprop')->get_column('cvtermprop_id')->max; 
 
+my @lines = read_file( $file ) ;
+shift(@lines); #remove the header
 
-open (my $FH, $file) || die "can't open file $file for reading!!" ; 
-
-#my $file=CXGN::Tools::File::Spreadsheet->new($filename);
-# sp_term scale_name value name_string
 my $cv_name= "breeders scale";
 
-eval {
+my $coderef = sub {
     my $line_count = 0;
-    <$FH>;
-    TERM: while ( my $line =<$FH>) {
-	#	$line = ~s/\s//g;
-	chomp $line;
-	my @fields = split (/\t/, $line);
-	my $term = $fields[0];
-	my $scale_name = $fields[1];
-	my $value = $fields[2];
-	next TERM if !$term;
-	#set rank to undef if it is not numeric 
+    foreach my $line (@lines ) {
+        chomp $line;
+        my ($term, $scale_name, $value, $term_name, $parent_name) = split("\t", $line);
+        my ($db_name, $accession) = split (/:/ , $term);
+        next if !$term;
+	#set rank to undef if it is not numeric
 	my $rank = undef;
-	$rank = $value if $value =~ m/\d+$/ ; 
+	$rank = $value if $value =~ m/\d+$/ ;
 	print STDOUT "term ='$term'\n";
-	my ($db, $accession) = split (/:/, $term); 
 	my ($dbxref) = $schema->resultset("General::Db")->
-	    search( { name => $db})->
+	    search( { name => $db_name})->
 	    search_related("dbxrefs", { accession=>$accession});
-	if (!defined $dbxref) { croak "no dbxref found for accession $accession! \n" } ; 
+	if (!defined $dbxref) { croak "no dbxref found for accession $accession! \n" } ;
 	my ($cvterm) = $dbxref->
 	    search_related("cvterm");
-	
 	print "cvterm = " . $cvterm->name() . " prop=$value, rank=$rank, type=$scale_name\n";
-	
 	my $new_prop= $cvterm->create_cvtermprops({$scale_name=>$value} , {cv_name => $cv_name, autocreate=>1, rank=>$rank, allow_duplicate_values=>1});
-	
 	while (my ($propname,$cvtermprop)  = each %$new_prop ) {
-	    print "stored new cvtermprop: $propname, " . $cvtermprop->value() . " rank = " . $cvtermprop->rank() . " (passed rank = '$rank')\n\n" ; 
+	    print "stored new cvtermprop: $propname, " . $cvtermprop->value() . " rank = " . $cvtermprop->rank() . " (passed rank = '$rank')\n\n" ;
 	}
-	
     }
 };
 
-if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
-elsif ($opt_t) {
-    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
-    
-    if ($last_cvtermprop_id) { $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', $last_cvtermprop_id, true)"); }
-    else { $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', 1, false)"); }
-    
-    
-}else {
-    print "Transaction succeeded! Commiting cvtermprops! \n\n";
-    $dbh->commit();
-}
+try {
+    $schema->txn_do($coderef);
+    if ($opt_t) {
+        print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
+        if ($last_cvtermprop_id) {
+            $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', $last_cvtermprop_id, true)");
+        }
+        else { $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', 1, false)");
+        }
+    } else {
+        print "Transaction succeeded! Commiting scale cvtermprops! \n\n";
+    }
+} catch {
+    # Transaction failed
+    if ($last_cvtermprop_id) {
+        $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', $last_cvtermprop_id, true)");
+    }
+    else { $dbh->do("SELECT setval ('cvtermprop_cvtermprop_id_seq', 1, false)");
+    }
+    die "An error occured! Rolling back  and reseting database sequences! " . $_ . "\n";
+};
