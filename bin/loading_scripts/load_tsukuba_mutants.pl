@@ -106,12 +106,12 @@ my $organism_id = $organism->organism_id();
 my $stock_rs = $schema->resultset("Stock::Stock");
 
 #the cvterm for the population
-print "Finding/creating cvterm for population\n";
+print "Finding/creating cvterm for mutant population\n";
 my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
-    { name   => 'population',
+    { name   => 'mutant population',
       cv     => 'stock type',
       db     => 'null',
-      dbxref => 'population',
+      dbxref => 'mutant population',
     });
 
 
