@@ -113,6 +113,19 @@ sub new_with_symbol_and_species {
 }
 
 
+sub new_with_locusname { 
+    my $class = shift;
+    my $dbh = shift;
+    my $locusname = shift;
+    my $query = "SELECT locus_id FROM phenome.locus WHERE locus ilike ?";
+    my $sth = $dbh->prepare($query);
+    $sth->execute($locusname);
+    my ($id) = $sth->fetchrow_array();
+    return $class->new($dbh, $id);
+}
+
+
+
 
 =head2 get_locus_ids_by_editor
 

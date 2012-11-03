@@ -96,7 +96,7 @@ my $common_name= 'Tomato';
 my $common_name_id = 1; # find by name = $common_name !
 my $species = 'Solanum lycopersicum'; #
 
-my $sp_person_id = CXGN::People::Person->get_person_by_username($dbh, 'nm249' );#'Ariizumi');
+my $sp_person_id = CXGN::People::Person->get_person_by_username($dbh, 'Ariizumi');
 die "Need to have a user pre-loaded in the sgn database! " if !$sp_person_id;
 
 my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
