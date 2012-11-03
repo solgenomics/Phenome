@@ -134,5 +134,12 @@ SP:0000335	NE1014	2		tuber size
 SP:0000336	NE1014	4		tuber size
 SP:0000337	NE1014	6		tuber size
 SP:0000338	NE1014	8		tuber size
-
-
+SP:0000297	solcap	9	white	tuber flesh color
+SP:0000289	solcap	7	light yellow	tuber flesh color
+SP:0000298	solcap	6	yellow	tuber flesh color
+SP:0000294	solcap	8	buff (or cream)	tuber flesh color
+SP:0000295	solcap	4	pink	tuber flesh color
+SP:0000296	solcap	3	red	tuber flesh color
+SP:0000293	solcap	2	purple	tuber flesh color
+SP:0000392	solcap	1	blue tuber flesh color
+SP:0000393	solcap	5	dark-yellow to orange tuber flesh color
