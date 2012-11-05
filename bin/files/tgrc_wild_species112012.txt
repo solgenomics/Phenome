@@ -1,0 +1,1206 @@
+Accession	Status	Accession Category	Taxon (Lycopersicon)	Taxon2 (Solanum)	Collection Site	Province Or Department	Country
+LA0378	Active	Wild species	L. peruvianum	S. arcanum	Cascas	Cajamarca	Peru
+LA0385	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	San Juan (Rio Jequetepeque)	Cajamarca	Peru
+LA0389	Unavailable	Wild species	L. peruvianum var. humifusum	S. arcanum	Abra Gavilan	Cajamarca	Peru
+LA0392	Unavailable	Wild species	L. peruvianum	S. arcanum	Llallan	Cajamarca	Peru
+LA0441	Active	Wild species	L. peruvianum	S. arcanum	Cerro Campana	La Libertad	Peru
+LA1027	Unavailable	Wild species	L. peruvianum	S. arcanum	Chilete	Cajamarca	Peru
+LA1031	Unavailable	Wild species	L. peruvianum	S. arcanum	Balsas	Amazonas	Peru
+LA1032	Active	Wild species	L. peruvianum	S. arcanum	Aricapampa	La Libertad	Peru
+LA1346	Active	Wild species	L. peruvianum	S. arcanum	Casmiche	La Libertad	Peru
+LA1350	Active	Wild species	L. peruvianum	S. arcanum	Chauna	Cajamarca	Peru
+LA1351	Active	Wild species	L. peruvianum	S. arcanum	Rupe	Cajamarca	Peru
+LA1360	Active	Wild species	L. peruvianum	S. arcanum	Pariacoto	Ancash	Peru
+LA1394	Active	Wild species	L. peruvianum	S. arcanum	Balsas - Rio Utcubamba	Amazonas	Peru
+LA1395	Active	Wild species	L. peruvianum	S. arcanum	Chachapoyas	Amazonas	Peru
+LA1396	Unavailable	Wild species	L. peruvianum	S. arcanum	Balsas (Chachapoyas)	Amazonas	Peru
+LA1626	Active	Wild species	L. peruvianum	S. arcanum	Mouth of Rio Rupac	Ancash	Peru
+LA1708	Active	Wild species	L. peruvianum	S. arcanum	Chamaya to Jaen	Cajamarca	Peru
+LA1984	Active	Wild species	L. peruvianum	S. arcanum	Otuzco	La Libertad	Peru
+LA1985	Active	Wild species	L. peruvianum	S. arcanum	Casmiche	La Libertad	Peru
+LA2150	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	Puente Muyuna	Cajamarca	Peru
+LA2151	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	Morochupa	Cajamarca	Peru
+LA2152	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	San Juan #1	Cajamarca	Peru
+LA2153	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	San Juan #2	Cajamarca	Peru
+LA2157	Active	Wild species	L. peruvianum	S. arcanum	Tunel Chotano	Cajamarca	Peru
+LA2163	Active	Wild species	L. peruvianum	S. arcanum	Cochabamba to Yamaluc	Cajamarca	Peru
+LA2164	Unavailable	Wild species	L. peruvianum	S. arcanum	Yamaluc	Cajamarca	Peru
+LA2172	Active	Wild species	L. peruvianum	S. arcanum	Cuyca	Cajamarca	Peru
+LA2185	Active	Wild species	L. peruvianum	S. arcanum	Pongo de Rentema	Amazonas	Peru
+LA2326	Active	Wild species	L. peruvianum	S. arcanum	Above Balsas	Amazonas	Peru
+LA2327	Active	Wild species	L. peruvianum	S. arcanum	Aguas Calientes	Cajamarca	Peru
+LA2328	Unavailable	Wild species	L. peruvianum	S. arcanum	Aricapampa	La Libertad	Peru
+LA2330	Active	Wild species	L. peruvianum	S. arcanum	Chagual	La Libertad	Peru
+LA2331	Unavailable	Wild species	L. peruvianum	S. arcanum	Agallpampa	La Libertad	Peru
+LA2333	Unavailable	Wild species	L. peruvianum	S. arcanum	Casmiche	La Libertad	Peru
+LA2334	Unavailable	Wild species	L. peruvianum var. humifusum	S. arcanum	San Juan	Cajamarca	Peru
+LA2388	Active	Wild species	L. peruvianum	S. arcanum	Cochabamba to Huambos (Chota)	Cajamarca	Peru
+LA2548	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	La Moyuna	Cajamarca	Peru
+LA2550	Unavailable	Wild species	L. peruvianum var. humifusum	S. arcanum	El Tingo, Chorpampa-San Juan	Cajamarca	Peru
+LA2553	Unavailable	Wild species	L. peruvianum	S. arcanum	Balconcillo de San Marcos	Cajamarca	Peru
+LA2555	Unavailable	Wild species	L. peruvianum	S. arcanum	Marical - Castilla	La Libertad	Peru
+LA2565	Unavailable	Wild species	L. peruvianum	S. arcanum	Potrero de Panacocha a Llamellin	Ancash	Peru
+LA2566	Active	Wild species	L. peruvianum	S. arcanum	Cullachaca	Ancash	Peru
+LA2582	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	San Juan (4x)	Cajamarca	Peru
+LA2583	Active	Wild species	L. peruvianum var. humifusum	S. arcanum	(4x)		
+LA2917	Active	Wild species	L. peruvianum	S. arcanum	Chullchaca	Ancash	Peru
+LA4316	Unavailable	Wild species	L. peruvianum	S. arcanum	Kuntur Wasi	Cajamarca	Peru
+LA0166	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Barranco, N of Punta Ayora	Galapagos Islands	Ecuador
+LA0421	Active	Wild species	L. cheesmanii	S. cheesmaniae	San Cristobal:  cliff East of Wreck Bay	Galapagos Islands	Ecuador
+LA0422	Active	Wild species	L. cheesmanii	S. cheesmaniae	San Cristobal:  Wreck Bay, Puerto Baquerizo	Galapagos Islands	Ecuador
+LA0428	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Trail Bellavista to Miconia Zone	Galapagos Islands	Ecuador
+LA0429	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Crater in highlands	Galapagos Islands	Ecuador
+LA0434	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Rambech Trail	Galapagos Islands	Ecuador
+LA0437	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  Ponds North of Villamil	Galapagos Islands	Ecuador
+LA0521	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina:  Inside Crater	Galapagos Islands	Ecuador
+LA0522	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina: Outer slopes	Galapagos Islands	Ecuador
+LA0524	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  Punta Essex	Galapagos Islands	Ecuador
+LA0528B	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Academy Bay	Galapagos Islands	Ecuador
+LA0529	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina: Crater	Galapagos Islands	Ecuador
+LA0531	Active	Wild species	L. cheesmanii	S. cheesmaniae	Baltra: Barranco slope, N side	Galapagos Islands	Ecuador
+LA0746	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  Punta Essex	Galapagos Islands	Ecuador
+LA0749	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina:  North side	Galapagos Islands	Ecuador
+LA0927	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Academy Bay	Galapagos Islands	Ecuador
+LA0932	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela: Tagus Cove	Galapagos Islands	Ecuador
+LA1035	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina: Low elevation	Galapagos Islands	Ecuador
+LA1036	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  far north end	Galapagos Islands	Ecuador
+LA1037	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela: Alcedo crater	Galapagos Islands	Ecuador
+LA1039	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  Cape Berkeley	Galapagos Islands	Ecuador
+LA1040	Active	Wild species	L. cheesmanii	S. cheesmaniae	San Cristobal: Caleta Tortuga	Galapagos Islands	Ecuador
+LA1041	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  El Cascajo	Galapagos Islands	Ecuador
+LA1042	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela: Cerro Santo Tomas	Galapagos Islands	Ecuador
+LA1043	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela: Cerro Santo Tomas	Galapagos Islands	Ecuador
+LA1138	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  E of Cerro Azul	Galapagos Islands	Ecuador
+LA1139	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  W of Cerro Azul	Galapagos Islands	Ecuador
+LA1402	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina: W of Punta Espinoza	Galapagos Islands	Ecuador
+LA1404	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina:  W flank caldera	Galapagos Islands	Ecuador
+LA1406	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina:  SW rim caldera	Galapagos Islands	Ecuador
+LA1407	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina:  caldera, NW bench	Galapagos Islands	Ecuador
+LA1409	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela: Punta Albemarle	Galapagos Islands	Ecuador
+LA1412	Active	Wild species	L. cheesmanii	S. cheesmaniae	San Cristobal:  opposite Isla Lobos	Galapagos Islands	Ecuador
+LA1414	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela: Cerro Azul	Galapagos Islands	Ecuador
+LA1427	Active	Wild species	L. cheesmanii	S. cheesmaniae	Fernandina: WSW rim of caldera	Galapagos Islands	Ecuador
+LA1447	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz: Charles Darwin Station-Punta Nunez	Galapagos Islands	Ecuador
+LA1448	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz:  Puerto Ayora, Pelican Bay	Galapagos Islands	Ecuador
+LA1449	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Cruz: Charles Darwin Station, Seismo Station	Galapagos Islands	Ecuador
+LA1450	Active	Wild species	L. cheesmanii	S. cheesmaniae	Isabela:  Bahia San Pedro	Galapagos Islands	Ecuador
+LA3124	Active	Wild species	L. cheesmanii	S. cheesmaniae	Santa Fe: near E landing	Galapagos Islands	Ecuador
+LA0130	Active	Wild species	L. chilense	S. chilense	Moquegua	Moquegua	Peru
+LA0294	Active	Wild species	L. chilense	S. chilense	Tacna	Tacna	Peru
+LA0456	Active	Wild species	L. chilense	S. chilense	Clemesi	Moquegua	Peru
+LA0458	Active	Wild species	L. chilense	S. chilense	Tacna	Tacna	Peru
+LA0460	Active	Wild species	L. chilense	S. chilense	Palca	Tacna	Peru
+LA0470	Active	Wild species	L. chilense	S. chilense	Taltal	Antofagasta	Chile
+LA1029	Active	Wild species	L. chilense	S. chilense	Moquegua	Moquegua	Peru
+LA1030	Active	Wild species	L. chilense	S. chilense	N of Tacna	Tacna	Peru
+LA1782	Active	Wild species	L. chilense	S. chilense	Quebrada de Acari	Arequipa	Peru
+LA1917	Active	Wild species	L. chilense	S. chilense	Llauta (4x)	Ayacucho	Peru
+LA1930	Active	Wild species	L. chilense	S. chilense	Quebrada Calapampa	Arequipa	Peru
+LA1931	Unavailable	Wild species	L. chilense	S. chilense	Mina Santa Rosa	Arequipa	Peru
+LA1932	Active	Wild species	L. chilense	S. chilense	Minas de Acari	Arequipa	Peru
+LA1938	Active	Wild species	L. chilense	S. chilense	Quebrada Salsipuedes	Arequipa	Peru
+LA1958	Active	Wild species	L. chilense	S. chilense	Pampa de la Clemesi	Moquegua	Peru
+LA1959	Active	Wild species	L. chilense	S. chilense	Huaico Moquegua	Moquegua	Peru
+LA1960	Active	Wild species	L. chilense	S. chilense	Rio Osmore	Moquegua	Peru
+LA1961	Unavailable	Wild species	L. chilense	S. chilense	Toquepala	Tacna	Peru
+LA1962	Active	Wild species	L. chilense	S. chilense	Huaico Tacna	Tacna	Peru
+LA1963	Active	Wild species	L. chilense	S. chilense	Rio Caplina	Tacna	Peru
+LA1965	Active	Wild species	L. chilense	S. chilense	Causuri	Tacna	Peru
+LA1967	Active	Wild species	L. chilense	S. chilense	Pachia, Rio Caplina	Tacna	Peru
+LA1968	Active	Wild species	L. chilense	S. chilense	Cause Seco, Tacna to Tarata	Tacna	Peru
+LA1969	Active	Wild species	L. chilense	S. chilense	Estique Pampa	Tacna	Peru
+LA1970	Active	Wild species	L. chilense	S. chilense	Tarata	Tacna	Peru
+LA1971	Active	Wild species	L. chilense	S. chilense	Palquilla	Tacna	Peru
+LA1972	Active	Wild species	L. chilense	S. chilense	Rio Sama	Tacna	Peru
+LA2404	Active	Wild species	L. chilense	S. chilense	Arica to Tignamar	Arica and Parinacota	Chile
+LA2405	Active	Wild species	L. chilense	S. chilense	Tignamar	Arica and Parinacota	Chile
+LA2406	Active	Wild species	L. chilense	S. chilense	Arica to Putre	Arica and Parinacota	Chile
+LA2731	Active	Wild species	L. chilense	S. chilense	Moquella	Tarapaca	Chile
+LA2737	Active	Wild species	L. chilense	S. chilense	Yala-yala	Tarapaca	Chile
+LA2739	Active	Wild species	L. chilense	S. chilense	Crossroads Nama to Camina	Tarapaca	Chile
+LA2743	Unavailable	Wild species	L. chilense	S. chilense	La Puntilla	Arica and Parinacota	Chile
+LA2746	Active	Wild species	L. chilense	S. chilense	Asentamiento-18	Arica and Parinacota	Chile
+LA2747	Active	Wild species	L. chilense	S. chilense	Alta Azapa	Arica and Parinacota	Chile
+LA2748	Active	Wild species	L. chilense	S. chilense	Soledad	Tarapaca	Chile
+LA2749	Active	Wild species	L. chilense	S. chilense	Mina La Buena Esperanza	Antofagasta	Chile
+LA2750	Active	Wild species	L. chilense	S. chilense	Mina La Despreciada	Antofagasta	Chile
+LA2751	Active	Wild species	L. chilense	S. chilense	Pachica (Rio Tarapaca)	Tarapaca	Chile
+LA2753	Active	Wild species	L. chilense	S. chilense	Laonzana	Tarapaca	Chile
+LA2754	Active	Wild species	L. chilense	S. chilense	W of Chusmisa	Tarapaca	Chile
+LA2755	Active	Wild species	L. chilense	S. chilense	Banos de Chusmisa	Tarapaca	Chile
+LA2757	Active	Wild species	L. chilense	S. chilense	W of Chusmisa	Tarapaca	Chile
+LA2759	Active	Wild species	L. chilense	S. chilense	Mamina	Tarapaca	Chile
+LA2762	Active	Wild species	L. chilense	S. chilense	Quebradas de Mamina a Parca	Tarapaca	Chile
+LA2764	Active	Wild species	L. chilense	S. chilense	Codpa	Arica and Parinacota	Chile
+LA2765	Active	Wild species	L. chilense	S. chilense	Timar	Arica and Parinacota	Chile
+LA2767	Active	Wild species	L. chilense	S. chilense	Chitita	Arica and Parinacota	Chile
+LA2768	Active	Wild species	L. chilense	S. chilense	Empalme Codpa	Arica and Parinacota	Chile
+LA2771	Active	Wild species	L. chilense	S. chilense	Above Poconchile	Arica and Parinacota	Chile
+LA2773	Active	Wild species	L. chilense	S. chilense	Zapahuira	Arica and Parinacota	Chile
+LA2774	Active	Wild species	L. chilense	S. chilense	Socorama	Arica and Parinacota	Chile
+LA2778	Active	Wild species	L. chilense	S. chilense	Chapiquina	Arica and Parinacota	Chile
+LA2779	Active	Wild species	L. chilense	S. chilense	Cimentario Belen	Arica and Parinacota	Chile
+LA2780	Active	Wild species	L. chilense	S. chilense	Belen to Lupica	Arica and Parinacota	Chile
+LA2879	Active	Wild species	L. chilense	S. chilense	Peine	Antofagasta	Chile
+LA2880	Active	Wild species	L. chilense	S. chilense	Quebrada Tilopozo	Antofagasta	Chile
+LA2882	Active	Wild species	L. chilense	S. chilense	Camar	Antofagasta	Chile
+LA2884	Active	Wild species	L. chilense	S. chilense	Ayaviri	Antofagasta	Chile
+LA2887	Active	Wild species	L. chilense	S. chilense	Quebrada Bandurria	Antofagasta	Chile
+LA2888	Active	Wild species	L. chilense	S. chilense	Loma Paposo	Antofagasta	Chile
+LA2891	Active	Wild species	L. chilense	S. chilense	Quebrada Taltal	Antofagasta	Chile
+LA2930	Active	Wild species	L. chilense	S. chilense	Quebrada Taltal	Antofagasta	Chile
+LA2931	Active	Wild species	L. chilense	S. chilense	Guatacondo	Tarapaca	Chile
+LA2932	Active	Wild species	L. chilense	S. chilense	Quebrada Gatico,  Mina Escalera	Antofagasta	Chile
+LA2946	Active	Wild species	L. chilense	S. chilense	Guatacondo	Tarapaca	Chile
+LA2949	Active	Wild species	L. chilense	S. chilense	Chusmisa	Tarapaca	Chile
+LA2952	Active	Wild species	L. chilense	S. chilense	Camiña	Tarapaca	Chile
+LA2955	Unavailable	Wild species	L. chilense	S. chilense	Quistagama-Quisama	Tarapaca	Chile
+LA2965	Unavailable	Wild species	L. chilense	S. chilense	Pachia	Tacna	Peru
+LA2980	Active	Wild species	L. chilense	S. chilense	Yacango	Moquegua	Peru
+LA2981A	Active	Wild species	L. chilense	S. chilense	Torata	Moquegua	Peru
+LA3111	Active	Wild species	L. chilense	S. chilense	Tarata	Tacna	Peru
+LA3112	Active	Wild species	L. chilense	S. chilense	Estique Pampa	Tacna	Peru
+LA3113	Active	Wild species	L. chilense	S. chilense	Apacheta	Tacna	Peru
+LA3114	Active	Wild species	L. chilense	S. chilense	Quilla	Tacna	Peru
+LA3115	Active	Wild species	L. chilense	S. chilense	W of Quilla	Tacna	Peru
+LA3153	Active	Wild species	L. chilense	S. chilense	Desvio Omate (Rio de Osmore)	Moquegua	Peru
+LA3155	Active	Wild species	L. chilense	S. chilense	Quinistaquillas	Moquegua	Peru
+LA3355	Unavailable	Wild species	L. chilense	S. chilense	Cacique de Ara	Tacna	Peru
+LA3356	Unavailable	Wild species	L. chilense	S. chilense	W of Tacna	Tacna	Peru
+LA3357	Unavailable	Wild species	L. chilense	S. chilense	Irrigacion Magollo	Tacna	Peru
+LA3358	Unavailable	Wild species	L. chilense	S. chilense	Rio Arunta-Cono Sur	Tacna	Peru
+LA3784	Unavailable	Wild species	L. chilense	S. chilense	Rio Chaparra	Arequipa	Peru
+LA3785	Unavailable	Wild species	L. chilense	S. chilense	Terras Blancas	Arequipa	Peru
+LA3786	Unavailable	Wild species	L. chilense	S. chilense	Alta Chaparra	Arequipa	Peru
+LA4106	Active	Wild species	L. chilense	S. chilense	Taltal	Antofagasta	Chile
+LA4107	Active	Wild species	L. chilense	S. chilense	Catarata Taltal	Antofagasta	Chile
+LA4108	Active	Wild species	L. chilense	S. chilense	Caleta Punta Grande	Antofagasta	Chile
+LA4109	Active	Wild species	L. chilense	S. chilense	Quebrada Canas	Antofagasta	Chile
+LA4117A	Active	Wild species	L. chilense	S. chilense	San Pedro - Paso Jama	Antofagasta	Chile
+LA4117B	Active	Wild species	L. chilense	S. chilense	San Pedro - Paso Jama	Antofagasta	Chile
+LA4118	Active	Wild species	L. chilense	S. chilense	Toconao	Antofagasta	Chile
+LA4119	Active	Wild species	L. chilense	S. chilense	Socaire	Antofagasta	Chile
+LA4120	Active	Wild species	L. chilense	S. chilense	Cahuisa	Tarapaca	Chile
+LA4121	Unavailable	Wild species	L. chilense	S. chilense	Pachica - Poroma	Tarapaca	Chile
+LA4122	Active	Wild species	L. chilense	S. chilense	Chiapa	Tarapaca	Chile
+LA4127	Active	Wild species	L. chilense	S. chilense	Alto Umayani	Arica and Parinacota	Chile
+LA4129	Active	Wild species	L. chilense	S. chilense	Pachica (Rio Camarones)	Arica and Parinacota	Chile
+LA4132	Active	Wild species	L. chilense	S. chilense	Esquina	Arica and Parinacota	Chile
+LA4319	Active	Wild species	L. chilense	S. chilense	Alto Rio Lluta	Arica and Parinacota	Chile
+LA4321	Active	Wild species	L. chilense	S. chilense	Quebrada Cardones	Arica and Parinacota	Chile
+LA4324	Active	Wild species	L. chilense	S. chilense	Estacion Puquio	Arica and Parinacota	Chile
+LA4327	Active	Wild species	L. chilense	S. chilense	Pachica, Rio Camarones	Arica and Parinacota	Chile
+LA4329	Active	Wild species	L. chilense	S. chilense	Puente del Diablo, Rio Salado	Antofagasta	Chile
+LA4330	Active	Wild species	L. chilense	S. chilense	Caspana	Antofagasta	Chile
+LA4332	Active	Wild species	L. chilense	S. chilense	Rio Grande	Antofagasta	Chile
+LA4334	Active	Wild species	L. chilense	S. chilense	Quebrada Sicipo	Antofagasta	Chile
+LA4335	Active	Wild species	L. chilense	S. chilense	Quebrada Tucuraro	Antofagasta	Chile
+LA4336	Active	Wild species	L. chilense	S. chilense	Quebrada Cascabeles	Antofagasta	Chile
+LA4337	Active	Wild species	L. chilense	S. chilense	Quebrada Paposo	Antofagasta	Chile
+LA4338	Active	Wild species	L. chilense	S. chilense	Quebrada Taltal, Estacion Breas	Antofagasta	Chile
+LA4339	Active	Wild species	L. chilense	S. chilense	Quebrada Los Zanjones	Antofagasta	Chile
+LA1028	Active	Wild species	L. chmielewskii	S. chmielewskii	Casinchihua	Apurimac	Peru
+LA1306	Active	Wild species	L. chmielewskii	S. chmielewskii	Tambo	Ayacucho	Peru
+LA1316	Active	Wild species	L. chmielewskii	S. chmielewskii	Ocros	Ayacucho	Peru
+LA1317	Active	Wild species	L. chmielewskii	S. chmielewskii	Hacienda Pajonal	Ayacucho	Peru
+LA1318	Active	Wild species	L. chmielewskii	S. chmielewskii	Auquibamba	Apurimac	Peru
+LA1325	Active	Wild species	L. chmielewskii	S. chmielewskii	Puente Cunyac	Apurimac	Peru
+LA1327	Active	Wild species	L. chmielewskii	S. chmielewskii	Sorocata	Apurimac	Peru
+LA1330	Active	Wild species	L. chmielewskii	S. chmielewskii	Chalhuanca	Apurimac	Peru
+LA2639B	Active	Wild species	L. chmielewskii	S. chmielewskii	Puente Cunyac	Apurimac	Peru
+LA2663	Active	Wild species	L. chmielewskii	S. chmielewskii	Tujtohaiya	Cusco	Peru
+LA2677	Active	Wild species	L. chmielewskii	S. chmielewskii	Huaypachaca #1	Cusco	Peru
+LA2678	Active	Wild species	L. chmielewskii	S. chmielewskii	Huaypachaca #2	Cusco	Peru
+LA2679	Active	Wild species	L. chmielewskii	S. chmielewskii	Huaypachaca #3	Cusco	Peru
+LA2680	Active	Wild species	L. chmielewskii	S. chmielewskii	Puente Apurimac #1	Cusco	Peru
+LA2681	Active	Wild species	L. chmielewskii	S. chmielewskii	Puente Apurimac #2	Cusco	Peru
+LA2695	Active	Wild species	L. chmielewskii	S. chmielewskii	Chihuanpampa	Cusco	Peru
+LA3642	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Ankukunka	Cusco	Peru
+LA3643	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Colcha	Cusco	Peru
+LA3644	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Puente Tincoj	Cusco	Peru
+LA3645	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Boca del Rio Velille	Cusco	Peru
+LA3648	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Huallapachaca	Apurimac	Peru
+LA3653	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Matara	Apurimac	Peru
+LA3654	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Casinchihua to Chacoche	Apurimac	Peru
+LA3656	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Chalhuani	Apurimac	Peru
+LA3658	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Colcabamba	Apurimac	Peru
+LA3661	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Pampatama	Apurimac	Peru
+LA3662	Unavailable	Wild species	L. chmielewskii	S. chmielewskii	Huancarpuquio	Apurimac	Peru
+LA0103	Active	Wild species	L. peruvianum	S. corneliomuelleri	Cajamarquilla, Rio Rimac	Lima	Peru
+LA0107	Active	Wild species	L. peruvianum	S. corneliomuelleri	Hacienda San Isidro, Rio Canete	Lima	Peru
+LA0364	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Canta	Lima	Peru
+LA0366	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	12 Km W of Canta	Lima	Peru
+LA0444	Active	Wild species	L. peruvianum	S. corneliomuelleri	Chincha #1	Ica	Peru
+LA0451	Active	Wild species	L. peruvianum	S. corneliomuelleri	Arequipa	Arequipa	Peru
+LA1133	Active	Wild species	L. peruvianum	S. corneliomuelleri	Huachipa	Lima	Peru
+LA1271	Active	Wild species	L. peruvianum	S. corneliomuelleri	Horcon	Lima	Peru
+LA1274	Active	Wild species	L. peruvianum	S. corneliomuelleri	Pacaibamba	Lima	Peru
+LA1281	Active	Wild species	L. peruvianum	S. corneliomuelleri	Sisacaya	Lima	Peru
+LA1283	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Santa Cruz de Laya	Lima	Peru
+LA1284	Unavailable	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Espiritu Santo	Lima	Peru
+LA1292	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	San Mateo	Lima	Peru
+LA1293	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Matucana	Lima	Peru
+LA1294	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Surco	Lima	Peru
+LA1296	active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Tornamesa	Lima	Peru
+LA1304	Active	Wild species	L. peruvianum	S. corneliomuelleri	Pampano	Huancavelica	Peru
+LA1305	Active	Wild species	L. peruvianum	S. corneliomuelleri	Ticrapo	Huancavelica	Peru
+LA1331	Active	Wild species	L. peruvianum	S. corneliomuelleri	Nazca	Ica	Peru
+LA1339	Active	Wild species	L. peruvianum	S. corneliomuelleri	Capillucas	Lima	Peru
+LA1373	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	Asia	Lima	Peru
+LA1377	Active	Wild species	L. peruvianum	S. corneliomuelleri	Navan	Lima	Peru
+LA1379	Active	Wild species	L. peruvianum	S. corneliomuelleri	Caujul	Lima	Peru
+LA1473	Active	Wild species	L. peruvianum	S. corneliomuelleri	Callahuanca, Santa Eulalia valley	Lima	Peru
+LA1551	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Rimac Valley, Km 71	Lima	Peru
+LA1552	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Rimac Valley, Km 93	Lima	Peru
+LA1554	Active	Wild species	L. peruvianum	S. corneliomuelleri	Huaral to Cerro de Pasco, Rio Chancay	Lima	Peru
+LA1609	Active	Wild species	L. peruvianum	S. corneliomuelleri	Asia -  El Pinon	Lima	Peru
+LA1646	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Yaso	Lima	Peru
+LA1647	Active	Wild species	L. peruvianum	S. corneliomuelleri	Huadquina, Topara	Ica	Peru
+LA1653	Active	Wild species	L. peruvianum	S. corneliomuelleri	Uchumayo, Arequipa	Arequipa	Peru
+LA1677	Active	Wild species	L. peruvianum	S. corneliomuelleri	Fundo Huadquina, Topara	Ica	Peru
+LA1694	Active	Wild species	L. peruvianum	S. corneliomuelleri	Cacachuhuasiin, Cacra	Lima	Peru
+LA1722	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	Ticrapo Viejo	Huancavelica	Peru
+LA1723	Active	Wild species	L. peruvianum f. glandulosum	S. corneliomuelleri	La Quinga	Ica	Peru
+LA1744	Active	Wild species	L. peruvianum	S. corneliomuelleri	Putinza	Lima	Peru
+LA1910	Active	Wild species	L. peruvianum	S. corneliomuelleri	Tambillo	Huancavelica	Peru
+LA1937	Active	Wild species	L. peruvianum	S. corneliomuelleri	Quebrada Torrecillas	Arequipa	Peru
+LA1944	Active	Wild species	L. peruvianum	S. corneliomuelleri	Rio Atico	Arequipa	Peru
+LA1945	Active	Wild species	L. peruvianum	S. corneliomuelleri	Caraveli	Arequipa	Peru
+LA1973	Active	Wild species	L. peruvianum	S. corneliomuelleri	Yura	Arequipa	Peru
+LA2717	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	Chilca	Lima	Peru
+LA2721	Active	Wild species	L. peruvianum	S. corneliomuelleri	Putinza	Lima	Peru
+LA2724	Active	Wild species	L. peruvianum	S. corneliomuelleri	Huaynilla	Lima	Peru
+LA2962	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	Echancay	Arequipa	Peru
+LA2981B	Active	Wild species	L. peruvianum	S. corneliomuelleri	Torata	Moquegua	Peru
+LA3154	Active	Wild species	L. peruvianum	S. corneliomuelleri	Otora-Puente Jaguay	Moquegua	Peru
+LA3156	Active	Wild species	L. peruvianum	S. corneliomuelleri	Omate  Valley	Moquegua	Peru
+LA3219	Active	Wild species	L. peruvianum	S. corneliomuelleri	Catarindo	Arequipa	Peru
+LA3637	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	Coayllo	Lima	Peru
+LA3639	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	Ccatac	Lima	Peru
+LA3664	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	Nazca grade	Ica	Peru
+LA3666	Unavailable	Wild species	L. peruvianum	S. corneliomuelleri	La Yapa	Ica	Peru
+LA0317	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Bartolome	Galapagos Islands	Ecuador
+LA0426	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Bartolome: E of landing	Galapagos Islands	Ecuador
+LA0436	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela: Villamil	Galapagos Islands	Ecuador
+LA0438	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela: coast at Villamil	Galapagos Islands	Ecuador
+LA0480A	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  Cowley Bay	Galapagos Islands	Ecuador
+LA0483	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Fernandina:  inside crater	Galapagos Islands	Ecuador
+LA0526	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Pinta:  W Side	Galapagos Islands	Ecuador
+LA0527	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Bartolome: W side, Tower Bay	Galapagos Islands	Ecuador
+LA0528	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Santa Cruz:  Academy Bay	Galapagos Islands	Ecuador
+LA0530	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Fernandina: crater	Galapagos Islands	Ecuador
+LA0532	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Pinzon: NW side	Galapagos Islands	Ecuador
+LA0747	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Santiago:  Cape Trenton	Galapagos Islands	Ecuador
+LA0748	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Santiago: E Trenton Islet	Galapagos Islands	Ecuador
+LA0929	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela: Punta Flores	Galapagos Islands	Ecuador
+LA0930	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  Punta Tortuga	Galapagos Islands	Ecuador
+LA1044	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Bartolome	Galapagos Islands	Ecuador
+LA1136	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Gardner-near-Floreana Islet	Galapagos Islands	Ecuador
+LA1137	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Rabida: N side	Galapagos Islands	Ecuador
+LA1141	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Santiago:  N crater	Galapagos Islands	Ecuador
+LA1400	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  N of Punta Tortuga	Galapagos Islands	Ecuador
+LA1401	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  N of Punta Tortuga	Galapagos Islands	Ecuador
+LA1403	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Fernandina:  W of Punta Espinoza	Galapagos Islands	Ecuador
+LA1408	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  SW volcano, Cape Berkeley	Galapagos Islands	Ecuador
+LA1410	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  Punta Ecuador	Galapagos Islands	Ecuador
+LA1411	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Santiago: N James Bay	Galapagos Islands	Ecuador
+LA1452	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela:  E slope, Volcan  Alcedo	Galapagos Islands	Ecuador
+LA1508	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Floreana: Corona del Diablo Islet	Galapagos Islands	Ecuador
+LA1627	Active	Wild species	L. cheesmanii f. minor	S. galapagense	Isabela: Darwin's Lake	Galapagos Islands	Ecuador
+LA3909	Unavailable	Wild species	L. cheesmanii f. minor	S. galapagense	Bartolome: tourist landing	Galapagos Islands	Ecuador
+LA0094	Active	Wild species	L. hirsutum	S. habrochaites	Canta-Yangas	Lima	Peru
+LA0361	Active	Wild species	L. hirsutum	S. habrochaites	Canta	Lima	Peru
+LA0386	Active	Wild species	L. hirsutum	S. habrochaites	Cajamarca	Cajamarca	Peru
+LA0387	Unavailable	Wild species	L. hirsutum	S. habrochaites	Santa Apolonia	Cajamarca	Peru
+LA0407	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	El Mirador, Guayaquil	Guayas	Ecuador
+LA1033	Active	Wild species	L. hirsutum	S. habrochaites	Hacienda Taulis	Lambayeque	Peru
+LA1223	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Alausi	Chimborazo	Ecuador
+LA1252	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Loja, Jardin Botanico	Loja	Ecuador
+LA1253	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Pueblo Nuevo - Landangue	Loja	Ecuador
+LA1255	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Loja	Loja	Ecuador
+LA1264	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Bucay	Chimborazo	Ecuador
+LA1265	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Rio Chimbo	Chimborazo	Ecuador
+LA1266	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Pallatanga	Chimborazo	Ecuador
+LA1295	Active	Wild species	L. hirsutum	S. habrochaites	Surco	Lima	Peru
+LA1298	Active	Wild species	L. hirsutum	S. habrochaites	Yaso	Lima	Peru
+LA1347	Active	Wild species	L. hirsutum	S. habrochaites	Empalme Otusco	La Libertad	Peru
+LA1352	Active	Wild species	L. hirsutum	S. habrochaites	Rupe	Cajamarca	Peru
+LA1353	Active	Wild species	L. hirsutum	S. habrochaites	Contumaza	Cajamarca	Peru
+LA1354	Active	Wild species	L. hirsutum	S. habrochaites	Contumaza to Cascas	Cajamarca	Peru
+LA1361	Active	Wild species	L. hirsutum	S. habrochaites	Pariacoto	Ancash	Peru
+LA1362	Active	Wild species	L. hirsutum	S. habrochaites	Chacchan	Ancash	Peru
+LA1363	Unavailable	Wild species	L. hirsutum	S. habrochaites	Alta Fortaleza	Ancash	Peru
+LA1366	Unavailable	Wild species	L. hirsutum	S. habrochaites	Cajacay	Ancash	Peru
+LA1378	Active	Wild species	L. hirsutum	S. habrochaites	Navan	Lima	Peru
+LA1391	Active	Wild species	L. hirsutum	S. habrochaites	Bagua to Olmos	Cajamarca	Peru
+LA1392	Active	Wild species	L. hirsutum	S. habrochaites	Huaraz - Casma Road	Ancash	Peru
+LA1393	Active	Wild species	L. hirsutum	S. habrochaites	Huaraz - Caraz	Ancash	Peru
+LA1557	Active	Wild species	L. hirsutum	S. habrochaites	Huaral to Cerro de Pasco, Rio Chancay	Lima	Peru
+LA1559	Active	Wild species	L. hirsutum	S. habrochaites	Desvio Huamantanga-Canta	Lima	Peru
+LA1560	Active	Wild species	L. hirsutum	S. habrochaites	Matucana	Lima	Peru
+LA1624	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Jipijapa	Manabi	Ecuador
+LA1625	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	S of Jipijapa	Manabi	Ecuador
+LA1648	Active	Wild species	L. hirsutum	S. habrochaites	Above Yaso	Lima	Peru
+LA1681	Active	Wild species	L. hirsutum	S. habrochaites	Mushka	Lima	Peru
+LA1691	Active	Wild species	L. hirsutum	S. habrochaites	Yauyos	Lima	Peru
+LA1695	Active	Wild species	L. hirsutum	S. habrochaites	Cacachuhuasiin, Cacra	Lima	Peru
+LA1696	Active	Wild species	L. hirsutum	S. habrochaites	Huanchuy to Cacra	Lima	Peru
+LA1717	Unavailable	Wild species	L. hirsutum	S. habrochaites	Sopalache	Piura	Peru
+LA1718	Active	Wild species	L. hirsutum	S. habrochaites	Huancabamba	Piura	Peru
+LA1721	Active	Wild species	L. hirsutum	S. habrochaites	Ticrapo Viejo	Huancavelica	Peru
+LA1731	Active	Wild species	L. hirsutum	S. habrochaites	Rio San Juan	Huancavelica	Peru
+LA1736	Active	Wild species	L. hirsutum	S. habrochaites	Pucutay	Piura	Peru
+LA1737	Active	Wild species	L. hirsutum	S. habrochaites	Cashacoto	Piura	Peru
+LA1738	Active	Wild species	L. hirsutum	S. habrochaites	Desfiladero	Piura	Peru
+LA1739	Active	Wild species	L. hirsutum	S. habrochaites	Canchaque to Cerran	Piura	Peru
+LA1740	Unavailable	Wild species	L. hirsutum	S. habrochaites	Huancabamba	Piura	Peru
+LA1741	Unavailable	Wild species	L. hirsutum	S. habrochaites	Sondorillo	Piura	Peru
+LA1753	Active	Wild species	L. hirsutum	S. habrochaites	Surco	Lima	Peru
+LA1764	Active	Wild species	L. hirsutum	S. habrochaites	West of Canta	Lima	Peru
+LA1772	Active	Wild species	L. hirsutum	S. habrochaites	West of Canta	Lima	Peru
+LA1775	Active	Wild species	L. hirsutum	S. habrochaites	Rio Casma	Ancash	Peru
+LA1777	Active	Wild species	L. hirsutum	S. habrochaites	Rio Casma	Ancash	Peru
+LA1778	Active	Wild species	L. hirsutum	S. habrochaites	Rio Casma	Ancash	Peru
+LA1779	Active	Wild species	L. hirsutum	S. habrochaites	Rio Casma	Ancash	Peru
+LA1918	Active	Wild species	L. hirsutum	S. habrochaites	Llauta	Ayacucho	Peru
+LA1927	Active	Wild species	L. hirsutum	S. habrochaites	Ocobamba	Ayacucho	Peru
+LA1928	Active	Wild species	L. hirsutum	S. habrochaites	Ocana	Ayacucho	Peru
+LA1978	Active	Wild species	L. hirsutum	S. habrochaites	Colca	Ancash	Peru
+LA2092	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Chinuko	Chimborazo	Ecuador
+LA2098	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Sabianga	Loja	Ecuador
+LA2099	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Sabiango to Zozoranga	Loja	Ecuador
+LA2100	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Sozoranga	Loja	Ecuador
+LA2101	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	San Pedro de Cariamanga	Loja	Ecuador
+LA2103	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Lansaca	Loja	Ecuador
+LA2104	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Pena Negra	Loja	Ecuador
+LA2105	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Jardin Botanico, Loja	Loja	Ecuador
+LA2106	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Yambra - La Providencia	Loja	Ecuador
+LA2107	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Los Lirios	Loja	Ecuador
+LA2108	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Portete de Anganuma	Loja	Ecuador
+LA2109	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Yangana #1	Loja	Ecuador
+LA2110	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Yangana #2	Loja	Ecuador
+LA2114	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	San Juan	Loja	Ecuador
+LA2115	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Pucala	Loja	Ecuador
+LA2116	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Las Juntas	Loja	Ecuador
+LA2119	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Saraguro	Loja	Ecuador
+LA2124	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Cumbaratza	Zamora-Chinchipe	Ecuador
+LA2128	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Zumbi	Zamora-Chinchipe	Ecuador
+LA2144	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Chanchan	Chimborazo	Ecuador
+LA2155	Active	Wild species	L. hirsutum	S. habrochaites	Maydasbamba	Cajamarca	Peru
+LA2156	Active	Wild species	L. hirsutum	S. habrochaites	Ingenio Montan	Cajamarca	Peru
+LA2158	Active	Wild species	L. hirsutum	S. habrochaites	Rio Chotano	Cajamarca	Peru
+LA2159	Active	Wild species	L. hirsutum	S. habrochaites	Atonpampa	Cajamarca	Peru
+LA2167	Active	Wild species	L. hirsutum	S. habrochaites	Cementerio Cajamarca	Cajamarca	Peru
+LA2171	Active	Wild species	L. hirsutum	S. habrochaites	El Molino	Piura	Peru
+LA2174	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Rio Chinchipe, San Augustin	Cajamarca	Peru
+LA2175	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Timbaruca	Cajamarca	Peru
+LA2196	Active	Wild species	L. hirsutum	S. habrochaites	Caclic	Amazonas	Peru
+LA2204	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Balsapata	Amazonas	Peru
+LA2314	Active	Wild species	L. hirsutum	S. habrochaites	San Francisco	Amazonas	Peru
+LA2321	Unavailable	Wild species	L. hirsutum	S. habrochaites	Chirico	Amazonas	Peru
+LA2324	Active	Wild species	L. hirsutum	S. habrochaites	Leimebamba	Amazonas	Peru
+LA2329	Active	Wild species	L. hirsutum	S. habrochaites	Aricapampa	La Libertad	Peru
+LA2409	Active	Wild species	L. hirsutum	S. habrochaites	Rio Miraflores	Lima	Peru
+LA2552	Active	Wild species	L. hirsutum	S. habrochaites	Las Flores	Cajamarca	Peru
+LA2556	Active	Wild species	L. hirsutum	S. habrochaites	Puente Moche	La Libertad	Peru
+LA2567	Active	Wild species	L. hirsutum	S. habrochaites	Quita	Ancash	Peru
+LA2574	Active	Wild species	L. hirsutum	S. habrochaites	Cullaspungro	Ancash	Peru
+LA2648	Unavailable	Wild species	L. hirsutum	S. habrochaites	Santo Domingo	Piura	Peru
+LA2650	Active	Wild species	L. hirsutum	S. habrochaites	Ayabaca	Piura	Peru
+LA2651	Active	Wild species	L. hirsutum	S. habrochaites	Puente Tordopa	Piura	Peru
+LA2722	Active	Wild species	L. hirsutum	S. habrochaites	Puente Auco	Lima	Peru
+LA2812	Active	Wild species	L. hirsutum	S. habrochaites	Lambayeque	Lambayeque	Peru
+LA2855	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Mollinomuna	Loja	Ecuador
+LA2860	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Cariamanga	Loja	Ecuador
+LA2861	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Las Juntas	Loja	Ecuador
+LA2863	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Macara	Loja	Ecuador
+LA2864	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Sozorango	Loja	Ecuador
+LA2869	Active	Wild species	L. hirsutum f. glabratum	S. habrochaites	Matala	Loja	Ecuador
+LA2975	Active	Wild species	L. hirsutum	S. habrochaites	Coltao	Ancash	Peru
+LA2976	Active	Wild species	L. hirsutum	S. habrochaites	Huangra	Ancash	Peru
+LA3794	Unavailable	Wild species	L. hirsutum	S. habrochaites	Alta Fortaleza	Ancash	Peru
+LA3796	Unavailable	Wild species	L. hirsutum	S. habrochaites	Anca, Marca	Ancash	Peru
+LA3854	Unavailable	Wild species	L. hirsutum	S. habrochaites	Llaguén	La Libertad	Peru
+LA3862	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Purunuma	Loja	Ecuador
+LA3863	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Sozoranga	Loja	Ecuador
+LA3864	Unavailable	Wild species	L. hirsutum f. glabratum	S. habrochaites	Yangana	Loja	Ecuador
+LA4137	Unavailable	Wild species	L. hirsutum	S. habrochaites	Barrio Delta, Cajamarca	Cajamarca	Peru
+LA0110	Unavailable	Wild species	L. peruvianum	S. huaylasense	Cajacay	Ancash	Peru
+LA1358	Active	Wild species	L. peruvianum	S. huaylasense	Yautan	Ancash	Peru
+LA1364	Active	Wild species	L. peruvianum	S. huaylasense	Alta Fortaleza	Ancash	Peru
+LA1365	Active	Wild species	L. peruvianum	S. huaylasense	Caranquilloc	Ancash	Peru
+LA1979	Active	Wild species	L. peruvianum	S. huaylasense	Colca (Rio Fortaleza)	Ancash	Peru
+LA1981	Active	Wild species	L. peruvianum	S. huaylasense	Vocatoma	Ancash	Peru
+LA1982	Active	Wild species	L. peruvianum	S. huaylasense	Huallanca	Ancash	Peru
+LA1983	Active	Wild species	L. peruvianum	S. huaylasense	Rio Manta	Ancash	Peru
+LA2068	Unavailable	Wild species	L. peruvianum	S. huaylasense	Chasquitambo	Ancash	Peru
+LA2561	Active	Wild species	L. peruvianum	S. huaylasense	Huallanca	Ancash	Peru
+LA2562	Unavailable	Wild species	L. peruvianum	S. huaylasense	Canon del Pato	Ancash	Peru
+LA2563	Unavailable	Wild species	L. peruvianum	S. huaylasense	Canon del Pato	Ancash	Peru
+LA2575	Unavailable	Wild species	L. peruvianum	S. huaylasense	Valle de Casma	Ancash	Peru
+LA2808	Active	Wild species	L. peruvianum	S. huaylasense	Huaylas	Ancash	Peru
+LA2809	Active	Wild species	L. peruvianum	S. huaylasense	Huaylas	Ancash	Peru
+LA2120	Active	Wild species	S. juglandifolium	S. juglandifolium	Sabanilla	Zamora-Chinchipe	Ecuador
+LA2134	Active	Wild species	S. juglandifolium	S. juglandifolium	Tinajillas	Zamora-Chinchipe	Ecuador
+LA2788	Active	Wild species	S. juglandifolium	S. juglandifolium	Quebrada La Buena	Antioquia	Colombia
+LA3322	Active	Wild species	S. juglandifolium	S. juglandifolium	San Juan - Chiriboga	Pichincha	Ecuador
+LA3324	Unavailable	Wild species	S. juglandifolium	S. juglandifolium	Sabanillas	Zamora-Chinchipe	Ecuador
+LA3325	Active	Wild species	S. juglandifolium	S. juglandifolium	Cosanga	Napo	Ecuador
+LA1964	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Chupapalca	Tacna	Peru
+LA1966	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Palca	Tacna	Peru
+LA1990	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Palca	Tacna	Peru
+LA1991	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Causiri	Tacna	Peru
+LA2385	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Chupapalca to Ingenio	Tacna	Peru
+LA2386	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Chupapalca	Tacna	Peru
+LA2387	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Lago Aricota	Tacna	Peru
+LA2407	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Arica to Putre	Arica and Parinacota	Chile
+LA2408	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Above Putre	Arica and Parinacota	Chile
+LA2730	Unavailable	Wild species	S. lycopersicoides	S. lycopersicoides	Moquella	Tarapaca	Chile
+LA2772	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Zapahuira	Arica and Parinacota	Chile
+LA2776	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Catarata de Perquejeque	Arica and Parinacota	Chile
+LA2777	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Putre	Arica and Parinacota	Chile
+LA2781	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Desvio a Putre	Arica and Parinacota	Chile
+LA2951	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Quistagama	Tarapaca	Chile
+LA4018	Unavailable	Wild species	S. lycopersicoides	S. lycopersicoides	Lago Aricota	Tacna	Peru
+LA4123	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Camina	Tarapaca	Chile
+LA4126	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Camina - Nama	Tarapaca	Chile
+LA4130	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Pachica (Rio Camarones)	Arica and Parinacota	Chile
+LA4131	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Esquina	Arica and Parinacota	Chile
+LA4320	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Rio Lluta	Arica and Parinacota	Chile
+LA4322	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Quebrada Cardones	Arica and Parinacota	Chile
+LA4323	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Putre	Arica and Parinacota	Chile
+LA4326	Active	Wild species	S. lycopersicoides	S. lycopersicoides	Cochiza, Rio Camarones	Arica and Parinacota	Chile
+LA0168	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum		New Caledonia	Fr. Oceania
+LA0292	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Cruz	Galapagos Islands	Ecuador
+LA0349	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Unknown Origin		Unknown
+LA0384	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chilete (Rio Jequetepeque)	Cajamarca	Peru
+LA0475	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA0476	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA1025	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Oahu: Wahiawa	Hawaii	USA
+LA1203	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Ciudad Vieja		Guatemala
+LA1204	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Quetzaltenango		Guatemala
+LA1205	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Copan		Honduras
+LA1206	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Copan Ruins		Honduras
+LA1207	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum			Mexico
+LA1208	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sierra Nevada		Colombia
+LA1209	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum			Colombia
+LA1226	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA1227	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA1228	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Macas, San Jacinto de los Monos	Morona-Santiago	Ecuador
+LA1229	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Macas	Morona-Santiago	Ecuador
+LA1230	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Macas	Morona-Santiago	Ecuador
+LA1231	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tena	Napo	Ecuador
+LA1247	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Toma	Loja	Ecuador
+LA1268	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chaclacayo	Lima	Peru
+LA1286	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Martin de Pangoa	Junin	Peru
+LA1287	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Fundo Ileana #1	Junin	Peru
+LA1289	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Fundo Ileana #3	Junin	Peru
+LA1290	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Mazamari	Junin	Peru
+LA1291	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Satipo Granja	Junin	Peru
+LA1307	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Hotel Oasis	Ayacucho	Peru
+LA1308	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Francisco	Ayacucho	Peru
+LA1310	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Hacienda Santa Rosa	Ayacucho	Peru
+LA1311-1	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-10	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-11	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-12	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-13	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-14	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-15	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-16	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-17	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-18	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-19	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-2	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-3	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-4	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-5	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-6	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-7	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-8	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1311-9	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa Puebla	Ayacucho	Peru
+LA1312-2	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Paisanato	Cusco	Peru
+LA1312-3	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Paisanto	Cusco	Peru
+LA1312-4	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Paisanato	Cusco	Peru
+LA1314	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Granja Pichari	Cusco	Peru
+LA1320	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Hacienda Carmen	Apurimac	Peru
+LA1323	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pfacchayoc	Cusco	Peru
+LA1324	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Hacienda Potrero, Quillabamba	Cusco	Peru
+LA1328	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Rio Pachachaca	Apurimac	Peru
+LA1334	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pescadores	Arequipa	Peru
+LA1338	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Puyo	Napo	Ecuador
+LA1372	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Eulalia	Lima	Peru
+LA1385	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Quincemil	Cusco	Peru
+LA1386	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Balsas	Amazonas	Peru
+LA1387	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Quincemil	Cusco	Peru
+LA1388	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ramon	Junin	Peru
+LA1423	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Near Santo Domingo	Pichincha	Ecuador
+LA1429	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Estancilla	Manabi	Ecuador
+LA1453	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Kauai: Poipu	Hawaii	USA
+LA1454	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	unknown		Mexico
+LA1455	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Gral Teran	Nuevo Leon	Mexico
+LA1456	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Papantla	Vera Cruz	Mexico
+LA1457	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tehuacan	Puebla	Mexico
+LA1458	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huachinango	Puebla	Mexico
+LA1461	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Los Banos		Philippines
+LA1464	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Progreso, Yoro		Honduras
+LA1465	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Taladro, Comayagua		Honduras
+LA1467	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cali	Cauca	Colombia
+LA1468	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Fte. Casa, Cali	Cauca	Colombia
+LA1479	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA1480	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA1481	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
+LA1482	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Segamat		Malaysia
+LA1483	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Trujillo		Saipan
+LA1509	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tawan	Sabah, Borneo	MALAYSIA
+LA1510	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum			Mexico
+LA1511	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sete Lagoas	Minas Gerais	Brazil
+LA1512	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Lago de Llopango		El Salvador
+LA1519	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Vitarte	Lima	Peru
+LA1540	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cali - Popayan	Cauca	Colombia
+LA1542	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Turrialba		Costa Rica
+LA1543	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Upper Parana		Brazil
+LA1545	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Becan Ruins	Campeche	Mexico
+LA1548	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Fundo Liliana	Junin	Peru
+LA1549	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chontabamba	Pasco	Peru
+LA1569	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Jalapa	Vera Cruz	Mexico
+LA1574	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Nana	Lima	Peru
+LA1619	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pichanaki	Junin	Peru
+LA1620	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Castro Alves	Bahia	Brazil
+LA1621	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Rio Venados	Hidalgo	Mexico
+LA1622	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Lusaka		Zambia
+LA1623	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Muna	Yucatan	Mexico
+LA1654	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tarapoto	San Martin	Peru
+LA1655	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tarapoto	San Martin	Peru
+LA1662	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Ejido	Merida	Venezuela
+LA1667	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cali	Cauca	Colombia
+LA1668	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Acapulco	Guerrero	Mexico
+LA1673	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Nana	Lima	Peru
+LA1701	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Trujillo	La Libertad	Peru
+LA1705	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum		Sinaloa	Mexico
+LA1709	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Desvio Yojoa		Honduras
+LA1710	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cariare	Limon	Costa Rica
+LA1711	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Zamorano		Honduras
+LA1712	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pejibaye	San Jose	Costa Rica
+LA1713	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	CATIE, Turrialba		Costa Rica
+LA1909	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Quillabamba	Cusco	Peru
+LA1953	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Curva	Arequipa	Peru
+LA2076	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Naranjitos		Bolivia
+LA2077	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Paco, Coroica	La Paz	Bolivia
+LA2078	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Mosardas	Rio Grande de Sol	Brazil
+LA2079	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Maui: Kihei	Hawaii	USA
+LA2080	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Maui: Kihei	Hawaii	USA
+LA2081	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Maui: Kihei	Hawaii	USA
+LA2082	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Arenal Valley		Honduras
+LA2085	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Kempton Park		S. Africa
+LA2095	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Cidra, Olmedo	Loja	Ecuador
+LA2121	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yacuambi-Guadalupe	Zamora-Chinchipe	Ecuador
+LA2122A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yacuambi-Guadalupe	Zamora-Chinchipe	Ecuador
+LA2122B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yacuambi-Guadalupe	Zamora-Chinchipe	Ecuador
+LA2122C	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yacuambi-Guadalupe	Zamora-Chinchipe	Ecuador
+LA2122D	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yacuambi-Guadalupe	Zamora-Chinchipe	Ecuador
+LA2123A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Saquea	Zamora-Chinchipe	Ecuador
+LA2123B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Saquea	Zamora-Chinchipe	Ecuador
+LA2126A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Dorado	Zamora-Chinchipe	Ecuador
+LA2126B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Dorado	Zamora-Chinchipe	Ecuador
+LA2126C	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Dorado	Zamora-Chinchipe	Ecuador
+LA2126D	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Dorado	Zamora-Chinchipe	Ecuador
+LA2127	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Zumbi	Zamora-Chinchipe	Ecuador
+LA2129	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Roque	Zamora-Chinchipe	Ecuador
+LA2130	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Gualaquiza	Zamora-Chinchipe	Ecuador
+LA2131	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Bomboiza	Zamora-Chinchipe	Ecuador
+LA2135	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Limon	Morona-Santiago	Ecuador
+LA2136	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Bella Union	Morona-Santiago	Ecuador
+LA2137	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tayusa	Morona-Santiago	Ecuador
+LA2138A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chinimpimi	Morona-Santiago	Ecuador
+LA2138B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chinimpimi	Morona-Santiago	Ecuador
+LA2139A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Logrono	Morona-Santiago	Ecuador
+LA2139B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Logrono	Morona-Santiago	Ecuador
+LA2140A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huambi	Morona-Santiago	Ecuador
+LA2140B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huambi	Morona-Santiago	Ecuador
+LA2140C	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huambi	Morona-Santiago	Ecuador
+LA2141	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Rio Blanco	Morona-Santiago	Ecuador
+LA2142	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cambanaca	Morona-Santiago	Ecuador
+LA2143	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Nuevo Rosario	Morona-Santiago	Ecuador
+LA2177A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ignacio	Cajamarca	Peru
+LA2177B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ignacio	Cajamarca	Peru
+LA2177C	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ignacio	Cajamarca	Peru
+LA2177E	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ignacio	Cajamarca	Peru
+LA2177F	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ignacio	Cajamarca	Peru
+LA2205A	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa de Mirador	San Martin	Peru
+LA2205B	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rosa de Mirador	San Martin	Peru
+LA2308	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Francisco	San Martin	Peru
+LA2312	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Jumbilla #1	Amazonas	Peru
+LA2313	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Jumbilla #2	Amazonas	Peru
+LA2392	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Jakarta?		Indonesia
+LA2393	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Mercedes	Guanacaste	Costa Rica
+LA2394	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Rafael de Hojancha	Guanacaste	Costa Rica
+LA2411	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yanamayo	Puno	Peru
+LA2587	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum			
+LA2616	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Naranjillo	Huanuco	Peru
+LA2617	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Oropel	Huanuco	Peru
+LA2618	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Lucia, Tulumayo	Huanuco	Peru
+LA2619	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Caseria San Augustin	Loreto	Peru
+LA2620	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Divisoria	Loreto	Peru
+LA2621	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	3 de Octubre	Loreto	Peru
+LA2624	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Umashbamba	Cusco	Peru
+LA2625	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chilcachaca	Cusco	Peru
+LA2626	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	 Pacchac-chico	Cusco	Peru
+LA2627	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pacchac-chico	Cusco	Peru
+LA2629	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Echarate/Tornillochayoc	Cusco	Peru
+LA2630	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Calzada	Cusco	Peru
+LA2631	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chontachayoc	Cusco	Peru
+LA2632	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Maranura	Cusco	Peru
+LA2633	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huayopata	Cusco	Peru
+LA2635	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huayopata	Cusco	Peru
+LA2636	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sicre	Cusco	Peru
+LA2637	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sicre	Cusco	Peru
+LA2640	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Molinopata	Apurimac	Peru
+LA2642	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Molinopata	Apurimac	Peru
+LA2643	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Bella Vista	Apurimac	Peru
+LA2660	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Ignacio de Moxos	Beni	Bolivia
+LA2664	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yanahuaya	Puno	Peru
+LA2667	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pajchani	Puno	Peru
+LA2668	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cruz Playa	Puno	Peru
+LA2669	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huayvaruni #1	Puno	Peru
+LA2670	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huayvaruni #2	Puno	Peru
+LA2671	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Juan del Oro, School	Puno	Peru
+LA2673	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chuntopata	Puno	Peru
+LA2674	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Huairurune	Puno	Peru
+LA2675	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Casahuiri	Puno	Peru
+LA2683	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Consuelo	Cusco	Peru
+LA2684	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Patria	Cusco	Peru
+LA2685	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Gavitana	Madre de Dios	Peru
+LA2686	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Yunguyo	Madre de Dios	Peru
+LA2687	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Mansilla	Madre de Dios	Peru
+LA2688	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Cruz near Shintuyo #1	Madre de Dios	Peru
+LA2689	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Cruz near Shintuyo #2	Madre de Dios	Peru
+LA2690	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Atalaya	Cusco	Peru
+LA2691	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Rio Pilcopata	Cusco	Peru
+LA2692	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pilcopata #1	Cusco	Peru
+LA2693	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pilcopata #2	Cusco	Peru
+LA2694	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Aguasantas	Cusco	Peru
+LA2700	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Aoti, Satipo	Junin	Peru
+LA2702	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Kandy #1		Sri Lanka
+LA2709	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Bidadi, Bangalore	Karnataka	India
+LA2710	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Porto Firme		Brazil
+LA2782	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Volcan #1 - Pajarito	Antioquia	Colombia
+LA2783	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Volcan #2 - Titiribi	Antioquia	Colombia
+LA2784	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Queronte, Andes	Antioquia	Colombia
+LA2785	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Bosque, Andes	Antioquia	Colombia
+LA2786	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Andes #1	Antioquia	Colombia
+LA2787	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Andes #2	Antioquia	Colombia
+LA2789	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Canaveral	Antioquia	Colombia
+LA2790	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Buenos Aires	Antioquia	Colombia
+LA2791	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Rio Frio	Antioquia	Colombia
+LA2792	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tamesis	Antioquia	Colombia
+LA2793	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	La Mesa	Antioquia	Colombia
+LA2794	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Libano	Antioquia	Colombia
+LA2795	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	CamiloCe	Antioquia	Colombia
+LA2807	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Taypiplaya	Yungas	Bolivia
+LA2811	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Cerro Huayrapampa	Apurimac	Peru
+LA2814	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Ccascani, Sandia	Puno	Peru
+LA2841	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chinuna	Amazonas	Peru
+LA2842	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Santa Rita	San Martin	Peru
+LA2843	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Moyobamba mercado	San Martin	Peru
+LA2844	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Shanhao	San Martin	Peru
+LA2845	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Mercado Moyobamba	San Martin	Peru
+LA2871	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Chamaca	La Paz	Bolivia
+LA2873	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Lote Pablo Luna #2	La Paz	Bolivia
+LA2874	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Playa Ancha	La Paz	Bolivia
+LA2933	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Jipijapa	Manabi	Ecuador
+LA2977	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Belen	Beni	Bolivia
+LA2978	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Belen	Beni	Bolivia
+LA3135	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pinal del Jigue	Holguin	Cuba
+LA3136	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Arroyo Rico	Holguin	Cuba
+LA3137	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Pinares de Mayari	Holguin	Cuba
+LA3138	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Quemada	Holguin	Cuba
+LA3139	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	San Pedro de Cananova	Holguin	Cuba
+LA3140	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Los Platanos	Holguin	Cuba
+LA3141	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Guira de Melena	La Habana	Cuba
+LA3162	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	N of Copan		Honduras
+LA3452	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	CATIE, Turrialba	Turrialba	Costa Rica
+LA3623	Unavailable	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tablones	Manabi	Ecuador
+LA3633	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Botanical garden		Ghana
+LA3652	Unavailable	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Matara	Apurimac	Peru
+LA3842	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Limon, Maracay	Aragua	Venezuela
+LA3843	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	El Limon, Maracay	Aragua	Venezuela
+LA3844	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Algarrobito	Guarico	Venezuela
+LA4133	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Makapuu Beach, Oahu	Hawaii	USA
+LA4352	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Bamoa	Sinaloa	Mexico
+LA4353	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Guasave	Sinaloa	Mexico
+LA0247	Active	Wild species	L. parviflorum	S. neorickii	Chavinillo	Huanuco	Peru
+LA0735	Active	Wild species	L. parviflorum	S. neorickii	Huariaca	Huanuco	Peru
+LA1319	Active	Wild species	L. parviflorum	S. neorickii	Abancay	Apurimac	Peru
+LA1321	Active	Wild species	L. parviflorum	S. neorickii	Curahuasi	Apurimac	Peru
+LA1322	Active	Wild species	L. parviflorum	S. neorickii	Limatambo	Cusco	Peru
+LA1326	Active	Wild species	L. parviflorum	S. neorickii	Rio Pachachaca	Apurimac	Peru
+LA1329	Active	Wild species	L. parviflorum	S. neorickii	Yaca	Apurimac	Peru
+LA1626A	Active	Wild species	L. parviflorum	S. neorickii	Mouth of Rio Rupac	Ancash	Peru
+LA1716	Active	Wild species	L. parviflorum	S. neorickii	Huancabamba	Piura	Peru
+LA2072	Active	Wild species	L. parviflorum	S. neorickii	Huanuco	Huanuco	Peru
+LA2073	Active	Wild species	L. parviflorum	S. neorickii	Huanuco, N of San Rafael	Huanuco	Peru
+LA2074	Active	Wild species	L. parviflorum	S. neorickii	Huanuco	Huanuco	Peru
+LA2075	Active	Wild species	L. parviflorum	S. neorickii	Huanuco	Huanuco	Peru
+LA2113	Active	Wild species	L. parviflorum	S. neorickii	La Toma	Loja	Ecuador
+LA2133	Active	Wild species	L. parviflorum	S. neorickii	Ona	Azuay	Ecuador
+LA2190	Active	Wild species	L. parviflorum	S. neorickii	Tialango	Amazonas	Peru
+LA2191	Active	Wild species	L. parviflorum	S. neorickii	Campamento Ingenio	Amazonas	Peru
+LA2192	Active	Wild species	L. parviflorum	S. neorickii	Pedro Ruiz	Amazonas	Peru
+LA2193	Active	Wild species	L. parviflorum	S. neorickii	Churuja	Amazonas	Peru
+LA2194	Active	Wild species	L. parviflorum	S. neorickii	Chachapoyas West	Amazonas	Peru
+LA2195	Active	Wild species	L. parviflorum	S. neorickii	Caclic	Amazonas	Peru
+LA2197	Active	Wild species	L. parviflorum	S. neorickii	Caclic - Luya	Amazonas	Peru
+LA2198	Active	Wild species	L. parviflorum	S. neorickii	Chachapoyas East	Amazonas	Peru
+LA2200	Active	Wild species	L. parviflorum	S. neorickii	Choipiaco	Amazonas	Peru
+LA2201	Active	Wild species	L. parviflorum	S. neorickii	Pipus	Amazonas	Peru
+LA2202	Active	Wild species	L. parviflorum	S. neorickii	Tingobamba	Amazonas	Peru
+LA2315	Active	Wild species	L. parviflorum	S. neorickii	Sargento	Amazonas	Peru
+LA2317	Active	Wild species	L. parviflorum	S. neorickii	Zuta	Amazonas	Peru
+LA2318	Active	Wild species	L. parviflorum	S. neorickii	Lima Tambo	Amazonas	Peru
+LA2319	Active	Wild species	L. parviflorum	S. neorickii	Chirico	Amazonas	Peru
+LA2325	Active	Wild species	L. parviflorum	S. neorickii	Above Balsas	Amazonas	Peru
+LA2403	Active	Wild species	L. parviflorum	S. neorickii	Wandobamba	Huanuco	Peru
+LA2613	Active	Wild species	L. parviflorum	S. neorickii	Matichico-San Rafael	Huanuco	Peru
+LA2614	Active	Wild species	L. parviflorum	S. neorickii	San Rafael	Huanuco	Peru
+LA2615	Active	Wild species	L. parviflorum	S. neorickii	Ayancocho	Huanuco	Peru
+LA2639A	Active	Wild species	L. parviflorum	S. neorickii	Puente Cunyac	Apurimac	Peru
+LA2641	Active	Wild species	L. parviflorum	S. neorickii	Nacchera	Apurimac	Peru
+LA2727	Active	Wild species	L. parviflorum	S. neorickii	Ona	Azuay	Ecuador
+LA2847	Active	Wild species	L. parviflorum	S. neorickii	Suyubamba	Amazonas	Peru
+LA2848	Active	Wild species	L. parviflorum	S. neorickii	Pedro Ruiz	Amazonas	Peru
+LA2862	Active	Wild species	L. parviflorum	S. neorickii	Saraguro-Cuenca	Azuay	Ecuador
+LA2865	Active	Wild species	L. parviflorum	S. neorickii	Rio Leon	Azuay	Ecuador
+LA2913	Active	Wild species	L. parviflorum	S. neorickii	Uchucyaco - Hujainillo	Huanuco	Peru
+LA3651	Unavailable	Wild species	L. parviflorum	S. neorickii	Matara	Apurimac	Peru
+LA3655	Unavailable	Wild species	L. parviflorum	S. neorickii	Casinchihua to Chacoche	Apurimac	Peru
+LA3657	Unavailable	Wild species	L. parviflorum	S. neorickii	Pichirhua	Apurimac	Peru
+LA3660	Unavailable	Wild species	L. parviflorum	S. neorickii	Murashaya	Apurimac	Peru
+LA3793	Unavailable	Wild species	L. parviflorum	S. neorickii	Huariaca to San Rafael	Huanuco	Peru
+LA4020	Active	Wild species	L. parviflorum	S. neorickii	Gonozabal	Loja	Ecuador
+LA4021	Active	Wild species	L. parviflorum	S. neorickii	Guancarcucho	Azuay	Ecuador
+LA4022	Active	Wild species	L. parviflorum	S. neorickii	Pueblo Nuevo	Azuay	Ecuador
+LA4023	Active	Wild species	L. parviflorum	S. neorickii	Paute	Azuay	Ecuador
+LA2118	Unavailable	Wild species	S. ochranthum	S. ochranthum	San Lucas	Loja	Ecuador
+LA2160	Active	Wild species	S. ochranthum	S. ochranthum	Acunac	Cajamarca	Peru
+LA2161	Unavailable	Wild species	S. ochranthum	S. ochranthum	Cruz Roja	Cajamarca	Peru
+LA2162	Active	Wild species	S. ochranthum	S. ochranthum	Yatun	Cajamarca	Peru
+LA2166	Active	Wild species	S. ochranthum	S. ochranthum	Pacopampa	Cajamarca	Peru
+LA2203	Unavailable	Wild species	S. ochranthum	S. ochranthum	Pomacochas	Amazonas	Peru
+LA2682	Active	Wild species	S. ochranthum	S. ochranthum	Chinchaypujio	Cusco	Peru
+LA3649	Unavailable	Wild species	S. ochranthum	S. ochranthum	Curpahuasi	Apurimac	Peru
+LA3650	Unavailable	Wild species	S. ochranthum	S. ochranthum	Choquemaray	Apurimac	Peru
+LA0716	Active	Wild species	L. pennellii	S. pennellii	Atico	Arequipa	Peru
+LA0750	Active	Wild species	L. pennellii var. puberulum	S. pennellii	Palpa to Nazca	Ica	Peru
+LA0751	Active	Wild species	L. pennellii	S. pennellii	Sisacaya	Lima	Peru
+LA1272	Active	Wild species	L. pennellii	S. pennellii	Pisaquera	Lima	Peru
+LA1273	Active	Wild species	L. pennellii	S. pennellii	Cayan	Lima	Peru
+LA1275	Active	Wild species	L. pennellii	S. pennellii	Quilca road junction	Lima	Peru
+LA1277	Active	Wild species	L. pennellii	S. pennellii	Trapiche	Lima	Peru
+LA1282	Active	Wild species	L. pennellii	S. pennellii	Sisacaya	Lima	Peru
+LA1297	Active	Wild species	L. pennellii	S. pennellii	Pucara	Lima	Peru
+LA1299	Active	Wild species	L. pennellii	S. pennellii	Santa Rosa de Quives	Lima	Peru
+LA1302	Active	Wild species	L. pennellii	S. pennellii	Quita Sol	Ica	Peru
+LA1303	Active	Wild species	L. pennellii	S. pennellii	Pampano	Huancavelica	Peru
+LA1340	Active	Wild species	L. pennellii	S. pennellii	Capillucas	Lima	Peru
+LA1356	Active	Wild species	L. pennellii	S. pennellii	Moro	Ancash	Peru
+LA1367	Active	Wild species	L. pennellii	S. pennellii	Santa Eulalia	Lima	Peru
+LA1376	Active	Wild species	L. pennellii	S. pennellii	Sayan	Lima	Peru
+LA1515	Active	Wild species	L. pennellii	S. pennellii	Sayan to Churin	Lima	Peru
+LA1522	Active	Wild species	L. pennellii	S. pennellii	Quintay	Lima	Peru
+LA1523	Unavailable	Wild species	L. pennellii	S. pennellii	Irrigacion Santa Rosa	Lima	Peru
+LA1649	Active	Wild species	L. pennellii var. puberulum	S. pennellii	Molina	Ica	Peru
+LA1656	Active	Wild species	L. pennellii	S. pennellii	Marca to Chincha	Ica	Peru
+LA1657	Active	Wild species	L. pennellii	S. pennellii	Buena Vista to Yautan	Ancash	Peru
+LA1674	Active	Wild species	L. pennellii	S. pennellii	Toparilla Canyon	Lima	Peru
+LA1693	Active	Wild species	L. pennellii	S. pennellii	Quebrada Machuranga	Lima	Peru
+LA1724	Active	Wild species	L. pennellii	S. pennellii	La Quinga	Ica	Peru
+LA1732	Active	Wild species	L. pennellii	S. pennellii	Rio San Juan	Huancavelica	Peru
+LA1733	Active	Wild species	L. pennellii	S. pennellii	Rio Canete	Lima	Peru
+LA1734	Active	Wild species	L. pennellii	S. pennellii	Rio Canete	Lima	Peru
+LA1735	Active	Wild species	L. pennellii	S. pennellii	Rio Canete	Lima	Peru
+LA1773	Unavailable	Wild species	L. pennellii	S. pennellii	Rio Casma	Ancash	Peru
+LA1809	Active	Wild species	L. pennellii	S. pennellii	El Horador (playa)	Piura	Peru
+LA1911	Active	Wild species	L. pennellii var. puberulum	S. pennellii	Locari	Ica	Peru
+LA1912	Active	Wild species	L. pennellii var. puberulum	S. pennellii	Cerro Locari	Ica	Peru
+LA1920	Active	Wild species	L. pennellii var. puberulum	S. pennellii	Cachiruma	Ayacucho	Peru
+LA1926	Active	Wild species	L. pennellii var. puberulum	S. pennellii	Agua Perdida	Ica	Peru
+LA1940	Active	Wild species	L. pennellii	S. pennellii	Rio Atico, Km 26	Arequipa	Peru
+LA1941	Active	Wild species	L. pennellii	S. pennellii	Rio Atico, Km 41	Arequipa	Peru
+LA1942	Active	Wild species	L. pennellii	S. pennellii	Rio Atico, Km 54	Arequipa	Peru
+LA1943	Active	Wild species	L. pennellii	S. pennellii	Rio Atico, Km 61	Arequipa	Peru
+LA1946	Active	Wild species	L. pennellii	S. pennellii	Caraveli	Arequipa	Peru
+LA2560	Active	Wild species	L. pennellii	S. pennellii	Santa to Huaraz	Ancash	Peru
+LA2580	Active	Wild species	L. pennellii	S. pennellii	Valle de Casma	Ancash	Peru
+LA2588	Unavailable	Wild species	L. pennellii	S. pennellii			
+LA2657	Active	Wild species	L. pennellii	S. pennellii	Bayovar	Piura	Peru
+LA2720	Unavailable	Wild species	L. pennellii	S. pennellii	Pacaran-Catahuasi	Lima	Peru
+LA2963	Active	Wild species	L. pennellii	S. pennellii	Acoy	Arequipa	Peru
+LA3635	Unavailable	Wild species	L. pennellii	S. pennellii	Omas	Lima	Peru
+LA3665	Unavailable	Wild species	L. pennellii var. puberulum	S. pennellii	Rio Santa Cruz	Ica	Peru
+LA3778	Unavailable	Wild species	L. pennellii var. puberulum	S. pennellii	Palpa to Nazca	Ica	Peru
+LA3788	Unavailable	Wild species	L. pennellii	S. pennellii	Rio Atico, Km 10	Arequipa	Peru
+LA3789	Unavailable	Wild species	L. pennellii	S. pennellii	Rio Atico, Km 26	Arequipa	Peru
+LA3791	Unavailable	Wild species	L. pennellii	S. pennellii	Caraveli	Arequipa	Peru
+LA0098	Active	Wild species	L. peruvianum	S. peruvianum	Chilca	Lima	Peru
+LA0111	Active	Wild species	L. peruvianum	S. peruvianum	Supe	Lima	Peru
+LA0153	Active	Wild species	L. peruvianum	S. peruvianum	Culebras	Ancash	Peru
+LA0370	Active	Wild species	L. peruvianum	S. peruvianum	Hacienda Huampani	Lima	Peru
+LA0371	Active	Wild species	L. peruvianum	S. peruvianum	Supe	Lima	Peru
+LA0372	Active	Wild species	L. peruvianum	S. peruvianum	Culebras #1	Ancash	Peru
+LA0374	Unavailable	Wild species	L. peruvianum	S. peruvianum	Culebras #2	Ancash	Peru
+LA0445	Active	Wild species	L. peruvianum	S. peruvianum	Chincha #2	Ica	Peru
+LA0446	Active	Wild species	L. peruvianum	S. peruvianum	Lomas de Atiquipa	Arequipa	Peru
+LA0448	Active	Wild species	L. peruvianum	S. peruvianum	Chala	Arequipa	Peru
+LA0453	Active	Wild species	L. peruvianum	S. peruvianum	Yura #2	Arequipa	Peru
+LA0454	Active	Wild species	L. peruvianum	S. peruvianum	Tambo	Arequipa	Peru
+LA0455	Active	Wild species	L. peruvianum	S. peruvianum	Tambo	Arequipa	Peru
+LA0462	Active	Wild species	L. peruvianum	S. peruvianum	Sobraya	Arica and Parinacota	Chile
+LA0464	Active	Wild species	L. peruvianum	S. peruvianum	Hacienda Rosario	Arica and Parinacota	Chile
+LA0752	Active	Wild species	L. peruvianum	S. peruvianum	Sisicaya	Lima	Peru
+LA1161	Active	Wild species	L. peruvianum	S. peruvianum	Huachipa	Lima	Peru
+LA1270	Active	Wild species	L. peruvianum	S. peruvianum	Pisiquillo	Lima	Peru
+LA1278	Active	Wild species	L. peruvianum	S. peruvianum	Trapiche	Lima	Peru
+LA1300	Active	Wild species	L. peruvianum	S. peruvianum	Santa Rosa de Quives	Lima	Peru
+LA1333	Active	Wild species	L. peruvianum	S. peruvianum	Loma Camana	Arequipa	Peru
+LA1336	Active	Wild species	L. peruvianum	S. peruvianum	Atico	Arequipa	Peru
+LA1337	Active	Wild species	L. peruvianum	S. peruvianum	Atiquipa	Arequipa	Peru
+LA1368	Active	Wild species	L. peruvianum	S. peruvianum	San Jose de Palla	Lima	Peru
+LA1369	Active	Wild species	L. peruvianum	S. peruvianum	San Geronimo	Lima	Peru
+LA1474	Active	Wild species	L. peruvianum	S. peruvianum	Lomas de Camana	Arequipa	Peru
+LA1475	Unavailable	Wild species	L. peruvianum	S. peruvianum	Fundo 'Los Anitos', Barranca	Lima	Peru
+LA1513	Active	Wild species	L. peruvianum	S. peruvianum	Atiquipa	Arequipa	Peru
+LA1517	Active	Wild species	L. peruvianum	S. peruvianum	Irrigacion Santa Rosa	Lima	Peru
+LA1537	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley	Tarapaca	CHILE
+LA1556	Active	Wild species	L. peruvianum	S. peruvianum	Hacienda Higuereta	Lima	Peru
+LA1616	Active	Wild species	L. peruvianum	S. peruvianum	La Rinconada	Lima	Peru
+LA1675	Unavailable	Wild species	L. peruvianum	S. peruvianum	Toparilla Canyon	Lima	Peru
+LA1692	Active	Wild species	L. peruvianum	S. peruvianum	Putinza	Lima	Peru
+LA1913	Active	Wild species	L. peruvianum	S. peruvianum	Tinguiayog	Ica	Peru
+LA1929	Active	Wild species	L. peruvianum	S. peruvianum	La Yapana	Ica	Peru
+LA1935	Active	Wild species	L. peruvianum	S. peruvianum	Lomas de Atiquipa	Arequipa	Peru
+LA1947	Active	Wild species	L. peruvianum	S. peruvianum	Puerto Atico	Arequipa	Peru
+LA1949	Active	Wild species	L. peruvianum	S. peruvianum	Las Calaveritas	Arequipa	Peru
+LA1951	Active	Wild species	L. peruvianum	S. peruvianum	Ocona	Arequipa	Peru
+LA1954	Active	Wild species	L. peruvianum	S. peruvianum	Mollendo	Arequipa	Peru
+LA1955	Active	Wild species	L. peruvianum	S. peruvianum	Matarani	Arequipa	Peru
+LA1975	Unavailable	Wild species	L. peruvianum	S. peruvianum	Desvio Santo Domingo	Lima	Peru
+LA1977	Active	Wild species	L. peruvianum	S. peruvianum	Orcocoto	Lima	Peru
+LA1989	Active	Wild species	L. peruvianum	S. peruvianum	(self-fertile, bilaterally compatible selection)		
+LA2573	Unavailable	Wild species	L. peruvianum	S. peruvianum	Valle de Casma	Ancash	Peru
+LA2581	Active	Wild species	L. peruvianum	S. peruvianum	Chacarilla (4x)	Arica and Parinacota	Chile
+LA2732	Active	Wild species	L. peruvianum	S. peruvianum	Moquella	Tarapaca	Chile
+LA2742	Unavailable	Wild species	L. peruvianum	S. peruvianum	Camarones-Guancarane	Arica and Parinacota	Chile
+LA2744	Active	Wild species	L. peruvianum	S. peruvianum	Sobraya	Arica and Parinacota	Chile
+LA2745	Active	Wild species	L. peruvianum	S. peruvianum	Pan de Azucar	Arica and Parinacota	Chile
+LA2770	Unavailable	Wild species	L. peruvianum	S. peruvianum	Lluta valley	Arica and Parinacota	Chile
+LA2834	Active	Wild species	L. peruvianum	S. peruvianum	Hacienda Asiento	Ica	Peru
+LA2955B	Unavailable	Wild species	L. peruvianum	S. peruvianum	Quistagama-Quisama	Tarapaca	CHILE
+LA2959	Active	Wild species	L. peruvianum	S. peruvianum	Chaca to Caleta Vitor	Arica and Parinacota	Chile
+LA2964	Active	Wild species	L. peruvianum	S. peruvianum	Quebrada de Burros	Tacna	Peru
+LA3218	Active	Wild species	L. peruvianum	S. peruvianum	Quebrada Guerrero	Arequipa	Peru
+LA3220	Active	Wild species	L. peruvianum	S. peruvianum	Cocachacra	Arequipa	Peru
+LA3636	Unavailable	Wild species	L. peruvianum	S. peruvianum	Coayllo	Lima	Peru
+LA3640	Active	Wild species	L. peruvianum	S. peruvianum	Mexico City		Mexico
+LA3781	Unavailable	Wild species	L. peruvianum	S. peruvianum	Quebrada Oscollo (Atico)	Arequipa	Peru
+LA3783	Unavailable	Wild species	L. peruvianum	S. peruvianum	Rio Chaparra	Arequipa	Peru
+LA3787	Unavailable	Wild species	L. peruvianum	S. peruvianum	Alta Chaparra	Arequipa	Peru
+LA3790	Unavailable	Wild species	L. peruvianum	S. peruvianum	Caraveli	Arequipa	Peru
+LA3795	Unavailable	Wild species	L. peruvianum	S. peruvianum	Alta Fortaleza	Ancash	Peru
+LA3797	Unavailable	Wild species	L. peruvianum	S. peruvianum	Anca, Marca (Rio Fortaleza)	Ancash	Peru
+LA3799	Unavailable	Wild species	L. peruvianum	S. peruvianum	Río Pativilca	Ancash	Peru
+LA3853	Unavailable	Wild species	L. peruvianum	S. peruvianum	Mollepampa	La Libertad	Peru
+LA3858	Active	Wild species	L. peruvianum	S. peruvianum	Canta	Lima	Peru
+LA3900	Active	Wild species	L. peruvianum	S. peruvianum	(CMV tolerant selection)		
+LA4125	Active	Wild species	L. peruvianum	S. peruvianum	Camina	Tarapaca	Chile
+LA4317	Active	Wild species	L. peruvianum	S. peruvianum	Rio Lluta, desembocadura	Arica and Parinacota	Chile
+LA4318	Active	Wild species	L. peruvianum	S. peruvianum	Sora - Molinos, Rio Lluta	Arica and Parinacota	Chile
+LA4325	Active	Wild species	L. peruvianum	S. peruvianum	Caleta Vitor	Arica and Parinacota	Chile
+LA4328	Unavailable	Wild species	L. peruvianum	S. peruvianum	Pachica, Rio Camarones	Arica and Parinacota	Chile
+LA4445	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, 27 km from Arica	Arica and Parinacota	CHILE
+LA4446	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, Km 37 from Arica	Arica and Parinacota	CHILE
+LA4447	Unavailable	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, Km 27 and Km 37 from Arica	Tarapaca	CHILE
+LA0100	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Cantuta (Rimac Valley)	Lima	Peru
+LA0114	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pacasmayo	La Libertad	Peru
+LA0121	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Trujillo	La Libertad	Peru
+LA0122	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Poroto	La Libertad	Peru
+LA0369	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Cantuta (Rimac Valley)	Lima	Peru
+LA0373	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Culebras #1	Ancash	Peru
+LA0375	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Culebras #2	Ancash	Peru
+LA0376	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Chiclin	La Libertad	Peru
+LA0381	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pongo	La Libertad	Peru
+LA0391	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Magdalena (Rio Jequetepeque)	Cajamarca	Peru
+LA0397	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Tuman	Lambayeque	Peru
+LA0398	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Carrizal	Cajamarca	Peru
+LA0400	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Buenos Aires	Piura	Peru
+LA0411	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pichilingue	Los Rios	Ecuador
+LA0412	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pichilingue	Los Rios	Ecuador
+LA0413	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cerecita	Guayas	Ecuador
+LA0417	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Punta Polvora, Isla Puna	Guayas	Ecuador
+LA0418	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Daule	Guayas	Ecuador
+LA0420	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Empalme	Guayas	Ecuador
+LA0442	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Sechin	Ancash	Peru
+LA0443	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pichilingue	Los Rios	Ecuador
+LA0480	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Santa Inez	Ica	Peru
+LA0722	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Trujillo	La Libertad	Peru
+LA0753	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Lurin	Lima	Peru
+LA1236	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hotel Tinalandia, Santo Domingo	Pichincha	Ecuador
+LA1237	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Atacames	Esmeraldas	Ecuador
+LA1242	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Los Sapos	Guayas	Ecuador
+LA1243	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Murillo finca	Guayas	Ecuador
+LA1245	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Rosa	El Oro	Ecuador
+LA1246	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Toma	Loja	Ecuador
+LA1248	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Monterrey	Loja	Ecuador
+LA1256	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Naranjal	Guayas	Ecuador
+LA1257	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Las Mercedes	Guayas	Ecuador
+LA1258	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Voluntario de Dios	Guayas	Ecuador
+LA1259	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Catarama	Los Rios	Ecuador
+LA1260	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pueblo Viejo	Los Rios	Ecuador
+LA1261	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Babahoyo	Los Rios	Ecuador
+LA1262	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Milagro Empalme	Guayas	Ecuador
+LA1263	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Barranco Chico	Guayas	Ecuador
+LA1269	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pisiquillo	Lima	Peru
+LA1279	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cieneguilla	Lima	Peru
+LA1280	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chontay	Lima	Peru
+LA1301	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda San Ignacio	Ica	Peru
+LA1332	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Nazca area?	Ica	Peru
+LA1335	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pescadores	Arequipa	Peru
+LA1341	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huampani	Lima	Peru
+LA1342	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Casma	Ancash	Peru
+LA1343	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Puente Chao	La Libertad	Peru
+LA1344	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Laredo	La Libertad	Peru
+LA1345	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Samne	La Libertad	Peru
+LA1348	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pacasmayo	La Libertad	Peru
+LA1349	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cuculi	Lambayeque	Peru
+LA1355	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Nepena	Ancash	Peru
+LA1357	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Jimbe	Ancash	Peru
+LA1359	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Crau	Ancash	Peru
+LA1370	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Jose de Palla	Lima	Peru
+LA1371	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Eulalia	Lima	Peru
+LA1374	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Ingenio	Ica	Peru
+LA1375	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Vicente de Canete	Lima	Peru
+LA1380	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chanchape	Piura	Peru
+LA1381	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Naupe	Lambayeque	Peru
+LA1382	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chachapoyas to Balsas	Amazonas	Peru
+LA1383	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chachapoyas to Bagua	Amazonas	Peru
+LA1384	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Quebrada Parca	Lima	Peru
+LA1416	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Las Delicias	Pichincha	Ecuador
+LA1428	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Estancilla	Manabi	Ecuador
+LA1466	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chongoyape	Lambayeque	Peru
+LA1469	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Pilar, Olmos	Lambayeque	Peru
+LA1470	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Motupe to Desvio Olmos-Bagua	Lambayeque	Peru
+LA1471	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Motupe to  Jayanca	Lambayeque	Peru
+LA1472	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Quebrada Topara	Lima	Peru
+LA1478	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santo Tome (Pabur)	Piura	Peru
+LA1514	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Sayan to Churin	Lima	Peru
+LA1520	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Sayan to Churin	Lima	Peru
+LA1521	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Pinon, Asia	Lima	Peru
+LA1547	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chota to El Angel	Carchi	Ecuador
+LA1561	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Eusebio	Lima	Peru
+LA1562	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cieneguilla	Lima	Peru
+LA1571	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Jose de Palle	Lima	Peru
+LA1572	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Huampani	Lima	Peru
+LA1573	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Nana	Lima	Peru
+LA1575	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huaycan	Lima	Peru
+LA1576	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Manchay Alta	Lima	Peru
+LA1577	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cartavio	La Libertad	Peru
+LA1578	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Marta	La Libertad	Peru
+LA1579	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Colegio Punto Cuatro #1	Lambayeque	Peru
+LA1580	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Colegio Punto Cuatro #2	Lambayeque	Peru
+LA1581	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Punto Cuatro	Lambayeque	Peru
+LA1582	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Motupe	Lambayeque	Peru
+LA1583	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tierra de la Vieja	Lambayeque	Peru
+LA1584	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Jayanca to La Vina	Lambayeque	Peru
+LA1585	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cuculi	Lambayeque	Peru
+LA1586	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Zana,  San Nicolas	La Libertad	Peru
+LA1587	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Pedro de Lloc	La Libertad	Peru
+LA1588	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Laredo to  Barraza	La Libertad	Peru
+LA1589	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Viru - Galunga	La Libertad	Peru
+LA1590	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Viru to Tomaval	La Libertad	Peru
+LA1591	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Ascope	La Libertad	Peru
+LA1592	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Moche	La Libertad	Peru
+LA1593	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Puente de Chao	La Libertad	Peru
+LA1594	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cerro Sechin	Ancash	Peru
+LA1595	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Nepena to Samanco	Ancash	Peru
+LA1596	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa to La Rinconada	Ancash	Peru
+LA1597	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio Casma	Ancash	Peru
+LA1598	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Culebras to La Victoria	Ancash	Peru
+LA1599	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huarmey	Ancash	Peru
+LA1600	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Las Zorras, Huarmey	Ancash	Peru
+LA1601	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Providencia	Lima	Peru
+LA1602	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Punchauca	Lima	Peru
+LA1603	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Quilca	Lima	Peru
+LA1604	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Horcon	Lima	Peru
+LA1605	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Canete -  San Antonio	Lima	Peru
+LA1606	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tambo de Mora	Ica	Peru
+LA1607	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Canete -  La Victoria	Lima	Peru
+LA1608	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Canete - San Luis	Lima	Peru
+LA1610	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Asia - El Pinon	Lima	Peru
+LA1611	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio Mala	Lima	Peru
+LA1612	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio Chilca	Lima	Peru
+LA1613	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Santa Eusebia	Lima	Peru
+LA1614	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huaura -- Pampa Chumbes	Lima	Peru
+LA1615	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Piura to Simbala	Piura	Peru
+LA1617	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tumbes South	Tumbes	Peru
+LA1618	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tumbes North	Tumbes	Peru
+LA1628	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huanchaco	La Libertad	Peru
+LA1629	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Barrancos de Miraflores	Lima	Peru
+LA1630	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Fundo La Palma	Ica	Peru
+LA1631	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Planta Envasadora San Fernando (Moche)	La Libertad	Peru
+LA1633	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Coop. Huayna Capac	Ica	Peru
+LA1634	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Fundo Bogotalla #1	Ica	Peru
+LA1635	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Fundo Bogotalla #2	Ica	Peru
+LA1636	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Laran	Ica	Peru
+LA1637	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Calera	Ica	Peru
+LA1638	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Fundo El Portillo	Lima	Peru
+LA1645	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Banos de Miraflores	Lima	Peru
+LA1651	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Vivero, La Molina	Lima	Peru
+LA1652	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cieneguilla	Lima	Peru
+LA1659	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pariacoto	Ancash	Peru
+LA1660	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Yautan to Pariacoto	Ancash	Peru
+LA1661	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Esquina de Asia	Lima	Peru
+LA1670	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio Sama	Tacna	Peru
+LA1676	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Fundo Huadquina, Topara	Ica	Peru
+LA1678	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Juan Lucumo de Topara	Ica	Peru
+LA1679	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tambo de Mora	Ica	Peru
+LA1680	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Encanada	Lima	Peru
+LA1682	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Montalban - San Vicente	Lima	Peru
+LA1683	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Miramar	Piura	Peru
+LA1684	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chulucanas	Piura	Peru
+LA1685	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Marcavelica	Piura	Peru
+LA1686	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Valle Hermoso #1	Piura	Peru
+LA1687	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Valle Hermoso #2	Piura	Peru
+LA1688	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pedregal	Piura	Peru
+LA1689	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Castilla #1	Piura	Peru
+LA1690	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Castilla #2	Piura	Peru
+LA1697	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Quiroz, Santa Anita	Lima	Peru
+LA1719	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	E of Arenillas	El Oro	Ecuador
+LA1720	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Yautan	Ancash	Peru
+LA1728	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio San Juan	Ica	Peru
+LA1729	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio San Juan	Ica	Peru
+LA1742	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Olmos-Marquina	Lambayeque	Peru
+LA1781	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Bahia de Caraquez	Manabi	Ecuador
+LA1921	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Majarena	Ica	Peru
+LA1923	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Coop. Cabildo	Ica	Peru
+LA1924	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Piedras Gordas	Ica	Peru
+LA1925	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pangavari, Nazca	Ica	Peru
+LA1933	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Jaqui	Arequipa	Peru
+LA1936	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huancalpa	Arequipa	Peru
+LA1950	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pescadores	Arequipa	Peru
+LA1987	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Viru - Fundo Luis Enrique	La Libertad	Peru
+LA1992	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pichicato	Lima	Peru
+LA1993	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chicama Valley?	Lima	Peru
+LA2093	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Union	El Oro	Ecuador
+LA2096	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Playa, near Catacocha	Loja	Ecuador
+LA2097	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Macara	Loja	Ecuador
+LA2102	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Lucero	Loja	Ecuador
+LA2112	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Monterrey	Loja	Ecuador
+LA2145	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Juan Montalvo	Los Rios	Ecuador
+LA2146	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Limoncarro	La Libertad	Peru
+LA2147	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Yube	Cajamarca	Peru
+LA2149	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Puente Muyuna	Cajamarca	Peru
+LA2170	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pai Pai	Cajamarca	Peru
+LA2173	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cruz de Huayquillo	Cajamarca	Peru
+LA2176	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Timbaruca	Cajamarca	Peru
+LA2178	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tororume	Cajamarca	Peru
+LA2179	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tamboripa - La Manga	Cajamarca	Peru
+LA2180	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Coipa	Cajamarca	Peru
+LA2181	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Balsa Huaico	Cajamarca	Peru
+LA2182	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cumba	Amazonas	Peru
+LA2183	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Corral Quemado	Amazonas	Peru
+LA2184	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Bagua	Amazonas	Peru
+LA2186	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Salao	Amazonas	Peru
+LA2187	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Caldera	Amazonas	Peru
+LA2188	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Manchungal #1	Amazonas	Peru
+LA2189	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Manchungal #2	Amazonas	Peru
+LA2335	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	(4x)		
+LA2340	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	(4x)		
+LA2345	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
+LA2346	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
+LA2347	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
+LA2348	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Trujillo	La Libertad	PERU
+LA2389	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tembladera	Cajamarca	Peru
+LA2390	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chungal	Cajamarca	Peru
+LA2391	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chungal to Monte Grande	Cajamarca	Peru
+LA2401	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Moxeque	Ancash	Peru
+LA2412	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Fundo Don Javier, Chilca	Lima	Peru
+LA2533	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Lomas de Latillo	Lima	Peru
+LA2534	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Vista Florida, Chiclayo	Lambayeque	Peru
+LA2535	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Patapo	Lambayeque	Peru
+LA2536	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Patapo-La Cria	Lambayeque	Peru
+LA2537	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Malpaso	Lambayeque	Peru
+LA2538	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Malpaso	Lambayeque	Peru
+LA2539	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cuculi	Lambayeque	Peru
+LA2540	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Cria	Lambayeque	Peru
+LA2544	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pacasmayo-Huabal	La Libertad	Peru
+LA2545	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tembladera	Cajamarca	Peru
+LA2546	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tonan	Cajamarca	Peru
+LA2547	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Yatahual	Cajamarca	Peru
+LA2549	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Muyuna	Cajamarca	Peru
+LA2576	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Valle de Casma	Ancash	Peru
+LA2578	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tuturo	Ancash	Peru
+LA2585	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	(4x)		
+LA2628	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Echarate/Tornillochayoc	Cusco	Peru
+LA2645	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Desvio Chulucanas	Piura	Peru
+LA2646	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chalaco	Piura	Peru
+LA2647	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Morropon-Chalaco	Piura	Peru
+LA2652	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Sullana	Piura	Peru
+LA2653	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Francisco de Chocon Querecotillo	Piura	Peru
+LA2655	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Huaca - Sullana	Piura	Peru
+LA2656	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Suarez	Tumbes	Peru
+LA2659	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Castilla, Univ. Nac. de Piura	Piura	Peru
+LA2718	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chilca	Lima	Peru
+LA2725	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tambo Colorado	Ica	Peru
+LA2805	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
+LA2831	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio Nazca	Ica	Peru
+LA2832	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chichictara	Ica	Peru
+LA2833	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Hacienda Asiento	Ica	Peru
+LA2836	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Rio Aja	Ica	Peru
+LA2839	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tialango	Amazonas	Peru
+LA2840	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	San Hilarion de Tomaque	Amazonas	Peru
+LA2850	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Rosa, Manta	Manabi	Ecuador
+LA2851	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Carcel de Montecristo	Manabi	Ecuador
+LA2852	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Cirsto Rey de Charapoto	Manabi	Ecuador
+LA2853	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Experiment Station, Portoviejo-INIAP	Manabi	Ecuador
+LA2854	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Jipijapa	Manabi	Ecuador
+LA2857	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Isabela: Puerto Villamil	Galapagos Islands	Ecuador
+LA2866	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Via a Amaluza	Loja	Ecuador
+LA2914A	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Urb. La Castellana, Surco	Lima	Peru
+LA2914B	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Urb. La Castellana, Surco	Lima	Peru
+LA2915	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Remanso de Olmos	Lambayeque	Peru
+LA2934	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Carabayllo	Lima	Peru
+LA2966	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Molina	Lima	Peru
+LA2974	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Huaca del Sol	La Libertad	Peru
+LA2982	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chilca #1	Lima	Peru
+LA2983	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chilca #2	Lima	Peru
+LA3123	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Cruz: summit	Galapagos Islands	Ecuador
+LA3158	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Los Mochis	Sinaloa	Mexico
+LA3159	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Los Mochis	Sinaloa	Mexico
+LA3160	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Los Mochis	Sinaloa	Mexico
+LA3161	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Los Mochis	Sinaloa	Mexico
+LA3468	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Molina Vieja	Lima	Peru
+LA3634	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Rosa de Asia	Lima	Peru
+LA3638	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Ccatac	Lima	Peru
+LA3798	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Río Pativilca	Ancash	Peru
+LA3803	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pacanguilla	La Libertad	Peru
+LA3852	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Atinchik, Pachacamac	Lima	Peru
+LA3859	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
+LA3910	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Santa Cruz: near tortoise preserve	Galapagos Islands	Ecuador
+LA4027	Unavailable	Wild species	L. pimpinellifolium	S. pimpinellifolium	Olmos-Jaen Road	Lambayeque	Peru
+LA4138	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	El Corregidor, La Molina	Lima	Peru
+LA4431	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
+LA1974	Active	Wild species	S. sitiens	S. sitiens	Chuquicamata	Antofagasta	Chile
+LA2876	Active	Wild species	S. sitiens	S. sitiens	Chuquicamata	Antofagasta	Chile
+LA2877	Unavailable	Wild species	S. sitiens	S. sitiens	El Crucero	Antofagasta	Chile
+LA2878	Active	Wild species	S. sitiens	S. sitiens	Mina La Exotica	Antofagasta	Chile
+LA2885	Unavailable	Wild species	S. sitiens	S. sitiens	Caracoles	Antofagasta	Chile
+LA4105	Active	Wild species	S. sitiens	S. sitiens	Mina La Escondida	Antofagasta	Chile
+LA4110	Active	Wild species	S. sitiens	S. sitiens	Mina San Juan	Antofagasta	Chile
+LA4112	Active	Wild species	S. sitiens	S. sitiens	Aguada Limon Verde	Antofagasta	Chile
+LA4113	Active	Wild species	S. sitiens	S. sitiens	Estacion Cere	Antofagasta	Chile
+LA4114	Active	Wild species	S. sitiens	S. sitiens	Pampa Carbonatera	Antofagasta	Chile
+LA4115	Active	Wild species	S. sitiens	S. sitiens	Quebrada desde Cerro Oeste de Paqui	Antofagasta	Chile
+LA4116	Active	Wild species	S. sitiens	S. sitiens	Quebrada de Paqui	Antofagasta	Chile
+LA4331	Active	Wild species	S. sitiens	S. sitiens	Cerro Quimal	Antofagasta	Chile
+
+
