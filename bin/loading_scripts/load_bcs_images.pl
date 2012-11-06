@@ -26,9 +26,10 @@ a database parameter, which can either be "cxgn", "sandbox", or "trial". "cxgn" 
 
 host name 
 
-=item -r 
+=item -m 
 
-Chado table name to link with the image (e.g. 'stock' for storing the image_ids in the stockprop table)
+map file. If provided links between stock names - image file name , is read from a mapping file.
+Row labels are expected to be unique file names, column header for the associated stocks is 'name' 
 
 =item -i
 
@@ -77,9 +78,10 @@ use File::Basename;
 use SGN::Context;
 use Getopt::Std;
 
+use CXGN::Tools::File::Spreadsheet;
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_f);
-getopts('H:D:u:i:e:f:tdr:');
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_m);
+getopts('H:D:u:i:e:f:tdr:m:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -108,16 +110,12 @@ my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on
 print STDERR "Generate metadata_id... ";
 my $metadata_schema = CXGN::Metadata::Schema->connect("dbi:Pg:database=$dbname;host=".$dbh->dbhost(), "postgres", $dbh->dbpass(), {on_connect_do => "SET search_path TO 'metadata', 'public'", });
 
-# my $metadata_schema = CXGN::Metadata::Schema->connect(
-#     sub { $dbh },
-#     { on_connect_do => ['SET search_path TO metadata;'] },
-#     );
 my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $sp_person);
 my %name2id = ();
 
 
 my $ch = SGN::Context->new();
-my $image_dir =  $opt_f || $ch->get_conf("image_dir");
+my $image_dir = $ch->get_conf("image_dir");
 
 print "PLEASE VERIFY:\n";
 print "Using dbhost: $dbhost. DB name: $dbname. \n";
@@ -171,14 +169,29 @@ my $new_image_count = 0;
 my $metadata = CXGN::Metadata::Metadbdata->new($metadata_schema, $sp_person);
 my $metadata_id = $metadata->store()->get_metadata_id();
 
+#read from spreadsheet:
+my $map_file = $opt_m; #
+my %name_map;
 
+if ($opt_m) {
+    my $s = CXGN::Tools::File::Spreadsheet->new($map_file); #
+    my @rows = $s->row_labels(); #
+    foreach my $file_name (@rows) { #
+    	my $stock_name = $s->value_at($file_name, 'name'); #
+	$name_map{$file_name} = $stock_name;
+    }
+}
 foreach my $file (@files) {
     eval {
 	chomp($file);
 	@sub_files = ($file);
 	@sub_files =  glob "$file/*.$ext" if $opt_d;
 
-	my $object_name = basename($file, ".$ext" );
+	my $object =  basename($file, ".$ext" );
+	my $object_name = $object;
+	if ($opt_m) {
+	    $object_name = $name_map{$object . "." . $ext } ;
+	}
 	print  "object_name = '".$object_name."' \n";
 	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
 	#2009_oh_8902_fruit-t
@@ -222,8 +235,6 @@ foreach my $file (@files) {
 		    }
 		    elsif ($image_hash{$filename}) { 
 			print ERR qq  { Associating $chado_table $name2id{lc($plot)} with already loaded image $filename...\n };
-			#$image_hash{$filename}->associate_individual($name2id{lc($individual_name)});
-			################################
 		    }
 		}
 		else { 
