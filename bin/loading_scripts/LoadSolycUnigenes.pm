@@ -85,7 +85,7 @@ sub run {
         } else {
 	    print "NO LOCUS EXISTS for solyc_id $solyc_id adding new locus ($description)!!\n";
 	    my $chr = $solyc_id;
-	    $chr =~ s/Solyc(0?\d+)g\d+/$1/ ;
+	    $chr =~ s/Solyc0?(\d+)g\d+/$1/ ;
 	    $locus->set_genome_locus($solyc_id);
 	    $locus->set_locus_symbol($solyc_id);
 	    $locus->set_locus_name($solyc_id);
