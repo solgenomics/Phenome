@@ -552,7 +552,7 @@ LA1480	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	
 LA1481	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sucua	Morona-Santiago	Ecuador
 LA1482	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Segamat		Malaysia
 LA1483	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Trujillo		Saipan
-LA1509	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tawan	Sabah, Borneo	MALAYSIA
+LA1509	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Tawan	Sabah, Borneo	Malaysia
 LA1510	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum			Mexico
 LA1511	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Sete Lagoas	Minas Gerais	Brazil
 LA1512	Active	Wild species	L. esculentum var. cerasiforme	S. lycopersicum	Lago de Llopango		El Salvador
@@ -871,7 +871,7 @@ LA1474	Active	Wild species	L. peruvianum	S. peruvianum	Lomas de Camana	Arequipa	
 LA1475	Unavailable	Wild species	L. peruvianum	S. peruvianum	Fundo 'Los Anitos', Barranca	Lima	Peru
 LA1513	Active	Wild species	L. peruvianum	S. peruvianum	Atiquipa	Arequipa	Peru
 LA1517	Active	Wild species	L. peruvianum	S. peruvianum	Irrigacion Santa Rosa	Lima	Peru
-LA1537	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley	Tarapaca	CHILE
+LA1537	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley	Tarapaca	Chile
 LA1556	Active	Wild species	L. peruvianum	S. peruvianum	Hacienda Higuereta	Lima	Peru
 LA1616	Active	Wild species	L. peruvianum	S. peruvianum	La Rinconada	Lima	Peru
 LA1675	Unavailable	Wild species	L. peruvianum	S. peruvianum	Toparilla Canyon	Lima	Peru
@@ -895,7 +895,7 @@ LA2744	Active	Wild species	L. peruvianum	S. peruvianum	Sobraya	Arica and Parinac
 LA2745	Active	Wild species	L. peruvianum	S. peruvianum	Pan de Azucar	Arica and Parinacota	Chile
 LA2770	Unavailable	Wild species	L. peruvianum	S. peruvianum	Lluta valley	Arica and Parinacota	Chile
 LA2834	Active	Wild species	L. peruvianum	S. peruvianum	Hacienda Asiento	Ica	Peru
-LA2955B	Unavailable	Wild species	L. peruvianum	S. peruvianum	Quistagama-Quisama	Tarapaca	CHILE
+LA2955B	Unavailable	Wild species	L. peruvianum	S. peruvianum	Quistagama-Quisama	Tarapaca	Chile
 LA2959	Active	Wild species	L. peruvianum	S. peruvianum	Chaca to Caleta Vitor	Arica and Parinacota	Chile
 LA2964	Active	Wild species	L. peruvianum	S. peruvianum	Quebrada de Burros	Tacna	Peru
 LA3218	Active	Wild species	L. peruvianum	S. peruvianum	Quebrada Guerrero	Arequipa	Peru
@@ -917,9 +917,9 @@ LA4317	Active	Wild species	L. peruvianum	S. peruvianum	Rio Lluta, desembocadura	
 LA4318	Active	Wild species	L. peruvianum	S. peruvianum	Sora - Molinos, Rio Lluta	Arica and Parinacota	Chile
 LA4325	Active	Wild species	L. peruvianum	S. peruvianum	Caleta Vitor	Arica and Parinacota	Chile
 LA4328	Unavailable	Wild species	L. peruvianum	S. peruvianum	Pachica, Rio Camarones	Arica and Parinacota	Chile
-LA4445	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, 27 km from Arica	Arica and Parinacota	CHILE
-LA4446	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, Km 37 from Arica	Arica and Parinacota	CHILE
-LA4447	Unavailable	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, Km 27 and Km 37 from Arica	Tarapaca	CHILE
+LA4445	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, 27 km from Arica	Arica and Parinacota	Chile
+LA4446	Active	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, Km 37 from Arica	Arica and Parinacota	Chile
+LA4447	Unavailable	Wild species	L. peruvianum	S. peruvianum	Azapa Valley, Km 27 and Km 37 from Arica	Tarapaca	Chile
 LA0100	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	La Cantuta (Rimac Valley)	Lima	Peru
 LA0114	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Pacasmayo	La Libertad	Peru
 LA0121	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Trujillo	La Libertad	Peru
@@ -1118,7 +1118,7 @@ LA2340	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	(4x)
 LA2345	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
 LA2346	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
 LA2347	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium			
-LA2348	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Trujillo	La Libertad	PERU
+LA2348	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Trujillo	La Libertad	Peru
 LA2389	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Tembladera	Cajamarca	Peru
 LA2390	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chungal	Cajamarca	Peru
 LA2391	Active	Wild species	L. pimpinellifolium	S. pimpinellifolium	Chungal to Monte Grande	Cajamarca	Peru
