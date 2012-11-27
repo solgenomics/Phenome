@@ -135,8 +135,10 @@ sub get_locusgroup_members {
 
 sub exists_in_database {
     my $self=shift;
+    my $locusgroup_name = shift;
+    if (!$locusgroup_name) { $locusgroup_name = $self->get_locusgroup_name; }
     my $o = $self->get_resultset('Locusgroup')->search({
-	locusgroup_name  => { 'ilike' => $self->get_locusgroup_name() } } )->single(); #  ->single() for retrieving a single row (there sould be only one locusgroup_name entry) 
+	locusgroup_name  => { 'ilike' => $locusgroup_name } } )->single(); #  ->single() for retrieving a single row (there sould be only one locusgroup_name entry)
     return $o->locusgroup_id() if $o;
     return undef;
 }
