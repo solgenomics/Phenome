@@ -126,7 +126,9 @@ sub get_locusgroup_members {
 
  Usage: $self->get_cxgn_members()
  Desc:  find all the locusgroup_members
- Ret:   list of locusgroup_members objects L<CXGN::Phenome::LocusgroupMember>
+ Ret:   hashref with keys of loci ids , and values of hashrefs with the following keys:        locus-> L<CXGN::Phenome::Locus> object
+        evidence-> a cvterm name of the evidence code
+        reference-> html link to a publication page if applicable
  Args:  none
  Side Effects:
  Example:
@@ -135,11 +137,23 @@ sub get_locusgroup_members {
 
 sub get_cxgn_members {
     my $self=shift;
-    my @loci;
+    my $loci= {};
     my $members = $self->get_locusgroup_members;
     while (my $member = $members->next ) {
-        push @loci, CXGN::Phenome::Locus->new($self->get_dbh, $member->get_column('locus_id') ); }
-    return \@loci;
+        my $evidence_id = $member->evidence_id;
+        my $evidence_cvterm = CXGN::Chado::Cvterm->new($self->get_dbh, $evidence_id);
+        my $evidence = $evidence_cvterm->name;
+        my $reference_id = $member->reference_id;
+        my $reference_pub = CXGN::Chado::Publication->new($self->get_dbh, $reference_id);
+        my $mini_ref = $reference_pub->print_mini_ref;
+        my $ref_link = $reference_id ?  qq|<a href="/chado/publication.pl?pub_id=$reference_id">$mini_ref</a> | : undef;
+        my $locus_id = $member->get_column('locus_id');
+        my $locus =  CXGN::Phenome::Locus->new($self->get_dbh, $locus_id);
+        $loci->{$locus_id}->{locus} = $locus;
+        $loci->{$locus_id}->{evidence} = $evidence;
+        $loci->{$locus_id}->{reference} = $ref_link;
+    }
+    return $loci;
 }
 
 
