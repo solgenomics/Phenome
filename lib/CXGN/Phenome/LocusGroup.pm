@@ -24,6 +24,7 @@ use CXGN::Phenome::Locus;
 use CXGN::Chado::Cvterm;
 use CXGN::Chado::Publication;
 use CXGN::Chado::Dbxref;
+use CXGN::Phenome::LocusgroupMember;
 
 package CXGN::Phenome::LocusGroup;
 
@@ -106,7 +107,7 @@ sub store {
 
 
 =head2 get_locusgroup_members
-    
+
  Usage: $self->get_locusgroup_members()
  Desc:  find all the locusgroup_members 
  Ret:   list of locusgroup_members row objects 
@@ -121,9 +122,29 @@ sub get_locusgroup_members {
     return $self->get_object_row()->locusgroup_members();
 }
 
+=head2 get_cxgn_members
+
+ Usage: $self->get_cxgn_members()
+ Desc:  find all the locusgroup_members
+ Ret:   list of locusgroup_members objects L<CXGN::Phenome::LocusgroupMember>
+ Args:  none
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_cxgn_members {
+    my $self=shift;
+    my @loci;
+    my $members = $self->get_locusgroup_members;
+    while (my $member = $members->next ) {
+        push @loci, CXGN::Phenome::Locus->new($self->get_dbh, $member->get_column('locus_id') ); }
+    return \@loci;
+}
+
 
 =head2 exists_in_database
-    
+
  Usage: $self->exists_in_database()
  Desc:  check if the locusgroup_name exists in the locusgroup table
  Ret:   Database id or undef

@@ -368,6 +368,24 @@ sub obsolete_lgm {
 }
 
 
+=head2 get_common_name
+
+ Usage:
+ Desc:
+ Ret:
+ Args:
+ Side Effects:
+ Example:
+
+=cut
+
+sub get_common_name {
+    my $self = shift;
+    my $locus = CXGN::Phenome::Locus->new($self->get_dbh, $self->get_locus_id);
+    return $locus->get_common_name;
+}
+
+
 #########move these to CXGN::DB::Object##############
 
 =head2 accessors get_object_row, set_object_row
