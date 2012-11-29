@@ -143,8 +143,9 @@ sub get_cxgn_members {
         my $evidence_id = $member->evidence_id;
         my $evidence_cvterm = CXGN::Chado::Cvterm->new($self->get_dbh, $evidence_id);
         my $evidence = $evidence_cvterm->name;
-        my $reference_id = $member->reference_id;
-        my $reference_pub = CXGN::Chado::Publication->new($self->get_dbh, $reference_id);
+        my $reference_id = $member->reference_id; #this is a dbxref_id
+        my $dbxref = CXGN::Chado::Dbxref->new($self->get_dbh, $reference_id);
+        my $reference_pub = $dbxref->get_publication;
         my $mini_ref = $reference_pub->print_mini_ref;
         my $ref_link = $reference_id ?  qq|<a href="/chado/publication.pl?pub_id=$reference_id">$mini_ref</a> | : undef;
         my $locus_id = $member->get_column('locus_id');
