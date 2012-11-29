@@ -146,7 +146,7 @@ sub get_cxgn_members {
         my $reference_id = $member->reference_id; #this is a dbxref_id
         my $dbxref = CXGN::Chado::Dbxref->new($self->get_dbh, $reference_id);
         my $reference_pub = $dbxref->get_publication;
-        my $mini_ref = $reference_pub->print_mini_ref;
+        my $mini_ref = $reference_pub->print_mini_ref( { title => 0 , series => 0} );
         my $ref_link = $reference_id ?  qq|<a href="/chado/publication.pl?pub_id=$reference_id">$mini_ref</a> | : undef;
         my $locus_id = $member->get_column('locus_id');
         my $locus =  CXGN::Phenome::Locus->new($self->get_dbh, $locus_id);
