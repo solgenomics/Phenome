@@ -96,7 +96,7 @@ die "Need to have SolCAP user pre-loaded in the sgn database! " if !$sp_person_i
 ## For the stock module:
 
 #the cvterm for plots
-print "Finding/creating cvterm for population\n";
+print "Finding/creating cvterm for plot\n";
 my $plot_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'plot',
       cv     => 'stock type',

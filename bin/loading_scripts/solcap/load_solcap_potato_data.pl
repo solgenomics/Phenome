@@ -15,6 +15,9 @@ load_solcap_potato_data.pl
  -t  Test run . Rolling back at the end.
  -p  project name as loaded in the project table
  -g  geolocation description as loaded in the nd_geolocation table
+ -n population name
+ -y year. "Year" column in spreadsheet overrides
+ -m metadata file - for project name and geolocation
 
 =head2 DESCRIPTION
 
@@ -34,6 +37,7 @@ June 2011
 use strict;
 use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
+use Try::Tiny;
 
 use Bio::Chado::Schema;
 use CXGN::DB::InsertDBH;
@@ -62,17 +66,18 @@ my %value_map = (
 
 ### This stuff is the same as the tomato solcap phenotype loaded
 
-our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_g);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_g, $opt_n, $opt_y, $opt_m);
 
-getopts('H:i:tD:p:g:');
+getopts('H:i:tD:p:g:y:m:n:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
 my $file = $opt_i;
+my $metadata = $opt_m;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
-				      dbargs => {AutoCommit => 0,
+				      dbargs => {AutoCommit => 1,
 						 RaiseError => 1}
 				    }
     );
@@ -102,13 +107,27 @@ my %seq  = (
     'stock_relationship_stock_relationship_id_seq'  => $last_stock_relationship_id,
     );
 
+
 # get the project
-my $project_name = $opt_p || die "Need project name! (option -p). See load_geolocation_project.pl if you have not loaded the project\n";
-my $project = $schema->resultset("Project::Project")->find( {
-    name => $project_name,
-} );
+my $project_name = $opt_p || warn "Need project name! (option -p). See load_geolocation_project.pl if you have not loaded the project\n";
+my $project_description = $project_name;
+
 # get the geolocation
-my $geo_description = $opt_g || die "Need a geo_description (option -g). See load_geolocation_project.pl if you have not loaded the project's geolocation";
+my $geo_description = $opt_g || warn "Need a geo_description (option -g). See load_geolocation_project.pl if you have not loaded the project's geolocation";
+
+if ($metadata) {
+    my $m = CXGN::Tools::File::Spreadsheet->new($metadata,1);
+    my @rows = $m->row_labels;
+    $project_name = $rows[0];
+    $project_description = $m->value_at($project_name, "project_description");
+    $geo_description = $m->value_at($project_name,"project_description");
+}
+if (!$project_name) { die "NEED a project_name from option -p or from a metadata file (option -m)\n"; }
+my $project = $schema->resultset("Project::Project")->find_or_create( {
+    name => $project_name,
+    description =>$project_description
+} );
+
 my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find(
     { description => $geo_description , } );
 
@@ -125,7 +144,28 @@ my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
 
 die "User $username for Solcap must be pre-loaded in the database! \n" if !$sp_person_id ;
 
+#the cvterm for the population
+print "Finding/creating cvterm for population\n";
+my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'population',
+      cv     => 'stock type',
+      db     => 'null',
+      dbxref => 'population',
+    });
 
+
+my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
+    species => 'Solanum tuberosum' } );
+my $organism_id = $organism->organism_id();
+my $population_name = $opt_n || die "Need a potato population name to proceed! (-n option) \n";
+
+my $population = $schema->resultset("Stock::Stock")->find_or_create(
+    {
+        name        => $population_name,
+        uniquename  => $population_name,
+        organism_id => $organism_id,
+        type_id     => $population_cvterm->cvterm_id
+    } );
 my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'accession',
       cv     => 'stock type',
@@ -138,10 +178,24 @@ my $plot_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
       db     => 'null',
       dbxref => 'plot',
     });
+my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'plot_of',
+      cv     => 'stock relationship',
+      db     => 'null',
+      dbxref => 'plot_of',
+            });
+#the cvterm for the relationship type
+print "Finding/creating cvterm for stock relationship 'member_of' \n";
+my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'member_of',
+      cv     => 'stock relationship',
+      db     => 'null',
+      dbxref => 'member_of',
+    });
 ########################
 
-#new spreadsheet, skip 2 first columns
-my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 2);
+#new spreadsheet, skip first column
+my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file, 1);
 
 # sp_term scale_name value name_string
 my $scale_cv_name= "breeders scale";
@@ -150,25 +204,53 @@ my $unit_cv = $schema->resultset("Cv::Cv")->find(
     { name => 'unit.ontology' } );
 
 
-my $organism = $schema->resultset("Organism::Organism")->find_or_create( {
-    species => 'Solanum tuberosum' } );
-my $organism_id = $organism->organism_id();
-
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
-##my $common_name= 'Potato';
-my $year = '2009'; #get this as an option?
-eval {
-    my $date; # the date column changes more than once in the spreadsheet, meaning following column values were collected at that date.
-    foreach my $accession (@rows ) {
-        (my $parent_accession, undef) = split (/\|/, $accession);
-        my $date_count = 0;
-        #find the stock for the accession
-        my ($parent_stock) = $schema->resultset('Stock::Stock')->search(
-            { uniquename => $parent_accession, } );
+my $year = $opt_y; #get this as an option . "year" column in spreadsheet overrides
 
-        my $plot = $spreadsheet->value_at($accession, "Plot Number");
-        my $replicate = $spreadsheet->value_at($accession, "Replicate Number");
+my $coderef = sub  {
+    my $date; # the date column changes more than once in the spreadsheet, meaning following column values were collected at that date.
+    foreach my $label (@rows ) {
+        #2009 data requires first loading of metadata with load_geolocation_project.pl
+        #2010-11 data has following metadata columns
+        #line	market	ploidy	release year	release reange	entry	year	location	replicate
+
+        my $date_count = 0;
+        my $parent_accession = $spreadsheet->value_at($label, "line");
+        #find the stock for the parent accession
+	my $parent_stock = $schema->resultset("Stock::Stock")->find_or_create(
+	    { organism_id => $organism_id,
+	      name  => $parent_accession,
+	      uniquename => $parent_accession,
+	      type_id => $accession_cvterm->cvterm_id,
+            });
+        #add the parent accession to the potato population
+        $population->find_or_create_related('stock_relationship_objects', {
+	    type_id => $member_of->cvterm_id,
+	    subject_id => $parent_stock->stock_id,
+                                            } );
+        my $plot;
+        if (grep(/plot/,  @columns ) ) {
+            $plot = $spreadsheet->value_at($label, "plot");
+        }
+        my $replicate = $spreadsheet->value_at($label, "replicate");
+        my $year = $spreadsheet->value_at($label, "year");
+        if (!$opt_g) {
+            # don't have these values from solcap 2010-11, so keeping these undef
+            my ($latitude, $longitude, $datum, $altitude);
+            my $location = $spreadsheet->value_at($label, "location");
+            my $plot = $location;
+            my $geo_description = $project_name . " " . $location . " " . $year ;
+            $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create(
+                {
+                    description => $geo_description,
+                    latitude => $latitude,
+                    longitude => $longitude,
+                    geodetic_datum => $datum,
+                    altitude => $altitude,
+                } ) ;
+        }
+
 	my $uniquename = $parent_accession ."_plot_".$plot."_".$replicate."_".$year."_".$geo_description;
         #store the plot in stock
         my $plot_stock = $schema->resultset("Stock::Stock")->find_or_create(
@@ -178,12 +260,6 @@ eval {
 	      type_id => $plot_cvterm->cvterm_id()
 	    });
         ##and create the stock_relationship with the accession
-        my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
-            { name   => 'plot_of',
-              cv     => 'stock relationship',
-              db     => 'null',
-              dbxref => 'plot_of',
-            });
         $parent_stock->find_or_create_related('stock_relationship_objects', {
 	    type_id => $plot_of->cvterm_id(),
 	    subject_id => $plot_stock->stock_id(),
@@ -192,6 +268,7 @@ eval {
 	my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
         my $sth = $dbh->prepare($owner_insert);
         $sth->execute($sp_person_id, $plot_stock->stock_id);
+        $sth->execute($sp_person_id, $parent_stock->stock_id);
         #################
         ###store a new nd_experiment. One experiment per stock
         my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
@@ -209,18 +286,20 @@ eval {
             type_id  =>  $pheno_cvterm->cvterm_id(),
                                             });
         ##################
-        
-        LABEL: foreach my $label (@columns) {
-	    my $value =  $spreadsheet->value_at($accession, $label);
+
+        LABEL: foreach my $col_label (@columns) {
+	    my $value =  $spreadsheet->value_at($label, $col_label);
 	    ($value, undef) = split (/\s/, $value) ;
-	    #print "Value $value \n";
+	    print "label = $col_label , Value $value \n";
 	    next() if $value !~ /^\d/;
-	    $date = $spreadsheet->value_at($accession, 'date') unless $date_count;
-	    if ($label =~ /date\d/) {
+            if (grep(/date/,  @columns ) ) {
+                $date = $spreadsheet->value_at($label, 'date') unless $date_count;
+            }
+	    if ($col_label =~ /date\d/) {
 		$date_count++;
 		##print "***Changing date $date \n\n ";
 		#make sure extra 'date' colums have sequencial numeric suffix starting at 1
-                $date = $spreadsheet->value_at($accession, "date" . $date_count);
+                $date = $spreadsheet->value_at($label, "date" . $date_count);
                 ########################
                 # when the date changes, need to store a new nd_experiment_id
                 $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
@@ -241,14 +320,19 @@ eval {
                 #########################
 	    }
             ##The date is the nd_experimentprop
-            $experiment->create_nd_experimentprops( 
-                { date => $date } , 
-                { autocreate => 1 , cv_name => 'local' } 
-                );
+            if ($date) {
+                $experiment->create_nd_experimentprops(
+                    { date => $date } ,
+                    { autocreate => 1 , cv_name => 'local' }
+                    );
+            }
+            ## label = SP:0000212|scale:NE1014 , Value 7
+            ## db_name = 1026, sp= , type =
             #sp terms have a lable to determine if these have a scale or a quantitative unit
-            my ($term, $type) = split (/\|/ , $label) ;
-            #db_name = SP , accession = 0000NNN 
-	    my ($db_name, $sp_accession) = split (/\:/ , $term);
+            my ($term, $type) = split (/\|/ , $col_label) ;
+            #db_name = SP , accession = 0000NNN
+	    my ($db_name, $sp_accession) = split (/:/ , $term);
+            print "db_name = $db_name, sp= $sp_accession, type = $type\n";
 	    #print STDERR "db_name = '$db_name' sp_accession = '$sp_accession'\n";
 	    next() if (!$sp_accession);
             ####################
@@ -351,12 +435,12 @@ eval {
 		("cvterms", { cvterm_id => $sp_term->cvterm_id ,} );
             my $po_id = undef;
 	    $po_id = $po_cvterm->cvterm_id() if $po_cvterm;
-            
+
             #make sure phenotype is loaded correctly for scale, qscale, unit. 
             #also store the unit in phenotype_cvterm
             #############################3
             ##observable_id is the same as cvalue_id for scale and qscale, and the parent term for unit.
-           
+
 	    my $phenotype = $sp_term->find_or_create_related(
 		"phenotype_cvalues", {
                     observable_id => $observable_term->cvterm_id, #sp_term
@@ -369,26 +453,25 @@ eval {
 	    $phenotype->find_or_create_related("phenotype_cvterms" , {
 		cvterm_id => $unit_cvterm->cvterm_id() } ) if $unit_cvterm;
 	    print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" if $unit_cvterm ;
-            
-            #link the phenotype to nd_experiment 
+
+            #link the phenotype to nd_experiment
             my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
         }
     }
 };
 
-
 #accession= Premier Russet, cloumn = SP:0000201|scale:NE1014, value = 4
-
-
-if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
-elsif ($opt_t) {
-    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
+try {
+    $schema->txn_do($coderef);
+    if (!$opt_t) { print "Transaction succeeded! Commiting stocks and phenotypes \n\n"; }
+} catch {
+    # Transaction failed
     foreach my $value ( keys %seq ) {
-	my $maxval= $seq{$value} || 0;
-	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
-	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+        my $maxval= $seq{$value} || 0;
+        if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+        else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
     }
-}else {
-    print "Transaction succeeded! Commiting ! \n\n";
-    $dbh->commit();
-}
+    die "An error occured! Rolling back  and reseting database sequences!" . $_ . "\n";
+};
+
+#    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
