@@ -195,7 +195,7 @@ my $coderef = sub {
         #my $location = $spreadsheet->value_at($num, "location"); #
         #my $year     = $spreadsheet->value_at($num, "year"); #
         #
-        my $surv_plants= $spreadsheet->value_at($num , "surv"); ###############add this as a stock prop.
+        my $surv_plants= $spreadsheet->value_at($num , "NOSV"); ###############add this as a stock prop.
         my $stock_name = $spreadsheet->value_at($num , "DESIG");
         my $uniquename = $stock_name . "_" .  $replicate  . "_" . $year . "_" . $geo_description ;
 	##my $uniquename = $stock_name ."_plot_".$plot."_".$replicate."_".$year."_".$location;
