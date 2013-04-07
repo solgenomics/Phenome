@@ -196,18 +196,44 @@ my $coderef = sub {
         #my $year     = $spreadsheet->value_at($num, "year"); #
         #
         my $surv_plants= $spreadsheet->value_at($num , "NOSV"); ###############add this as a stock prop.
-        my $stock_name = $spreadsheet->value_at($num , "DESIG");
-        my $uniquename = $stock_name . "_" .  $replicate  . "_" . $year . "_" . $geo_description ;
-	##my $uniquename = $stock_name ."_plot_".$plot."_".$replicate."_".$year."_".$location;
-
-        #store the plant accession in the plot table
-        my $parent_stock = $schema->resultset("Stock::Stock")->find_or_create(
-            { organism_id => $organism_id,
-              name       => $stock_name,
-              uniquename => $stock_name,
-              type_id     => $accession_cvterm->cvterm_id,
-            } );
+        my $clone_name = $spreadsheet->value_at($num , "DESIG");
+        #look for an existing stock by name/synonym
+        my $stock_rs = $schema->resultset("Stock::Stock")->search(
+            {
+                -or => [
+                     'lower(stock.uniquename)' => { like => lc($clone_name) },
+                     -and => [
+                         'lower(type.name)'       => { like => '%synonym%' },
+                         'lower(stockprop.value)' => { like => lc($clone_name) },
+                     ],
+                    ],
+            },
+            { join => { 'stockprops' => 'type'} ,
+              distinct => 1
+            }
+            );
+        my $parent_stock;
+        my $stock_name = $clone_name;
+        if ($stock_rs->count >1 ) {
+            print STDERR "ERROR: found multiple accessions for name $clone_name! \n";
+            while ( my $st = $stock_rs->next) {
+                print STDERR "stock name = " . $st->uniquename . "\n";
+            }
+            die ;
+        } elsif ($stock_rs->count == 1) {
+            $parent_stock = $stock_rs->first;
+            $stock_name = $parent_stock->name;
+        }else {
+            #store the plant accession in the plot table
+            $parent_stock = $schema->resultset("Stock::Stock")->create(
+                { organism_id => $organism_id,
+                  name       => $stock_name,
+                  uniquename => $stock_name,
+                  type_id     => $accession_cvterm->cvterm_id,
+                } );
+        }
         #store the plot in stock
+        my $uniquename = $stock_name . "_" .  $replicate  . "_" . $year . "_" . $geo_description ;
         my $plot_stock = $schema->resultset("Stock::Stock")->find_or_create(
 	    { organism_id => $organism_id,
 	      name  => $uniquename,
