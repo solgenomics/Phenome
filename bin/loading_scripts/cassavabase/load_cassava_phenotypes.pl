@@ -271,11 +271,11 @@ my $coderef = sub {
 		{ name => 'CO' } )->find_related(
 		"dbxrefs", { accession=>$co_accession , } )->find_related("cvterm" , {});
             ####################
+            #skip non-numeric values
 	    if ($value !~ /^\d/) {
                 warn "** Found non-numeric value in column $label (value = '" . $value ."'\n";
+                next;
             }
-
-
 	    ######################
 	    # this is valid for scale and qscale value types
             #my $parent_cvterm = $schema->resultset("General::Db")->find(
