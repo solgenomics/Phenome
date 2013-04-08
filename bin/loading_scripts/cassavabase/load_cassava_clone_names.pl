@@ -82,8 +82,8 @@ my %seq  = (
 	    'organism_organism_id_seq' => $last_organism_id,
 	    );
 
-#new spreadsheet, skip 2 first columns
-my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file);
+#new spreadsheet, skip  first column
+my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file,1);
 
 ##############
 ##parse first the file with the clone names and synonyms. Load is into stock, and stockprop
@@ -113,13 +113,13 @@ my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
       dbxref => 'population',
     });
 
-
+print "Creating a stock for population $population_name (cvterm = " . $population_cvterm->name . ")\n";
 my $population = $stock_rs->find_or_create(
     {
         'me.name'        => $population_name,
-        'me.name'        => $population_name,
+        'me.uniquename'        => $population_name,
         'me.organism_id' => $organism_id,
-        'type.name'      => 'population',
+        type_id          => $population_cvterm->cvterm_id,
     },
     { join => 'type' }
     );
@@ -153,13 +153,14 @@ my @columns = $spreadsheet->column_labels();
 
 #11		IITA	IITA-TMS-BI090563-1	IITA-TMS	IBA		TMS-BI090563-1	BI09/0563-1
 
-my $count;
-
+my ($new_count,$existing, $count, $syn_count, $merge);
 my $coderef= sub  {
     foreach my $num (@rows ) {
 	my $accession = $spreadsheet->value_at($num, 'Preferred cassavabase clone name');
-	print "Cassava clone name is '" . $accession . "'\n";
-        my $organization = $spreadsheet->value_at($num, 'Contributing Organization');
+	if (!$accession) { next; }
+	print "\nCassava clone name is '" . $accession . "'\n";
+	$count++;
+	my $organization = $spreadsheet->value_at($num, 'Contributing Organization');
         my $location_code = $spreadsheet->value_at($num, 'Three letter Location code');
 
         my $iita_clone_name = $spreadsheet->value_at($num, "Official IITA Clone Name");
@@ -171,81 +172,102 @@ my $coderef= sub  {
         my $icass  =  $spreadsheet->value_at($num, "icass");
 
         # see if a stock exists with any of the synonyms
-        my @stocks = $schema->resultset("Stock:Stock")->search( {
+        my @stocks = $stock_rs->search( {
             -or => [
-                 name => $accession,
-                 name => $iita_clone_name,
-                 name => $syn1,
-                 name => $syn2,
-                 name => $syn3,
-                 name => $syn4,
-                 name => $syn5,
-                 name => $icass,
+                 uniquename => $accession,
+                 uniquename => $iita_clone_name,
+                 uniquename => $syn1,
+                 uniquename => $syn2,
+                 uniquename => $syn3,
+                 uniquename => $syn4,
+                 uniquename => $syn5,
+                 uniquename => $icass,
                 ], }, );
+	my $existing_stock = $stock_rs->search( { uniquename => $accession } )->single;
         foreach my $s(@stocks) {
-            print "Looking at accession $accession, Found stock '" . $s . "'\n";
-        }
+            print "Looking at accession $accession, Found stock '" . $s->uniquename . "(stock_id = " . $s->stock_id . ")'\n";
+	    $existing++;
+	}
+	##
         if (!@stocks) { 
-            print "NEW stock: $accession";
-            $count++;
-        }
-
-	#my $stock = $schema->resultset("Stock::Stock")->find_or_create(
-	#    { organism_id => $organism_id,
-	#      name  => $accession,
-	#      uniquename => $accession,
-	#      type_id => $accession_cvterm->cvterm_id(),
-        #      #description => '',
-	#    });
-        #my $stock_id = $stock->stock_id;
-        #print "Adding owner $sp_person_id \n";
-	##add the owner for this stock
-        #$phenome_schema->resultset("StockOwner")->find_or_create(
-        #    {
-        #        stock_id     => $stock->stock_id,
-        #        sp_person_id => $sp_person_id,
-        #    });
+            print "NEW stock: $accession\n";
+            $new_count++;
+        }elsif (!$existing_stock)  {
+	    ##
+	    my %stock_hash = map { $_->stock_id => $_ } @stocks; 
+	    my @keys =   keys %stock_hash; 
+	    my @sorted  = sort { $a <=> $b } @keys; 
+	    print "Existing stock_id  is " . $sorted[0] . " name = " . ($stock_hash{$sorted[0]})->uniquename . "\n"; 
+	    $existing_stock = $stock_hash{$sorted[0]};
+	    $existing_stock->uniquename($accession);
+	    $existing_stock->name($accession);
+	    $existing_stock->update;
+	    ##
+	}
+	if (scalar(@stocks) >1) {
+	    my @stock_names = map( $_->uniquename , @stocks );
+	    my @stock_ids = map ($_->stock_id, @stocks);
+	    print "MERGE: stocks " . join (", " , @stock_names) . "need to be merged\n"; 
+	    $merge .= "$accession : merge stock_ids :  " .join (", " , @stock_ids) . "( names: " . join (" | " , @stock_names) . ")\n";
+	}
+	my $stock = $existing_stock ? $existing_stock : 
+	    $schema->resultset("Stock::Stock")->find_or_create(
+		{ organism_id => $organism_id,
+		  name  => $accession,
+		  uniquename => $accession,
+		  type_id => $accession_cvterm->cvterm_id(),
+		  #description => '',
+		});
+        my $stock_id = $stock->stock_id;
+        print "Adding owner $sp_person_id \n";
+	#add the owner for this stock
+        $phenome_schema->resultset("StockOwner")->find_or_create(
+            {
+                stock_id     => $stock->stock_id,
+                sp_person_id => $sp_person_id,
+            });
         #####################
-	############################$stock->create_stockprops( { 'solcap number' => $sct }, { autocreate => 1 } );
+	if ($organization) { $stock->create_stockprops( { organization => $organization }, { autocreate => 1 } ); }
+	if ($location_code) { $stock->create_stockprops( { location_code => $location_code }, { autocreate => 1 } ) } ;
 
 	#the stock belongs to the population:
         #add new stock_relationship
 
-	#$population->find_or_create_related('stock_relationship_objects', {
-	#    type_id => $member_of->cvterm_id(),
-	 #   subject_id => $stock->stock_id(),
-	#} );
+	$population->find_or_create_related('stock_relationship_objects', {
+	    type_id => $member_of->cvterm_id(),
+	    subject_id => $stock->stock_id(),
+					    } );
         print "Adding synonyms #\n";
-        my @synonyms = ();
+        my @synonyms = ($iita_clone_name,$syn1, $syn2, $syn3, $syn4, $syn5, $icass);
         foreach my $syn (@synonyms) {
-	    if ($syn && defined($syn) ) {
-		#my $existing_synonym = $stock->search_related(
-                #    'stockprops' , {
-                #        'me.value'   => $s,
-                #        'type.name'  => 'synonym'
-                #    },
-                #    { join =>  'type' }
-                #    )->single;
-                #if (!$existing_synonym) {
-                    print STDOUT "Adding synonym: $syn \n"  ;
+	    if ($syn && defined($syn) && ($syn ne $accession) ) {
+		my $existing_synonym = $stock->search_related(
+                    'stockprops' , {
+                        'me.value'   => $syn,
+                        'type.name'  => 'synonym'
+                    },
+                    { join =>  'type' }
+		    )->single;
+                if (!$existing_synonym) {
+		    $syn_count++;
+		    print STDOUT "Adding synonym: $syn \n"  ;
                     #add the synonym as a stockprop
-                #    $stock->create_stockprops({ synonym => $s},
-                #                              {autocreate => 1,
-                #                               cv_name => 'null',
-                #                               allow_duplicate_values=> 1
-                #                              });
-                #}
+                    $stock->create_stockprops({ synonym => $syn},
+                                              {autocreate => 1,
+                                               cv_name => 'local',
+                                               allow_duplicate_values=> 1,
+					       
+                                              });
+                }
             }
         }
-	##$stock->create_stockprops( { variety => $var_type }, { autocreate => 1 } );
-
-        ########
-	#my @props = $stock->search_related('stockprops');
-	#foreach  my $p ( @props )  {
-	#    print "**the prop value for stock " . $stock->name() . " is   " . $p->value() . "\n"  if $p;
-	#}
+	my @props = $stock->search_related('stockprops');
+	foreach  my $p ( @props )  {
+	    print "**the prop value for stock " . $stock->name() . " is   " . $p->value() . "\n"  if $p;
+	}
 	#########
     }
+    print "TOTAL: \n $count rows \n $new_count new accessions \n $existing existing stocks \n $syn_count new synonyms \n MERGE :\n  $merge\n";
     if ($opt_t) {
         die "TEST RUN! rolling back\n";
     }
