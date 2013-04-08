@@ -160,7 +160,7 @@ eval {
 	    next() if $base_calls !~ /A|T|C|G/i;
             ##make sure the marker name is the preffered one (the solcap identifier)
 
-            my @ids = CXGN::Marker::Tools::marker_name_to_ids($dbh, $marker_name);
+            my @ids = CXGN::Marker::Tools::marker_name_to_ids($dbh, $marker_name, 1);
             if (!@ids) {
                 warn "No marker found for name $marker_name!!\n";
                 next;
