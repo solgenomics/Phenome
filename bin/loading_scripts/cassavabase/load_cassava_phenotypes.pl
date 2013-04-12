@@ -227,6 +227,7 @@ my $coderef = sub {
     ##
     foreach my $num (@rows ) {
         my $replicate = $spreadsheet->value_at($num, "REP");
+<<<<<<< HEAD
         if ($multilocation) {
             $geo_description = $spreadsheet->value_at($num, "location"); #
             $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create(
@@ -248,6 +249,17 @@ my $coderef = sub {
         ###
         my $surv_plants= $spreadsheet->value_at($num , "NOSV"); ###############add this as a stock prop.
         my $clone_name = $spreadsheet->value_at($num , "DESIG");
+=======
+        #my $plot = $spreadsheet->value_at($num, "pegno"); # build a plot name if not in file
+        #my $location = $spreadsheet->value_at($num, "location"); #
+        #my $year     = $spreadsheet->value_at($num, "year"); #
+        #REP  BLOCK  DESIG  NOPLT  NOSV
+	my $block =  $spreadsheet->value_at($num , "BLOCK");
+        my $planted_plants =  $spreadsheet->value_at($num , "NOPLT");
+
+	my $surv_plants =  $spreadsheet->value_at($num , "NOSV");
+	my $clone_name = $spreadsheet->value_at($num , "DESIG");
+>>>>>>> origin/master
         #look for an existing stock by name/synonym
         my $stock_rs = $schema->resultset("Stock::Stock")->search(
             {
@@ -283,8 +295,11 @@ my $coderef = sub {
                   type_id     => $accession_cvterm->cvterm_id,
                 } );
         }
-        #store the plot in stock
-        my $uniquename = $stock_name . "_" .  $replicate  . "_" . $year . "_" . $geo_description ;
+        #store the plot in stock. Build a uniquename first
+        my $uniquename = $stock_name;
+	if ($replicate) { $uniquename .=  "_replicate:" .  $replicate  ; }
+	if ($block) { $uniquename .= "_block:" . $block ; }
+	$uniquename .= "_" . $year . "_" . $geo_description ;
         my $plot_stock = $schema->resultset("Stock::Stock")->find_or_create(
 	    { organism_id => $organism_id,
 	      name  => $uniquename,
@@ -292,9 +307,22 @@ my $coderef = sub {
 	      type_id => $plot_cvterm->cvterm_id()
 	    });
         #add stock properties to the plot
-        $plot_stock->stockprops(
-            {'surviving plants' => $surv_plants} , {autocreate => 1} );
-
+	if ($surv_plants) {
+	    $plot_stock->stockprops(
+		{'surviving plants' => $surv_plants} , {autocreate => 1} );
+	}
+	if ($planted_plants) {
+	    $plot_stock->stockprops(
+		{'planted plants' => $planted_plants} , {autocreate => 1} );
+	}
+	if ($replicate) { 
+	    $plot_stock->stockprops(
+		{'replicate' => $replicate} , {autocreate => 1} );
+	}
+	if ($block) {
+	    $plot_stock->stockprops(
+		{'block' => $block} , {autocreate => 1} );
+	}
         ##and create the stock_relationship with the accession
         $parent_stock->find_or_create_related('stock_relationship_objects', {
 	    type_id => $plot_of->cvterm_id(),
