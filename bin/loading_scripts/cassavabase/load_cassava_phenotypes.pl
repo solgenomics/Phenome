@@ -11,20 +11,43 @@ load_cassava_data.pl
 
  -H  host name
  -D  database name
- -i infile
- -u sgn user name
+ -i  infile
+ -u  sgn user name
+ -m  use when loading a file with a 'location' field. This option forces -y , and loads project, year, and location
+based on the location field and -y arg. instead of reading a metadata file.
+ -y  year
  -t  Test run . Rolling back at the end.
 
 
 =head2 DESCRIPTION
 
+Loading cassava phenotypes requires a phenotyping file using a standard template.
+First column must contain unique identifiers, followed by the following column headers:
 
+ PLOT REP  DESIG  BLOCK NOPLT NOSV
+
+and columns for the phenotypes in ontology ID format (CO:0000123).
+The loader also supports loading some  phenotype properties and units:
+
+CO:0000099|scale:cassavabase
+Terms loaded with a scale named "cassavabase" . Scale - to -value mapping must be pre-loaded into cvtermprop.
+
+CO:0000018|unit:centimeter
+Units will be added to phenotypeprop table. Units must be from the Unit Ontology L<http://www.obofoundry.org/cgi-bin/detail.cgi?id=unit>
+
+CO:0000039|date:1MAP
+timing of measurement in 'months after planting" (MAP) will be loaded as phenotype prop with a type_id of "months after planting"
 
 =head2 AUTHOR
 
 Naama Menda (nm249@cornell.edu)
 
-December 2011
+April 2013
+
+=head2 TODO
+
+Add support for boolean cvterm types
+Add support for non-numeric values (scale and qscale types)
 
 =cut
 
@@ -43,13 +66,14 @@ use Try::Tiny;
 ##
 ##
 
-our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_u);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_u, $opt_m, $opt_y);
 
-getopts('H:i:tD:u:');
+getopts('H:i:tD:u:my');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
 my $file = $opt_i;
+my $multilocation = $opt_m;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
@@ -160,41 +184,68 @@ my $organism_id = $organism->organism_id();
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
 
-#location and project must be pre-loaded
+#location and project and year must be pre-loaded
 my $geolocation;
+my $geo_description;
 my $project;
+my $year;
+
+if ($multilocation) {
+    $year = $opt_y || die "must provide year (-y option) whren loading a multilocation file\n";
+    #$location and $project will be loaded later based on the 'location' column in the data file
+} else {
 #new spreadsheet for the project and geolocation
-my $gp_file = $file . "metadata";
-my $gp = CXGN::Tools::File::Spreadsheet->new($gp_file);
-my @gp_row = $gp->row_labels();
+    my $gp_file = $file . "metadata";
+    my $gp = CXGN::Tools::File::Spreadsheet->new($gp_file);
+    my @gp_row = $gp->row_labels();
 
-# get the project
-my $project_name = $gp->value_at($gp_row[0], "project_name");
-my $project = $schema->resultset("Project::Project")->find( {
-    name => $project_name,
-} );
-# get the geolocation
-my $geo_description = $gp->value_at($gp_row[0], "geo_description");
-my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( {
-    description => $geo_description ,
-} );
-
-##To build a unique plot name we need the project year and location
-#year is a projectprop , location is the geolocation description
-my $yearprop = $project->projectprops->find(
-    { 'type.name' => 'project year' },
-    { join => 'type'}
-    ); #there should be only one project year prop.
-my $year = $yearprop->value;
-
+    # get the project
+    my $project_name = $gp->value_at($gp_row[0], "project_name");
+    $project = $schema->resultset("Project::Project")->find(
+        {
+            name => $project_name,
+        } );
+    # get the geolocation
+    $geo_description = $gp->value_at($gp_row[0], "geo_description");
+    $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find(
+        {
+            description => $geo_description ,
+        } );
+    ##To build a unique plot name we need the project year and location
+    #year is a projectprop , location is the geolocation description
+    my $yearprop = $project->projectprops->find(
+        { 'type.name' => 'project year' },
+        { join => 'type'}
+        ); #there should be only one project year prop.
+    $year = $yearprop->value;
+}
 my $coderef = sub {
-    #ENTRY	REP	DESIG	surv	CO:0000010	CO:0000099|scale:cassavabase	CO:0000018|unit:cm       CO:0000039|date:1MAP
+    ##unique#  PLOT REP  DESIG  BLOCK NOPLT NOSV CO:0000010	CO:0000099|scale:cassavabase  CO:0000018|unit:cm   CO:0000039|date:1MAP
+    ##
+    ##multilocation files:
+    #unique#	location	PLOT	REP	DESIG	BLOCK	NOPLT	NOSV
+    ##
     foreach my $num (@rows ) {
         my $replicate = $spreadsheet->value_at($num, "REP");
-        #my $plot = $spreadsheet->value_at($num, "pegno"); # build a plot name if not in file
-        #my $location = $spreadsheet->value_at($num, "location"); #
-        #my $year     = $spreadsheet->value_at($num, "year"); #
-        #
+        if ($multilocation) {
+            $geo_description = $spreadsheet->value_at($num, "location"); #
+            $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create(
+                {
+                    description => $geo_description,
+                    ##see if Peter has more data
+                    #latitude => $latitude,
+                    #longitude => $longitude,
+                    #geodetic_datum => $datum,
+                    #altitude => $altitude,
+                } ) ;
+            #store a project- combination of location and year
+            $project = $schema->resultset("Project::Project")->find_or_create(
+                {
+                    name => "Cassava $geo_description $year",
+                    description => "Plants assayed at $geo_description in $year",
+                } ) ;
+        }
+        ###
         my $surv_plants= $spreadsheet->value_at($num , "NOSV"); ###############add this as a stock prop.
         my $clone_name = $spreadsheet->value_at($num , "DESIG");
         #look for an existing stock by name/synonym
