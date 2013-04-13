@@ -12,6 +12,8 @@ load_cassava_snps.pl
  -H  host name
  -D  database name
  -i infile
+ -p project name (e.g. SNP genotyping 2012 Cornell Biotech)
+ -y project year [2012]
  -t  Test run . Rolling back at the end.
 
 =head2 DESCRIPTION
@@ -49,9 +51,9 @@ use Try::Tiny;
 
 ##
 
-our ($opt_H, $opt_D, $opt_i, $opt_t);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_y);
 
-getopts('H:i:tD:');
+getopts('H:i:tD:p:y');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -95,10 +97,10 @@ my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
  #store a project
 my $project = $schema->resultset("Project::Project")->find_or_create(
     {
-        name => "Cassava SNP calls 2012",
-        description => "Cassava SNP calls 2012",
+        name => $opt_p,
+        description => $opt_p,
     } ) ;
-$project->create_projectprops( { 'project year' => '2012' }, { autocreate => 1 } );
+$project->create_projectprops( { 'project year' => $opt_y }, { autocreate => 1 } );
 
 # find the cvterm for a genotyping experiment
 my $geno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
