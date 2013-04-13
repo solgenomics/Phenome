@@ -319,6 +319,7 @@ my $coderef = sub {
 	    type_id => $plot_of->cvterm_id(),
 	    subject_id => $plot_stock->stock_id(),
                                               } );
+        print STDERR "**Loading plot stock " . $plot_stock->uniquename . " (parent = " . $parent_stock->uniquename . ")\n\n";
         #add the owner for this stock
 	#check first if it exists
         my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
@@ -369,6 +370,7 @@ my $coderef = sub {
             ####################
             #skip non-numeric values
 	    if ($value !~ /^\d/) {
+                if ($value eq "\." ) { next; }
                 warn "** Found non-numeric value in column $label (value = '" . $value ."'\n";
                 next;
             }
@@ -432,7 +434,7 @@ my $coderef = sub {
             if ($unit_cvterm) {
                 $phenotype->find_or_create_related("phenotype_cvterms" , {
                     cvterm_id => $unit_cvterm->cvterm_id() } );
-                print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . " '\n" ;
+                print "Loaded phenotype_cvterm with cvterm '" . $unit_cvterm->name() . "'\n" ;
             }
             #link the phenotype to nd_experiment
             my $nd_experiment_phenotype = $experiment->find_or_create_related('nd_experiment_phenotypes', { phenotype_id => $phenotype->phenotype_id() } );
