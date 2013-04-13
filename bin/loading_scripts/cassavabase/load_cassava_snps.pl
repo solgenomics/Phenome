@@ -45,6 +45,7 @@ use CXGN::Marker::Tools;
 
 use CXGN::DB::InsertDBH;
 use Carp qw /croak/ ;
+use Try::Tiny;
 
 ##
 
@@ -58,7 +59,7 @@ my $file = $opt_i;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
-				      dbargs => {AutoCommit => 0,
+				      dbargs => {AutoCommit => 1,
 						 RaiseError => 1}
 				    }
     );
@@ -85,6 +86,12 @@ my %seq  = (
     'project_project_id_seq'   => $last_project_id,
     );
 
+my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'accession',
+      cv     => 'stock type',
+      db     => 'null',
+      dbxref => 'accession',
+    });
  #store a project
 my $project = $schema->resultset("Project::Project")->find_or_create(
     {
@@ -109,15 +116,18 @@ my $snp_genotype = $schema->resultset('Cv::Cvterm')->create_with(
       dbxref => 'snp genotyping',
     });
 
-my $username = 'pkulakow';
-my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
-
-die "User $username for cassavabase must be pre-loaded in the database! \n" if !$sp_person_id ;
-
 my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create(
     {
-        description => 'Cornell Biotech',
+        description => 'Cornell Biotech', #add this as an option
     } ) ;
+
+
+my $organism = $schema->resultset("Organism::Organism")->find_or_create(
+    {
+	genus   => 'Manihot',
+	species => 'Manihot esculenta',
+    } );
+my $organism_id = $organism->organism_id();
 ########################
 
 #new spreadsheet,
@@ -126,16 +136,45 @@ my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file);
 my @rows = $spreadsheet->row_labels();
 my @columns = $spreadsheet->column_labels();
 
-eval {
+my $coderef = sub {
     foreach my $accession_name (@columns ) {
         print "Looking at accession $accession_name \n";
         my %json;
-        my $cassava_stock = $schema->resultset('Stock::Stock')->search(
+        my $cassava_stock;
+        my $stock_name;
+        my $stock_rs = $schema->resultset("Stock::Stock")->search(
             {
-                uniquename  => $accession_name,
-            }, )->first;
-	
-	if (!$cassava_stock) { warn("No stock found for cassava $accession_name !!!\n"); next; }
+                -or => [
+                     'lower(me.uniquename)' => { like => lc($accession_name) },
+                     -and => [
+                         'lower(type.name)'       => { like => '%synonym%' },
+                         'lower(stockprops.value)' => { like => lc($accession_name) },
+                     ],
+                    ],
+            },
+            { join => { 'stockprops' => 'type'} ,
+              distinct => 1
+            }
+            );
+        if ($stock_rs->count >1 ) {
+            print STDERR "ERROR: found multiple accessions for name $accession_name! \n";
+            while ( my $st = $stock_rs->next) {
+                print STDERR "stock name = " . $st->uniquename . "\n";
+            }
+            die ;
+        } elsif ($stock_rs->count == 1) {
+            $cassava_stock = $stock_rs->first;
+            $stock_name = $cassava_stock->name;
+        } else {
+            #store the plant accession in the stock table
+            $cassava_stock = $schema->resultset("Stock::Stock")->create(
+                { organism_id => $organism_id,
+                  name       => $accession_name,
+                  uniquename => $accession_name,
+                  type_id     => $accession_cvterm->cvterm_id,
+                } );
+        }
+        ################
         print "cassava stock name = " . $cassava_stock->name . "\n";
         my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
             {
@@ -189,16 +228,16 @@ eval {
     }
 };
 
-
-if ($@) { print "An error occured! Rolling backl!\n\n $@ \n\n "; }
-elsif ($opt_t) {
-    print "TEST RUN. Rolling back and reseting database sequences!!\n\n";
+try {
+    $schema->txn_do($coderef);
+    if (!$opt_t) { print "Transaction succeeded! Commiting genotyping experiments! \n\n"; }
+} catch {
+    # Transaction failed
     foreach my $value ( keys %seq ) {
-	my $maxval= $seq{$value} || 0;
-	if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
-	else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+        my $maxval= $seq{$value} || 0;
+        if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+        else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
     }
-}else {
-    print "Transaction succeeded! Commiting ! \n\n";
-    $dbh->commit();
-}
+    die "An error occured! Rolling back  and reseting database sequences!" . $_ . "\n";
+};
+
