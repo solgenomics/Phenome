@@ -184,13 +184,13 @@ my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find( {
 my $yearprop = $project->projectprops->find(
     { 'type.name' => 'project year' },
     { join => 'type'}
-    )->first; #there should be only one project year prop.
+    ); #there should be only one project year prop.
 my $year = $yearprop->value;
 
 my $coderef = sub {
     #ENTRY	REP	DESIG	surv	CO:0000010	CO:0000099|scale:cassavabase	CO:0000018|unit:cm       CO:0000039|date:1MAP
     foreach my $num (@rows ) {
-        my $replicate = $spreadsheet->value_at($num, "rep");
+        my $replicate = $spreadsheet->value_at($num, "REP");
         #my $plot = $spreadsheet->value_at($num, "pegno"); # build a plot name if not in file
         #my $location = $spreadsheet->value_at($num, "location"); #
         #my $year     = $spreadsheet->value_at($num, "year"); #
@@ -257,10 +257,8 @@ my $coderef = sub {
 	    my $value =  $spreadsheet->value_at($num, $label);
 	    ($value, undef) = split (/\s/, $value) ;
 	    #print "Value $value \n";
-            if ($value !~ /^\d/) {
-                warn "** Found non-numeric value in column $label (value = '" . $value ."'\n";
-            }
-            #CO:0000039|date:1MAP #CO_334:0000033
+
+            #CO:0000039|MAP:1 #CO_334:0000033
             #db_name = CO , accession = 0000NNN
             #scale|unit|date(months after planting or MAP)
             #
@@ -273,6 +271,9 @@ my $coderef = sub {
 		{ name => 'CO' } )->find_related(
 		"dbxrefs", { accession=>$co_accession , } )->find_related("cvterm" , {});
             ####################
+	    if ($value !~ /^\d/) {
+                warn "** Found non-numeric value in column $label (value = '" . $value ."'\n";
+            }
 
 
 	    ######################
@@ -321,7 +322,7 @@ my $coderef = sub {
             #date of measurement (such as moths after planting) is stored as a phenotype prop
             if ($value_type eq 'MAP') {
                 $phenotype->create_phenotypeprops(
-                    { 'months after planting' => $unit_value } , {} ) ;
+                    { 'months after planting' => $unit_value } , {autocreate => 1} ) ;
             }
             ##############Need to figure out how to handle different scales of the same trait.
             ###########See SolCAP potato data for a possible solution.
