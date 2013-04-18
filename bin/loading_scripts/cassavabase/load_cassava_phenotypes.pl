@@ -201,10 +201,10 @@ my $coderef = sub {
         my $stock_rs = $schema->resultset("Stock::Stock")->search(
             {
                 -or => [
-                     'lower(stock.uniquename)' => { like => lc($clone_name) },
+                     'lower(me.uniquename)' => { like => lc($clone_name) },
                      -and => [
                          'lower(type.name)'       => { like => '%synonym%' },
-                         'lower(stockprop.value)' => { like => lc($clone_name) },
+                         'lower(stockprops.value)' => { like => lc($clone_name) },
                      ],
                     ],
             },
