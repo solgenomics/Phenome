@@ -14,6 +14,7 @@ load_cassava_snps.pl
  -i infile
  -p project name (e.g. SNP genotyping 2012 Cornell Biotech)
  -y project year [2012]
+ -o population name (e.g., NaCRRI training population)
  -t  Test run . Rolling back at the end.
 
 =head2 DESCRIPTION
@@ -51,13 +52,14 @@ use Try::Tiny;
 
 ##
 
-our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_y);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_p, $opt_y, $opt_g);
 
-getopts('H:i:tD:p:y');
+getopts('H:i:tD:p:y:g:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
 my $file = $opt_i;
+my $population_name = $opt_g;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
@@ -94,6 +96,14 @@ my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
       db     => 'null',
       dbxref => 'accession',
     });
+
+my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
+      { name   => 'training population',
+	cv     => 'stock type',
+	db     => 'null',
+	dbxref => 'training population',
+    });
+
  #store a project
 my $project = $schema->resultset("Project::Project")->find_or_create(
     {
@@ -109,6 +119,7 @@ my $geno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
       db     => 'null',
       dbxref => 'genotyping experiment',
     });
+
 
 # find the cvterm for the SNP calling experiment
 my $snp_genotype = $schema->resultset('Cv::Cvterm')->create_with(
@@ -129,6 +140,14 @@ my $organism = $schema->resultset("Organism::Organism")->find_or_create(
 	genus   => 'Manihot',
 	species => 'Manihot esculenta',
     } );
+
+my $population_members = $schema->resultset("Cv::Cvterm")->create_with(
+    { name   => 'members of',
+      cv     => 'stock relationship',
+      db     => 'null',
+      dbxref => 'members of',
+    });
+
 my $organism_id = $organism->organism_id();
 ########################
 
@@ -140,6 +159,7 @@ my @columns = $spreadsheet->column_labels();
 
 my $coderef = sub {
     foreach my $accession_name (@columns ) {
+      if ($accession_name eq "marker") {next;}
         print "Looking at accession $accession_name \n";
         my %json;
         my $cassava_stock;
@@ -175,8 +195,20 @@ my $coderef = sub {
                   uniquename => $accession_name,
                   type_id     => $accession_cvterm->cvterm_id,
                 } );
+	   
         }
-        ################
+	my $population_stock = $schema->resultset("Stock::Stock")->find_or_create(
+            { organism_id => $organism_id,
+	      name       => $population_name,
+	      uniquename => $population_name,
+	      type_id => $population_cvterm->cvterm_id,
+            } );
+	$cassava_stock->find_or_create_related('stock_relationship_objects', {
+										type_id => $population_members->cvterm_id(),
+										subject_id => $cassava_stock->stock_id(),
+										object_id => $population_stock->stock_id(),
+									       } );
+	###############
         print "cassava stock name = " . $cassava_stock->name . "\n";
         my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
             {
@@ -192,6 +224,7 @@ my $coderef = sub {
             stock_id => $cassava_stock->stock_id(),
             type_id  =>  $geno_cvterm->cvterm_id(),
                                             });
+
         ##################
         LABEL: foreach my $marker_name (@rows) {
             my $base_calls = $spreadsheet->value_at($marker_name, $accession_name);
