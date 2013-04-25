@@ -68,7 +68,7 @@ use Try::Tiny;
 
 our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_u, $opt_m, $opt_y);
 
-getopts('H:i:tD:u:my');
+getopts('H:i:tD:u:my:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -244,6 +244,7 @@ my $coderef = sub {
                     name => "Cassava $geo_description $year",
                     description => "Plants assayed at $geo_description in $year",
                 } ) ;
+	    $project->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
         }
         ###
         my $block =  $spreadsheet->value_at($num , "BLOCK");
