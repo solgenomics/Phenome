@@ -1,9 +1,34 @@
 
+
+=head1 NAME 
+
+CXGN::Phenome::DumpGenotypes - dump genotype info for import into HDF5 structure
+
+=head1 AUTHOR
+
+Lukas Mueller
+
+=cut
+
 package CXGN::Phenome::DumpGenotypes;
 
 use strict;
 
+use JSON::Any;
 use Data::Dumper;
+
+=head2 dump_genotypes
+
+ Usage:        dump_genotypes($dbh, $outputfile)
+ Desc:         dumps a matrix of all the genotypes for import to HDF5 
+               data structure
+ Ret:          nothing
+ Args: 
+ Side Effects: creates a file with the matrix info
+ Example:
+
+=cut
+
 
 sub dump_genotypes { 
     my $dbh = shift;
