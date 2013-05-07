@@ -36,72 +36,63 @@ my $coderef = sub {
 	my $new_stock_name = $old_stock_name;
 	$new_stock_name =~ s/ //g;
 	my $new_stock = $schema->resultset('Stock::Stock')->search( { name => $new_stock_name } )->first();
-	
 
-	print STDERR "OLD STOCK: $old_stock_name.\n";
+	print STDERR "OLD STOCK: $old_stock_name. id = $old_stock_id \n";
 
 	if (!$new_stock) { 
 	    print "NOT FOUND: $new_stock_name. SKIPPING!\n";
 	    $not_found++;
 	    next;
 	}
-	
-	print STDERR "FOUND NEW STOCK: $new_stock_name .\n";
-
-	
+	my $new_stock_id = $new_stock->stock_id;
+	print STDERR "FOUND NEW STOCK: $new_stock_name . id = $new_stock_id \n";
 
 	# we are going to change  nd_experiment_stock, and stock_relationship to the corresponding id
         # of the new_stock.  
-
-	# and then we will change to name to the name without a space, delete the other stock_owner entry,
-	# and then we will delete the other stock. 
+	# and then we will change to name to the name without a space, delete the old stock_owner entry,
+	# and then we will delete the old stock. 
 	# 
 	
-
-	
-
+	#no need to do this since the stocks linked to experiments are the plots. 
+	#changing the stock_relationship will take care of this . (plots will be now subjects of the new stock).
 	#my $nd_experiment_stocks_rs = $old_stock->nd_experiment_stocks();
-
 	#$nd_experiment_stocks_rs->update( { stock_id => $new_stock->stock_id });
 	#print STDERR "OLD STOCK: ".$old_stock->stock_id." NEW STOCK: ".$new_stock->stock_id()."\n";
 	
 
+	my $parent_stockrel_rs = $old_stock->stock_relationship_objects();	
 
+	while (my $parent_stockrel = $parent_stockrel_rs->next()) { 
+	    #check if the new stock is already a subject of this parent
 
-	my $parent_stocks_rs = $old_stock->stock_relationship_objects();	
-
-	while (my $parent_stock = $parent_stocks_rs->next()) { 
-	    my $existing_parent = $new_stock->stock_relationship_objects( { object_id => $parent_stock->object_id, type_id=>$parent_stock->type_id, rank=>$parent_stock->rank() });
+	    my $existing_parent = $new_stock->stock_relationship_objects( { subject_id => $parent_stockrel->subject_id, type_id=>$parent_stockrel->type_id, rank=>$parent_stockrel->rank() });
 	    
 	   
-	    if (!$existing_parent->count()) { 
-		print STDERR "Updating stock relationships from stock $old_stock_id to ".$new_stock->stock_id."\n";
-		$parent_stock->update( { object_id => $new_stock->stock_id });
+	    if (!$existing_parent->first) { 
+		print STDERR "Updating stock relationships " . $parent_stockrel->stock_relationship_id . " from subject  $old_stock_id to ".$new_stock->stock_id."\n";
+		
+		$parent_stockrel->update( { object_id => $new_stock->stock_id });
 	    }
 	}
 
-	my $child_stocks_rs = $old_stock->stock_relationship_subjects();
+	my $child_stockrel_rs = $old_stock->stock_relationship_subjects();
 
 
-	while (my $child_stock = $child_stocks_rs->next()) { 
-	    my $existing_child = $new_stock->stock_relationship_subjects( { object_id => $child_stock->object_id, type_id=>$child_stock->type_id, rank=>$child_stock->rank()  });
+	while (my $child_stockrel = $child_stockrel_rs->next()) { 
+	    my $existing_child = $new_stock->stock_relationship_subjects( { object_id => $child_stockrel->object_id, type_id=>$child_stockrel->type_id, rank=>$child_stockrel->rank()  });
 
-	    if ($existing_child->count() > 0) { 
+	    if ($existing_child->first ) { 
 
-		print STDERR "Updating stock relationships from stock $old_stock_id to ".$new_stock->stock_id."\n";
-		$child_stock->update( { subject_id => $new_stock->stock_id });
+		print STDERR "Updating stock relationships from object $old_stock_id to ".$new_stock->stock_id."\n";
+		$child_stockrel->update( { subject_id => $new_stock->stock_id });
 	    }
 	}   
 	
-
-
-	#my $q = "DELETE FROM phenome.stock_owner WHERE stock_id=?";
-	#my $h = $dbh->prepare($q);
-	#$h->execute($old_stock_id);
-	
-	
-	#$old_stock->delete();
-
+	my $q = "DELETE FROM phenome.stock_owner WHERE stock_id=?";
+	my $h = $dbh->prepare($q);
+	$h->execute($old_stock_id);
+	print STDERR "***DELETING old stock $old_stock_name\n";
+	$old_stock->delete();
     }
 };
 
