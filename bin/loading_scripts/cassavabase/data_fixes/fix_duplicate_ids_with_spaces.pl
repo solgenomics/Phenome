@@ -77,11 +77,10 @@ my $coderef = sub {
 
 	my $child_stockrel_rs = $old_stock->stock_relationship_subjects();
 
-
 	while (my $child_stockrel = $child_stockrel_rs->next()) { 
 	    my $existing_child = $new_stock->stock_relationship_subjects( { object_id => $child_stockrel->object_id, type_id=>$child_stockrel->type_id, rank=>$child_stockrel->rank()  });
 
-	    if ($existing_child->first ) { 
+	    if (!$existing_child->first ) { 
 
 		print STDERR "Updating stock relationships from object $old_stock_id to ".$new_stock->stock_id."\n";
 		$child_stockrel->update( { subject_id => $new_stock->stock_id });
