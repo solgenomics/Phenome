@@ -247,6 +247,7 @@ my $coderef = sub {
 	    $project->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
         }
         ###
+	my $plot = $spreadsheet->value_at($num, "PLOT");
         my $block =  $spreadsheet->value_at($num , "BLOCK");
         my $planted_plants =  $spreadsheet->value_at($num , "NOPLT");
         my $surv_plants= $spreadsheet->value_at($num , "NOSV"); ###############add this as a stock prop.
@@ -290,6 +291,7 @@ my $coderef = sub {
         my $uniquename = $stock_name;
         if ($replicate) { $uniquename .=  "_replicate:" .  $replicate  ; }
         if ($block) { $uniquename .= "_block:" . $block ; }
+	if ($plot) { $uniquename .= "_plot:" . $plot ; }
         $uniquename .= "_" . $year . "_" . $geo_description ;
 
         my $plot_stock = $schema->resultset("Stock::Stock")->find_or_create(
