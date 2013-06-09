@@ -237,6 +237,8 @@ sub request_to_params {
     foreach my $key (keys %params) {
 	if( $params{$key} ) {
 	    $params{$key} =~ s/[;\'\",]//g;
+            $params{$key} =~ s/^\s+//;
+            $params{$key} =~ s/\s+$//;
 	}
     }
 
