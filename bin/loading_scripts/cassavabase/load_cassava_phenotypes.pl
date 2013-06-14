@@ -16,6 +16,7 @@ load_cassava_data.pl
  -m  use when loading a file with a 'location' field. This option forces -y , and loads project, year, and location
 based on the location field and -y arg. instead of reading a metadata file.
  -y  year
+ -a load parent information (only for files with female/male annotation)
  -t  Test run . Rolling back at the end.
 
 
@@ -66,9 +67,9 @@ use Try::Tiny;
 ##
 ##
 
-our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_u, $opt_m, $opt_y);
+our ($opt_H, $opt_D, $opt_i, $opt_t, $opt_u, $opt_m, $opt_y, $opt_a);
 
-getopts('H:i:tD:u:my:');
+getopts('H:i:tD:u:may:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
@@ -253,40 +254,46 @@ my $coderef = sub {
         my $surv_plants= $spreadsheet->value_at($num , "NOSV"); ###############add this as a stock prop.
         my $clone_name = $spreadsheet->value_at($num , "DESIG");
         #look for an existing stock by name/synonym
-        my $stock_rs = $schema->resultset("Stock::Stock")->search(
-            {
-                -or => [
-                     'lower(me.uniquename)' => { like => lc($clone_name) },
-                     -and => [
-                         'lower(type.name)'       => { like => '%synonym%' },
-                         'lower(stockprops.value)' => { like => lc($clone_name) },
-                     ],
-                    ],
-            },
-            { join => { 'stockprops' => 'type'} ,
-              distinct => 1
+        my ($parent_stock, $stock_name ) = find_or_create_stock($clone_name);
+	##
+	# if female/male parents are passed, add them to the database and link to the parent stock
+	if ($opt_a) {
+	    my $female_parent =  $schema->resultset("Cv::Cvterm")->create_with(
+		{ name   => 'female_parent',
+		  cv     => 'stock relationship',
+		  db     => 'null',
+		  dbxref => 'female_parent',
+		});
+	    
+	    my $male_parent =  $schema->resultset("Cv::Cvterm")->create_with(
+		{ name   => 'male_parent',
+		  cv     => 'stock relationship',
+		  db     => 'null',
+		  dbxref => 'male_parent',
+		});
+
+	    my $female_p =  $spreadsheet->value_at($num , "FEMALE");
+	    my $male_p =  $spreadsheet->value_at($num , "MALE");
+	    if ($female_p) {
+		my ($female_stock, $female_stock_name)  = find_or_create_stock($female_p);
+		# this should probably be changed around, so the female_parent is the object and the parent_stock is the subject! 
+		# Check with Jeremy when he changes the pedigree interface. The same goes for the male_parent bellow
+		$parent_stock->find_or_create_related('stock_relationship_objects', {
+		    type_id => $female_parent->cvterm_id(),
+		    subject_id => $female_stock->stock_id(),
+						      } );
+	    }
+	    if ($male_p) {
+                my ($male_stock, $male_stock_name)  = find_or_create_stock($male_p);
+		###change this back to male_parent is the object. 
+                $parent_stock->find_or_create_related('stock_relationship_objects', {
+                    type_id => $male_parent->cvterm_id(),
+                    subject_id => $male_stock->stock_id(),
+						    } );
             }
-            );
-        my $parent_stock;
-        my $stock_name = $clone_name;
-        if ($stock_rs->count >1 ) {
-            print STDERR "ERROR: found multiple accessions for name $clone_name! \n";
-            while ( my $st = $stock_rs->next) {
-                print STDERR "stock name = " . $st->uniquename . "\n";
-            }
-            die ;
-        } elsif ($stock_rs->count == 1) {
-            $parent_stock = $stock_rs->first;
-            $stock_name = $parent_stock->name;
-        }else {
-            #store the plant accession in the plot table
-            $parent_stock = $schema->resultset("Stock::Stock")->create(
-                { organism_id => $organism_id,
-                  name       => $stock_name,
-                  uniquename => $stock_name,
-                  type_id     => $accession_cvterm->cvterm_id,
-                } );
-        }
+	    #################
+	}
+	##########
         #store the plot in stock. Build a uniquename first
         my $uniquename = $stock_name;
         if ($replicate) { $uniquename .=  "_replicate:" .  $replicate  ; }
@@ -461,3 +468,42 @@ try {
     die "An error occured! Rolling back  and reseting database sequences!" . $_ . "\n";
 };
 
+
+sub find_or_create_stock {
+    my$clone_name = shift;
+    my $stock_rs = $schema->resultset("Stock::Stock")->search(
+        {
+            -or => [
+                 'lower(me.uniquename)' => { like => lc($clone_name) },
+                 -and => [
+                     'lower(type.name)'       => { like => '%synonym%' },
+                     'lower(stockprops.value)' => { like => lc($clone_name) },
+                 ],
+                ],
+        },
+        { join => { 'stockprops' => 'type'} ,
+          distinct => 1
+        }
+        );
+    my $parent_stock;
+    my $stock_name = $clone_name;
+    if ($stock_rs->count >1 ) {
+        print STDERR "ERROR: found multiple accessions for name $clone_name! \n";
+        while ( my $st = $stock_rs->next) {
+            print STDERR "stock name = " . $st->uniquename . "\n";
+        }
+        die ;
+    } elsif ($stock_rs->count == 1) {
+        $parent_stock = $stock_rs->first;
+        $stock_name = $parent_stock->name;
+    }else {
+        #store the plant accession in the plot table                                                                                       
+        $parent_stock = $schema->resultset("Stock::Stock")->create(
+            { organism_id => $organism_id,
+              name       => $stock_name,
+              uniquename => $stock_name,
+              type_id     => $accession_cvterm->cvterm_id,
+            } );
+    }
+    return ($parent_stock, $stock_name);
+}
