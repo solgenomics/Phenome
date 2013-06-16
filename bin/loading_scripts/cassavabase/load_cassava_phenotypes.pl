@@ -470,7 +470,13 @@ try {
 
 
 sub find_or_create_stock {
-    my$clone_name = shift;
+    my $clone_name = shift;
+    #clean clone name. Remove trailing spaces
+    $clone_name =~ s/^\s+//;
+    $clone_name =~ s/\s+$//;
+    #remove /
+    $clone_name =~ s/\///g;
+    #
     my $stock_rs = $schema->resultset("Stock::Stock")->search(
         {
             -or => [
