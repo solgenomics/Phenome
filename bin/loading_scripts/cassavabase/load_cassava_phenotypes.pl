@@ -264,7 +264,7 @@ my $coderef = sub {
 		  db     => 'null',
 		  dbxref => 'female_parent',
 		});
-	    
+
 	    my $male_parent =  $schema->resultset("Cv::Cvterm")->create_with(
 		{ name   => 'male_parent',
 		  cv     => 'stock relationship',
@@ -282,14 +282,17 @@ my $coderef = sub {
 		    type_id => $female_parent->cvterm_id(),
 		    subject_id => $female_stock->stock_id(),
 						      } );
+                print STDERR "FEMALE PARENT: " . $female_stock->name . "\n";
 	    }
 	    if ($male_p) {
                 my ($male_stock, $male_stock_name)  = find_or_create_stock($male_p);
-		###change this back to male_parent is the object. 
+		###change this back to male_parent is the object.
                 $parent_stock->find_or_create_related('stock_relationship_objects', {
                     type_id => $male_parent->cvterm_id(),
                     subject_id => $male_stock->stock_id(),
 						    } );
+                print STDERR "MALE PARENT: " . $male_stock->name . "\n";
+
             }
 	    #################
 	}
@@ -503,7 +506,7 @@ sub find_or_create_stock {
         $parent_stock = $stock_rs->first;
         $stock_name = $parent_stock->name;
     }else {
-        #store the plant accession in the plot table                                                                                       
+        #store the plant accession in the plot table
         $parent_stock = $schema->resultset("Stock::Stock")->create(
             { organism_id => $organism_id,
               name       => $stock_name,
