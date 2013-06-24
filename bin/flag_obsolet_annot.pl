@@ -138,9 +138,9 @@ eval {
                 if ($first_alt_id) {
                     my $alt_dbxref = $first_alt_id->dbxref;
                     #update locus_dbxref with the alternative dbxerf_id
-                    $annot->update_annotation($alt_dbxref->dbxref_id);
-                    print STDERR "*Updated annotation to " .  $alt_dbxref->accession . "!\n";
-                    print OUT "*Updated annotation to " . $alt_dbxref->accession . " \n";
+                    #$annot->update_annotation($alt_dbxref->dbxref_id);
+                    #print STDERR "*Updated annotation to " .  $alt_dbxref->accession . "!\n";
+                    #print OUT "*Updated annotation to " . $alt_dbxref->accession . " \n";
                 }else {
                     print STDERR "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
                     print OUT "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
@@ -180,9 +180,9 @@ eval {
                 my $first_alt_id = $alt_ids_rs->next;
                 my $alt_cvterm = $first_alt_id->cvterm;
 		#update stock_cvterm with the alternative cvterm_id
-                $annot->update( { cvterm_id => $alt_cvterm->cvterm_id } );
-		print STDERR "*Updated annotation to " . $alt_cvterm->name . "!\n";
-		print OUT "*Updated annotation to " . $alt_cvterm->name . " \n";
+                #$annot->update( { cvterm_id => $alt_cvterm->cvterm_id } );
+		#print STDERR "*Updated annotation to " . $alt_cvterm->name . "!\n";
+		#print OUT "*Updated annotation to " . $alt_cvterm->name . " \n";
 	    }else {
 		print STDERR "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
 		print OUT "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
