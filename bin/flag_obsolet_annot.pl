@@ -25,13 +25,13 @@ verbose output
 
 =item -d
 
-db name of the controlled vocabulary 
+db name of the controlled vocabulary
 
-=item -o 
+=item -o
 
-output file 
+output file
 
-=item -t 
+=item -t
 
 test mode
 
@@ -49,7 +49,7 @@ Naama Menda <nm249@cornell.edu>
 
 =head1 VERSION AND DATE
 
-Version 0.1, February 2008.
+Version 1.0, July 2013.
 
 =cut
 
@@ -60,7 +60,8 @@ use strict;
 use Getopt::Std;
 
 use CXGN::Phenome::Locus;
-use CXGN::Phenome::Individual;
+use Bio::Chado::Schema;
+
 use CXGN::Chado::Organism;
 
 use CXGN::DB::InsertDBH;
@@ -79,17 +80,15 @@ my $dbname = $opt_D;
 if (!$dbhost && !$dbname) { die "Need -D dbname and -H hostname arguments.\n"; }
 
 my $error = 0; # keep track of input errors (in command line switches).
-if (!$opt_D) { 
+if (!$opt_D) {
     print STDERR "Option -D required. Must be a valid database name.\n";
     $error=1;
 }
 
-
-  
 my $file = $opt_o;
 
-if (!$file) { 
-    print STDERR "A file is required as a command line argument.\n";
+if (!$file) {
+    print STDERR "A file is required as a command line argument (option -o) .\n";
     $error=1;
 }
 
@@ -104,6 +103,8 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				     dbname=>$dbname,  
 				   } );
 
+my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } );
+$dbh->do('SET search_path to public');
 
 print STDERR "Connected to database $dbname on host $dbhost.\n";
 my @locus_annot= CXGN::Phenome::Locus->get_annotations_by_db($dbh, $opt_d);
@@ -114,79 +115,84 @@ print STDERR "Reading annotations from database..\n";
 
 eval {
     foreach my $annot(@locus_annot)  {
-	
 	my $locus_id= $annot->get_locus_id();
 	print STDERR "locus_id = $locus_id\n";
 	print STDERR "." if !$opt_v;
 	my $locus= CXGN::Phenome::Locus->new($dbh,$locus_id);
 	my $locus_name = $locus->get_locus_name();
-	my $dbxref=CXGN::Chado::Dbxref->new($dbh, $annot->get_dbxref_id);
+	my $dbxref=$schema->resultset("General::Dbxref")->find( { dbxref_id => $annot->get_dbxref_id } );
+	my $cvterm = $dbxref->search_related('cvterm')->single;
+	my $cvterm_name=$cvterm->name;
+	my $accession = $dbxref->accession;
+	my $is_obsolete= $cvterm->is_obsolete;
+	my $alt_ids_rs = $cvterm->search_related('cvterm_dbxrefs');
+	print STDERR "found " .  $alt_ids_rs->count . "\n\n";
 
-	my $cvterm = $dbxref->get_cvterm();
-	my $cvterm_name=$cvterm->get_cvterm_name();
-	my $accession = $dbxref->get_accession();
-	my $is_obsolete= $cvterm->get_obsolete();
-	my @alt_ids = $cvterm->get_alt_id();	
-	print STDERR "alt_ids = @alt_ids\n\n";
-	
 	if ($is_obsolete) {
 	    $count++;
 	    print STDERR "Locus $locus_name (id=$locus_id) has obsolete annotation: $accession:$cvterm_name\n";
 	    print OUT "Locus $locus_name (id=$locus_id) has obsolete annotation: $accession:$cvterm_name\n";
-	    
-	    if (@alt_ids) {
+            if ($alt_ids_rs) {
 		$u_count++;
-		$annot->update_annotation($alt_ids[0]);
-		print STDERR "*Updated annotation to $alt_ids[0]!\n";
-		print OUT "*Updated annotation to $alt_ids[0]\n";
-	    }else {
-		print STDERR "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
-		print OUT "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
-	    }
-	}
-	
+                my $first_alt_id = $alt_ids_rs->next;
+                if ($first_alt_id) {
+                    my $alt_dbxref = $first_alt_id->dbxref;
+                    #update locus_dbxref with the alternative dbxerf_id
+                    $annot->update_annotation($alt_dbxref->dbxref_id);
+                    print STDERR "*Updated annotation to " .  $alt_dbxref->accession . "!\n";
+                    print OUT "*Updated annotation to " . $alt_dbxref->accession . " \n";
+                }else {
+                    print STDERR "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
+                    print OUT "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
+                }
+            }
+        }
     }
-    
+
     print STDERR "Found $count obsolete annotations for SGN loci, $u_count annotations were updated.\n printed out file $file... Done.\n";
-    
-    my @pheno_annot= CXGN::Phenome::Individual->get_annotations_by_db($dbh, $opt_d);
-    
+    my $pheno_rs = $schema->resultset("Stock::StockCvterm")->search(
+        {
+            'db.name' => $opt_d
+        },
+        { join => { 'type' => { 'dbxref' => 'db' } },
+        } );
+
     $count= 0;
     $u_count=0;
     print STDERR "Reading annotations from SGN individual database..\n";
-    foreach my $annot(@pheno_annot) {
-	
+    while (my $annot = $pheno_rs->next ) {
 	print STDERR "." if !$opt_v;
-	my $ind_id= $annot->get_individual_id();
-	my $ind= CXGN::Phenome::Individual->new($dbh,$ind_id);
-	my $ind_name=$ind->get_name();
-	my $dbxref=CXGN::Chado::Dbxref->new($dbh, $annot->get_dbxref_id());
-	my $cvterm=$dbxref->get_cvterm();
-	my $cvterm_name=$cvterm->get_cvterm_name();
-	my $accession = $dbxref->get_accession();
-	my $is_obsolete=$cvterm->get_obsolete();
-	my @alt_ids = $cvterm->get_alt_id();
-	
+	my $stock_id= $annot->stock_id;
+	my $stock= $annot->search_related('stock')->single;
+	my $stock_name=$stock->name();
+	my $cvterm = $annot->search_related('cvterm')->single;
+	my $dbxref = $cvterm->search_related('dbxref')->single;
+	my $cvterm_name=$cvterm->name();
+	my $accession = $dbxref->accession();
+	my $is_obsolete=$cvterm->is_obsolete();
+	my $alt_ids_rs = $cvterm->search_related('cvterm_dbxrefs');
+
 	if ($is_obsolete) {
 	    $count++;
-	    print STDERR "Individual $ind_name (id=$ind_id) has obsolete annotation: $accession:$cvterm_name\n";
-	    print STDERR "Individual $ind_name (id=$ind_id) has obsolete annotation: $accession:$cvterm_name\n";
-	    if (@alt_ids) {
+	    print STDERR "Stock $stock_name (id=$stock_id) has obsolete annotation: $accession:$cvterm_name\n";
+            if ($alt_ids_rs) {
 		$u_count++;
-		$annot->update_annotation($alt_ids[0]);
-		print STDERR "*Updated annotation to $alt_ids[0]!\n";
-		print OUT "*Updated annotation to $alt_ids[0]\n";
+                my $first_alt_id = $alt_ids_rs->next;
+                my $alt_cvterm = $first_alt_id->cvterm;
+		#update stock_cvterm with the alternative cvterm_id
+                $annot->update( { cvterm_id => $alt_cvterm->cvterm_id } );
+		print STDERR "*Updated annotation to " . $alt_cvterm->name . "!\n";
+		print OUT "*Updated annotation to " . $alt_cvterm->name . " \n";
 	    }else {
 		print STDERR "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
 		print OUT "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
 	    }
 	}
-    } 
+    }
 };
-if ($@ || ($opt_t)) { 
-    print STDERR "Either running as trial mode (-t) or AN ERROR OCCURRED: $@\n"; 
-    print OUT "Either running as trial mode (-t) or AN ERROR OCCURRED: $@\n" if $opt_o; 
-    
+if ($@ || ($opt_t)) {
+    print STDERR "Either running as trial mode (-t) or AN ERROR OCCURRED: $@\n";
+    print OUT "Either running as trial mode (-t) or AN ERROR OCCURRED: $@\n" if $opt_o;
     $dbh->rollback();
     exit(0);
 }
