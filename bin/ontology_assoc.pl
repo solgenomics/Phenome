@@ -29,7 +29,7 @@ database name for linking (must be in Db table) Default: PO
 
 =item -n
 
-controlled vocabulary name. Defaults to "plant_structure".
+controlled vocabulary name. Defaults to "plant_anatomy".
 
 =item -x
 
@@ -116,7 +116,7 @@ if (!$opt_d) { $opt_d="PO"; } # the database name that Dbxrefs should refer to
 print STDOUT "Default for -d: $opt_d (specifies the database names for Dbxref objects)\n";
 
 
-if (!$opt_n) {$opt_n = "plant_structure"; } 
+if (!$opt_n) {$opt_n = "plant_anatomy"; }
 print STDOUT "Default for  -n $opt_n (specifies the ontology name for CV objects)\n"; 
 my $aspect;
 my $namespace;
