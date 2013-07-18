@@ -2010,10 +2010,11 @@ sub get_annotations_by_db {
     my $db_name=shift;
     my @annotations;
     my $query = "SELECT locus_dbxref_id FROM phenome.locus_dbxref
+                 JOIN phenome.locus_dbxref_evidence USING (locus_dbxref_id)
                  JOIN public.dbxref USING (dbxref_id) 
                  JOIN public.db USING (db_id)
                  JOIN public.cvterm USING (dbxref_id) 
-                 WHERE db.name = ? AND locus_dbxref.obsolete= 'f'";
+                 WHERE db.name = ? AND locus_dbxref_evidence.obsolete= 'f'";
     my $sth=$dbh->prepare($query);
     $sth->execute($db_name);
     while (my ($locus_dbxref_id) = $sth->fetchrow_array()) {
