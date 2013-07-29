@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::AlleleHistory;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::AlleleHistory
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::AlleleHistory
+=head1 TABLE: C<allele_history>
 
 =cut
 
@@ -64,11 +68,13 @@ __PACKAGE__->table("allele_history");
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 updated_by
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 obsolete
@@ -113,9 +119,9 @@ __PACKAGE__->add_columns(
   "allele_phenotype",
   { data_type => "text", is_nullable => 1 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 1 },
   "create_date",
@@ -128,6 +134,17 @@ __PACKAGE__->add_columns(
   "sequence",
   { accessor => undef, data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</allele_history_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("allele_history_id");
 
 =head1 RELATIONS
@@ -161,8 +178,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fvwZWdMIPV7OWeliF2CF8A
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GvWVfPD/zpvJJFPNQ++0+g
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

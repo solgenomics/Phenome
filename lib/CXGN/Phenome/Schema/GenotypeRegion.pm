@@ -1,13 +1,8 @@
+use utf8;
 package CXGN::Phenome::Schema::GenotypeRegion;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-use strict;
-use warnings;
-
-use base 'DBIx::Class::Core';
-
 
 =head1 NAME
 
@@ -16,6 +11,15 @@ CXGN::Phenome::Schema::GenotypeRegion
 =head1 DESCRIPTION
 
 polymorphic regions from a genotype, delineated by markers in a certain linkage group on a certain map
+
+=cut
+
+use strict;
+use warnings;
+
+use base 'DBIx::Class::Core';
+
+=head1 TABLE: C<genotype_region>
 
 =cut
 
@@ -41,6 +45,7 @@ optional genotype this region belongs to.  some regions are artificial, arising 
 =head2 marker_id_nn
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 the north marker in the pair of markers bracketing the north end of this region. this may be null for regions at the north end of a linkage group
@@ -48,6 +53,7 @@ the north marker in the pair of markers bracketing the north end of this region.
 =head2 marker_id_ns
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 0
 
 the south marker in the pair of markers bracketing the north end of this region
@@ -55,6 +61,7 @@ the south marker in the pair of markers bracketing the north end of this region
 =head2 marker_id_sn
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 0
 
 the north marker in the pair of markers bracketing the south end of this region
@@ -62,6 +69,7 @@ the north marker in the pair of markers bracketing the south end of this region
 =head2 marker_id_ss
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 the south marker in the pair of markers bracketing the south end of this region. this may be null for regions at the south end of a linkage group.
@@ -75,6 +83,7 @@ the south marker in the pair of markers bracketing the south end of this region.
 =head2 lg_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 the linkage group in a specific version of a specific map where this region is located
@@ -98,6 +107,7 @@ special name for this region, if any.  optional
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 the person who loaded this datum.  optional
@@ -135,23 +145,23 @@ __PACKAGE__->add_columns(
   "genotype_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "marker_id_nn",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "marker_id_ns",
-  { data_type => "bigint", is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "marker_id_sn",
-  { data_type => "bigint", is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "marker_id_ss",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "zygocity_code",
   { data_type => "varchar", is_nullable => 1, size => 1 },
   "lg_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "type",
   { data_type => "varchar", is_nullable => 0, size => 32 },
   "name",
   { data_type => "varchar", is_nullable => 1, size => 32 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "modified_date",
   {
     data_type     => "timestamp with time zone",
@@ -169,6 +179,17 @@ __PACKAGE__->add_columns(
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</genotype_region_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("genotype_region_id");
 
 =head1 RELATIONS
@@ -188,8 +209,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:h0y5HENKaFSratgpuvi21A
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:h9mlofTVaosCV4is1aoT2w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

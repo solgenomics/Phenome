@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::LocusPubRanking;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::LocusPubRanking
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::LocusPubRanking
+=head1 TABLE: C<locus_pub_ranking>
 
 =cut
 
@@ -28,6 +32,7 @@ __PACKAGE__->table("locus_pub_ranking");
 =head2 pub_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 rank
@@ -51,7 +56,7 @@ __PACKAGE__->add_columns(
   "locus_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "pub_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "rank",
   { data_type => "real", is_nullable => 1 },
   "match_type",
@@ -77,8 +82,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G3//V7Nlqn168O+Q6lrnfA
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/l15DbP8ZXtnxK1ji46iCg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

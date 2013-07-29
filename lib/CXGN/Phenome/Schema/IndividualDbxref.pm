@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::IndividualDbxref;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::IndividualDbxref
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::IndividualDbxref
+=head1 TABLE: C<individual_dbxref>
 
 =cut
 
@@ -35,6 +39,7 @@ __PACKAGE__->table("individual_dbxref");
 =head2 dbxref_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 0
 
 =head2 obsolete
@@ -46,6 +51,7 @@ __PACKAGE__->table("individual_dbxref");
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 create_date
@@ -73,11 +79,11 @@ __PACKAGE__->add_columns(
   "individual_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "dbxref_id",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 1 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "create_date",
   {
     data_type     => "timestamp with time zone",
@@ -88,9 +94,50 @@ __PACKAGE__->add_columns(
   "modified_date",
   { data_type => "timestamp with time zone", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</individual_dbxref_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("individual_dbxref_id");
 
 =head1 RELATIONS
+
+=head2 individual_dbxref_evidence_histories
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualDbxrefEvidenceHistory>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_dbxref_evidence_histories",
+  "CXGN::Phenome::Schema::IndividualDbxrefEvidenceHistory",
+  { "foreign.individual_dbxref_id" => "self.individual_dbxref_id" },
+  undef,
+);
+
+=head2 individual_dbxref_evidences
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualDbxrefEvidence>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_dbxref_evidences",
+  "CXGN::Phenome::Schema::IndividualDbxrefEvidence",
+  { "foreign.individual_dbxref_id" => "self.individual_dbxref_id" },
+  undef,
+);
 
 =head2 individual_id
 
@@ -106,39 +153,9 @@ __PACKAGE__->belongs_to(
   { individual_id => "individual_id" },
 );
 
-=head2 individual_dbxref_evidences
 
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualDbxrefEvidence>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_dbxref_evidences",
-  "CXGN::Phenome::Schema::IndividualDbxrefEvidence",
-  { "foreign.individual_dbxref_id" => "self.individual_dbxref_id" },
-  {},
-);
-
-=head2 individual_dbxref_evidence_histories
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualDbxrefEvidenceHistory>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_dbxref_evidence_histories",
-  "CXGN::Phenome::Schema::IndividualDbxrefEvidenceHistory",
-  { "foreign.individual_dbxref_id" => "self.individual_dbxref_id" },
-  {},
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YxerV35kRPvY4NDRVQiN4Q
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JGWnztlJSdmn7zFuuaxkqg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

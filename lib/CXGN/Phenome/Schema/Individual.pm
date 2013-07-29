@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::Individual;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::Individual
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::Individual
+=head1 TABLE: C<individual>
 
 =cut
 
@@ -40,6 +44,7 @@ __PACKAGE__->table("individual");
 =head2 sp_person_id
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 create_date
@@ -69,16 +74,19 @@ __PACKAGE__->table("individual");
 =head2 updated_by
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 common_name_id
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 accession_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 stock_id
@@ -101,7 +109,7 @@ __PACKAGE__->add_columns(
   "description",
   { data_type => "text", is_nullable => 1 },
   "sp_person_id",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "create_date",
   {
     data_type     => "timestamp with time zone",
@@ -116,14 +124,25 @@ __PACKAGE__->add_columns(
   "population_id",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "common_name_id",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "accession_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "stock_id",
   { data_type => "integer", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</individual_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("individual_id");
 
 =head1 RELATIONS
@@ -140,7 +159,7 @@ __PACKAGE__->has_many(
   "genotypes",
   "CXGN::Phenome::Schema::Genotype",
   { "foreign.individual_id" => "self.individual_id" },
-  {},
+  undef,
 );
 
 =head2 germplasms
@@ -155,7 +174,97 @@ __PACKAGE__->has_many(
   "germplasms",
   "CXGN::Phenome::Schema::Germplasm",
   { "foreign.individual_id" => "self.individual_id" },
-  {},
+  undef,
+);
+
+=head2 individual_alias
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualAlias>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_alias",
+  "CXGN::Phenome::Schema::IndividualAlias",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
+);
+
+=head2 individual_alleles
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualAllele>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_alleles",
+  "CXGN::Phenome::Schema::IndividualAllele",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
+);
+
+=head2 individual_dbxrefs
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualDbxref>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_dbxrefs",
+  "CXGN::Phenome::Schema::IndividualDbxref",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
+);
+
+=head2 individual_histories
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualHistory>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_histories",
+  "CXGN::Phenome::Schema::IndividualHistory",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
+);
+
+=head2 individual_images
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualImage>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_images",
+  "CXGN::Phenome::Schema::IndividualImage",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
+);
+
+=head2 individual_loci
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualLocus>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_loci",
+  "CXGN::Phenome::Schema::IndividualLocus",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
 );
 
 =head2 population_id
@@ -172,99 +281,9 @@ __PACKAGE__->belongs_to(
   { population_id => "population_id" },
 );
 
-=head2 individual_alias
 
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualAlias>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_alias",
-  "CXGN::Phenome::Schema::IndividualAlias",
-  { "foreign.individual_id" => "self.individual_id" },
-  {},
-);
-
-=head2 individual_alleles
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualAllele>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_alleles",
-  "CXGN::Phenome::Schema::IndividualAllele",
-  { "foreign.individual_id" => "self.individual_id" },
-  {},
-);
-
-=head2 individual_dbxrefs
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualDbxref>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_dbxrefs",
-  "CXGN::Phenome::Schema::IndividualDbxref",
-  { "foreign.individual_id" => "self.individual_id" },
-  {},
-);
-
-=head2 individual_histories
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualHistory>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_histories",
-  "CXGN::Phenome::Schema::IndividualHistory",
-  { "foreign.individual_id" => "self.individual_id" },
-  {},
-);
-
-=head2 individual_images
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualImage>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_images",
-  "CXGN::Phenome::Schema::IndividualImage",
-  { "foreign.individual_id" => "self.individual_id" },
-  {},
-);
-
-=head2 loci
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualLocus>
-
-=cut
-
-__PACKAGE__->has_many(
-  "loci",
-  "CXGN::Phenome::Schema::IndividualLocus",
-  { "foreign.individual_id" => "self.individual_id" },
-  {},
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:L2zYBWYve/ZHnGTco6/IKQ
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DpePAL7JYjdD+jFpQ+Ampg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

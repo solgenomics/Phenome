@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::IndividualHistory;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::IndividualHistory
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::IndividualHistory
+=head1 TABLE: C<individual_history>
 
 =cut
 
@@ -51,11 +55,13 @@ __PACKAGE__->table("individual_history");
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 updated_by
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 obsolete
@@ -90,9 +96,9 @@ __PACKAGE__->add_columns(
   "population_id",
   { data_type => "integer", is_nullable => 1 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 1 },
   "create_date",
@@ -103,6 +109,17 @@ __PACKAGE__->add_columns(
     original      => { default_value => \"now()" },
   },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</individual_history_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("individual_history_id");
 
 =head1 RELATIONS
@@ -122,8 +139,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PFEl9jfmJRAlg5uOj2Nydg
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:geWo96nK10XdQBeaSruczg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

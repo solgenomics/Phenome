@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::LocusHistory;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::LocusHistory
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::LocusHistory
+=head1 TABLE: C<locus_history>
 
 =cut
 
@@ -80,11 +84,13 @@ __PACKAGE__->table("locus_history");
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 updated_by
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 obsolete
@@ -103,7 +109,7 @@ __PACKAGE__->table("locus_history");
 =head2 locus
 
   data_type: 'varchar'
-  default_value: NULL::character varying
+  default_value: null
   is_nullable: 1
   size: 24
 
@@ -136,9 +142,9 @@ __PACKAGE__->add_columns(
   "lg_arm",
   { data_type => "varchar", is_nullable => 1, size => 16 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 1 },
   "create_date",
@@ -151,11 +157,22 @@ __PACKAGE__->add_columns(
   "locus",
   {
     data_type => "varchar",
-    default_value => \"NULL::character varying",
+    default_value => \"null",
     is_nullable => 1,
     size => 24,
   },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</locus_history_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("locus_history_id");
 
 =head1 RELATIONS
@@ -175,8 +192,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-11-08 07:30:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TAv7QYfAUd2M1hdp/hUqQg
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZAWT1bBnBvBxyx5XvLncdA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

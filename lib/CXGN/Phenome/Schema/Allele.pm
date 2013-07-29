@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::Allele;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::Allele
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::Allele
+=head1 TABLE: C<allele>
 
 =cut
 
@@ -75,6 +79,7 @@ __PACKAGE__->table("allele");
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 create_date
@@ -92,6 +97,7 @@ __PACKAGE__->table("allele");
 =head2 updated_by
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 is_default
@@ -133,7 +139,7 @@ __PACKAGE__->add_columns(
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 1 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "create_date",
   {
     data_type     => "timestamp with time zone",
@@ -144,15 +150,86 @@ __PACKAGE__->add_columns(
   "modified_date",
   { data_type => "timestamp with time zone", is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "is_default",
   { data_type => "boolean", default_value => \"true", is_nullable => 1 },
   "sequence",
   { accessor => undef, data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</allele_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("allele_id");
 
 =head1 RELATIONS
+
+=head2 allele_alias
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::AlleleAlias>
+
+=cut
+
+__PACKAGE__->has_many(
+  "allele_alias",
+  "CXGN::Phenome::Schema::AlleleAlias",
+  { "foreign.allele_id" => "self.allele_id" },
+  undef,
+);
+
+=head2 allele_dbxrefs
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::AlleleDbxref>
+
+=cut
+
+__PACKAGE__->has_many(
+  "allele_dbxrefs",
+  "CXGN::Phenome::Schema::AlleleDbxref",
+  { "foreign.allele_id" => "self.allele_id" },
+  undef,
+);
+
+=head2 allele_histories
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::AlleleHistory>
+
+=cut
+
+__PACKAGE__->has_many(
+  "allele_histories",
+  "CXGN::Phenome::Schema::AlleleHistory",
+  { "foreign.allele_id" => "self.allele_id" },
+  undef,
+);
+
+=head2 individual_alleles
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::IndividualAllele>
+
+=cut
+
+__PACKAGE__->has_many(
+  "individual_alleles",
+  "CXGN::Phenome::Schema::IndividualAllele",
+  { "foreign.allele_id" => "self.allele_id" },
+  undef,
+);
 
 =head2 locus_id
 
@@ -168,66 +245,6 @@ __PACKAGE__->belongs_to(
   { locus_id => "locus_id" },
 );
 
-=head2 allele_alias
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::AlleleAlias>
-
-=cut
-
-__PACKAGE__->has_many(
-  "allele_alias",
-  "CXGN::Phenome::Schema::AlleleAlias",
-  { "foreign.allele_id" => "self.allele_id" },
-  {},
-);
-
-=head2 allele_dbxrefs
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::AlleleDbxref>
-
-=cut
-
-__PACKAGE__->has_many(
-  "allele_dbxrefs",
-  "CXGN::Phenome::Schema::AlleleDbxref",
-  { "foreign.allele_id" => "self.allele_id" },
-  {},
-);
-
-=head2 allele_histories
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::AlleleHistory>
-
-=cut
-
-__PACKAGE__->has_many(
-  "allele_histories",
-  "CXGN::Phenome::Schema::AlleleHistory",
-  { "foreign.allele_id" => "self.allele_id" },
-  {},
-);
-
-=head2 individual_alleles
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::IndividualAllele>
-
-=cut
-
-__PACKAGE__->has_many(
-  "individual_alleles",
-  "CXGN::Phenome::Schema::IndividualAllele",
-  { "foreign.allele_id" => "self.allele_id" },
-  {},
-);
-
 =head2 stock_alleles
 
 Type: has_many
@@ -240,12 +257,12 @@ __PACKAGE__->has_many(
   "stock_alleles",
   "CXGN::Phenome::Schema::StockAllele",
   { "foreign.allele_id" => "self.allele_id" },
-  {},
+  undef,
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OxTvjN/wrx9EoaTV5XqhpA
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0yggZyi4Nf/aI0haYCqglw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

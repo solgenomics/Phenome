@@ -1,17 +1,21 @@
+use utf8;
 package CXGN::Phenome::Schema::IndividualDbxrefEvidence;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+CXGN::Phenome::Schema::IndividualDbxrefEvidence
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-CXGN::Phenome::Schema::IndividualDbxrefEvidence
+=head1 TABLE: C<individual_dbxref_evidence>
 
 =cut
 
@@ -35,36 +39,43 @@ __PACKAGE__->table("individual_dbxref_evidence");
 =head2 relationship_type
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 evidence_code
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 evidence_description
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 evidence_with
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 reference_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 sp_person_id
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 updated_by
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 create_date
@@ -98,19 +109,19 @@ __PACKAGE__->add_columns(
   "individual_dbxref_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "relationship_type",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "evidence_code",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "evidence_description",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "evidence_with",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "reference_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "sp_person_id",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "updated_by",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "create_date",
   {
     data_type     => "timestamp with time zone",
@@ -123,23 +134,20 @@ __PACKAGE__->add_columns(
   "obsolete",
   { data_type => "boolean", default_value => \"false", is_nullable => 1 },
 );
-__PACKAGE__->set_primary_key("individual_dbxref_evidence_id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 individual_dbxref_id
+=over 4
 
-Type: belongs_to
+=item * L</individual_dbxref_evidence_id>
 
-Related object: L<CXGN::Phenome::Schema::IndividualDbxref>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "individual_dbxref_id",
-  "CXGN::Phenome::Schema::IndividualDbxref",
-  { individual_dbxref_id => "individual_dbxref_id" },
-);
+__PACKAGE__->set_primary_key("individual_dbxref_evidence_id");
+
+=head1 RELATIONS
 
 =head2 individual_dbxref_evidence_histories
 
@@ -155,12 +163,26 @@ __PACKAGE__->has_many(
   {
     "foreign.individual_dbxref_evidence_id" => "self.individual_dbxref_evidence_id",
   },
-  {},
+  undef,
+);
+
+=head2 individual_dbxref_id
+
+Type: belongs_to
+
+Related object: L<CXGN::Phenome::Schema::IndividualDbxref>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "individual_dbxref_id",
+  "CXGN::Phenome::Schema::IndividualDbxref",
+  { individual_dbxref_id => "individual_dbxref_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2011-09-14 09:54:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oAIzkMJPL1QKaKprrZWUkA
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:J1x3tPo3ELB3jqVTZS9oyA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
