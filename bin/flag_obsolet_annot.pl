@@ -84,6 +84,10 @@ if (!$opt_D) {
     print STDERR "Option -D required. Must be a valid database name.\n";
     $error=1;
 }
+if (!$opt_d) {
+    print STDERR "Option -d required with a db name (PO or GO).\n";
+    $error=1;
+}
 
 my $file = $opt_o;
 
@@ -125,25 +129,25 @@ eval {
 	my $cvterm_name=$cvterm->name;
 	my $accession = $dbxref->accession;
 	my $is_obsolete= $cvterm->is_obsolete;
-	my $alt_ids_rs = $cvterm->search_related('cvterm_dbxrefs');
-	print STDERR "found " .  $alt_ids_rs->count . "\n\n";
+	my $alt_ids_rs = $cvterm->search_related('cvterm_dbxrefs', { "db.name" => $opt_d } , { join => { "dbxref" => "db" } }  );
+	print STDERR "found " .  $alt_ids_rs->count . " alternative ids\n\n";
 
 	if ($is_obsolete) {
 	    $count++;
 	    print STDERR "Locus $locus_name (id=$locus_id) has obsolete annotation: $accession:$cvterm_name\n";
-	    print OUT "Locus $locus_name (id=$locus_id) has obsolete annotation: $accession:$cvterm_name\n";
+	    print OUT "Locus_id $locus_id (name = $locus_name) has obsolete annotation: $accession:$cvterm_name\n";
             if ($alt_ids_rs) {
-		$u_count++;
                 my $first_alt_id = $alt_ids_rs->next;
                 if ($first_alt_id) {
+		    $u_count++;
                     my $alt_dbxref = $first_alt_id->dbxref;
                     #update locus_dbxref with the alternative dbxerf_id
-                    #$annot->update_annotation($alt_dbxref->dbxref_id);
-                    #print STDERR "*Updated annotation to " .  $alt_dbxref->accession . "!\n";
-                    #print OUT "*Updated annotation to " . $alt_dbxref->accession . " \n";
+                    $annot->update_annotation($alt_dbxref->dbxref_id);
+                    print STDERR "*Updated annotation to " .  $alt_dbxref->accession . "!\n";
+                    print OUT "*Updated annotation to " . $alt_dbxref->accession . " \n";
                 }else {
                     print STDERR "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
-                    print OUT "!did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
+                    print OUT "$locus_id : \t $opt_d : $accession: !did not find alternative cvterm for this obsolete annotation! $cvterm_name\n";
                 }
             }
         }
@@ -154,7 +158,7 @@ eval {
         {
             'db.name' => $opt_d
         },
-        { join => { 'type' => { 'dbxref' => 'db' } },
+        { join => { 'cvterm' => { 'dbxref' => 'db' } },
         } );
 
     $count= 0;
