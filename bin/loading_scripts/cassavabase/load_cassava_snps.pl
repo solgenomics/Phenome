@@ -14,7 +14,7 @@ load_cassava_snps.pl
  -i infile
  -p project name (e.g. SNP genotyping 2012 Cornell Biotech)
  -y project year [2012]
- -o population name (e.g., NaCRRI training population)
+ -g population name (e.g., NaCRRI training population) Mandatory option
  -t  Test run . Rolling back at the end.
 
 =head2 DESCRIPTION
@@ -24,7 +24,8 @@ it encodes the genotype + marker name in a json format in the genotyope.uniquena
 for easy parsing by a Perl program.
 The genotypes are linked to the relevant stock using nd_experiment_genotype.
 each column in the spreadsheet, which represents a single accession (stock) is stored as a
-single genotyep entry and linked to the stock via nd_experiment_genotype.
+single genotype entry and linked to the stock via nd_experiment_genotype.
+Stock names are stored in the stock table if cannot be found, and linked to a population stock with the name supplied in opt_g
 
 =head2 AUTHOR
 
@@ -49,6 +50,7 @@ use CXGN::Marker::Tools;
 use CXGN::DB::InsertDBH;
 use Carp qw /croak/ ;
 use Try::Tiny;
+use Pod::Usage;
 
 ##
 
@@ -67,6 +69,12 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 						 RaiseError => 1}
 				    }
     );
+
+
+if (!$opt_H || !$opt_D || !$opt_i || !$opt_g) {
+    pod2usage(-verbose => 2, -message => "Must provide options -H (hostname), -D (database name), -i (input file) , and -g (populations name for associating accessions in your SNP file) \n");
+}
+
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } );
 $dbh->do('SET search_path TO public,sgn');
 
