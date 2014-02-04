@@ -63,6 +63,11 @@ my $dbname = $opt_D;
 my $file = $opt_i;
 my $population_name = $opt_g;
 
+
+if (!$opt_H || !$opt_D || !$opt_i || !$opt_g) {
+    pod2usage(-verbose => 2, -message => "Must provide options -H (hostname), -D (database name), -i (input file) , and -g (populations name for associating accessions in your SNP file) \n");
+}
+
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				      dbname=>$dbname,
 				      dbargs => {AutoCommit => 1,
@@ -70,10 +75,6 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 				    }
     );
 
-
-if (!$opt_H || !$opt_D || !$opt_i || !$opt_g) {
-    pod2usage(-verbose => 2, -message => "Must provide options -H (hostname), -D (database name), -i (input file) , and -g (populations name for associating accessions in your SNP file) \n");
-}
 
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } );
 $dbh->do('SET search_path TO public,sgn');

@@ -120,8 +120,9 @@ if (!$opt_n) {$opt_n = "plant_anatomy"; }
 print STDOUT "Default for  -n $opt_n (specifies the ontology name for CV objects)\n"; 
 my $aspect;
 my $namespace;
+
 if ($opt_n eq 'plant_anatomy' ) {    $aspect = "A"; $namespace='anatomy';}
-elsif ($opt_n eq 'plant_growth_and_development_stage') { $aspect = "G"; $namespace='growth';}
+elsif ($opt_n eq 'plant_structure_development_stage') { $aspect = "G"; $namespace='growth';}
 elsif ($opt_n eq 'biological_process') { $aspect = "P"; $namespace = 'P'; }
 elsif ($opt_n eq 'molecular_function') {$aspect = "F"; $namespace= 'F'; }
 elsif ($opt_n eq 'cellular_component') {$aspect = "C";$namespace = 'C'; }
