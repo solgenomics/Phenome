@@ -36,7 +36,7 @@ Terms loaded with a scale named "cassavabase" . Scale - to -value mapping must b
 CO:0000018|unit:centimeter
 Units will be added to phenotypeprop table. Units must be from the Unit Ontology L<http://www.obofoundry.org/cgi-bin/detail.cgi?id=unit>
 
-CO:0000039|date:1MAP
+CO:0000039|MAP:1
 timing of measurement in 'months after planting" (MAP) will be loaded as phenotype prop with a type_id of "months after planting"
 
 =head2 AUTHOR
@@ -221,7 +221,7 @@ if ($multilocation) {
     $year = $yearprop->value;
 }
 my $coderef = sub {
-    ##unique#  PLOT REP  DESIG  BLOCK NOPLT NOSV CO:0000010	CO:0000099|scale:cassavabase  CO:0000018|unit:cm   CO:0000039|date:1MAP
+    ##unique#  PLOT REP  DESIG  BLOCK NOPLT NOSV CO:0000010	CO:0000099|scale:cassavabase  CO:0000018|unit:cm   CO:0000039|MAP:1
     ##
     ##multilocation files:
     #unique#	location	PLOT	REP	DESIG	BLOCK	NOPLT	NOSV
