@@ -42,17 +42,29 @@ while (<$F>) {
 	next;
     }
 
-    my $q = "SELECT stock_id FROM stock LEFT JOIN stockprop using(stock_id) LEFT JOIN cvterm on (stockprop.type_id=cvterm_id) WHERE (cvterm.name='name' or cvterm.name IS NULL) and ((stockprop.value=? OR stockprop.value IS NULL)  OR uniquename = ?)";
+    my $q = "SELECT stock_id FROM stock where name=?";
     my $h = $dbh->prepare($q);
-    $h->execute($stock_name, $stock_name);
-    my @stocks = ();
-    my ($stock_id) = $h->fetchrow_array(); # uniquename must be unique
+    $h->execute($stock_name);
+
+    my ($stock_id) = $h->fetchrow_array();
+    if (!$stock_id) { 
+
+	my $q = "SELECT stock_id FROM stock JOIN stockprop using(stock_id)  JOIN cvterm on (stockprop.type_id=cvterm_id) WHERE (cvterm.name='name') and (stockprop.value=?   OR uniquename = ?)";
+	my $h = $dbh->prepare($q);
+	$h->execute($stock_name, $stock_name);
+	my @stocks = ();
+	($stock_id) = $h->fetchrow_array(); # uniquename must be unique
+    }
+
+  
+  
 
     if (!$stock_id) { 
 	print STDERR "The stock $stock_name is not found in the database. Skipping.\n";
 	next;
     }
-    
+  
+    print STDERR "FOUND STOCK ID $stock_id stock name $stock_name\n";  
     # does the synonym already exist?
     #
     my $q2 = "SELECT value from stockprop WHERE value=?";
