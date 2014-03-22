@@ -37,6 +37,10 @@ while (<$F>) {
     chomp;
     my ($stock_name, $synonym) = split "\t";
 
+    if ($stock_name eq $synonym) { 
+	print STDERR "Stock name $stock_name and synonym $synonym are identical. Skipping.\n";
+	next;
+    }
 
     my $q = "SELECT stock_id FROM stock WHERE uniquename = ?";
     my $h = $dbh->prepare($q);
