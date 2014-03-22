@@ -49,9 +49,9 @@ while (<$F>) {
     my ($stock_id) = $h->fetchrow_array();
     if (!$stock_id) { 
 
-	my $q = "SELECT stock_id FROM stock JOIN stockprop using(stock_id)  JOIN cvterm on (stockprop.type_id=cvterm_id) WHERE (cvterm.name='name') and (stockprop.value=?   OR uniquename = ?)";
+	my $q = "SELECT stock_id FROM stock JOIN stockprop using(stock_id)  JOIN cvterm on (stockprop.type_id=cvterm_id) WHERE (cvterm.name='synonym') and stockprop.value=?";
 	my $h = $dbh->prepare($q);
-	$h->execute($stock_name, $stock_name);
+	$h->execute($stock_name);
 	my @stocks = ();
 	($stock_id) = $h->fetchrow_array(); # uniquename must be unique
     }
@@ -79,9 +79,18 @@ while (<$F>) {
 	next;
     }
 
+    my $q3 = "SELECT cvterm_id FROM cvterm JOIN cv using(cv_id) WHERE cv.name='local' and cvterm.name = 'synonym'";
+    my $h3 = $dbh->prepare($q3);
+
+    $h3->execute();
+
+    my ($synonym_type_id) = $h3->fetchrow_array();
+
+
     # get rank and increase it if necessary.
     $q = "SELECT max(rank) FROM stockprop where stock_id=? and type_id=?";
     $h = $dbh->prepare($q);
+    $h->execute($stock_id, $synonym_type_id);
     my ($rank) = $h->fetchrow_array();
 
     if (!defined($rank)) { $rank = 0; }
@@ -90,14 +99,8 @@ while (<$F>) {
     }
 
     print STDERR "Inserting synonym $synonym for $stock_name, $stock_id\n";
-    my $q3 = "SELECT cvterm_id FROM cvterm JOIN cv using(cv_id) WHERE cv.name='local' and cvterm.name = 'synonym'";
-    my $h3 = $dbh->prepare($q3);
 
-    $h3->execute();
-
-    my ($synonym_type_id) = $h3->fetchrow_array();
-
-    my $q4 = "INSERT INTO stockprop (stock_id, type_id, value, rank) VALUES (?, ?, ?)";
+    my $q4 = "INSERT INTO stockprop (stock_id, type_id, value, rank) VALUES (?, ?, ?, ?)";
     my $h4 =  $dbh->prepare($q4);
     $h4->execute($stock_id, $synonym_type_id, $synonym, $rank);
  
