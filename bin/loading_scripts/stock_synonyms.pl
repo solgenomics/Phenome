@@ -43,6 +43,11 @@ while (<$F>) {
     $h->execute($stock_name);
     my @stocks = ();
     my ($stock_id) = $h->fetchrow_array(); # uniquename must be unique
+
+    if (!$stock_id) { 
+	print STDERR "The stock $stock_name is not found in the database. Skipping.\n";
+	next;
+    }
     
     # does the synonym already exist?
     #
