@@ -79,6 +79,16 @@ while (<$F>) {
 	next;
     }
 
+    # get rank and increase it if necessary.
+    $q = "SELECT max(rank) FROM stockprop where stock_id=? and type_id=?";
+    $h = $dbh->prepare($q);
+    my ($rank) = $h->fetchrow_array();
+
+    if (!defined($rank)) { $rank = 0; }
+    else { 
+	$rank++;
+    }
+
     print STDERR "Inserting synonym $synonym for $stock_name, $stock_id\n";
     my $q3 = "SELECT cvterm_id FROM cvterm JOIN cv using(cv_id) WHERE cv.name='local' and cvterm.name = 'synonym'";
     my $h3 = $dbh->prepare($q3);
@@ -87,9 +97,9 @@ while (<$F>) {
 
     my ($synonym_type_id) = $h3->fetchrow_array();
 
-    my $q4 = "INSERT INTO stockprop (stock_id, type_id, value) VALUES (?, ?, ?)";
+    my $q4 = "INSERT INTO stockprop (stock_id, type_id, value, rank) VALUES (?, ?, ?)";
     my $h4 =  $dbh->prepare($q4);
-    $h4->execute($stock_id, $synonym_type_id, $synonym);
+    $h4->execute($stock_id, $synonym_type_id, $synonym, $rank);
  
 
 }
