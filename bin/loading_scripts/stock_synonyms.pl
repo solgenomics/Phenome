@@ -42,9 +42,9 @@ while (<$F>) {
 	next;
     }
 
-    my $q = "SELECT stock_id FROM stock WHERE uniquename = ?";
+    my $q = "SELECT stock_id FROM stock LEFT JOIN stockprop using(stock_id) LEFT JOIN cvterm on (stockprop.type_id=cvterm_id) WHERE (cvterm.name='name' or cvterm.name IS NULL) and ((stockprop.value=? OR stockprop.value IS NULL)  OR uniquename = ?)";
     my $h = $dbh->prepare($q);
-    $h->execute($stock_name);
+    $h->execute($stock_name, $stock_name);
     my @stocks = ();
     my ($stock_id) = $h->fetchrow_array(); # uniquename must be unique
 
