@@ -65,6 +65,7 @@ while (<$F>) {
     }
   
     print STDERR "FOUND STOCK ID $stock_id stock name $stock_name\n";  
+
     # does the synonym already exist?
     #
     my $q2 = "SELECT value from stockprop WHERE value=?";
@@ -78,6 +79,7 @@ while (<$F>) {
 	next;
     }
 
+    print STDERR "Inserting synonym $synonym for $stock_name, $stock_id\n";
     my $q3 = "SELECT cvterm_id FROM cvterm JOIN cv using(cv_id) WHERE cv.name='local' and cvterm.name = 'synonym'";
     my $h3 = $dbh->prepare($q3);
 
@@ -89,7 +91,7 @@ while (<$F>) {
     my $h4 =  $dbh->prepare($q4);
     $h4->execute($stock_id, $synonym_type_id, $synonym);
  
-    print STDERR "Inserted synonym $synonym for $stock_name\n";
+
 }
 
 $dbh->commit();
