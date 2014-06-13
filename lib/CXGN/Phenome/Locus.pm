@@ -113,8 +113,8 @@ sub new_with_symbol_and_species {
 }
 
 =head2 new_with_locusname
- 
- Usage: CXGN::Phenome::Locus->new_locusname($dbh, $genome_locus_name)                                                                                               
+
+ Usage: CXGN::Phenome::Locus->new_locusname($dbh, $genome_locus_name)
  Desc:  instanciate a new locus object using  the locus field
  Ret:  a locus object
  Args: dbh, locus genome identifier (e.g. Solyc01g0000010)
@@ -122,10 +122,12 @@ sub new_with_symbol_and_species {
  Example:
 =cut
 
-sub new_with_locusname { 
+sub new_with_locusname {
     my $class = shift;
     my $dbh = shift;
     my $locusname = shift;
+    # remove the version number, since loci are saved without them
+    if ( $locusnameif =~ m/(.*)\.\d+/ ) { $locusname =  $1 ; }
     my $query = "SELECT locus_id FROM phenome.locus WHERE locus ilike ? and obsolete = ? ";
     my $sth = $dbh->prepare($query);
     $sth->execute($locusname, 'f');
