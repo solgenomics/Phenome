@@ -1,4 +1,4 @@
-package LoadItagLoci;
+package LoadPepperLoci;
 
 use Modern::Perl;
 use CXGN::DB::InsertDBH;
