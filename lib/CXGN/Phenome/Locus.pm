@@ -114,7 +114,7 @@ sub new_with_symbol_and_species {
 
 =head2 new_with_locusname
 
- Usage: CXGN::Phenome::Locus->new_locusname($dbh, $genome_locus_name)
+ Usage: CXGN::Phenome::Locus->new_with_locusname($dbh, $genome_locus_name)
  Desc:  instanciate a new locus object using  the locus field
  Ret:  a locus object
  Args: dbh, locus genome identifier (e.g. Solyc01g0000010)
