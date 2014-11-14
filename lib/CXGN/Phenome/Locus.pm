@@ -2271,7 +2271,37 @@ sub count_ontology_annotations {
     return $count;
 }
 
+=head2 get_src_feature
+ Usage: $self->get_src_feature
+ Desc:  find the associated gene feature of this locus
+ Ret: Bio:;CHado::Schema feature object of type 'gene' and its source feature (should be teh chromosome ) 
+ Args: none
+ Side Effects:  
+ Example:
 
+=cut
+
+sub get_src_feature {
+    my $self = shift ; 
+    my $genome_locus = $self->get_genome_locus;
+    my ($feature, $src_feature ) ;
+    print STDERR "** GENOME LOCUS = $genome_locus\n\n";
+    if ( defined($genome_locus) ) { 
+	my $dbh = $self->get_dbh;
+	my $schema= Bio::Chado::Schema->connect( sub { $dbh->clone } ) ;
+	$feature = $schema->resultset('Sequence::Feature')->search( 
+	    {
+		'me.name'   => { 'ilike' =>   $genome_locus . '%'  } , 
+		'type.name' => 'gene',
+	    } , 
+	    { join => 'type', } 
+	    )->single;
+	my $featurelocs = $feature ? $feature->featureloc_features : undef;
+	$src_feature   = $featurelocs ? $featurelocs->search({locgroup => 0,},)->single()->srcfeature() : undef ;
+	if ( $src_feature) { print STDERR "*** src_feature = " . $src_feature->name . "\n\n" ; } 
+    }
+    return ($feature, $src_feature) ;
+}
 ###
 1;#do not remove
 ###
