@@ -1843,9 +1843,9 @@ sub cache_path
 {
     my $self = shift;
     my $c    = shift;
-    my $pop_cache = $c->get_conf('r_qtl_temp_path');
+    my $pop_cache = $c->path_to($c->config->{'r_qtl_temp_path'});
     $pop_cache= "$pop_cache/cache";
-    
+   
     unless (-d $pop_cache) 
     {
 	mkpath ($pop_cache, 0, 0755);
