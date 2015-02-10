@@ -357,8 +357,8 @@ sub get_user_qtl_dir {
     my $sp_person_id = $self->get_sp_person_id();
 
  
-    my $bdir     = $c->get_conf("basepath");
-    my $tdir     = $c->get_conf("tempfiles_subdir");
+    my $bdir     = $c->path_to($c->config->{basepath});
+    my $tdir     = $c->path_to($c->config->{tempfiles_subdir});
     my $temp_qtl = File::Spec->catfile( $bdir, $tdir, "page_uploads", "qtl" );
     my $dbh      = CXGN::DB::Connection->new();
     my $person   = CXGN::People::Person->new( $dbh, $sp_person_id );
