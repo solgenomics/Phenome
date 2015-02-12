@@ -60,6 +60,10 @@ use Carp qw /croak/ ;
 use Try::Tiny;
 use DateTime;
 
+use CXGN::Trial; # add project metadata 
+use CXGN::BreedersToolbox::Projects; # associating a breeding program
+
+
 my ( $dbhost, $dbname, $file, $sites, $types, $test);
 GetOptions(
     'i=s'        => \$file,
@@ -93,7 +97,11 @@ my %seq  = (
 	    );
 
 
-
+my $ciat_project = $schema->resultset("Project::Project")->find_or_create( 
+            {
+                name => "CIAT",
+	    } ) ;
+        
 #new spreadsheet, ## (skip first column ($file,1)  ) ###
 #trial_name	type	site	sowing_date	harvest_date	sown_plants	harvested_plants
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($file);
@@ -168,6 +176,10 @@ my $coderef= sub  {
                 description => $project_description,
             } ) ;
         
+	#associate the new project with the CIAT breeding program (also stored in the project table
+	my $cxgn_project =  CXGN::BreedersToolbox::Projects->new( { bcs_schema => $schema } ) ; 
+        $cxgn_project->associate_breeding_program_with_trial( $ciat_project->project_id, $project->project_id);
+
         #store the geolocation data and props:
         my $geo_description = $location_name;
 
@@ -181,6 +193,11 @@ my $coderef= sub  {
                 altitude => $altitude,
             } ) ;
         print STDERR  "Stored geolocation '" . $geo_description . "'\n project year = $year\n";
+
+	#store the geolocation_id as a projectprop for displaying on the trial page and the trial search.
+	#not autocreating the cvterm 'project location' . Should be existing in each db.
+	$project->create_projectprops( { 'project location' => $geolocation->nd_geolocation_id } );
+	###
 
         $project->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
         my $address; #does not exist in the CIAT data 
