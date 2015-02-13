@@ -177,9 +177,10 @@ my $coderef= sub  {
             } ) ;
         
 	#associate the new project with the CIAT breeding program (also stored in the project table
-	my $cxgn_project =  CXGN::BreedersToolbox::Projects->new( { bcs_schema => $schema } ) ; 
-        $cxgn_project->associate_breeding_program_with_trial( $ciat_project->project_id, $project->project_id);
+	my $cxgn_project =  CXGN::BreedersToolbox::Projects->new( { schema => $schema } ) ;
 
+	$cxgn_project->associate_breeding_program_with_trial( $ciat_project->project_id, $project->project_id);
+        print "ciat id = " . $ciat_project->project_id . " project_id = " . $project->project_id . "\n"; 	
         #store the geolocation data and props:
         my $geo_description = $location_name;
 
