@@ -170,7 +170,7 @@ my $coderef= sub  {
 	#just create will make this fail if a project exists. 
 	#This alleviates overloading projects with multiple properties that should not be there,
 	#for example like year, and dates.
-        my $project = $schema->resultset("Project::Project")->create( 
+        my $project = $schema->resultset("Project::Project")->find_or_create( 
             {
                 name => $name,
                 description => $project_description,
