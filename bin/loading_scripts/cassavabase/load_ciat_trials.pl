@@ -199,7 +199,16 @@ my $coderef= sub  {
 	#not autocreating the cvterm 'project location' . Should be existing in each db.
 	$project->create_projectprops( { 'project location' => $geolocation->nd_geolocation_id } );
 	###
+	##project type is a prop
+	my $project_type_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
+                         { name   => $project_type,
+                           cv     => 'project_type' ,
+                           db     => 'local',
+                           dbxref => $project_type,
+                         });
 
+	$project->create_projectprops( { 'project_type' => $project_type_cvterm->cvterm_id } ); 
+	####
         $project->create_projectprops( { 'project year' => $year }, { autocreate => 1 } );
         my $address; #does not exist in the CIAT data 
         if ($address) { $geolocation->create_geolocationprops( { 'geolocation address' => $address }, { autocreate => 1 } ); }
