@@ -158,21 +158,28 @@ my $coderef = sub {
     foreach my $num (@rows ) {
         my $accession = $spreadsheet->value_at($num, "variety");
 	##CIAT accessions might have whitespaces 
-	$accession x=~ s/\s+?//g;
+	$accession =~ s/\s+?//g;
 	######
 	my $project_name = $spreadsheet->value_at($num, "trial");
 	###find the project object and its year
 	my $project = $schema->resultset("Project::Project")->find(
 	    { name => $project_name,
 	    } );
+	if (!$project) {
+	    warn "***NO PROJECT LOADED FOR $project_name (row $num accession $accession). Check your loaded trials\n\n";
+	    next;
+	}
+	print "Project = $project_name\n";
 	my $project_year_cvterm = $schema->resultset("Cv::Cvterm")->find(
 	    { name => 'project year', } );
-	my $projectprops = $project->find_related->("projectprops", { type_id=> $project_year_cvterm->cvterm_id , } );
+	my $projectprops = $project->find_related("projectprops", { type_id=> $project_year_cvterm->cvterm_id , } );
 	my $year = $projectprops->value; 
 	my $replicate = $spreadsheet->value_at($num, "replicate");
 	
 	##find the geolocation of the project
-	my $projectprops = $project->find_related->("projectprops", { type_id=>  "project location" , } );
+	my $project_location_cvterm = $schema->resultset("Cv::Cvterm")->find(
+	    { name => "project location" , } );
+	my $projectprops = $project->find_related("projectprops", { type_id=>  $project_location_cvterm->cvterm_id , } );
 	my $geolocation_id = $projectprops->value; 
 	###create a unique plot name
 	###
@@ -244,15 +251,17 @@ my $coderef = sub {
             #db_name = CO , accession = 0000NNN
 	    #
 	    my ($db_name, $co_accession) = split (/\:/ , $label);
-	    #print STDERR "db_name = '$db_name' sp_accession = '$sp_accession'\n";
+	    #print STDERR "db_name = '$db_name' co_accession = '$co_accession'\n";
 	    next() if (!$co_accession);
+	    
             my $co_term = $schema->resultset("General::Db")->find(
 		{ name => 'CO' } )->find_related(
 		"dbxrefs", { accession=>$co_accession , } )->find_related("cvterm" , {});
             ####################
+	    
             #skip non-numeric values
 	    if ($value !~ /^\d/) {
-                if ($value eq "\." ) { next; }
+                if ($value eq "\." || !$value ) { next; }
                 warn "** Found non-numeric value in column $label (value = '" . $value ."'\n";
                 next;
             }
