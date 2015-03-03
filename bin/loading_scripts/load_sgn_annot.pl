@@ -116,13 +116,17 @@ my $paralog_cvterm = $schema->resultset("Cv::Cvterm")->find(
     { join => 'cv' },
     );
 
-my $locusgroup = $phenome_schema->resultset("Locusgroup")->find_or_create( 
-    {
-	locusgroup_name => $gf_name,
-	relationship_id => $paralog_cvterm->cvterm_id,
-	sp_person_id    => $sp_person_id,
-    });
-my $locusgroup_id = $locusgroup->locusgroup_id;
+my ($locusgroup, $locusgroup_id);
+
+if ($gf_name)  {
+    $locusgroup = $phenome_schema->resultset("Locusgroup")->find_or_create( 
+	{
+	    locusgroup_name => $gf_name,
+	    relationship_id => $paralog_cvterm->cvterm_id,
+	    sp_person_id    => $sp_person_id,
+	});
+    $locusgroup_id = $locusgroup->locusgroup_id;
+}
 
 my $curator_evidence = $schema->resultset("Cv::Cvterm")->find(
     {
@@ -133,6 +137,15 @@ my $curator_evidence = $schema->resultset("Cv::Cvterm")->find(
 my $coderef= sub  {
     foreach my $num (@rows ) {
 	my $gene_family  = $spreadsheet->value_at($num, "Gene Family") ;
+	if (!$locusgroup_id) {
+	    $locusgroup = $phenome_schema->resultset("Locusgroup")->find_or_create(
+		{
+		    locusgroup_name => $gene_family,
+		    relationship_id => $paralog_cvterm->cvterm_id,
+		    sp_person_id    => $sp_person_id,
+		});
+	    $locusgroup_id = $locusgroup->locusgroup_id;
+	}
 	my $gene_symbol  = $spreadsheet->value_at($num, "Gene Symbol");
 	my $genome_locus = $spreadsheet->value_at($num, "Locus");
 	my $genbank      = $spreadsheet->value_at($num, "GenBank Accession");
