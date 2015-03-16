@@ -150,6 +150,10 @@ my $coderef= sub  {
 	my $genome_locus = $spreadsheet->value_at($num, "Locus");
 	my $genbank      = $spreadsheet->value_at($num, "GenBank Accession");
 	
+        print "Genome locus = $genome_locus\n";
+	
+	$genome_locus =~ s/(Solyc\d\dg\d+)(\..*)/$1/;
+	print "Genome locus = $genome_locus\n";
 	#######
 	my $go_string  = $spreadsheet->value_at($num, "GO");
 	my $go_rel = $spreadsheet->value_at($num, "GO Relationship_Type") || "involved_in"; 
@@ -174,6 +178,10 @@ my $coderef= sub  {
 	#Solyc Version numbers are ignored by this constructor 
 	my $locus = CXGN::Phenome::Locus->new_with_locusname($dbh, $genome_locus);
 	my $locus_id = $locus->get_locus_id;
+	if ( !$locus_id) { 
+	    warn "Locus $genome_locus is not found in the database.\n" ;
+	    next();
+	}
 	my $locus_symbol = $locus->get_locus_symbol;
 	if ( $locus_symbol ne $gene_symbol) {
 	    #check if the symbol already exists for a different locus
