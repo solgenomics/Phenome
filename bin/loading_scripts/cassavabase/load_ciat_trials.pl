@@ -120,10 +120,12 @@ foreach my $site_id ( @site_rows ) {
     my $site_name = $sites_file->value_at($site_id , "name");
     my $department = $sites_file->value_at($site_id , "department");
     my $country = $sites_file->value_at($site_id , "country");
-    my $long = $sites_file->value_at($site_id , "longitude");
-    my $lat  = $sites_file->value_at($site_id , "latitude");
-    my $alt  = $sites_file->value_at($site_id , "altitude");
-    
+    my $long = $sites_file->value_at($site_id , "longitude") ;
+    my $lat  = $sites_file->value_at($site_id , "latitude") ;
+    my $alt  = $sites_file->value_at($site_id , "altitude") ;
+    $long =~ s/\s+?//g;
+
+
     $locations{$site_id}->{site_name} = $site_name . ". " . $department . ", " . $country;
     $locations{$site_id}->{longitude} = $long;
     $locations{$site_id}->{latitude}  = $lat;
@@ -150,9 +152,9 @@ my $coderef= sub  {
 	
 	my $site_id = $spreadsheet->value_at($name, "site");
 	my $location_name = $locations{$site_id}->{site_name} || $site_id ; #some sites are written in the file
-	my $longitude = $locations{$site_id}->{longitude};
-	my $latitude  = $locations{$site_id}->{latitudes};
-	my $altitude  = $locations{$site_id}->{altitude};
+	my $longitude = $locations{$site_id}->{longitude} || undef;
+	my $latitude  = $locations{$site_id}->{latitude} || undef ;
+	my $altitude  = $locations{$site_id}->{altitude} || undef ;
 
 	my $sowing_date  = $spreadsheet->value_at( $name, "sowing_date");
 	my $harvest_date = $spreadsheet->value_at( $name, "harvest_date");
@@ -190,12 +192,12 @@ my $coderef= sub  {
         my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create(
             {
                 description => $geo_description,
-                latitude => $latitude, ##needs to be reformatted in the CIAT file 
-                longitude => $longitude,
+		latitude => $latitude  , ##needs to be reformatted in the CIAT file 
+                longitude => $longitude ,
                 #geodetic_datum => $datum,
                 altitude => $altitude,
             } ) ;
-        print STDERR  "Stored geolocation '" . $geo_description . "'\n project year = $year\n";
+        print STDERR  "Stored geolocation '" . $geo_description . "' $latitude $longitude \n project year = $year\n";
 
 	#store the geolocation_id as a projectprop for displaying on the trial page and the trial search.
 	#not autocreating the cvterm 'project location' . Should be existing in each db.
