@@ -118,11 +118,13 @@ my %locations;
 
 foreach my $site_id ( @site_rows ) {
     my $site_name = $sites_file->value_at($site_id , "name");
+    my $department = $sites_file->value_at($site_id , "department");
+    my $country = $sites_file->value_at($site_id , "country");
     my $long = $sites_file->value_at($site_id , "longitude");
     my $lat  = $sites_file->value_at($site_id , "latitude");
     my $alt  = $sites_file->value_at($site_id , "altitude");
     
-    $locations{$site_id}->{site_name} = $site_name;
+    $locations{$site_id}->{site_name} = $site_name . ". " . $department . ", " . $country;
     $locations{$site_id}->{longitude} = $long;
     $locations{$site_id}->{latitude}  = $lat;
     $locations{$site_id}->{altitude}  = $alt;
@@ -188,8 +190,8 @@ my $coderef= sub  {
         my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find_or_create(
             {
                 description => $geo_description,
-                #latitude => $latitude, ##needs to be reformatted in the CIAT 
-                #longitude => $longitude,
+                latitude => $latitude, ##needs to be reformatted in the CIAT file 
+                longitude => $longitude,
                 #geodetic_datum => $datum,
                 altitude => $altitude,
             } ) ;
