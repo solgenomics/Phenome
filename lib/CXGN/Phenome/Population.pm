@@ -1830,7 +1830,7 @@ sub my_populations {
 =head2 cache_path
 
  Usage: my $cache_path = $population->cache_path($c);
- Desc: creates a /data/prod/tmp/r_qtl/cache directory, 
+ Desc: creates a /export/prod/tmp/solqtl/cache directory, 
        if it does not exist. 
  Ret: absolute path to the cache directory
  Args: SGN::Context object
@@ -1839,11 +1839,10 @@ sub my_populations {
 
 =cut
 
-sub cache_path
-{
+sub cache_path {
     my $self = shift;
     my $c    = shift;
-    my $pop_cache = $c->path_to($c->config->{'r_qtl_temp_path'});
+    my $pop_cache = $c->config->{solqtl};
     $pop_cache= "$pop_cache/cache";
    
     unless (-d $pop_cache) 
