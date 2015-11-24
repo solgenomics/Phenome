@@ -177,7 +177,7 @@ if ($multilocation) {
     #$location and $project will be loaded later based on the 'location' column in the data file
 } else {
 #new spreadsheet for the project and geolocation
-    my $gp_file = $file . "metadata";
+    my $gp_file = $file . ".metadata";
     my $gp = CXGN::Tools::File::Spreadsheet->new($gp_file);
     my @gp_row = $gp->row_labels();
 
