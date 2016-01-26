@@ -121,7 +121,7 @@ my %seq  = (
 # find the cvterm for a phenotyping experiment
 my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
     { name   => 'phenotyping experiment',
-      cv     => 'experiment type',
+      cv     => 'experiment_type',
       db     => 'null',
       dbxref => 'phenotyping experiment',
     });
@@ -134,19 +134,19 @@ die "User $username for sweetpotatobase must be pre-loaded in the database! \n" 
 
 my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'accession',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'accession',
     });
 my $plot_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'plot',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'plot',
     });
 my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'plot_of',
-      cv     => 'stock relationship',
+      cv     => 'stock_relationship',
       db     => 'null',
       dbxref => 'plot_of',
     });
@@ -206,14 +206,14 @@ my $coderef = sub {
 	if ($opt_a) {
 	    my $female_parent =  $schema->resultset("Cv::Cvterm")->create_with(
 		{ name   => 'female_parent',
-		  cv     => 'stock relationship',
+		  cv     => 'stock_relationship',
 		  db     => 'null',
 		  dbxref => 'female_parent',
 		});
 
 	    my $male_parent =  $schema->resultset("Cv::Cvterm")->create_with(
 		{ name   => 'male_parent',
-		  cv     => 'stock relationship',
+		  cv     => 'stock_relationship',
 		  db     => 'null',
 		  dbxref => 'male_parent',
 		});

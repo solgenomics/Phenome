@@ -95,7 +95,7 @@ my $project = $schema->resultset("Project::Project")->find_or_create(
 # find the cvterm for a genotyping experiment
 my $geno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
     { name   => 'genotyping experiment',
-      cv     => 'experiment type',
+      cv     => 'experiment_type',
       db     => 'null',
       dbxref => 'genotyping experiment',
     });

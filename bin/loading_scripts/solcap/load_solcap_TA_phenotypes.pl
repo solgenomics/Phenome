@@ -116,7 +116,7 @@ my $year =  $gp->value_at($gp_row[0], "year");
 # find the cvterm for a phenotyping experiment
 my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
     { name   => 'phenotyping experiment',
-      cv     => 'experiment type',
+      cv     => 'experiment_type',
       db     => 'null',
       dbxref => 'phenotyping experiment',
     });
