@@ -254,7 +254,7 @@ my $coderef= sub  {
                     #add the synonym as a stockprop
                     $stock->create_stockprops({ synonym => $s},
                                               {autocreate => 1,
-                                               cv_name => 'null',
+                                               #cv_name => 'null', #use defauls value of stock_property
                                                allow_duplicate_values=> 1
                                               });
                 }

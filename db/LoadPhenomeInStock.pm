@@ -290,7 +290,7 @@ sub patch {
 		foreach my $s (@synonyms) {
 		    $stock_individual->create_stockprops({ synonym => $s},
 							 {autocreate => 1,
-							  cv_name => 'null'
+							  #cv_name => 'null' defaults to stock_property
 							 });
 		}
 		#########find linked alleles
