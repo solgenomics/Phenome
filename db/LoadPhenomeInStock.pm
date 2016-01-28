@@ -288,7 +288,7 @@ sub patch {
 		my @synonyms = $ind->get_aliases;
 		print "Storing synonyms\n";
 		foreach my $s (@synonyms) {
-		    $stock_individual->create_stockprops({ synonym => $s},
+		    $stock_individual->create_stockprops({ stock_synonym => $s},
 							 {autocreate => 1,
 							  #cv_name => 'null' defaults to stock_property
 							 });
