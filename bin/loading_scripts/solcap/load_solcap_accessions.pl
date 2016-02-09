@@ -114,7 +114,7 @@ my $stock_rs = $schema->resultset("Stock::Stock");
 print "Finding/creating cvterm for population\n";
 my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'population',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'population',
     });
@@ -134,7 +134,7 @@ my $population = $stock_rs->find_or_create(
 print "Finding/creating cvtem for 'stock type' \n"; 
 my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'accession',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'accession',
     });
@@ -144,7 +144,7 @@ print "Finding/creating cvtem for stock relationship 'member_of' \n";
 
 my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'member_of',
-      cv     => 'stock relationship',
+      cv     => 'stock_relationship',
       db     => 'null',
       dbxref => 'member_of',
     });
@@ -245,16 +245,16 @@ my $coderef= sub  {
 		my $existing_synonym = $stock->search_related(
                     'stockprops' , {
                         'me.value'   => $s,
-                        'type.name'  => 'synonym'
+                        'type.name'  => { ilike => '%synonym%' }
                     },
                     { join =>  'type' }
                     )->single;
                 if (!$existing_synonym) {
                     print STDOUT "Adding synonym: $s \n"  ;
                     #add the synonym as a stockprop
-                    $stock->create_stockprops({ synonym => $s},
+                    $stock->create_stockprops({ stock_synonym => $s},
                                               {autocreate => 1,
-                                               cv_name => 'null',
+                                               #cv_name => 'null', #use defauls value of stock_property
                                                allow_duplicate_values=> 1
                                               });
                 }

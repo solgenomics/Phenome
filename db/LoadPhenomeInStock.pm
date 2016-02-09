@@ -78,7 +78,7 @@ sub patch {
 	print "Finding/creating cvterm for population\n";
 	my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
 	    { name   => 'population',
-	      cv     => 'stock type',
+	      cv     => 'stock_type',
 	      db     => 'null',
 	      dbxref => 'population',
 	    });
@@ -86,7 +86,7 @@ sub patch {
 	print "Finding/creating cvterm for accession (individual)\n";
 	my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
 	    { name   => 'accession',
-	      cv     => 'stock type',
+	      cv     => 'stock_type',
 	      db     => 'null',
 	      dbxref => 'accession',
 	    });
@@ -94,7 +94,7 @@ sub patch {
 
 	my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
 	    { name   => 'is_member_of',
-	      cv     => 'stock relationship',
+	      cv     => 'stock_relationship',
 	      db     => 'null',
 	      dbxref => 'is_member_of',
 	    });
@@ -288,9 +288,9 @@ sub patch {
 		my @synonyms = $ind->get_aliases;
 		print "Storing synonyms\n";
 		foreach my $s (@synonyms) {
-		    $stock_individual->create_stockprops({ synonym => $s},
+		    $stock_individual->create_stockprops({ stock_synonym => $s},
 							 {autocreate => 1,
-							  cv_name => 'null'
+							  #cv_name => 'null' defaults to stock_property
 							 });
 		}
 		#########find linked alleles
@@ -338,7 +338,7 @@ sub patch {
 		    # find the cvterm for a phenotyping experiment
 		    my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
 			{ name   => 'phenotyping experiment',
-			  cv     => 'experiment type',
+			  cv     => 'experiment_type',
 			  db     => 'null',
 			  dbxref => 'phenotyping experiment',
 			});
@@ -406,7 +406,7 @@ sub patch {
 		    # find the cvterm for a phenotyping experiment
 		    my $geno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
 			{ name   => 'genotyping experiment',
-			  cv     => 'experiment type',
+			  cv     => 'experiment_type',
 			  db     => 'null',
 			  dbxref => 'genotyping experiment',
 			});

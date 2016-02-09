@@ -109,7 +109,7 @@ my $stock_rs = $schema->resultset("Stock::Stock");
 print "Finding/creating cvterm for mutant population\n";
 my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'mutant population',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'mutant population',
     });
@@ -127,7 +127,7 @@ my $population = $stock_rs->find_or_create(
 print "Finding/creating cvtem for 'stock type' \n";
 my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'accession',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'accession',
     });
@@ -137,7 +137,7 @@ print "Finding/creating cvtem for stock relationship 'member_of' \n";
 
 my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'member_of',
-      cv     => 'stock relationship',
+      cv     => 'stock_relationship',
       db     => 'null',
       dbxref => 'member_of',
     });

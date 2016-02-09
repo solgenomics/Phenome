@@ -134,7 +134,7 @@ my $geolocation = $schema->resultset("NaturalDiversity::NdGeolocation")->find(
 # find the cvterm for a phenotyping experiment
 my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
     { name   => 'phenotyping experiment',
-      cv     => 'experiment type',
+      cv     => 'experiment_type',
       db     => 'null',
       dbxref => 'phenotyping experiment',
     });
@@ -148,7 +148,7 @@ die "User $username for Solcap must be pre-loaded in the database! \n" if !$sp_p
 print "Finding/creating cvterm for population\n";
 my $population_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'population',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'population',
     });
@@ -168,19 +168,19 @@ my $population = $schema->resultset("Stock::Stock")->find_or_create(
     } );
 my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'accession',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'accession',
     });
 my $plot_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'plot',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'plot',
     });
 my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'plot_of',
-      cv     => 'stock relationship',
+      cv     => 'stock_relationship',
       db     => 'null',
       dbxref => 'plot_of',
             });
@@ -188,7 +188,7 @@ my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
 print "Finding/creating cvterm for stock relationship 'member_of' \n";
 my $member_of = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'member_of',
-      cv     => 'stock relationship',
+      cv     => 'stock_relationship',
       db     => 'null',
       dbxref => 'member_of',
     });

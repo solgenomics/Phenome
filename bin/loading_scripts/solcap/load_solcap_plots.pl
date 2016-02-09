@@ -99,7 +99,7 @@ die "Need to have SolCAP user pre-loaded in the sgn database! " if !$sp_person_i
 print "Finding/creating cvterm for plot\n";
 my $plot_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
     { name   => 'plot',
-      cv     => 'stock type',
+      cv     => 'stock_type',
       db     => 'null',
       dbxref => 'plot',
     });
@@ -116,7 +116,7 @@ eval {
 
     my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
         { name   => 'plot_of',
-          cv     => 'stock relationship',
+          cv     => 'stock_relationship',
           db     => 'null',
           dbxref => 'plot_of',
         });
