@@ -634,10 +634,10 @@ sub get_owners {
 
 =head2 get_pop_data_summary
 
- Usage: my ($min, $max, $avg, $std, $count) =$pop->get_pop_data_summary($cvterm_id)
+ Usage: my ($min, $max, $avg, $std, $count) = $pop->get_pop_data_summary($cvterm_id)
  Desc:  returns the minimum, maximum, average, and standard deviation values of phenotype data for a cvterm and number of individuals phenotyped for  a cvterm in a population
  Ret:   $min (| 0.0) , $max ( | 0.0) , $avg, $std, $count
- Args:   cvterm id
+ Args:   population id and cvterm id
  Side Effects: accesses database
  Example:
 
@@ -656,16 +656,20 @@ sub get_pop_data_summary {
 	$table = 'public.cvterm';
 	$table_id = 'cvterm.cvterm_id';
     }
-    #print STDERR "table: $table\n Table id: $table_id\n";	
-
-    my $query = "SELECT  MIN(cast(value as numeric)), MAX(cast(value as numeric)), 
-                         ROUND(AVG(cast(value as numeric)), 2), ROUND(STDDEV(cast(value as numeric)), 2), 
+  
+    my $query = "SELECT  MIN(cast(value as numeric)), 
+                         MAX(cast(value as numeric)), 
+                         ROUND(AVG(cast(value as numeric)), 2), 
+                         ROUND(STDDEV(cast(value as numeric)), 2), 
                          count(distinct individual_id)
                             FROM public.phenotype 
                             LEFT JOIN phenome.individual USING (individual_id)              
                             LEFT JOIN $table  ON (phenotype.observable_id = $table_id)  
-                            WHERE individual.population_id =? AND $table_id =? AND cast(value as numeric) is not null
+                            WHERE individual.population_id =? 
+                                  AND $table_id = ? 
+                                  AND cast(value as numeric) is not null
                             GROUP BY population_id";
+    
     my $sth = $self->get_dbh()->prepare($query);
     
     $sth->execute($population_id, $term_id);
@@ -673,7 +677,7 @@ sub get_pop_data_summary {
     my ($min, $max, $ave, $std, $count) =$sth->fetchrow_array() ;
     
     if ($min == 0) {$min = '0.0';}
-    if ($max == 0) {$min = '0.0';}
+    if ($max == 0) {$max = '0.0';}
     
     return $min,  $max, $ave, $std, $count;
 }
