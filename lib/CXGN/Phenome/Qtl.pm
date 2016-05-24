@@ -365,8 +365,8 @@ sub get_user_qtl_dir {
     {
         my $last_name  = $person->get_last_name() || '';
         my $first_name = $person->get_first_name() || '';
-        $last_name     =~ s/\s//g;
-        $first_name    =~ s/\s//g;
+        $last_name     =~ s/^\s+|\s+$//g;
+        $first_name    =~ s/^\s+|\s+$//g;
         my $temp_user  = "$temp_qtl/user_" . $first_name . $last_name;
 
         return $temp_qtl, $temp_user;
