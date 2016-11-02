@@ -13,7 +13,7 @@ load_ciat_trials.pl
  -D  database name
  -i infile
  --types input file with trial types
- --sites input file with the geolication data of the trial sites
+ --sites input file with the geolocation data of the trial sites
  -t  Test run . Rolling back at the end.
 
 
@@ -61,8 +61,8 @@ use Try::Tiny;
 use DateTime;
 
 use CXGN::Trial; # add project metadata 
-use CXGN::BreedersToolbox::Projects; # associating a breeding program
-
+#use CXGN::BreedersToolbox::Projects; # associating a breeding program
+use CXGN::Trial;
 
 my ( $dbhost, $dbname, $file, $sites, $types, $test);
 GetOptions(
@@ -100,6 +100,7 @@ my %seq  = (
 my $ciat_project = $schema->resultset("Project::Project")->find_or_create( 
             {
                 name => "CIAT",
+		description => "CIAT cassava breeding, Cali, Colombia",
 	    } ) ;
         
 #new spreadsheet, ## (skip first column ($file,1)  ) ###
@@ -147,7 +148,8 @@ foreach my $type_id ( @type_rows ) {
 
 my $coderef= sub  {
     foreach my $name (@trial_rows ) {
-        my $type_id = $spreadsheet->value_at($name, "type") ;
+        print "NAME = $name\n";
+	my $type_id = $spreadsheet->value_at($name, "type") ;
 	my $project_type = $trial_types{$type_id} || $type_id ; # some project types are text-written in the file
 	
 	my $site_id = $spreadsheet->value_at($name, "site");
@@ -181,9 +183,12 @@ my $coderef= sub  {
             } ) ;
         
 	#associate the new project with the CIAT breeding program (also stored in the project table
-	my $cxgn_project =  CXGN::BreedersToolbox::Projects->new( { schema => $schema } ) ;
+	###my $cxgn_project =  CXGN::BreedersToolbox::Projects->new( { schema => $schema } ) ;
+	###$cxgn_project->associate_breeding_program_with_trial( $ciat_project->project_id, $project->project_id);
+	my $trial = CXGN::Trial->new({ bcs_schema => $schema, trial_id => $project->project_id() });
+	$trial->set_breeding_program($ciat_project->project_id);
 
-	$cxgn_project->associate_breeding_program_with_trial( $ciat_project->project_id, $project->project_id);
+
         print "ciat id = " . $ciat_project->project_id . " project_id = " . $project->project_id . "\n"; 	
         #store the geolocation data and props:
         my $geo_description = $location_name;
@@ -258,7 +263,7 @@ sub reformat_date {
     $uf_date =~ s/\s+?//g;
     #extract the year from the  date
     my ($month, $day, $year) = split "\/" , $uf_date;
-    if ( $year < 15 && defined($year) && $year ) { $year = "20" . $year ; }
+    if ( $year < 18 && defined($year) && $year ) { $year = "20" . $year ; }
     elsif ( $year > 78 ) { $year = "19" . $year ; }
     else { 
 	$year = "unknown" ;
