@@ -1,0 +1,11 @@
+site	CODE_ZONE	name	department	country	latitude	longitude	altitude
+1	4	CIAT	Valle	Colombia	3.29	-76.22	965
+15	1	Sabanalarga	Atlantico	Colombia	10.37	-74.49	46
+18	2	La Libertad	Meta	Colombia	4.04	-72.1	155
+37	1	Santo Tomas	Atlantico	Colombia	10.45	-74.49	59
+67	1	La Union	Sucre	Colombia	8.5	-75.16	49
+68	1	Corozal	Sucre	Colombia	9.19	-75.15	148
+76	1	Pitalito	Atlantico	Colombia	10.49	-74.51	88
+101	1	Palmar de Varela 	Atlantico	Colombia	10.42	-74.45	7
+102	1	Sampues	Sucre	Colombia	9.1	-75.18	116
+103	1	Monteria (UNICORDOBA)	Cordoba	Colombia	8.79	-75.86	44

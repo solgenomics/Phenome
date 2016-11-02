@@ -1,0 +1,5 @@
+type	name
+5	Clonal Evaluation
+6	Preliminary Yield Trials
+7	Advanced Yeld Trials
+9	Regional Trials
