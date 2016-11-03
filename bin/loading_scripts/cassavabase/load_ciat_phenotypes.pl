@@ -49,6 +49,8 @@ use CXGN::DB::InsertDBH;
 use Carp qw /croak/ ;
 use File::Basename;
 use Try::Tiny;
+
+use SGN::Model::Cvterm;
 ##
 ##
 
@@ -104,36 +106,20 @@ my %seq  = (
     );
 
 # find the cvterm for a phenotyping experiment
-my $pheno_cvterm = $schema->resultset('Cv::Cvterm')->create_with(
-    { name   => 'phenotyping experiment',
-      cv     => 'experiment_type',
-      db     => 'null',
-      dbxref => 'phenotyping experiment',
-    });
+
+my $pheno_cvterm = SGN::Model::Cvterm->get_cvterm_row($schema, 'phenotyping_experiment', 'experiment_type');
+
 
 my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
 
 die "User $username for cassavabase must be pre-loaded in the database! \n" if !$sp_person_id ;
 
+my $accession_cvterm = SGN::Model::Cvterm->get_cvterm_row($schema, 'accession', 'stock_type');
 
-my $accession_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
-    { name   => 'accession',
-      cv     => 'stock_type',
-      db     => 'null',
-      dbxref => 'accession',
-    });
-my $plot_cvterm = $schema->resultset("Cv::Cvterm")->create_with(
-    { name   => 'plot',
-      cv     => 'stock_type',
-      db     => 'null',
-      dbxref => 'plot',
-    });
-my $plot_of = $schema->resultset("Cv::Cvterm")->create_with(
-    { name   => 'plot_of',
-      cv     => 'stock_relationship',
-      db     => 'null',
-      dbxref => 'plot_of',
-    });
+my $plot_cvterm = SGN::Model::Cvterm->get_cvterm_row($schema, 'plot', 'stock_type');
+
+my $plot_of = SGN::Model::Cvterm->get_cvterm_row($schema, 'plot_of', 'stock_relationship');
+
 ########################
 
 #new spreadsheet, skip first column
