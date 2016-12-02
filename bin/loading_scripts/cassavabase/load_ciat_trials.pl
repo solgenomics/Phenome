@@ -62,7 +62,7 @@ use DateTime;
 
 use CXGN::Trial; # add project metadata 
 #use CXGN::BreedersToolbox::Projects; # associating a breeding program
-use CXGN::Trial;
+
 
 my ( $dbhost, $dbname, $file, $sites, $types, $test);
 GetOptions(

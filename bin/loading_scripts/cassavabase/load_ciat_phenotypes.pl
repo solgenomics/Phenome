@@ -169,10 +169,18 @@ my $coderef = sub {
 	my $geolocation_id = $projectprops->value; 
 	###create a unique plot name
 	###
-	#look for an existing stock by name/synonym
+	
+	####
+	###MOVE TO TrialDesignStore
+	####
+        #look for an existing stock by name/synonym
         my $parent_stock = find_or_create_stock($accession);
 	my $stock_name = $parent_stock->name;
 	##
+
+	##########
+	#Building a unique plot name stays in the script,
+	#Add to TrialCreate a check if the user provided plot names are unique
 	##########
         #store the plot in stock. Build a uniquename first
        	my $plot_name = $stock_name;
@@ -180,7 +188,9 @@ my $coderef = sub {
 	    $plot_name .=  "_" . $replicate ;
 	}
 	$plot_name .= "_" . $year . "_" . $project_name ;
+	
 
+        ####Move to TrialCreate
         my $plot_stock = $schema->resultset("Stock::Stock")->find_or_create(
 	    { organism_id => $organism_id,
 	      name  => $plot_name,
@@ -192,6 +202,11 @@ my $coderef = sub {
             $plot_stock->stockprops(
                 {'replicate' => $replicate} , {autocreate => 1} );
         }
+	#TrialCreate stores 'replicate' stockprop (default:1)
+	### TrialCreate also stores: block (default:1) , plot number (mandatory) , is_a_control (optional), range (optional) , col_number (optional), row_numeber (optional) 
+
+	
+	#Done by TrialCreate
         ##and create the stock_relationship with the accession
         $parent_stock->find_or_create_related('stock_relationship_objects', {
 	    type_id => $plot_of->cvterm_id(),
@@ -199,6 +214,8 @@ my $coderef = sub {
                                               } );
         print STDERR "**Loading plot stock " . $plot_stock->uniquename . " (parent = " . $parent_stock->uniquename . ")\n\n";
         #add the owner for this stock
+
+	####ADD TO TrialCreate using Dbix::Class
 	#check first if it exists
         my $owner_insert = "INSERT INTO phenome.stock_owner (sp_person_id, stock_id) VALUES (?,?)";
         my $sth = $dbh->prepare($owner_insert);
@@ -212,22 +229,33 @@ my $coderef = sub {
             $sth->execute($sp_person_id, $parent_stock->stock_id);
         }
         #################
+	####
         ###store a new nd_experiment. One experiment per stock
-        my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
+        ##need to store one nd_experiment per trial! TrialCreate takes care of this
+	#Create one TrialCreate object per trial in the spreadsheet
+	my $experiment = $schema->resultset('NaturalDiversity::NdExperiment')->create(
             {
                 nd_geolocation_id => $geolocation_id,
                 type_id => $pheno_cvterm->cvterm_id(),
             } );
+	###
         #link to the project
+	# Done in TrialCreate
         $experiment->find_or_create_related('nd_experiment_projects', {
             project_id => $project->project_id()
                                             } );
         #link the experiment to the stock
-        $experiment->find_or_create_related('nd_experiment_stocks' , {
+        # Done in TrialCreate
+	$experiment->find_or_create_related('nd_experiment_stocks' , {
             stock_id => $plot_stock->stock_id(),
             type_id  =>  $pheno_cvterm->cvterm_id(),
                                             });
+	
+	#################
         ##################
+	##
+        ##This needs to happen using Phenotypes::StorePhenotypes
+	##
         LABEL: foreach my $label (@columns) {
 	    my $value =  $spreadsheet->value_at($num, $label);
 	    ($value, undef) = split (/\s/, $value) ;
@@ -292,6 +320,8 @@ try {
 };
 
 
+###move to TrialDesignStore and add stock_owner
+###
 sub find_or_create_stock {
     my $clone_name = shift;
     #clean clone name. Remove trailing spaces
