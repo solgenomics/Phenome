@@ -189,7 +189,11 @@ while (my $line = <$file_fh>) {
 	if ($validate_error) {
 		print STDERR "VALIDATE ERROR: $validate_error\n";
 	} else {
-
+		try {
+		$store_error = $design_store->store();
+	} catch {
+		$store_error = $_;
+		};
  }
  if ($store_error) {
 	print STDERR "ERROR SAVING TRIAL!: $store_error\n";
