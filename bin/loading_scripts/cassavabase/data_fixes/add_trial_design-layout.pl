@@ -96,8 +96,6 @@ while (my $line = <$file_fh>) {
 	$project_id = $schema->resultset("Project::Project")->search({name => $trial_name})->first->project_id;
   print "PROJECT_ID: $project_id\n";
 
-	#get design cvterm_id
-	my $design_cvterm_id = $schema->resultset("Cv::Cvterm")->search( {name => 'design' }, )->first->cvterm_id;
 	#search if trial has design
 	my $find_design = $schema->resultset('Project::Projectprop')->find(
 			{
@@ -185,16 +183,10 @@ while (my $line = <$file_fh>) {
 		stocks_exist => 1
 	});
 	my $validate_error = $design_store->validate_design();
-	my $store_error;
+	my $store_error = $design_store->store();
 	if ($validate_error) {
 		print STDERR "VALIDATE ERROR: $validate_error\n";
-	} else {
-		try {
-		$store_error = $design_store->store();
-	} catch {
-		$store_error = $_;
-		};
- }
+	} 
  if ($store_error) {
 	print STDERR "ERROR SAVING TRIAL!: $store_error\n";
  }
