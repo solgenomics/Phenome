@@ -112,7 +112,7 @@ while (my $line = <$file_fh>) {
 					value => $trial_design
 				});
 	}else {
-		print "Design $find_design found for this trial...\n";
+		print "Design " .  $find_design->value . " found for this trial...\n";
 	}
 
 	# get trial location name and id
@@ -133,7 +133,7 @@ while (my $line = <$file_fh>) {
 
 	while (my ($stock_id, $stock_name) = $h_2->fetchrow_array()) {
 
-		if (my ($plot) = ($stock_name =~ m/plot:([\d]+)_/) || ($stock_name =~ m/plot_([\d]+)_/) ) {
+	    if (my ($prefix, $plot) = ($stock_name =~ m/plot(:|_)(\d+)_/)  ) {
 			print STDERR "Matched plot number $plot in plot $stock_name\n";
 			$plot_number = $plot;
 		}
@@ -141,7 +141,7 @@ while (my $line = <$file_fh>) {
       $plot_number++;
     }
 
-		if (my ($block) = ($stock_name =~ m/replicate:([\d]+)_/) || ($stock_name =~ m/_([\d])_/) ) {
+		if (my ($match1, $match2, $block) = ($stock_name =~ m/(replicate|)(:|_)(\d{1,2})_/) ) {
 			print STDERR "Matched block number $block in plot $stock_name\n";
 			$block_number = $block;
 	 	}
