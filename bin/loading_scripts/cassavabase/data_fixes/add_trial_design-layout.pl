@@ -70,7 +70,7 @@ my $program_object = CXGN::BreedersToolbox::Projects->new( { schema => $schema }
 #get design cvterm_id
 my $design_cvterm_id = $schema->resultset("Cv::Cvterm")->search( {name => 'design' }, )->first->cvterm_id;
 my $accession_cvterm_id = $schema->resultset("Cv::Cvterm")->search( {name => 'accession' }, )->first->cvterm_id;
-my $plot_cvterm = SGN::Model::Cvterm->get_cvterm_object($schema, 'plot', 'stock_type') ;
+my $plot_cvterm = SGN::Model::Cvterm->get_cvterm_row($schema, 'plot', 'stock_type') ;
 my $plot_cvterm_id = $plot_cvterm->cvterm_id;
 
 #opening input file and retrieving trial_names and trial_designs
@@ -129,7 +129,7 @@ while (my $line = <$file_fh>) {
 	# from the stock names get the plot and block number
 	# if plot and block number is not found in the plot name, generate sequence of number as plot number, use 1 as the block number and set design to CRD
   $plot_number = 1;
-	my $q_2 = "select stock_id,uniquename from stock join nd_experiment_stock using(stock_id) join nd_experiment_project using (nd_experiment_id)  join nd_experiment_phenotype using (nfd_experiment_id ) where project_id=? AND stock.type_id = ? " ;
+	my $q_2 = "select stock_id,uniquename from stock join nd_experiment_stock using(stock_id) join nd_experiment_project using (nd_experiment_id)  join nd_experiment_phenotype using (nd_experiment_id ) where project_id=? AND stock.type_id = ? " ;
 	my $h_2 = $dbh->prepare($q_2);
 	$h_2->execute($project_id, $plot_cvterm_id );
 
