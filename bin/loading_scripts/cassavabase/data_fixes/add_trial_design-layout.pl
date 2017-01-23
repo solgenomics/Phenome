@@ -70,6 +70,8 @@ my $program_object = CXGN::BreedersToolbox::Projects->new( { schema => $schema }
 #get design cvterm_id
 my $design_cvterm_id = $schema->resultset("Cv::Cvterm")->search( {name => 'design' }, )->first->cvterm_id;
 my $accession_cvterm_id = $schema->resultset("Cv::Cvterm")->search( {name => 'accession' }, )->first->cvterm_id;
+my $plot_cvterm = SGN::Model::Cvterm->get_cvterm_object($schema, 'plot', 'stock_type') ;
+my $plot_cvterm_id = $plot_cvterm->cvterm_id;
 
 #opening input file and retrieving trial_names and trial_designs
 open (my $file_fh, "<", $file ) || die ("\nERROR: the file $file could not be found\n" );
@@ -83,7 +85,7 @@ while (my $line = <$file_fh>) {
   my @plot_numbers_array;
   my @block_numbers_array;
   my @plot_names_array;
-  my @stock_id_array;
+  my @plot_id_array;
   my @accession_array;
   my $project_id;
 
@@ -127,9 +129,9 @@ while (my $line = <$file_fh>) {
 	# from the stock names get the plot and block number
 	# if plot and block number is not found in the plot name, generate sequence of number as plot number, use 1 as the block number and set design to CRD
   $plot_number = 1;
-	my $q_2 = "select stock_id,uniquename from stock join nd_experiment_stock using(stock_id) join nd_experiment_project using (nd_experiment_id) join project using(project_id) where project.project_id=?";
+	my $q_2 = "select stock_id,uniquename from stock join nd_experiment_stock using(stock_id) join nd_experiment_project using (nd_experiment_id)  join nd_experiment_phenotype using (nfd_experiment_id ) where project_id=? AND stock.type_id = ? " ;
 	my $h_2 = $dbh->prepare($q_2);
-	$h_2->execute($project_id);
+	$h_2->execute($project_id, $plot_cvterm_id );
 
 	while (my ($stock_id, $stock_name) = $h_2->fetchrow_array()) {
 
@@ -152,15 +154,15 @@ while (my $line = <$file_fh>) {
     push @plot_numbers_array, $plot_number;
     push @block_numbers_array, $block_number;
     push @plot_names_array, $stock_name;
-    push @stock_id_array, $stock_id;
+    push @plot_id_array, $stock_id;
 	}
 
 	# get accession used in each plot for a trial
 	# generate design hash for TrialDesignStore function
-  for (my $n=0; $n<scalar(@stock_id_array); $n++) {
+  for (my $n=0; $n<scalar(@plot_id_array); $n++) {
 		my $q_3 = "select uniquename from stock join stock_relationship on stock_id=object_id where subject_id=? and stock.type_id=?";
 		my $h_3 = $dbh->prepare($q_3);
-		$h_3->execute($stock_id_array[$n],$accession_cvterm_id);
+		$h_3->execute($plot_id_array[$n],$accession_cvterm_id);
 
 		while ($accession = $h_3->fetchrow_array()){
 			$design_entry{$plot_numbers_array[$n]}->{stock_name} = $accession;
