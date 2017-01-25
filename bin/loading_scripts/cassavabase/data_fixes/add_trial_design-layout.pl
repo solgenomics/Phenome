@@ -54,6 +54,7 @@ my $accession;
 my $program_id;
 my $plot_number;
 my $block_number;
+my $replicate_number;
 my $trial_location_id;
 
 my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>"$dbhost",
@@ -79,8 +80,8 @@ open (my $file_fh, "<", $file ) || die ("\nERROR: the file $file could not be fo
 my $header = <$file_fh>;
 while (my $line = <$file_fh>) {
     chomp $line;
-    my ($trial_name,$trial_design) = split("\t", $line);
-
+    my ($trial_name,$trial_design) = split(",", $line);
+    print STDERR "trial name = $trial_name design = $trial_design\n\n";
     my %design_entry;
     my @plot_numbers_array;
     my @block_numbers_array;
@@ -88,6 +89,7 @@ while (my $line = <$file_fh>) {
     my @plot_id_array;
     my @accession_array;
     my $project_id;
+    my @rep_numbers_array;
     
     if (!$trial_design){
 	$trial_design = 'RCBD';
@@ -129,7 +131,7 @@ while (my $line = <$file_fh>) {
     # from the stock names get the plot and block number
     # if plot and block number is not found in the plot name, generate sequence of number as plot number, use 1 as the block number and set design to CRD
     $plot_number = 1;
-    my $q_2 = "select stock_id,uniquename from stock join nd_experiment_stock using(stock_id) join nd_experiment_project using (nd_experiment_id)  join nd_experiment_phenotype using (nd_experiment_id ) where project_id=? AND stock.type_id = ? " ;
+    my $q_2 = "select distinct stock_id,uniquename from stock join nd_experiment_stock using(stock_id) join nd_experiment_project using (nd_experiment_id)  join nd_experiment_phenotype using (nd_experiment_id ) where project_id=? AND stock.type_id = ? " ;
     my $h_2 = $dbh->prepare($q_2);
     $h_2->execute($project_id, $plot_cvterm_id );
     
@@ -143,10 +145,26 @@ while (my $line = <$file_fh>) {
 	    $plot_number++;
 	}
 	
-	if (my ($match1, $match2, $block) = ($stock_name =~ m/(replicate|)(:|_)(\d{1,2})_/) ) {
+	#######
+	#if design is Alpha , find rep_number, block_number, plot_number
+	##AR945_replicate:1_block:1_2010_Kano
+	#TMS980505_replicate:3_block:8_plot:102_2011_Kano
+	#TMS950289_replicate:1_block:1_plot:Plot No 1_2010_Kano
+	if ( $trial_design eq 'Alpha' ) {
+	    if (my ($match1, $replicate, $match2, $block) = ($stock_name =~ m/(replicate:)(\d{1,2})_(block:)(\d{1,3})/) ) {
+		$replicate_number = $replicate;
+		$block_number = $block;
+	    }
+	    if (my ($match1, $plot) = ($stock_name =~ m/(Plot.+No.+)(\d{1,4})_/) ) {
+		$plot_number = $plot;
+	    }
+	    print STDERR "Matched DESIGN = Alpha replicate = $replicate_number , block = $block_number , plot = $plot_number \n"
+	}
+	elsif (my ($match1, $match2, $block) = ($stock_name =~ m/(replicate|)(:|_)(\d{1,2})_/) ) {
 	    print STDERR "Matched block number $block in plot $stock_name\n";
 	    $block_number = $block;
 	}
+	###
 	else {
 	    $block_number = 1;
 	    $trial_design = 'CRD';
@@ -155,6 +173,7 @@ while (my $line = <$file_fh>) {
 	push @block_numbers_array, $block_number;
 	push @plot_names_array, $stock_name;
 	push @plot_id_array, $stock_id;
+	push @rep_numbers_array , $replicate_number ;
     }
     
     # get accession used in each plot for a trial
@@ -170,6 +189,9 @@ while (my $line = <$file_fh>) {
 	    $design_entry{$plot_numbers_array[$n]}->{is_a_control} = 0;
 	    $design_entry{$plot_numbers_array[$n]}->{block_number} = $block_numbers_array[$n];
 	    $design_entry{$plot_numbers_array[$n]}->{plot_number} = $plot_numbers_array[$n];
+	    if ($trial_design eq 'Alpha' ) {
+		$design_entry{$plot_numbers_array[$n]}->{rep_number} = $rep_numbers_array[$n] ;
+	    }
 	}
     }
     
