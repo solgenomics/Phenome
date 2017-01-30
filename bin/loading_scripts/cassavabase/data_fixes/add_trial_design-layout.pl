@@ -116,7 +116,7 @@ while (my $line = <$file_fh>) {
 		value => $trial_design
 	    });
     }else {
-	print "Design " .  $find_design->value . " found for this trial...\n";
+	print "Design " .  $find_design->value . " found for this trial. \n";
     }
     
     # get trial location name and id
@@ -151,11 +151,15 @@ while (my $line = <$file_fh>) {
 	#TMS980505_replicate:3_block:8_plot:102_2011_Kano
 	#TMS950289_replicate:1_block:1_plot:Plot No 1_2010_Kano
 	if ( $trial_design eq 'Alpha' ) {
-	    if (my ($match1, $replicate, $match2, $block) = ($stock_name =~ m/(replicate:)(\d{1,2})_(block:)(\d{1,3})/) ) {
+	    if (my ($match1, $replicate) = ($stock_name =~ m/(replicate:)(\d{1,2})/) ) {
 		$replicate_number = $replicate;
-		$block_number = $block;
 	    }
-	    if (my ($match1, $plot) = ($stock_name =~ m/(Plot.+No.+)(\d{1,4})_/) ) {
+	    if (my ($match1, $block) = ($stock_name =~ m/(block:)(\d{1,3})/) ) {
+		$block_number = $block;
+	    } else {
+		$block_number = 1;
+	    }
+	    if (my ($match1, $plot) = ($stock_name =~ m/(Plot.+No\s+)(\d{1,4})_/) ) {
 		$plot_number = $plot;
 	    }
 	    print STDERR "Matched DESIGN = Alpha replicate = $replicate_number , block = $block_number , plot = $plot_number \n"
