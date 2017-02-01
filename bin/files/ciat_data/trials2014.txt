@@ -1,58 +1,58 @@
-name	type	site	sowing_date	harvest_date	sown_plants	harvested_plants					
-GY201317	5	37	7/1/13	3/17/14			
-GY201318	5	101	8/7/13	4/7/14			
-GY201319	5	101	8/21/13	4/21/14			
-GY201320	6	37	6/5/13	3/19/14			
-GY201322	7	37	5/23/13	3/14/14			
-GY201323	7	37	5/23/13	3/13/14									
-GY201324	7	76	6/7/13	3/12/14			
-GY201325	7	15	6/13/13	3/10/14			
-GY201326	7	101	8/27/13	6/19/14			
-GY201328	6	101	9/3/13	6/19/14			
-GY201329	9	76	6/10/13	3/13/14			
-GY201330	9	37	6/12/13	3/13/14									
-GY201331	9	15	6/13/13	3/10/14									
-GY201332	9	37	6/19/13	9/6/14									
-GY201335	9	67	7/5/13	7/9/14									
-GY201336	9	101	7/20/13	4/26/14									
-GY201337	9	76	6/10/13	3/12/14									
-GY201338	9	37	6/12/13	3/15/14									
-GY201339	9	15	6/13/13	3/11/14									
-GY201340	9	37	6/19/13	9/4/14									
-GY201341	9	37	6/19/13	10/31/14									
-GY201342	9	102	7/4/13	4/9/14									
-GY201343	9	67	7/5/13	7/9/14									
-GY201345	9	101	7/20/13	4/26/14									
-GY201347	7	68	5/17/13	3/27/14									
-GY201348	7	68	5/17/13	6/20/14									
-GY201349	7	68	6/20/13	11/4/14									
-GY201350	7	37	5/25/13	3/25/14									
-GY201351	7	37	5/25/13	9/4/14									
-GY201352	7	37	5/25/13	10/29/14									
-GY201353	7	103	6/4/13	3/28/14									
-GY201354	7	103	6/4/13	9/18/14
-GY201355	7	103	6/4/12	11/6/14
-GY201356	7	67	6/14/13	7/8/14
-GY201357	7	67	6/14/13	9/16/14
-GY201358	7	67	6/14/13	11/5/14
-GY201362	6	18	4/23/13	3/12/14
-GY201363	7	18	4/23/13	3/18/14
-GY201364	7	18	5/30/13	4/25/14
-GY201365	7	18	6/12/13	4/24/14
-GY201366	9	18	6/12/13	4/30/14
-GY201367	9	18	5/24/13	4/22/14
-GY201368	6	18	5/7/13	4/21/14
-GY201369	5	18	4/25/13	3/27/14
-GY201384	5	1	8/8/13	6/3/14
-GY201385	5	1	8/9/13	7/1/14
-GY201386	5	1	9/5/13	7/3/14
-GY201387	6	1	6/12/13	7/21/14
-GY201388	6	1	6/12/13	7/23/14
-GY201389	6	1	7/5/13	7/28/14
-GY201390	6	1	7/5/13	7/30/14
-GY201391	7	1	8/23/13	7/7/14
-GY201392	7	1	9/5/13	7/7/14
-GY201393	7	1	9/27/13	9/26/14
-GY201394	7	1	9/27/13	8/27/14
-GY201395	9	1	10/2/13	8/25/14
-GY201396	9	1	10/2/13	8/26/14
+trial_name	trial_description	year	design	trial_type	trial_location	planting_date	harvest_date
+GY201317		2013		Clonal Evaluation	Santo Tomas. Atlantico, Colombia	2013/07/01	2014/03/17
+GY201318		2013		Clonal Evaluation	Palmar de Varela. Atlantico, Colombia	2013/08/07	2014/04/07
+GY201319		2013		Clonal Evaluation	Palmar de Varela. Atlantico, Colombia	2013/08/21	2014/04/21
+GY201320		2013		Preliminary Yield Trial	Santo Tomas. Atlantico, Colombia	2013/06/05	2014/03/19
+GY201322		2013		Advanced Yield Trial	Santo Tomas. Atlantico, Colombia	2013/05/23	2014/03/14
+GY201323		2013		Advanced Yield Trial	Santo Tomas. Atlantico, Colombia	2013/05/23	2014/03/13
+GY201324		2013		Advanced Yield Trial	Pitalito. Atlantico, Colombia	2013/06/07	2014/03/12
+GY201325		2013		Advanced Yield Trial	Sabanalarga. Atlantico, Colombia	2013/06/13	2014/03/10
+GY201326		2013		Advanced Yield Trial	Palmar de Varela. Atlantico, Colombia	2013/08/27	2014/06/19
+GY201328		2013		Preliminary Yield Trial	Palmar de Varela. Atlantico, Colombia	2013/09/03	2014/06/19
+GY201329		2013		Regional Trials	Pitalito. Atlantico, Colombia	2013/06/10	2014/03/13
+GY201330		2013		Regional Trials	Santo Tomas. Atlantico, Colombia	2013/06/12	2014/03/13
+GY201331		2013		Regional Trials	Sabanalarga. Atlantico, Colombia	2013/06/13	2014/03/10
+GY201332		2013		Regional Trials	Santo Tomas. Atlantico, Colombia	2013/06/19	2014/09/06
+GY201335		2013		Regional Trials	La Union. Sucre, Colombia	2013/07/05	2014/07/09
+GY201336		2013		Regional Trials	Palmar de Varela. Atlantico, Colombia	2013/07/20	2014/04/26
+GY201337		2013		Regional Trials	Pitalito. Atlantico, Colombia	2013/06/10	2014/03/12
+GY201338		2013		Regional Trials	Santo Tomas. Atlantico, Colombia	2013/06/12	2014/03/15
+GY201339		2013		Regional Trials	Sabanalarga. Atlantico, Colombia	2013/06/13	2014/03/11
+GY201340		2013		Regional Trials	Santo Tomas. Atlantico, Colombia	2013/06/19	2014/09/04
+GY201341		2013		Regional Trials	Santo Tomas. Atlantico, Colombia	2013/06/19	2014/10/31
+GY201342		2013		Regional Trials	Sampues. Sucre, Colombia	2013/07/04	2014/04/09
+GY201343		2013		Regional Trials	La Union. Sucre, Colombia	2013/07/05	2014/07/09
+GY201345		2013		Regional Trials	Palmar de Varela. Atlantico, Colombia	2013/07/20	2014/04/26
+GY201347		2013		Advanced Yield Trial	Corozal. Sucre, Colombia	2013/05/17	2014/03/27
+GY201348		2013		Advanced Yield Trial	Corozal. Sucre, Colombia	2013/05/17	2014/06/20
+GY201349		2013		Advanced Yield Trial	Corozal. Sucre, Colombia	2013/06/20	2014/11/04
+GY201350		2013		Advanced Yield Trial	Santo Tomas. Atlantico, Colombia	2013/05/25	2014/03/25
+GY201351		2013		Advanced Yield Trial	Santo Tomas. Atlantico, Colombia	2013/05/25	2014/09/04
+GY201352		2013		Advanced Yield Trial	Santo Tomas. Atlantico, Colombia	2013/05/25	2014/10/29
+GY201353		2013		Advanced Yield Trial	Monteria (UNICORDOBA). Cordoba, Colombia	2013/06/04	2014/03/28
+GY201354		2013		Advanced Yield Trial	Monteria (UNICORDOBA). Cordoba, Colombia	2013/06/04	2014/09/18
+GY201355		2013		Advanced Yield Trial	Monteria (UNICORDOBA). Cordoba, Colombia	2012/06/04	2014/11/06
+GY201356		2013		Advanced Yield Trial	La Union. Sucre, Colombia	2013/06/14	2014/07/08
+GY201357		2013		Advanced Yield Trial	La Union. Sucre, Colombia	2013/06/14	2014/09/16
+GY201358		2013		Advanced Yield Trial	La Union. Sucre, Colombia	2013/06/14	2014/11/05
+GY201362		2013		Preliminary Yield Trial	La Libertad. Meta, Colombia	2013/04/23	2014/03/12
+GY201363		2013		Advanced Yield Trial	La Libertad. Meta, Colombia	2013/04/23	2014/03/18
+GY201364		2013		Advanced Yield Trial	La Libertad. Meta, Colombia	2013/05/30	2014/04/25
+GY201365		2013		Advanced Yield Trial	La Libertad. Meta, Colombia	2013/06/12	2014/04/24
+GY201366		2013		Regional Trials	La Libertad. Meta, Colombia	2013/06/12	2014/04/30
+GY201367		2013		Regional Trials	La Libertad. Meta, Colombia	2013/05/24	2014/04/22
+GY201368		2013		Preliminary Yield Trial	La Libertad. Meta, Colombia	2013/05/07	2014/04/21
+GY201369		2013		Clonal Evaluation	La Libertad. Meta, Colombia	2013/04/25	2014/03/27
+GY201384		2013		Clonal Evaluation	CIAT. Valle, Colombia	2013/08/08	2014/06/03
+GY201385		2013		Clonal Evaluation	CIAT. Valle, Colombia	2013/08/09	2014/07/01
+GY201386		2013		Clonal Evaluation	CIAT. Valle, Colombia	2013/09/05	2014/07/03
+GY201387		2013		Preliminary Yield Trial	CIAT. Valle, Colombia	2013/06/12	2014/07/21
+GY201388		2013		Preliminary Yield Trial	CIAT. Valle, Colombia	2013/06/12	2014/07/23
+GY201389		2013		Preliminary Yield Trial	CIAT. Valle, Colombia	2013/07/05	2014/07/28
+GY201390		2013		Preliminary Yield Trial	CIAT. Valle, Colombia	2013/07/05	2014/07/30
+GY201391		2013		Advanced Yield Trial	CIAT. Valle, Colombia	2013/08/23	2014/07/07
+GY201392		2013		Advanced Yield Trial	CIAT. Valle, Colombia	2013/09/05	2014/07/07
+GY201393		2013		Advanced Yield Trial	CIAT. Valle, Colombia	2013/09/27	2014/09/26
+GY201394		2013		Advanced Yield Trial	CIAT. Valle, Colombia	2013/09/27	2014/08/27
+GY201395		2013		Regional Trials	CIAT. Valle, Colombia	2013/10/02	2014/08/25
+GY201396		2013		Regional Trials	CIAT. Valle, Colombia	2013/10/02	2014/08/26
