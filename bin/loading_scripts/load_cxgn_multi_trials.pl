@@ -1,18 +1,18 @@
 
 =head1
 
-load_cxgn_trials.pl
+load_cxgn_multi_trials.pl
 
 =head1 SYNOPSIS
 
-    thisScript.pl  -H [dbhost] -D [dbname] -i inFile [-t]
+    load_cxgn_multi_trials.pl  -H [dbhost] -D [dbname] -i inFile -b [breeding program name] -u [username] -m [trial metadata file] [-t]
 
 =head1 COMMAND-LINE OPTIONS
 
  -H  host name
  -D  database name
  -i infile 
- -u username  (must be in teh database) 
+ -u username  (must be in the database) 
  -b breeding program name (must be in the database)  
  -t  Test run . Rolling back at the end.
  -m trial metadata file - if loading metadata from separate file 
@@ -70,6 +70,8 @@ use Pod::Usage;
 use CXGN::Metadata::Schema;
 use CXGN::Phenome::Schema;
 use CXGN::People::Person;
+use Data::Dumper;
+use CXGN::Phenotypes::StorePhenotypes;
 
 use CXGN::Trial; # add project metadata 
 #use CXGN::BreedersToolbox::Projects; # associating a breeding program
@@ -107,7 +109,7 @@ my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on
 
 my $metadata_schema = CXGN::Metadata::Schema->connect( sub { $dbh } , {on_connect_do => ['SET searchpath TO metadata, public, sgn, phenome;'] } );
 
-#my $phenome_schema = CXGN::Phenome::Schema->connect( sub { $dbh } , {on_connect_do => ['SET searchpath TO public, phenome, sgn;'] } );
+my $phenome_schema = CXGN::Phenome::Schema->connect( sub { $dbh } , {on_connect_do => ['SET searchpath TO public, phenome, sgn;'] } );
 
 #################
 #getting the last database ids for resetting at the end in case of rolling back
@@ -156,6 +158,8 @@ my $breeding_program = $schema->resultset("Project::Project")->find(
     join =>  { projectprops => 'type' } , 
     } ) ;
 
+if (!$breeding_program) { die "Breeding program $breeding_program_name does not exist in the database. Check your input \n"; }
+print "Found breeding program $breeding_program_name " . $breeding_program->project_id . "\n";
 
 my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
 
@@ -174,7 +178,7 @@ my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $username);
 my $spreadsheet=CXGN::Tools::File::Spreadsheet->new($infile);
 my @trial_rows = $spreadsheet->row_labels();
 my @trial_columns = $spreadsheet->column_labels();
-
+print "Trial design columns = " . Dumper(\@trial_columns);
 
 my %multi_trial_data;
 
@@ -185,14 +189,11 @@ if ($metadata_file) {
     $trial_metadata   = CXGN::Tools::File::Spreadsheet->new( $metadata_file ) ;
     @metadata_rows    = $trial_metadata->row_labels();
     @metadata_columns = $trial_metadata->column_labels();
+    print "Trial metadata column labels = " . Dumper(\@metadata_columns);
 }
 
 ###################
 ##foreach trial assign: design_hash, year, trial_name, trial_description, trial_location
-
-
-my %design_hash;
-
 
 
 #########################
@@ -220,11 +221,11 @@ foreach my $trial_name (@metadata_rows) {
     my $design_type    = $trial_metadata->value_at($trial_name, "design") || 'RCBD' ;
     my $year           = $trial_metadata->value_at($trial_name, "year");
     my $trial_location = $trial_metadata->value_at($trial_name, "trial_location");
-   
+    print "Trial = $trial_name, design = $design_type, year = $year\n";
     ########
     #check that the location exists in the database
     ########
-    my $location_rs =  $schema->resultset("NaturalDivesity::NdGeolocation")->search( 
+    my $location_rs =  $schema->resultset("NaturalDiversity::NdGeolocation")->search( 
 	{ description => { ilike => '%' . $trial_location . '%' }, }
 	);
     if (scalar($location_rs) == 0 ) { 
@@ -280,9 +281,12 @@ foreach my $trial_name (@metadata_rows) {
 }
 
 ## Now read the design + phenotypes file 
+print "Reading phenotyping file:\n";
 my %phen_params = map { if ($_ =~ m/^\w+\|(\w+:\d{7})$/ ) { $_ => $1 } } @trial_columns  ;
-my @traits = (keys %phen_params) ;
+delete $phen_params{''};
 
+my @traits = (keys %phen_params) ;
+print "Found traits " . Dumper(\%phen_params) . "\n" ; 
 #foreach my $trait_string ( keys %phen_params ) {
 #    my ($trait_name, $trait_accession) = split "|", $col_header ;
 #    my ($db_name, $dbxref_accession) = split ":" , $trait_accession ;
@@ -303,6 +307,7 @@ foreach my $plot_name (@trial_rows) {
     my $range_number = $spreadsheet->value_at($plot_name, "range_number");
     my $row_number   = $spreadsheet->value_at($plot_name, "row_number");
     my $col_number   = $spreadsheet->value_at($plot_name, "col_number");
+    if (!$plot_number) { $plot_number++ } ;
     
     $trial_design_hash{$trial_name}{$plot_number}->{plot_number} = $plot_number;
     $trial_design_hash{$trial_name}{$plot_number}->{stock_name} = $accession;
@@ -356,12 +361,19 @@ my $coderef= sub  {
 	    design_type       => $multi_trial_data{$trial_name}->{design_type} ||  'RCBD',
 	    design            => $multi_trial_data{$trial_name}->{design},
 	    program           => $breeding_program->name(),
-	    trial_year        => $multi_trial_data{$trial_name}->{year} ,
+	    trial_year        => $multi_trial_data{$trial_name}->{trial_year} ,
 	    trial_description => $multi_trial_data{$trial_name}->{trial_description},
 	    trial_location    => $multi_trial_data{$trial_name}->{trial_location},
 	    trial_name        => $trial_name
 							 });
 	
+
+	try {
+	    $trial_create->save_trial();
+	} catch {
+	    print STDERR "ERROR SAVING TRIAL!\n";
+	};
+	##########################
 	my @plots = $multi_trial_data{$trial_name}->{plots};
 	my %parsed_data = $phen_data_by_trial{$trial_name} ; 
 	
@@ -369,7 +381,7 @@ my $coderef= sub  {
 	my $store_phenotypes = CXGN::Phenotypes::StorePhenotypes->new(
 	    bcs_schema=>$schema,
 	    metadata_schema=>$metadata_schema,
-	    phenome_schema=>$metadata_schema,
+	    phenome_schema=>$phenome_schema,
 	    user_id=>$sp_person_id,
 	    stock_list=>\@plots,
 	    trait_list=>\@traits,
@@ -380,16 +392,13 @@ my $coderef= sub  {
 	    );
 	
 	
-	
-	$trial_create->save_trial();
-	
 	#validate, store, add project_properties from %properties_hash
 	
 	#store the phenotypes
 	my ($verified_warning, $verified_error) = $store_phenotypes->verify();
 	print "Verified phenotypes. warning = $verified_warning, error = $verified_error\n";
-	my $stored_phenotype_error = $store_phenotypes->store();
-	print "Stored phenotypes. Error = $stored_phenotype_error \n";
+	#####my $stored_phenotype_error = $store_phenotypes->store();
+	####print "Stored phenotypes. Error = $stored_phenotype_error \n";
 	
     }
 };
