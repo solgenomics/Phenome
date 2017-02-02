@@ -297,6 +297,7 @@ my %trial_design_hash; #multi-level hash of hashes of hashrefs
 my %phen_data_by_trial; # 
 
 #plot_name	accession_name	plot_number	block_number	trial_name	trial_description	trial_location	year	trial_type	is_a_control	rep_number	range_number	row_number	col_number
+
 foreach my $plot_name (@trial_rows) { 
     my $accession    = $spreadsheet->value_at($plot_name, "accession_name");
     my $plot_number  = $spreadsheet->value_at($plot_name, "plot_number");
@@ -307,8 +308,17 @@ foreach my $plot_name (@trial_rows) {
     my $range_number = $spreadsheet->value_at($plot_name, "range_number");
     my $row_number   = $spreadsheet->value_at($plot_name, "row_number");
     my $col_number   = $spreadsheet->value_at($plot_name, "col_number");
-    if (!$plot_number) { $plot_number++ } ;
-    
+
+    if (!$plot_number) {
+	$plot_number = 1;
+	use List::Util qw(max);
+	my @keys = (keys %{ $trial_design_hash{$trial_name} } );
+	my $max = max( @keys );
+	if ( $max ) {
+	    $max++;
+	    $plot_number = $max ;
+	}
+    }
     $trial_design_hash{$trial_name}{$plot_number}->{plot_number} = $plot_number;
     $trial_design_hash{$trial_name}{$plot_number}->{stock_name} = $accession;
     $trial_design_hash{$trial_name}{$plot_number}->{plot_name} = $plot_name;
@@ -321,8 +331,7 @@ foreach my $plot_name (@trial_rows) {
 
     ### Add the plot name into the multi trial data hashref of hashes ###
     push( @{ $multi_trial_data{$trial_name}->{plots} } , $plot_name ); 
-
-    
+       
     #parse the phenotype data 
     my $timestamp; # add here timestamp value if storing those #  
     foreach my $trait_string (keys %phen_params ) {
@@ -336,9 +345,10 @@ foreach my $plot_name (@trial_rows) {
 }
 
 #####create the design hash#####
-foreach my $trial_name (keys %trial_design_hash) { 
-    $multi_trial_data{$trial_name}->{design} = $trial_design_hash{$trial_name} ;
-}
+print Dumper(\%trial_design_hash);
+#foreach my $trial_name (keys %trial_design_hash) {
+#    $multi_trial_data{$trial_name}->{design} = $trial_design_hash{$trial_name} ;
+#}
 
 
 ####required phenotypeprops###
@@ -346,7 +356,7 @@ my %phenotype_metadata = {
     'archived_file_type' => "",
     'archived_file'      => "",
     'operator'           => $username,
-    'date'               => "", 
+    'date'               => localtime(), 
 };
 
 
@@ -359,7 +369,7 @@ my $coderef= sub  {
 	    chado_schema      => $schema,
 	    dbh               => $dbh,
 	    design_type       => $multi_trial_data{$trial_name}->{design_type} ||  'RCBD',
-	    design            => $multi_trial_data{$trial_name}->{design},
+	    design            => $trial_design_hash{$trial_name}, #$multi_trial_data{$trial_name}->{design},
 	    program           => $breeding_program->name(),
 	    trial_year        => $multi_trial_data{$trial_name}->{trial_year} ,
 	    trial_description => $multi_trial_data{$trial_name}->{trial_description},
@@ -374,7 +384,8 @@ my $coderef= sub  {
 	    print STDERR "ERROR SAVING TRIAL!\n";
 	};
 	##########################
-	my @plots = $multi_trial_data{$trial_name}->{plots};
+	my @plots = @{ $multi_trial_data{$trial_name}->{plots} };
+
 	my %parsed_data = $phen_data_by_trial{$trial_name} ; 
 	
 	# after storing the trial desgin store the phenotypes 
@@ -397,8 +408,8 @@ my $coderef= sub  {
 	#store the phenotypes
 	my ($verified_warning, $verified_error) = $store_phenotypes->verify();
 	print "Verified phenotypes. warning = $verified_warning, error = $verified_error\n";
-	#####my $stored_phenotype_error = $store_phenotypes->store();
-	####print "Stored phenotypes. Error = $stored_phenotype_error \n";
+	my $stored_phenotype_error = $store_phenotypes->store();
+	print "Stored phenotypes. Error = $stored_phenotype_error \n";
 	
     }
 };
