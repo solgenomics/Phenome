@@ -107,9 +107,9 @@ my $dbh = CXGN::DB::InsertDBH->new( { dbhost=>$dbhost,
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } ,  { on_connect_do => ['SET search_path TO  public;'] } );
 
 
-my $metadata_schema = CXGN::Metadata::Schema->connect( sub { $dbh } , {on_connect_do => ['SET searchpath TO metadata, public, sgn, phenome;'] } );
+my $metadata_schema = CXGN::Metadata::Schema->connect( sub { $dbh->get_actual_dbh() } , {on_connect_do => ['SET search_path TO metadata;'] } );
 
-my $phenome_schema = CXGN::Phenome::Schema->connect( sub { $dbh } , {on_connect_do => ['SET searchpath TO public, phenome, sgn;'] } );
+my $phenome_schema = CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh() } , {on_connect_do => ['SET search_path TO phenome;'] } );
 
 #################
 #getting the last database ids for resetting at the end in case of rolling back
@@ -339,27 +339,26 @@ foreach my $plot_name (@trial_rows) {
 	$phen_data_by_trial{$trial_name}{$plot_name}{$trait_string} = [ $phen_value, $timestamp ] ; 
     }
     
-    
 #############################################
 
 }
 
 #####create the design hash#####
-print Dumper(\%trial_design_hash);
+#print Dumper(\%trial_design_hash);
 #foreach my $trial_name (keys %trial_design_hash) {
 #    $multi_trial_data{$trial_name}->{design} = $trial_design_hash{$trial_name} ;
 #}
 
+my $date = localtime();
 
 ####required phenotypeprops###
-my %phenotype_metadata = {
-    'archived_file_type' => "",
-    'archived_file'      => "",
-    'operator'           => $username,
-    'date'               => localtime(), 
-};
+my %phenotype_metadata ;
+$phenotype_metadata{'archived_file'} = $infile;
+$phenotype_metadata{'archived_file_type'} = "spreadsheet phenotype file";
+$phenotype_metadata{'operator'} = $username;
+$phenotype_metadata{'date'} = $date;
 
-
+ 
 #######
 
 my $coderef= sub  {
@@ -385,9 +384,26 @@ my $coderef= sub  {
 	};
 	##########################
 	my @plots = @{ $multi_trial_data{$trial_name}->{plots} };
-
-	my %parsed_data = $phen_data_by_trial{$trial_name} ; 
+	print "TRIAL NAME = $trial_name\n";
+	my %parsed_data = $phen_data_by_trial{$trial_name} ; #hash of keys = plot name, values = hash of trait strings as keys
+	foreach my $pname (keys %parsed_data) {
+	    print "PLOT = $pname\n";
+	    my %trait_string_hash = $parsed_data{$pname};
+	  
+	    foreach my $trait_string (keys %trait_string_hash ) { 
+		print "trait = $trait_string\n";
+		print "value =  " . $trait_string_hash{$trait_string}[0] . "\n";
+	    }
+	}
 	
+	#my $value_array = $plot_trait_value{$plot_name}->{$trait_name};
+	
+	#my $trait_value = $value_array->[0];
+	#$phen_data_by_trial{$trial_name}{$plot_name}->{$trait_string} = [ $phen_value, $timestamp ] ;
+
+
+	
+	#print Dumper(\%parsed_data);
 	# after storing the trial desgin store the phenotypes 
 	my $store_phenotypes = CXGN::Phenotypes::StorePhenotypes->new(
 	    bcs_schema=>$schema,
