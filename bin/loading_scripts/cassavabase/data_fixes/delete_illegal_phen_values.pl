@@ -76,18 +76,18 @@ my $coderef = sub {
 	);
     
     my $phen1 = $phen_rs->search( { value => { ilike => 's' }  } );
-    $phen1->update( { value => '1' } );
     my $rows1 = $phen1->count;
+    $phen1->update( { value => '1' } );
     print STDERR "UPDATED $rows1 phenotype rows for cvterm CO:0000085 from value = 's' to value = '1' \n\n" ;
 
     my $phen2 = $phen_rs->search( { value => { ilike => 'bl' }  } );
-    $phen2->update( { value => '2' } );
     my $rows2 = $phen2->count;
+    $phen2->update( { value => '2' } );
     print STDERR "UPDATED $rows2 phenotype rows for cvterm CO:0000085 from value = 'bl' to value = '2' \n\n" ;
 
     my $phen3 = $phen_rs->search( { value => { ilike => 'b' }  } );
-    $phen3->update( { value => '3' } );
     my $rows3 = $phen3->count;
+    $phen3->update( { value => '3' } );
     print STDERR "UPDATED $rows3 phenotype rows for cvterm CO:0000085 from value = 'b' to value = '3' \n\n" ;
     
 
@@ -110,18 +110,18 @@ my $coderef = sub {
 	);
     
     $phen1 = $phen_rs->search( { value => { ilike => 'w' }  } );
-    $phen1->update( { value => '1' } );
     $rows1 = $phen1->count;
+    $phen1->update( { value => '1' } );
     print STDERR "UPDATED $rows1 phenotype rows for cvterm CO:0000114 from value = 'w' to value = '1' \n\n" ;
 
     $phen2 = $phen_rs->search( { value => { ilike => 'c' }  } );
-    $phen2->update( { value => '2' } );
     $rows2 = $phen2->count;
+    $phen2->update( { value => '2' } );
     print STDERR "UPDATED $rows2 phenotype rows for cvterm CO:0000114 from value = 'c' to value = '2' \n\n" ;
 
     $phen3 = $phen_rs->search( { value => { ilike => 'y' }  } );
-    $phen3->update( { value => '3' } );
     my $rows3 = $phen3->count;
+    $phen3->update( { value => '3' } );
     print STDERR "UPDATED $rows3 phenotype rows for cvterm CO:0000114 from value = 'y' to value = '3' \n\n" ;
     
     ##Delete remaining non-numeric phenotype values 
