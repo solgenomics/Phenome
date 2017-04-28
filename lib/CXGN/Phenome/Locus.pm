@@ -126,8 +126,8 @@ sub new_with_locusname {
     my $class = shift;
     my $dbh = shift;
     my $locusname = shift;
-    # remove the version number, since loci are saved without them
-    if ( $locusname =~ m/(.*)\.\d+/ ) { $locusname =  $1 ; }
+    # remove the version number (and possible transcript #), since locus names are saved without them
+    if ( $locusname =~ m/(.*)\.\d+\.?\d?/ ) { $locusname =  $1 ; }
     my $query = "SELECT locus_id FROM phenome.locus WHERE locus ilike ? and obsolete = ? ";
     my $sth = $dbh->prepare($query);
     $sth->execute($locusname, 'f');
