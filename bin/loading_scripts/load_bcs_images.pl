@@ -39,6 +39,9 @@ a dirname that contains image filenames or subdirectories named after database a
 
 use name - from sgn_people.sp_person. 
 
+=item -b
+
+the dir where the database stores the images (the concatenated values from image_path and image_dir from sgn_local.conf or sgn.conf)
 
 =item -d 
 
@@ -69,7 +72,7 @@ use strict;
 use CXGN::Metadata::Schema;
 use CXGN::Metadata::Metadbdata;
 use CXGN::DB::InsertDBH;
-use SGN::Image;
+use CXGN::Image;
 use Bio::Chado::Schema;
 use CXGN::People::Person;
 use Carp qw /croak/;
@@ -81,14 +84,14 @@ use Getopt::Std;
 
 use CXGN::Tools::File::Spreadsheet;
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_m);
-getopts('H:D:u:i:e:f:tdr:m:');
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_m, $opt_b);
+getopts('H:D:u:i:e:f:tdr:m:b:');
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
 my $dirname = $opt_i;
 my $sp_person=$opt_u;
-
+my $db_image_dir = $opt_b;
 my $chado_table = $opt_r;
 my $ext = $opt_e || 'jpg';
 
@@ -115,20 +118,18 @@ my $sp_person_id= CXGN::People::Person->get_person_by_username($dbh, $sp_person)
 my %name2id = ();
 
 
-my $ch = SGN::Context->new();
-my $image_dir = $ch->get_conf("image_dir");
-
+#my $ch = SGN::Context->new();
 print "PLEASE VERIFY:\n";
 print "Using dbhost: $dbhost. DB name: $dbname. \n";
-print "Path to image is: $image_dir\n";
+print "Path to image is: $db_image_dir\n";
 print "CONTINUE? ";
 my $a = (<STDIN>);
 if ($a !~ /[yY]/) { exit(); }
 
-if (($dbname eq "sandbox") && ($image_dir !~ /sandbox/)) { 
+if (($dbname eq "sandbox") && ($db_image_dir !~ /sandbox/)) { 
     die "The image directory needs to be set to image_files_sandbox if running on rubisco/sandbox. Please change the image_dir parameter in SGN.conf\n\n";
 					  }
-if (($dbname eq "cxgn") && ($image_dir =~ /sandbox/)) { 
+if (($dbname eq "cxgn") && ($db_image_dir =~ /sandbox/)) { 
     warn "The image directory needs to be set to image_files when the script is running on the production database. Please change the image_dir parameter in SGN.conf\n\n";
 }
 
@@ -154,7 +155,10 @@ $sth->execute();
 while ( my $hashref = $sth->fetchrow_hashref() ) {
     my $image_id = $hashref->{image_id};
     my $chado_table_id = $hashref->{stock_id};  ##### table specific
-    my $i = SGN::Image->new($dbh, $image_id, $ch);
+
+    print STDERR "\n\nCHADO TABLE ID = $chado_table_id\n\n";
+
+    my $i = CXGN::Image->new(dbh=>$dbh, image_id=>$image_id, image_dir=>$db_image_dir); # SGN::Image...$ch
     my $original_filename = $i->get_original_filename();
     $image_hash{$original_filename} = $i; # this doesn't have the file extension
     $connections{$image_id."-".$chado_table_id}++;
@@ -195,45 +199,50 @@ foreach my $file (@files) {
     eval {
 	chomp($file);
 	@sub_files = ($file);
-	@sub_files =  glob "'$file/*.$ext'" if $opt_d;
+	@sub_files =  glob "$file/*"; # if $opt_d;
+
 	print STDERR "FILES FOR $file: ".Dumper(\@sub_files)."\n";
+
 	my $object =  basename($file, ".$ext" );
 
-	my $object_name = $object;
-	if ($opt_m) {
-	    $object_name = $name_map{$object . "." . $ext } ;
-	}
-
-	print  "object_name = '".$object_name."' \n";
-	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
-	#2009_oh_8902_fruit-t
-	# solcap images:
-	#my ($year, $place, $plot, undef) = split /_/ , $object_name; 
-
-	#lycotill images 
-	#
-	#if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
-	#    $object_name = $1;
-	#}
-	#my $plot =  $object_name;
-	#print  "plot = $plot \n";
-	my $primary_name = $object_name;
 #	if (!$plot) { die "File $file has no object name in it!"; }
 	my $stock = $schema->resultset("Stock::Stock")->find( {
-	    stock_id => $name2id{ lc($primary_name) }  } );
+	    stock_id => $name2id{ lc($object) }  } );
 	foreach my $filename (@sub_files) {
 	    chomp $filename;
+	    
+	    my $image_base = basename($filename);
+	    my ($object_name, $description, $extension);
+	    if ($opt_m) {
+		$object_name = $name_map{$object . "." . $ext } ;
+	    }
+	    
+	    print STDERR "OBJECT = $object...\n";
+	    if ($image_base =~ /(.*?)\_(.*?)(\..*?)?$/) { 
+		$object_name = $1;
+		$description = $2;
+		$extension = $3;
+		print STDERR "OBJECT NAME: $object_name DESCRPTION: $description EXTENSIO: $extension\n";
+	    }
+	    else { 
+		$object_name = $object;
+	    }
+	    
+	    print  "object_name = '".$object_name."' \n";
+
+
+
 	    print STDOUT "Processing file $file...\n";
-	    print STDOUT "Loading $primary_name, image $filename\n";
-	    print ERR "Loading $primary_name, image $filename\n";
+	    print STDOUT "Loading $object_name, image $filename\n";
+	    print ERR "Loading $object_name, image $filename\n";
 	    my $image_id; # this will be set later, depending if the image is new or not
 	    if (! -e $filename) { 
 		warn "The specified file $filename does not exist! Skipping...\n";
 	    	next();
 	    }
 
-	    if (!exists($name2id{lc($primary_name)})) { 
-		message ("$primary_name does not exist in the database...\n");
+	    if (!exists($name2id{lc($object)})) { 
+		message ("$object does not exist in the database...\n");
 	    }
 
 	    else {
@@ -241,37 +250,41 @@ foreach my $file (@files) {
 		if (exists($image_hash{$filename})) { 
 		    print ERR "$filename is already loaded into the database...\n";
 		    $image_id = $image_hash{$filename}->get_image_id();
-		    $connections{$image_id."-".$name2id{lc($primary_name)}}++;
-		    if ($connections{$image_id."-".$name2id{lc($primary_name)}} > 1) { 
-			print ERR "The connection between $primary_name and image $filename has already been made. Skipping...\n";
+		    $connections{$image_id."-".$name2id{lc($object)}}++;
+		    if ($connections{$image_id."-".$name2id{lc($object)}} > 1) { 
+			print ERR "The connection between $object and image $filename has already been made. Skipping...\n";
 		    }
 		    elsif ($image_hash{$filename}) { 
-			print ERR qq  { Associating $chado_table $name2id{lc($primary_name)} with already loaded image $filename...\n };
+			print ERR qq  { Associating $chado_table $name2id{lc($object)} with already loaded image $filename...\n };
 		    }
 		}
 		else { 
-		    print ERR qq { Generating new image object for image $filename and associating it with $chado_table $primary_name, id $name2id{lc($primary_name) } ...\n };
-		    my $caption = $primary_name;
+		    print ERR qq { Generating new image object for image $filename and associating it with $chado_table $object, id $name2id{lc($object) } ...\n };
 
 		    if ($opt_t)  { 
-			print STDOUT qq { Would associate file $filename to $chado_table $primary_name, id $name2id{lc($primary_name)}\n };
+			print STDOUT qq { Would associate file $filename to $chado_table $object_name, id $name2id{lc($object)}\n };
 			$new_image_count++;
 		    }
 		    else { 
-			my $image = SGN::Image->new($dbh, undef, $ch);   
+			my $image = CXGN::Image->new(dbh=>$dbh, image_dir=>$db_image_dir);   
 			$image_hash{$filename}=$image;
 
-			$image->process_image("$filename", undef, undef); 
-			$image->set_description("$caption");
+			$image->process_image("$filename", $chado_table , $name2id{lc($object)}); 
+			$image->set_description("$description");
 			$image->set_name(basename($filename , ".$ext"));
 			$image->set_sp_person_id($sp_person_id);
 			$image->set_obsolete("f");
 			$image_id = $image->store();
 			#link the image with the BCS object 
 			$new_image_count++;
+			my $image_subpath = $image->image_subpath();
+			print STDERR "FINAL IMAGE PATH = $db_image_dir/$image_subpath\n";
 		    }
 		}
 	    }
+
+	    
+	    print STDERR "Connecting image $filename and id $image_id with stock ".$stock->stock_id()."\n";
             #store the image_id - stock_id link
 	    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
             my $sth  = $dbh->prepare($q);
