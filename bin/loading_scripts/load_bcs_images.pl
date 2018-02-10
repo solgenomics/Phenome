@@ -73,6 +73,7 @@ use SGN::Image;
 use Bio::Chado::Schema;
 use CXGN::People::Person;
 use Carp qw /croak/;
+use Data::Dumper qw / Dumper /;
 
 use File::Basename;
 use SGN::Context;
@@ -134,6 +135,7 @@ if (($dbname eq "cxgn") && ($image_dir =~ /sandbox/)) {
 my %image_hash = ();  # used to retrieve images that are already loaded
 my %connections = (); # keep track of object -- image connections that have already been made.
 
+print STDERR "Caching stock table...\n";
 my $object_rs = $schema->resultset("Stock::Stock")->search( { } ) ;
 while (my $object = $object_rs->next ) {
     my $id = $object->stock_id;
@@ -160,8 +162,16 @@ while ( my $hashref = $sth->fetchrow_hashref() ) {
 
 open (ERR, ">load_bcs_images.err") || die "Can't open error file\n";
 
-my @files = glob "$dirname/*.$ext";
-@files = glob "$dirname/*" if $opt_d ;
+my @files;
+if (! $opt_d) { 
+    @files = glob "$dirname/*.$ext";
+}
+else { 
+    @files = glob "$dirname/*" if $opt_d ;
+}
+
+print STDERR "DIRS = ".(join("\n", @files))."\n";
+
 my @sub_files;
 
 my $new_image_count = 0;
@@ -185,13 +195,15 @@ foreach my $file (@files) {
     eval {
 	chomp($file);
 	@sub_files = ($file);
-	@sub_files =  glob "$file/*.$ext" if $opt_d;
-
+	@sub_files =  glob "'$file/*.$ext'" if $opt_d;
+	print STDERR "FILES FOR $file: ".Dumper(\@sub_files)."\n";
 	my $object =  basename($file, ".$ext" );
+
 	my $object_name = $object;
 	if ($opt_m) {
 	    $object_name = $name_map{$object . "." . $ext } ;
 	}
+
 	print  "object_name = '".$object_name."' \n";
 	#$individual_name =~s/(W\d{3,4}).*\.JPG/$1/i if $individual_name =~m/^W\d{3}/;
 	#2009_oh_8902_fruit-t
@@ -203,25 +215,25 @@ foreach my $file (@files) {
 	#if ( $object_name =~ m/(\d+)(\D*?.*?)/ ) { 
 	#    $object_name = $1;
 	#}
-	my $plot =  $object_name;
-	print  "plot = $plot \n";
-
-	if (!$plot) { die "File $file has no object name in it!"; }
+	#my $plot =  $object_name;
+	#print  "plot = $plot \n";
+	my $primary_name = $object_name;
+#	if (!$plot) { die "File $file has no object name in it!"; }
 	my $stock = $schema->resultset("Stock::Stock")->find( {
-	    stock_id => $name2id{ lc($plot) }  } );
+	    stock_id => $name2id{ lc($primary_name) }  } );
 	foreach my $filename (@sub_files) {
 	    chomp $filename;
 	    print STDOUT "Processing file $file...\n";
-	    print STDOUT "Loading $plot, image $filename\n";
-	    print ERR "Loading $plot, image $filename\n";
+	    print STDOUT "Loading $primary_name, image $filename\n";
+	    print ERR "Loading $primary_name, image $filename\n";
 	    my $image_id; # this will be set later, depending if the image is new or not
 	    if (! -e $filename) { 
 		warn "The specified file $filename does not exist! Skipping...\n";
 	    	next();
 	    }
 
-	    if (!exists($name2id{lc($plot)})) { 
-		message ("$plot does not exist in the database...\n");
+	    if (!exists($name2id{lc($primary_name)})) { 
+		message ("$primary_name does not exist in the database...\n");
 	    }
 
 	    else {
@@ -229,20 +241,20 @@ foreach my $file (@files) {
 		if (exists($image_hash{$filename})) { 
 		    print ERR "$filename is already loaded into the database...\n";
 		    $image_id = $image_hash{$filename}->get_image_id();
-		    $connections{$image_id."-".$name2id{lc($plot)}}++;
-		    if ($connections{$image_id."-".$name2id{lc($plot)}} > 1) { 
-			print ERR "The connection between $plot and image $filename has already been made. Skipping...\n";
+		    $connections{$image_id."-".$name2id{lc($primary_name)}}++;
+		    if ($connections{$image_id."-".$name2id{lc($primary_name)}} > 1) { 
+			print ERR "The connection between $primary_name and image $filename has already been made. Skipping...\n";
 		    }
 		    elsif ($image_hash{$filename}) { 
-			print ERR qq  { Associating $chado_table $name2id{lc($plot)} with already loaded image $filename...\n };
+			print ERR qq  { Associating $chado_table $name2id{lc($primary_name)} with already loaded image $filename...\n };
 		    }
 		}
 		else { 
-		    print ERR qq { Generating new image object for image $filename and associating it with $chado_table $plot, id $name2id{lc($plot) } ...\n };
-		    my $caption = $plot;
+		    print ERR qq { Generating new image object for image $filename and associating it with $chado_table $primary_name, id $name2id{lc($primary_name) } ...\n };
+		    my $caption = $primary_name;
 
 		    if ($opt_t)  { 
-			print STDOUT qq { Would associate file $filename to $chado_table $plot, id $name2id{lc($plot)}\n };
+			print STDOUT qq { Would associate file $filename to $chado_table $primary_name, id $name2id{lc($primary_name)}\n };
 			$new_image_count++;
 		    }
 		    else { 
