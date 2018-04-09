@@ -1078,9 +1078,8 @@ sub get_cvterm_acronyms {
 	$table_id  = 'cvterm_id';
 	$name = 'cvterm.name';
 	#$definition = 'cvterm.definition';
-
-
     }
+    
     my @cvterm_acronym_pairs=();
     my $query = "SELECT DISTINCT(observable_id), $name  
                       FROM public.phenotype
@@ -1110,6 +1109,7 @@ sub get_cvterm_acronyms {
                 {
 		    my $l = substr($word,0,1,q{});	    
 		    $acronym .= $l;
+		    
 		} 
                 else 
                 {
@@ -1510,6 +1510,11 @@ sub phenotype_dataset {
 	    
             foreach my $t (@cvterms) { 
                 my $term = $cvterm->[$i];
+
+		#remove special character from trait names
+		$t    =~ s/\^//g;
+		$term =~ s/\^//g;
+		
                 if ($t =~ /^$term$/i) { 
                     $phe_dataset .="$value->[$i]" . ",";
                 }	    
