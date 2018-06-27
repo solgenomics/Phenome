@@ -33,7 +33,7 @@ use CXGN::Phenome::PopulationDbxref;
 use List::Compare;
 use Cache::File;
 use File::Path qw / mkpath /;
-
+use File::Spec::Functions qw / catfile catdir/;
 use base qw / CXGN::DB::ModifiableI  /;
 
 
@@ -1839,7 +1839,7 @@ sub my_populations {
 =head2 cache_path
 
  Usage: my $cache_path = $population->cache_path($c);
- Desc: creates a /export/prod/tmp/solqtl/cache directory, 
+ Desc: creates a /export/prod/tmp/[site-name]/[genoo-version]/solqtl/cache directory, 
        if it does not exist. 
  Ret: absolute path to the cache directory
  Args: SGN::Context object
@@ -1851,16 +1851,23 @@ sub my_populations {
 sub cache_path {
     my $self = shift;
     my $c    = shift;
-    my $pop_cache = $c->config->{solqtl};
-    $pop_cache= "$pop_cache/cache";
-   
-    unless (-d $pop_cache) 
-    {
-	mkpath ($pop_cache, 0, 0755);
-    }   
-    return $pop_cache;
-}
 
+
+    my $geno_version = $c->config->{default_genotyping_protocol}; 
+    $geno_version    = 'analysis-data' if ($geno_version =~ /undefined/) || !$geno_version;    
+    $geno_version    =~ s/\s+//g;
+    my $tmp_dir      = $c->site_cluster_shared_dir;    
+    $tmp_dir         = catdir($tmp_dir, $geno_version);
+    
+    my $solqtl_dir         = catdir($tmp_dir, 'solqtl');
+    my $solqtl_cache       = catdir($tmp_dir, 'solqtl', 'cache'); 
+    my $solqtl_tempfiles   = catdir($tmp_dir, 'solqtl', 'tempfiles');  
+    my $solqtl_temp_images = catdir($tmp_dir, 'solqtl', 'temp_images');
+
+    mkpath ([$solqtl_cache, $solqtl_tempfiles, $solqtl_temp_images], 0, 0755);
+   
+    return $solqtl_cache;
+}
 
 
 =head2 genotype_file
