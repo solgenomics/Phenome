@@ -1861,8 +1861,13 @@ sub cache_path {
     
     my $solqtl_dir         = catdir($tmp_dir, 'solqtl');
     my $solqtl_cache       = catdir($tmp_dir, 'solqtl', 'cache'); 
-    my $solqtl_tempfiles   = catdir($tmp_dir, 'solqtl', 'tempfiles');  
-    my $solqtl_temp_images = catdir($tmp_dir, 'solqtl', 'temp_images');
+    my $solqtl_tempfiles   = catdir($tmp_dir, 'solqtl', 'tempfiles');
+
+
+    my $basepath = $c->config->{basepath};
+    my $temp_dir  = $c->config->{tempfiles_subdir};
+     
+    my $solqtl_temp_images = catdir($basepath, $temp_dir, "temp_images");
 
     mkpath ([$solqtl_cache, $solqtl_tempfiles, $solqtl_temp_images], 0, 0755);
    
