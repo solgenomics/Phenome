@@ -83,6 +83,7 @@ use SGN::Context;
 use Getopt::Std;
 
 use CXGN::Tools::File::Spreadsheet;
+use File::Glob qw | bsd_glob |;
 
 our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_m, $opt_b);
 getopts('H:D:u:i:e:f:tdr:m:b:');
@@ -168,10 +169,10 @@ open (ERR, ">load_bcs_images.err") || die "Can't open error file\n";
 
 my @files;
 if (! $opt_d) { 
-    @files = glob "$dirname/*.$ext";
+    @files = bsd_glob "$dirname/*.$ext";
 }
 else { 
-    @files = glob "$dirname/*" if $opt_d ;
+    @files = bsd_glob "$dirname/*" if $opt_d ;
 }
 
 print STDERR "DIRS = ".(join("\n", @files))."\n";
@@ -199,7 +200,7 @@ foreach my $file (@files) {
     eval {
 	chomp($file);
 	@sub_files = ($file);
-	@sub_files =  glob "$file/*"; # if $opt_d;
+	@sub_files =  bsd_glob "$file/*"; # if $opt_d;
 
 	print STDERR "FILES FOR $file: ".Dumper(\@sub_files)."\n";
 
@@ -209,8 +210,10 @@ foreach my $file (@files) {
 	my $stock = $schema->resultset("Stock::Stock")->find( {
 	    stock_id => $name2id{ lc($object) }  } );
 	foreach my $filename (@sub_files) {
+	 
 	    chomp $filename;
-	    
+	 
+	    print STDERR "FILENAME NOW: $filename\n";
 	    my $image_base = basename($filename);
 	    my ($object_name, $description, $extension);
 	    if ($opt_m) {
@@ -218,14 +221,18 @@ foreach my $file (@files) {
 	    }
 	    
 	    print STDERR "OBJECT = $object...\n";
-	    if ($image_base =~ /(.*?)\_(.*?)(\..*?)?$/) { 
+#	    if ($image_base =~ /(.*?)\_(.*?)(\..*?)?$/) { 
+	    if ($image_base =~ m/(.*)(\.$ext)/i) { 
+		$extension = $2;
+		$image_base = $1;
+	    }
+	    if ($image_base =~ m/(.*)\_(.*)/)  { 
 		$object_name = $1;
 		$description = $2;
-		$extension = $3;
 		print STDERR "OBJECT NAME: $object_name DESCRPTION: $description EXTENSIO: $extension\n";
 	    }
 	    else { 
-		$object_name = $object;
+		$object_name = $image_base;
 	    }
 	    
 	    print  "object_name = '".$object_name."' \n";
