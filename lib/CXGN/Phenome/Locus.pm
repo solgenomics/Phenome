@@ -1739,7 +1739,7 @@ sub get_figure_ids {
     $sth->execute($self->get_locus_id());
     my @image_ids = ();
     while (my ($image_id) = $sth->fetchrow_array()) { 
- 	push @image_ids, $image_id;
+ 	push @image_ids, [$image_id, 'locus'];
     }
     return @image_ids;
 }
