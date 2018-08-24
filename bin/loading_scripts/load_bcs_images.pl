@@ -229,14 +229,12 @@ foreach my $file (@files) {
 	    if ($image_base =~ m/(.*)\_(.*)/)  { 
 		$object_name = $1;
 		$description = $2;
-		print STDERR "OBJECT NAME: $object_name DESCRPTION: $description EXTENSIO: $extension\n";
+
 	    }
 	    else { 
 		$object_name = $image_base;
 	    }
-	    
-	    print  "object_name = '".$object_name."' \n";
-
+	    print STDERR "Object: $object OBJECT NAME: $object_name DESCRPTION: $description EXTENSIO: $extension\n";
 
 
 	    print STDOUT "Processing file $file...\n";
