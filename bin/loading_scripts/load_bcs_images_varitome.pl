@@ -262,7 +262,7 @@ foreach my $file (@files) { # this $file should be the accession name
 
 
 		print STDOUT "Processing file $file...\n";
-		print STDOUT "Loading $object_name, image $filename\n";
+		print STDOUT "Loading $image_base, image $filename\n";
 		print ERR "Loading $object_name, image $filename\n";
 		my $image_id; # this will be set later, depending if the image is new or not
 		if (! -e $filename) { 
@@ -276,22 +276,22 @@ foreach my $file (@files) { # this $file should be the accession name
 
 		else {
 		    print ERR "Adding $filename...\n";
-		    if (exists($image_hash{$filename})) { 
-			print ERR "$filename is already loaded into the database...\n";
-			$image_id = $image_hash{$filename}->get_image_id();
+		    if (exists($image_hash{$image_base})) { 
+			print STDERR "$image_base is already loaded into the database...\n";
+			$image_id = $image_hash{$image_base}->get_image_id();
 			$connections{$image_id."-".$name2id{lc($object)}}++;
 			if ($connections{$image_id."-".$name2id{lc($object)}} > 1) { 
-			    print ERR "The connection between $object and image $filename has already been made. Skipping...\n";
+			    print STDERR "The connection between $object and image $image_base has already been made. Skipping...\n";
 			}
-			elsif ($image_hash{$filename}) { 
-			    print ERR qq  { Associating $chado_table $name2id{lc($object)} with already loaded image $filename...\n };
+			elsif ($image_hash{$image_base}) { 
+			    print STDERR qq  { Associating $chado_table $name2id{lc($object)} with already loaded image $image_base...\n };
 			}
 		    }
 		    else { 
-			print ERR qq { Generating new image object for image $filename and associating it with $chado_table $object, id $name2id{lc($object) } ...\n };
+			print STDERR qq { Generating new image object for image $image_base and associating it with $chado_table $object, id $name2id{lc($object) } ...\n };
 			
 			if ($opt_t)  { 
-			    print STDOUT qq { Would associate file $filename to $chado_table $object_name, id $name2id{lc($object)}\n };
+			    print STDOUT qq { Would associate file $image_base to $chado_table $object_name, id $name2id{lc($object)}\n };
 			    $new_image_count++;
 			}
 			else { 
