@@ -214,11 +214,17 @@ foreach my $file (@files) { # this $file should be the accession name
 	}
 	print STDERR "SUBDIRS FOR $file: ".Dumper(\@sub_dirs)."\n";
 	
-	my $accession_name = $file;
+	my $accession_name = basename($file);
 	print STDERR "ACCESSION=$accession_name\n";
-
+	my $stock_id = $name2id{ lc($accession_name) };
+	
+	if ( !$stock_id ) { 
+	    warn "***STOCK $accession_name does not exist! Skipping to next stock ****\n\n"; 
+	    next(); 
+	}
+	
 	my $stock = $schema->resultset("Stock::Stock")->find( {
-	    stock_id => $name2id{ lc($accession_name) }  } );
+	    stock_id => $stock_id  } );
 	
 	foreach my $subdir (@sub_dirs) {
 	    chomp $subdir;
