@@ -301,7 +301,7 @@ foreach my $file (@files) { # this $file should be the accession name
 
 	
 			    #add subdir name as an image tag
-			    my $tag_id = CXGN::Tag::exists($dbh, $subdir);
+			    my $tag_id = CXGN::Tag::exists_tag_named($dbh, $subdir);
 			    my $tag_object = CXGN::Tag->new($dbh, $tag_id);
 			    if (!$tag_id) {
 				$tag_object->set_name($subdir);
