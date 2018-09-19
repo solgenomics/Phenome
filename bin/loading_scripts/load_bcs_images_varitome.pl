@@ -215,11 +215,11 @@ foreach my $file (@files) { # this $file should be the accession name
 	print STDERR "SUBDIRS FOR $file: ".Dumper(\@sub_dirs)."\n";
 	
 	my $accession_name = $file;
-
+	print STDERR "ACCESSION=$accession_name\n";
 
 	my $stock = $schema->resultset("Stock::Stock")->find( {
 	    stock_id => $name2id{ lc($accession_name) }  } );
-
+	
 	foreach my $subdir (@sub_dirs) {
 	    chomp $subdir;
 	    @sub_files =  bsd_glob "$subdir/*" ;
@@ -229,7 +229,7 @@ foreach my $file (@files) { # this $file should be the accession name
 	    foreach my $filename (@sub_files) {
 		
 		chomp $filename;
-		my $object =  basename($file, ".$ext" );
+		my $object =  basename($file );
 		
 		
 		my $image_base = basename($filename);
@@ -249,10 +249,10 @@ foreach my $file (@files) { # this $file should be the accession name
 		#$description = $2;
 
 	        #}
-	    else { 
-		$object_name = $image_base;
-	    }
-	    print STDERR "Object: $object OBJECT NAME: $object_name DESCRPTION: $description EXTENSION: $extension\n";
+		else { 
+		    $object_name = $image_base;
+		}
+		print STDERR "Object: $object OBJECT NAME: $object_name DESCRPTION: $description EXTENSION: $extension\n";
 
 
 		print STDOUT "Processing file $file...\n";
@@ -263,7 +263,7 @@ foreach my $file (@files) { # this $file should be the accession name
 		    warn "The specified file $filename does not exist! Skipping...\n";
 		    next();
 		}
-
+		
 		if (!exists($name2id{lc($object)})) { 
 		    message ("$object does not exist in the database...\n");
 		}
@@ -319,12 +319,13 @@ foreach my $file (@files) { # this $file should be the accession name
 		    }
 		}
 
-	    
-		print STDERR "Connecting image $filename and id $image_id with stock ".$stock->stock_id()."\n";
-		#store the image_id - stock_id link
-		my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
-		my $sth  = $dbh->prepare($q);
-		$sth->execute($stock->stock_id, $image_id, $metadata_id);
+		if (!$opt_t) {
+		    print STDERR "Connecting image $filename and id $image_id with stock ".$stock->stock_id()."\n";
+		    #store the image_id - stock_id link
+		    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
+		    my $sth  = $dbh->prepare($q);
+		    $sth->execute($stock->stock_id, $image_id, $metadata_id);
+		}
 	    }
 	}
     };
