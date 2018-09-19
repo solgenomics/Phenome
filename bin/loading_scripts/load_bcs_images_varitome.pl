@@ -307,15 +307,16 @@ foreach my $file (@files) { # this $file should be the accession name
 
 	
 			    #add subdir name as an image tag
-			    my $tag_id = CXGN::Tag::exists_tag_named($dbh, $subdir);
+			    my $subdir_name = basename($subdir);
+			    my $tag_id = CXGN::Tag::exists_tag_named($dbh, $subdir_name);
 			    my $tag_object = CXGN::Tag->new($dbh, $tag_id);
 			    if (!$tag_id) {
-				$tag_object->set_name($subdir);
+				$tag_object->set_name($subdir_name);
 				$tag_object->set_sp_person_id($sp_person_id);
 				$tag_object->store();
 			    }
 			    $image->add_tag($tag_object);
-			    print STDERR "ADDING TAG $subdir to image\n";
+			    print STDERR "ADDING TAG $subdir_name to image\n";
 
 			    #link the image with the BCS object 
 			    $new_image_count++;
