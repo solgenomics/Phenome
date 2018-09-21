@@ -327,11 +327,19 @@ foreach my $file (@files) { # this $file should be the accession name
 		}
 
 		if (!$opt_t) {
-		    print STDERR "Connecting image $filename and id $image_id with stock ".$stock->stock_id()."\n";
+		    print STDERR "Connecting image $filename and id $image_id with stock $stock_id\n";
 		    #store the image_id - stock_id link
-		    my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
-		    my $sth  = $dbh->prepare($q);
-		    $sth->execute($stock->stock_id, $image_id, $metadata_id);
+		    my $q1 = "SELECT stock_image_id FROM phenome.stock_image WHERE stock_id = ? AND  image_id = ?" ;
+		    my $sth1 = $dbh->prepare($q1);
+		    my $exists = $sth1->execute($stock_id, $image_id);
+		    if ($exists) {
+			print STDERR "Stock $stock_id already linked with image $image_id\n";
+		    } else {
+			my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
+			my $sth  = $dbh->prepare($q);
+			my $stock_image_id = $sth->execute($stock_id, $image_id, $metadata_id);
+			print STDERR  "linking stock $stock_id with image $image_id db id = $stock_image_id \n";
+		    }
 		}
 	    }
 	}
