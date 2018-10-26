@@ -152,20 +152,24 @@ while (my $object = $object_rs->next ) {
 #
 print "Caching image $chado_table links...\n";
 
-my $q = "SELECT * FROM phenome.stock_image";
-my $sth = $dbh->prepare($q);
-$sth->execute();
-while ( my $hashref = $sth->fetchrow_hashref() ) {
-    my $image_id = $hashref->{image_id};
-    my $chado_table_id = $hashref->{stock_id};  ##### table specific
-
-    print STDERR "CHADO TABLE ID = $chado_table_id\n";
-
+my $image_q = "SELECT * FROM metadata.md_image";
+my $connections_q = "SELECT * from phenome.stock_image";
+my $image_sth = $dbh->prepare($image_q);
+my $connections_sth = $dbh->prepare($connections_q);
+$image_sth->execute();
+$connections_sth->execute();
+while ( my $connections_hashref = $connections_sth->fetchrow_hashref() ) {
+    my $image_id = $connections_hashref->{image_id};
+    my $chado_table_id = $connections_hashref->{stock_id};  ##### table specific
+     $connections{$image_id."-".$chado_table_id}++;
+}
+while ( my $image_hashref = $image_sth->fetchrow_hashref() ) {
+    my $image_id = $image_hashref->{image_id};
     my $i = CXGN::Image->new(dbh=>$dbh, image_id=>$image_id, image_dir=>$db_image_dir); # SGN::Image...$ch
     my $original_filename = $i->get_original_filename();
-    $image_hash{$original_filename} = $i; # this doesn't have the file extension
-    $connections{$image_id."-".$chado_table_id}++;
+    $image_hash{$original_filename} = $i; # this doesn't have the file extension  
 }
+print STDERR "\n";
 
 open (ERR, ">load_bcs_images.err") || die "Can't open error file\n";
 
@@ -269,7 +273,6 @@ foreach my $file (@files) { # this $file should be the accession name
 		    warn "The specified file $filename does not exist! Skipping...\n";
 		    next();
 		}
-		
 		if (!exists($name2id{lc($object)})) { 
 		    message ("$object does not exist in the database...\n");
 		}
@@ -277,21 +280,21 @@ foreach my $file (@files) { # this $file should be the accession name
 		else {
 		    print ERR "Adding $filename...\n";
 		    if (exists($image_hash{$image_base})) { 
-			print STDERR "$image_base is already loaded into the database...\n";
+			print STDERR "****$image_base is already loaded into the database...\n";
 			$image_id = $image_hash{$image_base}->get_image_id();
 			$connections{$image_id."-".$name2id{lc($object)}}++;
 			if ($connections{$image_id."-".$name2id{lc($object)}} > 1) { 
-			    print STDERR "The connection between $object and image $image_base has already been made. Skipping...\n";
+			    print STDERR "*****The connection between $object and image $image_base has already been made. Skipping...\n";
 			}
 			elsif ($image_hash{$image_base}) { 
 			    print STDERR qq  { Associating $chado_table $name2id{lc($object)} with already loaded image $image_base...\n };
 			}
 		    }
 		    else { 
-			print STDERR qq { Generating new image object for image $image_base and associating it with $chado_table $object, id $name2id{lc($object) } ...\n };
+			print STDERR qq { ##NEW IMAGE : Generating new image object for image '$image_base' and associating it with $chado_table $object, id $name2id{lc($object) } ...\n };
 			
 			if ($opt_t)  { 
-			    print STDOUT qq { Would associate file $image_base to $chado_table $object_name, id $name2id{lc($object)}\n };
+			    print STDOUT qq { ## Would associate file $image_base to $chado_table $object_name, id $name2id{lc($object)}\n };
 			    $new_image_count++;
 			}
 			else { 
@@ -332,7 +335,7 @@ foreach my $file (@files) { # this $file should be the accession name
 		    my $q1 = "SELECT stock_image_id FROM phenome.stock_image WHERE stock_id = ? AND  image_id = ?" ;
 		    my $sth1 = $dbh->prepare($q1);
 		    my $exists = $sth1->execute($stock_id, $image_id);
-		    if ($exists) {
+		    if ( ($exists*1)  ) {
 			print STDERR "Stock $stock_id already linked with image $image_id\n";
 		    } else {
 			my $q = "INSERT INTO phenome.stock_image (stock_id, image_id, metadata_id) VALUES (?,?,?)";
