@@ -200,7 +200,7 @@ foreach my $file (@files) {
     eval {
 	chomp($file);
 	@sub_files = ($file);
-	@sub_files =  bsd_glob "$file/*"; # if $opt_d;
+	if ($opt_d) { @sub_files =  bsd_glob "$file/*"; # if $opt_d; }
 
 	print STDERR "FILES FOR $file: ".Dumper(\@sub_files)."\n";
 
