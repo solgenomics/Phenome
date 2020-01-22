@@ -16,7 +16,7 @@ Then link the loaded image with the user-supplied chado objects (e.g. stock, nd_
 
 Requires the following parameters: 
 
-=over 10
+=over 11
 
 =item -D
 
@@ -55,6 +55,10 @@ image file extension . Defaults to 'jpg'
 
 image linking table name. Defaults to stock_image
 
+=item -s 
+
+list of sub directory names, comma delimited. If files are arrange in subdirs. e.g. "flower,fruits,leaf"
+
 =item -t 
 
 trial mode . Nothing will be stored.
@@ -88,7 +92,7 @@ use Getopt::Std;
 use CXGN::Tools::File::Spreadsheet;
 use File::Glob qw | bsd_glob |;
 
-our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_m, $opt_b);
+our ($opt_H, $opt_D, $opt_t, $opt_i, $opt_u, $opt_r, $opt_d, $opt_e, $opt_m, $opt_b, $opt_s);
 getopts('H:D:u:i:e:tdr:m:b:');
 
 my $dbhost = $opt_H;
@@ -98,7 +102,8 @@ my $sp_person=$opt_u;
 my $db_image_dir = $opt_b;
 my $chado_table = $opt_r;
 my $ext = $opt_e || 'jpg';
-
+my @sub_subdirs = split "," , $opt_s;
+    
 if (!$dbhost && !$dbname) { 
     print "dbhost = $dbhost , dbname = $dbname\n";
     print "opt_t = $opt_t, opt_u = $opt_u, opt_r = $chado_table, opt_i = $dirname\n";
@@ -125,7 +130,9 @@ my %name2id = ();
 print "PLEASE VERIFY:\n";
 print "Using dbhost: $dbhost. DB name: $dbname. \n";
 print "Path to image is: $db_image_dir\n";
+print "Subdirs are $opt_s\n" if $opt_s;
 print "CONTINUE? ";
+
 my $a = (<STDIN>);
 if ($a !~ /[yY]/) { exit(); }
 
@@ -179,10 +186,10 @@ if (! $opt_d) {
     @files = bsd_glob "$dirname/*.$ext";
 }
 else { 
-    @files = bsd_glob "$dirname/*" if $opt_d ;
+    @files = bsd_glob "$dirname/*" if $opt_d ; #should be a list of dir names named after accession names
 }
 
-print STDERR "DIRS = ".(join("\n", @files))."\n";
+print STDERR "DIRS = ". join("\n", @files) ."\n";
 
 
 my $new_image_count = 0;
@@ -240,7 +247,7 @@ foreach my $file (@files) { # this $file should be the accession name
 		
 		chomp $filename;
 		my $object =  basename($file );
-		
+		if  ( $filename =~ m/thumbnail*/i ) { next ; } #do not load thumbnail images, those will be generated automatically by the image object
 		
 		my $image_base = basename($filename);
 		my ($object_name, $description, $extension);
