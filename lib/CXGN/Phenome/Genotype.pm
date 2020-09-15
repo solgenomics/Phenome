@@ -5,8 +5,8 @@
 
 DB tables: (phenome schema):
 
-genotype
-genotype_id
+phenome_genotype
+phenome_genotype_id
 experiment_name
 reference_map_id 
 fragment_accession_id
@@ -17,14 +17,6 @@ modified_date
 create_date
 obsolete
 
-
-inbred_fragment
-genotype_id
-inbred_fragment_id bigint serial primary key
-fragment_top_marker_id references sgn.marker.marker_id
-fragment_bottom_marker_id references sgn.marker.marker_id
-zygocity [ heterozygous | homozygous | unknown ]
-one_letter_code [ A | B | C | E | F | G | H ]
 
 =head1 AUTHOR(S)
 
@@ -60,7 +52,7 @@ sub new {
     my $self = $class -> SUPER::new($dbh);
 
     if ($id) { 
-	$self->set_genotype_id($id);
+	$self->set_phenome_genotype_id($id);
 	$self->fetch();
     }
     else { 
@@ -81,16 +73,16 @@ sub new {
 
 sub fetch {
     my $self = shift;
-    my $query = "SELECT genotype_id, individual_id,
+    my $query = "SELECT phenome_genotype_id, individual_id,
                         sp_person_id,
                         genotype_experiment_id,
                         modified_date, create_date
-                   FROM phenome.genotype
-                  WHERE genotype_id=? AND (obsolete='f' OR obsolete IS NULL)";
+                   FROM phenome.phenome_genotype
+                  WHERE phenome_genotype_id=? AND (obsolete='f' OR obsolete IS NULL)";
     my $sth = $self->get_dbh()->prepare($query);
-    $sth->execute($self->get_genotype_id());
-    my ($genotype_id, $individual_id, $sp_person_id, $genotype_experiment_id, $modified_date, $create_date) = $sth->fetchrow_array();
-    $self->set_genotype_id($genotype_id);
+    $sth->execute($self->get_phenome_genotype_id());
+    my ($phenome_genotype_id, $individual_id, $sp_person_id, $genotype_experiment_id, $modified_date, $create_date) = $sth->fetchrow_array();
+    $self->set_phenome_genotype_id($phenome_genotype_id);
     $self->set_individual_id($individual_id);
     $self->set_sp_person_id($sp_person_id);
     $self->set_genotype_experiment_id($genotype_experiment_id);
@@ -112,8 +104,8 @@ sub fetch {
 
 sub store {
     my $self = shift;
-    if ($self->get_genotype_id()) { 
-	my $query = "UPDATE phenome.genotype 
+    if ($self->get_phenome_genotype_id()) { 
+	my $query = "UPDATE phenome.phenome_genotype 
                          individual_id = ?,
                          sp_person_id =?,
                          genotype_experiment_id =?,
@@ -121,7 +113,7 @@ sub store {
                          create_date = ?,
                          obsolete = ?
                      WHERE 
-                         genotype_id = ?";
+                         phenome_genotype_id = ?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
 		      $self->get_individual_id(),
@@ -131,10 +123,10 @@ sub store {
 		      $self->get_create_date(),
 		      $self->get_obsolete()
 		      );
-	return $self->get_genotype_id();
+	return $self->get_phenome_genotype_id();
     }
     else { 
-	my $query = "INSERT INTO phenome.genotype  (
+	my $query = "INSERT INTO phenome.phenome_genotype  (
                                  individual_id,
                                  sp_person_id,
                                  genotype_experiment_id,
@@ -142,7 +134,7 @@ sub store {
                                  create_date,
                                  obsolete)
                           VALUES (?, ?, ?, now(), now(), 'f')
-                          RETURNING genotype_id";
+                          RETURNING phenome_genotype_id";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute( 
 		       $self->get_individual_id(),
@@ -150,12 +142,12 @@ sub store {
 		       $self->get_genotype_experiment_id(),
 		       );
 	my ($id) = $sth->fetchrow_array();
-	$self->set_genotype_id($id);
+	$self->set_phenome_genotype_id($id);
 	return $id;
     }
 }
 
-=head2 accessors get_genotype_id, set_genotype_id
+=head2 accessors get_phenome_genotype_id, set_phenome_genotype_id
 
   Synopsis:	
   Arguments:	
@@ -165,14 +157,14 @@ sub store {
 
 =cut
 
-sub get_genotype_id { 
+sub get_phenome_genotype_id { 
     my $self=shift;
-    return $self->{genotype_id};
+    return $self->{phenome_genotype_id};
 }
 
-sub set_genotype_id { 
+sub set_phenome_genotype_id { 
     my $self=shift;
-    $self->{genotype_id}=shift;
+    $self->{phenome_genotype_id}=shift;
 }
 
 =head2 accessors set_genotype_experiment_id, get_genotype_experiment_id
@@ -364,10 +356,10 @@ sub set_individual_id {
 sub get_genotype_regions {
     my $self=shift;
     my @regions;
-    if ($self->get_genotype_id) {
-        my $q = "SELECT genotype_region_id FROM phenome.genotype_region WHERE genotype_id = ?";
+    if ($self->get_phenome_genotype_id) {
+        my $q = "SELECT genotype_region_id FROM phenome.phenome_genotype_region WHERE phenome_genotype_id = ?";
         my $sth= $self->get_dbh->prepare($q);
-        $sth->execute( $self->get_genotype_id);
+        $sth->execute( $self->get_phenome_genotype_id);
         while ( my ($region_id) = $sth->fetchrow_array() ) {
             push @regions,  CXGN::Phenome::GenotypeRegion->new($self->get_dbh, $region_id);
         }
@@ -380,8 +372,8 @@ sub get_genotype_regions {
 sub create_schema { 
     my $self = shift;
 	my $sgn_base = $self->get_dbh()->base_schema('sgn');
-    $self->get_dbh()->do("CREATE TABLE phenome.genotype (
-                            genotype_id serial primary key,
+    $self->get_dbh()->do("CREATE TABLE phenome.phenome_genotype (
+                            phenome_genotype_id serial primary key,
                             individual_id bigint references phenome.individual,
                             experiment_name varchar(100),
                             reference_map_id bigint references $sgn_base.map,
@@ -392,7 +384,7 @@ sub create_schema {
 			    create_date timestamp with time zone,
 			    obsolete boolean default false)");
 
-    $self->get_dbh()->do("GRANT SELECT, UPDATE, INSERT ON phenome.genotype TO web_usr");
+    $self->get_dbh()->do("GRANT SELECT, UPDATE, INSERT ON phenome.phenome_genotype TO web_usr");
     $self->get_dbh()->do("GRANT SELECT, UPDATE, INSERT ON phenome.genotype_genotype_id_seq TO web_usr");
 
   
