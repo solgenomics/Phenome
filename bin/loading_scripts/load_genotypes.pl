@@ -167,7 +167,7 @@ eval {
 		
 		$lg_id = undef;
 	    }
-	    $genotype_region->set_genotype_id($genotype_id);
+	    $genotype_region->set_phenome_genotype_id($genotype_id);
 	    $genotype_region->set_marker_id_nn($marker->marker_id());
 	    $genotype_region->set_marker_id_ns($marker->marker_id());
 	    $genotype_region->set_marker_id_sn($marker->marker_id());
