@@ -34,7 +34,7 @@ __PACKAGE__->table("genotype_region");
   is_nullable: 0
   sequence: 'genotype_region_genotype_region_id_seq'
 
-=head2 genotype_id
+=head2 phenome_genotype_id
 
   data_type: 'integer'
   is_foreign_key: 1
@@ -142,7 +142,7 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
     sequence          => "genotype_region_genotype_region_id_seq",
   },
-  "genotype_id",
+  "phenome_genotype_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "marker_id_nn",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
@@ -194,23 +194,23 @@ __PACKAGE__->set_primary_key("genotype_region_id");
 
 =head1 RELATIONS
 
-=head2 genotype_id
+=head2 phenome_genotype_id
 
 Type: belongs_to
 
-Related object: L<CXGN::Phenome::Schema::Genotype>
+Related object: L<CXGN::Phenome::Schema::PhenomeGenotype>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "genotype_id",
-  "CXGN::Phenome::Schema::Genotype",
-  { genotype_id => "genotype_id" },
+  "phenome_genotype_id",
+  "CXGN::Phenome::Schema::PhenomeGenotype",
+  { phenome_genotype_id => "phenome_genotype_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:h9mlofTVaosCV4is1aoT2w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:17
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ah1KFLkds05I+Otih+mRLA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

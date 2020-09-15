@@ -117,17 +117,17 @@ __PACKAGE__->set_primary_key("genotype_experiment_id");
 
 =head1 RELATIONS
 
-=head2 genotypes
+=head2 phenome_genotypes
 
 Type: has_many
 
-Related object: L<CXGN::Phenome::Schema::Genotype>
+Related object: L<CXGN::Phenome::Schema::PhenomeGenotype>
 
 =cut
 
 __PACKAGE__->has_many(
-  "genotypes",
-  "CXGN::Phenome::Schema::Genotype",
+  "phenome_genotypes",
+  "CXGN::Phenome::Schema::PhenomeGenotype",
   {
     "foreign.genotype_experiment_id" => "self.genotype_experiment_id",
   },
@@ -135,8 +135,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Q8Ss5DjbxqFmMDOt4/Y57Q
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:17
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cgm6lGFQnwRoYHl5Np/jhg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -30,7 +30,7 @@ __PACKAGE__->table("polymorphic_fragment");
   is_nullable: 0
   sequence: 'polymorphic_fragment_polymorphic_fragment_id_seq'
 
-=head2 genotype_id
+=head2 phenome_genotype_id
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -96,7 +96,7 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
     sequence          => "polymorphic_fragment_polymorphic_fragment_id_seq",
   },
-  "genotype_id",
+  "phenome_genotype_id",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "flanking_marker1_id",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
@@ -132,23 +132,23 @@ __PACKAGE__->set_primary_key("polymorphic_fragment_id");
 
 =head1 RELATIONS
 
-=head2 genotype_id
+=head2 phenome_genotype_id
 
 Type: belongs_to
 
-Related object: L<CXGN::Phenome::Schema::Genotype>
+Related object: L<CXGN::Phenome::Schema::PhenomeGenotype>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "genotype_id",
-  "CXGN::Phenome::Schema::Genotype",
-  { genotype_id => "genotype_id" },
+  "phenome_genotype_id",
+  "CXGN::Phenome::Schema::PhenomeGenotype",
+  { phenome_genotype_id => "phenome_genotype_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LmXL4SbmzybFEK02jXysZw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gB82S89ggZ7YVPaO9Cp1gg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -106,13 +106,6 @@ __PACKAGE__->table("locus_history");
   is_nullable: 1
   original: {default_value => \"now()"}
 
-=head2 locus
-
-  data_type: 'varchar'
-  default_value: null
-  is_nullable: 1
-  size: 24
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -154,13 +147,6 @@ __PACKAGE__->add_columns(
     is_nullable   => 1,
     original      => { default_value => \"now()" },
   },
-  "locus",
-  {
-    data_type => "varchar",
-    default_value => \"null",
-    is_nullable => 1,
-    size => 24,
-  },
 );
 
 =head1 PRIMARY KEY
@@ -192,8 +178,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZAWT1bBnBvBxyx5XvLncdA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:npFKYFOv8jk5pu7Nfymgdw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
