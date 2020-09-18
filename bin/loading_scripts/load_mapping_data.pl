@@ -13,6 +13,9 @@ use CXGN::Marker::Tools;
 
 =head1 NAME
 
+DEPRECATED - SGN no longer uses the tables phenome.individual and phenome.polymorphic_fragment
+DO NOT USE THIS SCRIPT FOR LOADING MAPS
+ 
 load_mapping_data.pl - loads mapping data for a population in the phenome database from a mapmaker file.
 
 =head1 USAGE
