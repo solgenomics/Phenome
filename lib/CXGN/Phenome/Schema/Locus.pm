@@ -114,9 +114,14 @@ __PACKAGE__->table("locus");
 =head2 locus
 
   data_type: 'varchar'
-  default_value: null
   is_nullable: 1
   size: 24
+
+=head2 organism_id
+
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1
 
 =cut
 
@@ -162,12 +167,9 @@ __PACKAGE__->add_columns(
   "updated_by",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "locus",
-  {
-    data_type => "varchar",
-    default_value => \"null",
-    is_nullable => 1,
-    size => 24,
-  },
+  { data_type => "varchar", is_nullable => 1, size => 24 },
+  "organism_id",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -480,8 +482,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/gPN8wwEApA2DNMIzGyAhw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:17
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RbTxMMGAr2EMtuHFBft13Q
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

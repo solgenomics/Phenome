@@ -152,7 +152,7 @@ eval {
 	    $polyfrag->set_flanking_marker2_id($marker2_id);
 	    $polyfrag->set_linkage_group($linkage_group);
 	    $polyfrag->set_type($TYPE);
-	    $polyfrag->set_genotype_id($genotype_id);
+	    $polyfrag->set_phenome_genotype_id($genotype_id);
 	    $polyfrag->store();
 	    
 	    #$old_IL_name= $IL_name;

@@ -66,6 +66,12 @@ __PACKAGE__->table("locus_image");
   data_type: 'timestamp with time zone'
   is_nullable: 1
 
+=head2 display_order
+
+  data_type: 'integer'
+  default_value: 50
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -93,6 +99,8 @@ __PACKAGE__->add_columns(
   },
   "modified_date",
   { data_type => "timestamp with time zone", is_nullable => 1 },
+  "display_order",
+  { data_type => "integer", default_value => 50, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -124,8 +132,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rgP7l3/MxXYPfvhGv+ewXQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K6n2Z79GizmL65WzUSmHQg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

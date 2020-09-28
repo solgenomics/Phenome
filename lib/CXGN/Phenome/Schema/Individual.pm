@@ -147,21 +147,6 @@ __PACKAGE__->set_primary_key("individual_id");
 
 =head1 RELATIONS
 
-=head2 genotypes
-
-Type: has_many
-
-Related object: L<CXGN::Phenome::Schema::Genotype>
-
-=cut
-
-__PACKAGE__->has_many(
-  "genotypes",
-  "CXGN::Phenome::Schema::Genotype",
-  { "foreign.individual_id" => "self.individual_id" },
-  undef,
-);
-
 =head2 germplasms
 
 Type: has_many
@@ -267,6 +252,21 @@ __PACKAGE__->has_many(
   undef,
 );
 
+=head2 phenome_genotypes
+
+Type: has_many
+
+Related object: L<CXGN::Phenome::Schema::PhenomeGenotype>
+
+=cut
+
+__PACKAGE__->has_many(
+  "phenome_genotypes",
+  "CXGN::Phenome::Schema::PhenomeGenotype",
+  { "foreign.individual_id" => "self.individual_id" },
+  undef,
+);
+
 =head2 population_id
 
 Type: belongs_to
@@ -282,8 +282,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-16 23:38:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DpePAL7JYjdD+jFpQ+Ampg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-15 17:55:17
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g2UfFCRM+vu/o8Nugk6g8A
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

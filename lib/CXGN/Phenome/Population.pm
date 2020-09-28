@@ -1184,10 +1184,10 @@ sub cvterm_acronym {
 sub get_genotype_data {
     my $self = shift;
     my $pop_id = $self->get_population_id();
-    my $query = "SELECT individual.name, genotype.individual_id, marker_alias.alias, marker_alias.marker_id, map_version.map_version_id, map_version.map_id, genotype_region.zygocity_code, lg_name, position 
-                         FROM phenome.genotype 
-                         JOIN phenome.individual ON (genotype.individual_id = individual.individual_id)
-                         JOIN phenome.genotype_region ON (genotype.genotype_id = genotype_region.genotype_id) 
+    my $query = "SELECT individual.name, phenome_genotype.individual_id, marker_alias.alias, marker_alias.marker_id, map_version.map_version_id, map_version.map_id, genotype_region.zygocity_code, lg_name, position 
+                         FROM phenome.phenome_genotype 
+                         JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
+                         JOIN phenome.phenome_genotype_region ON (phenome_genotype.genotype_id = genotype_region.phenome_genotype_id) 
                          JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
                          JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                          JOIN sgn.marker_location USING(location_id) 
@@ -1195,14 +1195,14 @@ sub get_genotype_data {
                          JOIN sgn.map_version ON (marker_location.map_version_id=map_version.map_version_id) 
                          WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
                                     FROM phenome.genotype_experiment 
-                                    JOIN phenome.genotype USING (genotype_experiment_id) 
-                                    JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
+                                    JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
+                                    JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id) 
                                     WHERE individual.population_id = $pop_id)  
                          AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) 
                                     FROM sgn.map_version 
                                     JOIN phenome.genotype_experiment ON (map_version.map_id = 
                                                         genotype_experiment.reference_map_id) 
-                                    JOIN phenome.genotype USING (genotype_experiment_id) 
+                                    JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                                     JOIN phenome.individual USING (individual_id) 
                                     WHERE map_version.current_version = 't' and individual.population_id = $pop_id)
                          AND individual.population_id = $pop_id
@@ -1254,9 +1254,9 @@ sub get_all_markers {
     my $self = shift;
     my $pop_id = $self->get_population_id();
     my $query = "SELECT DISTINCT(marker_alias.marker_id), marker_alias.alias
-                        FROM phenome.genotype 
-                        JOIN phenome.individual ON (genotype.individual_id = individual.individual_id)
-                        JOIN phenome.genotype_region ON (genotype.genotype_id = genotype_region.genotype_id) 
+                        FROM phenome.phenome_genotype 
+                        JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
+                        JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.phenome_genotype_id) 
                         JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
                         JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                         JOIN sgn.marker_location USING(location_id) 
@@ -1264,11 +1264,11 @@ sub get_all_markers {
                         JOIN sgn.map_version ON (marker_location.map_version_id=map_version.map_version_id) 
                         WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
                                    FROM phenome.genotype_experiment 
-                                   JOIN phenome.genotype USING (genotype_experiment_id) 
-                                   JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
+                                   JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id) 
                                    WHERE individual.population_id = $pop_id)  
                         AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) FROM sgn.map_version 
-                                   JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                                      JOIN phenome.genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                                      JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                                    JOIN phenome.individual USING (individual_id) 
                                    WHERE map_version.current_version = 't' and individual.population_id = $pop_id)
                         ORDER BY marker_alias.alias";
@@ -1310,10 +1310,10 @@ sub get_all_markers {
 sub get_genotyped_indls {
     my $self = shift;
     my $pop_id = $self->get_population_id();
-    my $query = "SELECT DISTINCT(genotype.individual_id), individual.name
-                        FROM phenome.genotype 
-                        JOIN phenome.individual ON (genotype.individual_id = individual.individual_id)
-                        JOIN phenome.genotype_region ON (genotype.genotype_id = genotype_region.genotype_id) 
+    my $query = "SELECT DISTINCT(phenome_genotype.individual_id), individual.name
+                        FROM phenome.phenome_genotype 
+                        JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
+                        JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.genotype_id) 
                         JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
                         JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                         JOIN sgn.marker_location USING(location_id) 
@@ -1321,12 +1321,12 @@ sub get_genotyped_indls {
                         JOIN sgn.map_version ON (marker_location.map_version_id=map_version.map_version_id) 
                         WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
                                    FROM phenome.genotype_experiment 
-                                   JOIN phenome.genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                                    JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
                                    WHERE individual.population_id = $pop_id)  
                         AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) FROM sgn.map_version 
                                    JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                      
-                                   JOIN phenome.genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                                    JOIN phenome.individual USING (individual_id) 
                                    WHERE map_version.current_version = 't' and individual.population_id = $pop_id)
                         ORDER BY individual.name";
@@ -1358,11 +1358,11 @@ sub get_ind_marker_genotype {
     my $ind_id = shift;
     my $marker_id = shift;
     my ( $marker, $map_version, $genotype);
-    my $query = "SELECT genotype.individual_id, marker_alias.marker_id, map_version.map_version_id,
+    my $query = "SELECT phenome_genotype.individual_id, marker_alias.marker_id, map_version.map_version_id,
                         genotype_region.zygocity_code
-                        FROM phenome.genotype 
-                        JOIN phenome.individual ON (genotype.individual_id = individual.individual_id)
-                        JOIN phenome.genotype_region ON (genotype.genotype_id = genotype_region.genotype_id) 
+                        FROM phenome.phenome_genotype 
+                        JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
+                        JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.phenome_genotype_id) 
                         JOIN sgn.marker_alias ON (marker_alias.marker_id=genotype_region.marker_id_nn) 
                         JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                         JOIN sgn.marker_location USING(location_id) 
@@ -1370,15 +1370,15 @@ sub get_ind_marker_genotype {
                         JOIN sgn.map_version ON (marker_location.map_version_id=map_version.map_version_id) 
                         WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
                                    FROM phenome.genotype_experiment 
-                                   JOIN phenome.genotype USING (genotype_experiment_id) 
-                                   JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
+                                   JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id) 
                                    WHERE individual.population_id = $pop_id)  
                         AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) 
                                    FROM sgn.map_version 
-                                   JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                                            JOIN phenome.genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                                            JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                                    JOIN phenome.individual USING (individual_id) 
                                    WHERE map_version.current_version = 't' and individual.population_id = $pop_id) 
-                       AND genotype.individual_id = $ind_id
+                       AND phenome_genotype.individual_id = $ind_id
                        AND marker_alias.marker_id = $marker_id";
 
 
@@ -1400,9 +1400,9 @@ sub get_marker_chr_position {
     my $marker_id = shift;
     
     my $query = "SELECT marker_alias.alias, map_version.map_version_id, lg_name, position
-                        FROM phenome.genotype 
-                        JOIN phenome.individual ON (genotype.individual_id = individual.individual_id)
-                        JOIN phenome.genotype_region ON (genotype.genotype_id = genotype_region.genotype_id) 
+                        FROM phenome.phenome_genotype 
+                        JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
+                        JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.phenome_genotype_id) 
                         JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
                         JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                         JOIN sgn.marker_location USING(location_id) 
@@ -1410,13 +1410,13 @@ sub get_marker_chr_position {
                         JOIN sgn.map_version ON (marker_location.map_version_id=map_version.map_version_id) 
                         WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
                                    FROM phenome.genotype_experiment 
-                                   JOIN phenome.genotype USING (genotype_experiment_id) 
-                                   JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
+                                   JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id) 
                                    WHERE individual.population_id = $pop_id)  
                         AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) FROM sgn.map_version 
                                    JOIN phenome.genotype_experiment ON 
                                           (map_version.map_id = genotype_experiment.reference_map_id)   
-                                   JOIN phenome.genotype USING (genotype_experiment_id) 
+                                   JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                                    JOIN phenome.individual USING (individual_id) 
                                    WHERE map_version.current_version = 't' and individual.population_id = $pop_id) 
                        AND marker_alias.marker_id = ?
@@ -1672,7 +1672,7 @@ sub mapversion_id {
      my $query = "SELECT DISTINCT (map_version_id) 
                           FROM sgn.map_version 
                           JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id) 
-                          JOIN phenome.genotype USING (genotype_experiment_id) 
+                          JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
                           JOIN phenome.individual USING (individual_id) 
                           WHERE map_version.current_version = 't' AND individual.population_id = ?"; 
 

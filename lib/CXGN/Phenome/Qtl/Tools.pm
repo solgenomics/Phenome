@@ -244,7 +244,7 @@ sub has_qtl_data {
 	#$self->d("phenotype population id: $pop_id2\n");
 
 	my $query2 = "SELECT DISTINCT (population_id) 
-                             FROM phenome.genotype 
+                             FROM phenome.phenome_genotype 
                              LEFT JOIN phenome.individual USING (individual_id) 
                              WHERE individual.population_id = ?";
 
@@ -392,7 +392,7 @@ sub browse_traits {
 
 sub is_from_qtl {
     my ($self, $id) = @_;
-    my $query = "SELECT DISTINCT (population_id) FROM phenome.genotype
+    my $query = "SELECT DISTINCT (population_id) FROM phenome.phenome_genotype
                         LEFT JOIN phenome.individual USING (individual_id)
                         LEFT JOIN public.phenotype USING (individual_id) 
                         WHERE observable_id =?" ;

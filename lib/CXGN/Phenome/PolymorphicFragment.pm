@@ -9,8 +9,8 @@ CXGN::Phenome::PolymorphicFragment - a class that defines the genetic compositio
 
 DB tables: (phenome schema):
 
-genotype
-genotype_id
+phenome_genotype
+phenome_genotype_id
 experiment_name
 reference_map_id 
 ###fragment_accession_id
@@ -23,7 +23,7 @@ obsolete
 
 
 polymorphic_fragment_id bigint serial primary key
-genotype_id
+phenome_genotype_id
 flanking_marker1_id references sgn.marker.marker_id
 flanking_marker2_id references sgn.marker.marker_id
 zygocity [ heterozygous | homozygous | unknown ]
@@ -78,7 +78,7 @@ sub new {
 
 sub fetch {
     my $self = shift;
-    my $query = "SELECT polymorphic_fragment_id, genotype_id, flanking_marker1_id, flanking_marker2_id, zygosity, linkage_group, type
+    my $query = "SELECT polymorphic_fragment_id, phenome_genotype_id, flanking_marker1_id, flanking_marker2_id, zygosity, linkage_group, type
                    FROM phenome.polymorphic_fragment
                   WHERE polymorphic_fragment_id = ?";
     my $sth = $self->get_dbh()->prepare($query);
@@ -87,7 +87,7 @@ sub fetch {
 	$sth->fetchrow_array();
     
     $self->set_polymorphic_fragment_id($polymorphic_fragment_id);
-    $self->set_genotype_id($genotype_id);
+    $self->set_phenome_genotype_id($genotype_id);
     $self->set_flanking_marker1_id($flanking_marker1_id);
     $self->set_flanking_marker2_id($flanking_marker2_id);
     $self->set_zygocity($zygocity);
@@ -110,7 +110,7 @@ sub store {
     my $self = shift;
     if ($self->get_polymorphic_fragment_id()) { 
 	my $query = "UPDATE phenome.polymorphic_fragment SET 
-                       genotype_id = ?,
+                       phenome_genotype_id = ?,
                        flanking_marker1_id=?,
                        flanking_marker2_id=?,
                        zygocity = ?,
@@ -119,7 +119,7 @@ sub store {
                      WHERE polymorphic_fragment_id=?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
-		      $self->get_genotype_id(),
+		      $self->get_phenome_genotype_id(),
 		      $self->get_flanking_marker1_id(),
 		      $self->get_flanking_marker2_id(),
 		      $self->get_zygocity(),
@@ -130,12 +130,12 @@ sub store {
     }
     else {
 	my $query = "INSERT INTO phenome.polymorphic_fragment 
-                       (genotype_id, flanking_marker1_id, flanking_marker2_id, zygocity, linkage_group, type)
+                       (phenome_genotype_id, flanking_marker1_id, flanking_marker2_id, zygocity, linkage_group, type)
                      VALUES
                        (?, ?, ?, ?, ?, ?) RETURNING polymorphic_fragment_id";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
-		      $self->get_genotype_id(),
+		      $self->get_phenome_genotype_id(),
 		      $self->get_flanking_marker1_id(),
 		      $self->get_flanking_marker2_id(),
 		      $self->get_zygocity(),
@@ -182,7 +182,7 @@ sub set_polymorphic_fragment_id {
 }
 
 
-=head2 get_genotype_id
+=head2 get_phenome_genotype_id
 
  Usage:
  Desc:
@@ -193,13 +193,13 @@ sub set_polymorphic_fragment_id {
 
 =cut
 
-sub get_genotype_id {
+sub get_phenome_genotype_id {
   my $self=shift;
-  return $self->{genotype_id};
+  return $self->{phenome_genotype_id};
 
 }
 
-=head2 set_genotype_id
+=head2 set_phenome_genotype_id
 
  Usage:
  Desc:
@@ -210,9 +210,9 @@ sub get_genotype_id {
 
 =cut
 
-sub set_genotype_id {
+sub set_phenome_genotype_id {
   my $self=shift;
-  $self->{genotype_id}=shift;
+  $self->{phenome_genotype_id}=shift;
 }
 
 
@@ -362,7 +362,7 @@ sub create_schema {
 	my $sgn_base = $self->get_dbh()->base_schema('sgn');
     $self->get_dbh()->do("CREATE TABLE phenome.polymorphic_fragment ( 
                             polymorphic_fragment_id serial primary key,
-                            genotype_id bigint references phenome.genotype,
+                            phenome_genotype_id bigint references phenome.phenome_genotype,
                             flanking_marker1_id bigint references $sgn_base.marker,
                             flanking_marker2_id bigint references $sgn_base.marker,
                             zygocity varchar(15),

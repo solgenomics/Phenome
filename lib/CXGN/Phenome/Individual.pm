@@ -1259,10 +1259,10 @@ sub get_markers {
     my $individual_id=$self->individual_id();
 
     my $query = "SELECT marker_alias.marker_id, marker_alias.alias
-                        FROM phenome.genotype
-                        JOIN phenome.genotype_region USING (genotype_id)
+                        FROM phenome.phenome_genotype
+                        JOIN phenome.genotype_region USING (phenome_genotype_id)
                         JOIN sgn.marker_alias ON (genotype_region.marker_id_nn = marker_alias.marker_id)
-                        WHERE genotype.individual_id = ?
+                        WHERE phenome_genotype.individual_id = ?
                         ORDER BY marker_alias.alias";
 
 
@@ -1413,7 +1413,7 @@ sub has_phenotype {
 sub has_genotype {
     my $self=shift;
     return undef if !$self->get_individual_id;
-    my $q = 'SELECT count(genotype_id) FROM phenome.genotype WHERE individual_id = ?';
+    my $q = 'SELECT count(phenome_genotype_id) FROM phenome.phenome_genotype WHERE individual_id = ?';
     my $sth = $self->get_dbh->prepare($q);
     $sth->execute($self->get_individual_id);
     my ($count)  =  $sth->fetchrow_array;
@@ -1435,7 +1435,7 @@ sub get_genotypes {
     my $self=shift;
     my @genotypes;
     if ($self->get_individual_id) {
-        my $q = "SELECT genotype_id FROM phenome.genotype WHERE individual_id = ?";
+        my $q = "SELECT phenome_genotype_id FROM phenome.phenome_genotype WHERE individual_id = ?";
         my $sth= $self->get_dbh->prepare($q);
         $sth->execute( $self->get_individual_id);
         while ( my ($genotype_id) = $sth->fetchrow_array ) {

@@ -1,14 +1,14 @@
 
 =head1 NAME
 
-CXGN::Phenome::PolymorphicFragment - a class that defines the genetic composition of an individual
+CXGN::Phenome::GenotypeRegion - a class that defines the genetic composition of an individual
 
 =head1 DESCRIPTION
 
 DB tables: (phenome schema):
 
  genotype_region_id | integer                  | not null default nextval...
- genotype_id        | integer                  | 
+ phenome_genotype_id        | integer                  | 
  marker_id_nn       | bigint                   | 
  marker_id_ns       | bigint                   | not null
  marker_id_sn       | bigint                   | not null
@@ -88,17 +88,17 @@ sub new {
 
 sub fetch {
     my $self = shift;
-    my $query = "SELECT genotype_region_id, genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, zygocity_code, lg_id, type, name
+    my $query = "SELECT genotype_region_id, phenome.genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, zygocity_code, lg_id, type, name
                    FROM phenome.genotype_region
                   WHERE genotype_region_id = ?
                         AND (obsolete='f' OR obsolete=NULL)";
     my $sth = $self->get_dbh()->prepare($query);
     $sth->execute($self->get_genotype_region_id());
-    my ($genotype_region_id, $genotype_id, $marker_id_nn, $marker_id_ns, $marker_id_sn, $marker_id_ss, $zygocity_code, $lg_id, $type, $name, $sp_person_id, $modified_date, $create_date) =
+    my ($genotype_region_id, $phenome_genotype_id, $marker_id_nn, $marker_id_ns, $marker_id_sn, $marker_id_ss, $zygocity_code, $lg_id, $type, $name, $sp_person_id, $modified_date, $create_date) =
 	$sth->fetchrow_array();
     
     $self->set_genotype_region_id($genotype_region_id);
-    $self->set_genotype_id($genotype_id);
+    $self->set_phenome_genotype_id($phenome_genotype_id);
     $self->set_marker_id_nn($marker_id_nn);
     $self->set_marker_id_ns($marker_id_ns);
     $self->set_marker_id_sn($marker_id_sn);
@@ -126,7 +126,7 @@ sub store {
     my $self = shift;
     if ($self->get_genotype_region_id()) { 
 	my $query = "UPDATE phenome.genome_region SET 
-                       genotype_id = ?,
+                       phenome_genotype_id = ?,
                        marker_id_nn = ?,
                        marker_id_ns = ?,
                        marker_id_sn = ?,
@@ -141,7 +141,7 @@ sub store {
                      WHERE genotype_region_id=?";
 	my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
-		      $self->get_genotype_id(),
+		      $self->get_phenome_genotype_id(),
 		      $self->get_marker_id_nn(),
 		      $self->get_marker_id_ns(),
 		      $self->get_marker_id_sn(),
@@ -158,14 +158,14 @@ sub store {
     }
     else { 
 	my $query = "INSERT INTO phenome.genotype_region
-                       (genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, 
+                       (phenome_genotype_id, marker_id_nn, marker_id_ns, marker_id_sn, marker_id_ss, 
                         zygocity_code, lg_id, type, name, sp_person_id, modified_date, create_date, obsolete)
                      VALUES
                        (?, ?, ?, ?, ?, ?, ? ,?, ?, ? , now(), now(), 'f')
 	               RETURNING genotype_region_id";
         my $sth = $self->get_dbh()->prepare($query);
 	$sth->execute(
-		      $self->get_genotype_id(),
+		      $self->get_phenome_genotype_id(),
 		      $self->get_marker_id_nn(),
 		      $self->get_marker_id_ns(),
 		      $self->get_marker_id_sn(),
@@ -238,7 +238,7 @@ sub set_genotype_region_id {
 
 
 
-=head2 get_genotype_id
+=head2 get_phenome_genotype_id
 
  Usage:
  Desc:
@@ -249,13 +249,13 @@ sub set_genotype_region_id {
 
 =cut
 
-sub get_genotype_id {
+sub get_phenome_genotype_id {
   my $self=shift;
-  return $self->{genotype_id};
+  return $self->{phenome_genotype_id};
 
 }
 
-=head2 set_genotype_id
+=head2 set_phenome_genotype_id
 
  Usage:
  Desc:
@@ -266,9 +266,9 @@ sub get_genotype_id {
 
 =cut
 
-sub set_genotype_id {
+sub set_phenome_genotype_id {
   my $self=shift;
-  $self->{genotype_id}=shift;
+  $self->{phenome_genotype_id}=shift;
 }
 
 
@@ -550,7 +550,7 @@ sub create_schema {
 	my $sgn_base = $self->get_dbh()->base_schema("sgn");
     $self->get_dbh()->do("CREATE TABLE phenome.genotype_region ( 
                             genotype_region_id serial primary key,
-                            genotype_id bigint references phenome.genotype,
+                            phenome_genotype_id bigint references phenome.phenome_genotype,
                             marker_id_nn bigint references $sgn_base.marker,
                             marker_id_ns bigint references $sgn_base.marker,
                             marker_id_sn bigint references $sgn_base.marker,
