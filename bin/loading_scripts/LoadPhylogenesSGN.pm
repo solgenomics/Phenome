@@ -78,6 +78,7 @@ sub run {
         urlprefix => 'http://',
         url => 'www.phylogenes.org/gene-id/',
 								});
+    my $counter=0;
     foreach my $line (@lines) {
         chomp $line;
         my ($gene_model, @everything_else ) = split (/\t/ , $line ) ;
@@ -86,7 +87,7 @@ sub run {
 	if ($gene_model =~ m/Solyc.*/) { 
 	    my ($tomato_locus_name, $version)  = split (/\./ , $gene_model ) ;
 	    $sgn_locusname = $tomato_locus_name;
-	    print STDERR "Found tomato locus $sgn_locusname\n";
+	    #print STDERR "Found tomato locus $sgn_locusname\n";
 	}
         my $locus = CXGN::Phenome::Locus->new_with_locusname($dbh, $sgn_locusname);
         my $locus_id = $locus->get_locus_id;
@@ -100,7 +101,7 @@ sub run {
 	    next();
 	}
         #add the link to PhyloGenes via dbxref
-	print STDERR "ADDING dbxref \n";
+	#print STDERR "ADDING dbxref \n";
 	my $dbxref = $db->find_or_create_related('dbxrefs' , {
             accession => $gene_model,
                                                  });
@@ -109,8 +110,10 @@ sub run {
 	$locus->add_locus_dbxref($dbxref_object,
                                  undef,
                                  $locus->get_sp_person_id);
-	print STDERR "Added PhyloGene link dbxref_id=$dbxref_id , locus_id = $locus_id\n ";
+	$counter++;
+	#print STDERR "Added PhyloGene link dbxref_id=$dbxref_id , locus_id = $locus_id\n ";
     }
+    print STDERR "Added $counter locus_dbxref links \n";
     if ( $self->trial) {
         print "Trial mode! rolling back \n";
         $dbh->rollback;
