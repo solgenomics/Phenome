@@ -115,34 +115,34 @@ my $phenome_schema = CXGN::Phenome::Schema->connect( sub { $dbh->get_actual_dbh(
 #getting the last database ids for resetting at the end in case of rolling back
 ################
 
-my $last_nd_experiment_id = $schema->resultset('NaturalDiversity::NdExperiment')->get_column('nd_experiment_id')->max;
-my $last_cvterm_id = $schema->resultset('Cv::Cvterm')->get_column('cvterm_id')->max;
+# my $last_nd_experiment_id = $schema->resultset('NaturalDiversity::NdExperiment')->get_column('nd_experiment_id')->max;
+# my $last_cvterm_id = $schema->resultset('Cv::Cvterm')->get_column('cvterm_id')->max;
 
-my $last_nd_experiment_project_id = $schema->resultset('NaturalDiversity::NdExperimentProject')->get_column('nd_experiment_project_id')->max;
-my $last_nd_experiment_stock_id = $schema->resultset('NaturalDiversity::NdExperimentStock')->get_column('nd_experiment_stock_id')->max;
-my $last_nd_experiment_phenotype_id = $schema->resultset('NaturalDiversity::NdExperimentPhenotype')->get_column('nd_experiment_phenotype_id')->max;
-my $last_phenotype_id = $schema->resultset('Phenotype::Phenotype')->get_column('phenotype_id')->max;
-my $last_stock_id = $schema->resultset('Stock::Stock')->get_column('stock_id')->max;
-my $last_stock_relationship_id = $schema->resultset('Stock::StockRelationship')->get_column('stock_relationship_id')->max;
-my $last_project_id = $schema->resultset('Project::Project')->get_column('project_id')->max;
-my $last_nd_geolocation_id = $schema->resultset('NaturalDiversity::NdGeolocation')->get_column('nd_geolocation_id')->max;
-my $last_geoprop_id = $schema->resultset('NaturalDiversity::NdGeolocationprop')->get_column('nd_geolocationprop_id')->max;
-my $last_projectprop_id = $schema->resultset('Project::Projectprop')->get_column('projectprop_id')->max;
+# my $last_nd_experiment_project_id = $schema->resultset('NaturalDiversity::NdExperimentProject')->get_column('nd_experiment_project_id')->max;
+# my $last_nd_experiment_stock_id = $schema->resultset('NaturalDiversity::NdExperimentStock')->get_column('nd_experiment_stock_id')->max;
+# my $last_nd_experiment_phenotype_id = $schema->resultset('NaturalDiversity::NdExperimentPhenotype')->get_column('nd_experiment_phenotype_id')->max;
+# my $last_phenotype_id = $schema->resultset('Phenotype::Phenotype')->get_column('phenotype_id')->max;
+# my $last_stock_id = $schema->resultset('Stock::Stock')->get_column('stock_id')->max;
+# my $last_stock_relationship_id = $schema->resultset('Stock::StockRelationship')->get_column('stock_relationship_id')->max;
+# my $last_project_id = $schema->resultset('Project::Project')->get_column('project_id')->max;
+# my $last_nd_geolocation_id = $schema->resultset('NaturalDiversity::NdGeolocation')->get_column('nd_geolocation_id')->max;
+# my $last_geoprop_id = $schema->resultset('NaturalDiversity::NdGeolocationprop')->get_column('nd_geolocationprop_id')->max;
+# my $last_projectprop_id = $schema->resultset('Project::Projectprop')->get_column('projectprop_id')->max;
 
-my %seq  = (
-    'nd_experiment_nd_experiment_id_seq' => $last_nd_experiment_id,
-    'cvterm_cvterm_id_seq' => $last_cvterm_id,
-    'nd_experiment_project_nd_experiment_project_id_seq' => $last_nd_experiment_project_id,
-    'nd_experiment_stock_nd_experiment_stock_id_seq' => $last_nd_experiment_stock_id,
-    'nd_experiment_phenotype_nd_experiment_phenotype_id_seq' => $last_nd_experiment_phenotype_id,
-    'phenotype_phenotype_id_seq' => $last_phenotype_id,
-    'stock_stock_id_seq'         => $last_stock_id,
-    'stock_relationship_stock_relationship_id_seq'  => $last_stock_relationship_id,
-    'project_project_id_seq'     => $last_project_id,
-    'nd_geolocation_nd_geolocation_id_seq'          => $last_nd_geolocation_id,
-    'nd_geolocationprop_nd_geolocationprop_id_seq'  => $last_geoprop_id,
-    'projectprop_projectprop_id_seq'                => $last_projectprop_id,
-    );
+# my %seq  = (
+#     'nd_experiment_nd_experiment_id_seq' => $last_nd_experiment_id,
+#     'cvterm_cvterm_id_seq' => $last_cvterm_id,
+#     'nd_experiment_project_nd_experiment_project_id_seq' => $last_nd_experiment_project_id,
+#     'nd_experiment_stock_nd_experiment_stock_id_seq' => $last_nd_experiment_stock_id,
+#     'nd_experiment_phenotype_nd_experiment_phenotype_id_seq' => $last_nd_experiment_phenotype_id,
+#     'phenotype_phenotype_id_seq' => $last_phenotype_id,
+#     'stock_stock_id_seq'         => $last_stock_id,
+#     'stock_relationship_stock_relationship_id_seq'  => $last_stock_relationship_id,
+#     'project_project_id_seq'     => $last_project_id,
+#     'nd_geolocation_nd_geolocation_id_seq'          => $last_nd_geolocation_id,
+#     'nd_geolocationprop_nd_geolocationprop_id_seq'  => $last_geoprop_id,
+#     'projectprop_projectprop_id_seq'                => $last_projectprop_id,
+#     );
 
 
 ###############
@@ -441,11 +441,11 @@ try {
     if (!$test) { print "Transaction succeeded! Commiting project and its metadata \n\n"; }
 } catch {
     # Transaction failed
-    foreach my $value ( sort  keys %seq ) {
-        my $maxval= $seq{$value} || 0;
-        if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
-        else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
-    }
+    # foreach my $value ( sort  keys %seq ) {
+    #     my $maxval= $seq{$value} || 0;
+    #     if ($maxval) { $dbh->do("SELECT setval ('$value', $maxval, true)") ;  }
+    #     else {  $dbh->do("SELECT setval ('$value', 1, false)");  }
+    # }
     die "An error occured! Rolling back  and reseting database sequences!" . $_ . "\n";
 };
 
