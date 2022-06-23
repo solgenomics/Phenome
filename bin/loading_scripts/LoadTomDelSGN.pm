@@ -3,6 +3,7 @@ package LoadTomDelSGN;
 use Modern::Perl;
 use CXGN::DB::InsertDBH;
 use File::Slurp;
+use File::Basename;
 use CXGN::Phenome::Locus;
 use Bio::Chado::Schema;
 
@@ -81,7 +82,8 @@ sub run {
     my $counter=0;
     foreach my $file (@files) {
       chomp $file;
-      my ($gene_model, @everything_else ) = split (/_SL/ , $file ) ;
+      my $filename = basename($file);
+      my ($gene_model, @everything_else ) = split (/_SL/ , $filename ) ;
 	    #Solyc01g005000.2_SL2.50ch01_14034.pdf
 	    my $sgn_locusname = $gene_model;
 	    if ($gene_model =~ m/Solyc.*/) {
