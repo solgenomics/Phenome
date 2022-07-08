@@ -83,8 +83,11 @@ sub run {
     foreach my $file (@files) {
       chomp $file;
       my $filename = basename($file);
-      my ($gene_model, @everything_else ) = split (/_SL/ , $filename ) ;
+      #remove the extension
+      my $clean_filename = split(/.pdf/ , $filename);
+      my ($gene_model, $chr, $position) = split (/_/ , $clean_filename ) ;
 	    #Solyc01g005000.2_SL2.50ch01_14034.pdf
+      #chromosome: SL2.50ch08, position: 1734498, link to genotype frequencies in tomato populations
 	    my $sgn_locusname = $gene_model;
 	    if ($gene_model =~ m/Solyc.*/) {
 	       my ($tomato_locus_name, $version)  = split (/\./ , $gene_model ) ;
@@ -105,9 +108,11 @@ sub run {
   #add the link via dbxref
 	#print STDERR "ADDING dbxref \n";
 	   my $dbxref = $db->find_or_create_related('dbxrefs' , {
-            accession => $gene_model,
+            accession => $filename,
+            description => "chromosome $chr, position: $position",
                                                           });
-	   my $dbxref_id = $dbxref->dbxref_id();
+    #chromosome: SL2.50ch08, position: 1734498, link to genotype frequencies in tomato populations
+     my $dbxref_id = $dbxref->dbxref_id();
 	   my $dbxref_object = CXGN::Chado::Dbxref->new($dbh, $dbxref_id);
 	   $locus->add_locus_dbxref($dbxref_object,
                                  undef,
