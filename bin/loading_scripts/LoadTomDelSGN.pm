@@ -84,7 +84,7 @@ sub run {
       chomp $file;
       my $filename = basename($file);
       #remove the extension
-      my $clean_filename = split(/.pdf/ , $filename);
+      my ($clean_filename, $ext) = split(/\.pdf/ , $filename);
       my ($gene_model, $chr, $position) = split (/_/ , $clean_filename ) ;
 	    #Solyc01g005000.2_SL2.50ch01_14034.pdf
       #chromosome: SL2.50ch08, position: 1734498, link to genotype frequencies in tomato populations
@@ -92,7 +92,7 @@ sub run {
 	    if ($gene_model =~ m/Solyc.*/) {
 	       my ($tomato_locus_name, $version)  = split (/\./ , $gene_model ) ;
 	       $sgn_locusname = $tomato_locus_name;
-	       print STDERR "Found tomato locus $sgn_locusname\n";
+         print STDERR "Found tomato locus $sgn_locusname, $chr, $position\n";
       }
       my $locus = CXGN::Phenome::Locus->new_with_locusname($dbh, $sgn_locusname);
       my $locus_id = $locus->get_locus_id;
