@@ -79,7 +79,7 @@ sub new_with_name {
     my $dbh=shift;
     my $name=shift;
     my $population=undef;
-    my $query = "SELECT population_id FROM phenome.population WHERE name ilike ?";
+    my $query = "SELECT population_id FROM population WHERE name ilike ?";
     my $sth=$dbh->prepare($query);
     $sth->execute($name);
     my ($pop_id) = $sth->fetchrow_array;
@@ -100,7 +100,7 @@ sub new_with_name {
 
 sub new_with_stock_id {
     my ($self, $dbh, $stock_id) = @_;
-    my $q = "SELECT population_id FROM phenome.population WHERE stock_id = ? ";
+    my $q = "SELECT population_id FROM population WHERE stock_id = ? ";
     my $sth = $dbh->prepare($q);
     $sth->execute($stock_id);
     my ($population_id) = $sth->fetchrow_array;
@@ -116,7 +116,7 @@ sub fetch {
                         cross_type_id, female_parent_id, male_parent_id, recurrent_parent_id,
                         donor_parent_id, comment, web_uploaded,
                         population.common_name_id, sgn.common_name.common_name, population.stock_id
-                  FROM phenome.population 
+                  FROM population 
                   LEFT JOIN sgn.accession ON (population.background_accession_id = sgn.accession.accession_id)
                   LEFT JOIN sgn.common_name ON (population.common_name_id = common_name.common_name_id)
                   WHERE population_id=? and population.obsolete='f'";
@@ -164,7 +164,7 @@ sub store {
     my $self = shift;
     my $population_id = $self->get_population_id();
     if ($population_id) {
-	my $query = "UPDATE phenome.population SET
+	my $query = "UPDATE population SET
                        name = ?,
                        description = ?,
                        background_accession_id=?,
@@ -200,7 +200,7 @@ sub store {
 	             );
     }
     else {
-	my $query = "INSERT INTO phenome.population
+	my $query = "INSERT INTO population
                       (name, description, background_accession_id,
                        sp_person_id, modified_date, cross_type_id, female_parent_id, male_parent_id, recurrent_parent_id, donor_parent_id, comment, web_uploaded, common_name_id, stock_id)
                      VALUES
@@ -243,7 +243,7 @@ sub store {
 
 sub get_all_populations {
     my $dbh= shift;
-    my $query = "SELECT distinct(name), population_id FROM phenome.population 
+    my $query = "SELECT distinct(name), population_id FROM population 
                     WHERE obsolete = 'f'";
     my $sth = $dbh->prepare($query);
     $sth->execute();
@@ -618,7 +618,7 @@ sub set_stock_id {
 
 sub get_owners {
     my $self=shift;
-    my $query = "SELECT sp_person_id FROM phenome.population
+    my $query = "SELECT sp_person_id FROM population
                  WHERE population_id = ? AND obsolete = 'f'";
     my $sth=$self->get_dbh()->prepare($query);
     $sth->execute($self->get_population_id());
@@ -715,7 +715,7 @@ sub get_cvterms {
 	my $query = "SELECT distinct(observable_id), $name 
                         FROM public.phenotype 
                        JOIN phenome.individual USING (individual_id) 
-                       JOIN phenome.population using (population_id) 
+                       JOIN population using (population_id) 
                        JOIN $table ON (observable_id = $table_id)
                        WHERE population.population_id = ?
                        ORDER BY $name";
@@ -771,7 +771,7 @@ sub get_pop_raw_data {
     my $query = "SELECT individual.population_id, population.name, individual.individual_id, individual.name, observable_id, $name, $definition, phenotype.value  
                       FROM public.phenotype 
                       LEFT JOIN phenome.individual USING (individual_id)  
-                      LEFT JOIN phenome.population USING (population_id)
+                      LEFT JOIN population USING (population_id)
                       LEFT JOIN $table ON (phenotype.observable_id = $table_id)  
                       WHERE individual.population_id =? 
                       ORDER BY individual.name, $name";
@@ -1084,7 +1084,7 @@ sub get_cvterm_acronyms {
     my $query = "SELECT DISTINCT(observable_id), $name  
                       FROM public.phenotype
                       LEFT JOIN phenome.individual USING (individual_id)  
-                      LEFT JOIN phenome.population USING (population_id)
+                      LEFT JOIN population USING (population_id)
                       LEFT JOIN $table ON (phenotype.observable_id = $table_id)  
                       WHERE individual.population_id =?
                       ORDER BY $name";
@@ -1187,7 +1187,7 @@ sub get_genotype_data {
     my $query = "SELECT individual.name, phenome_genotype.individual_id, marker_alias.alias, marker_alias.marker_id, map_version.map_version_id, map_version.map_id, genotype_region.zygocity_code, lg_name, position 
                          FROM phenome.phenome_genotype 
                          JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
-                         JOIN phenome.phenome_genotype_region ON (phenome_genotype.genotype_id = genotype_region.phenome_genotype_id) 
+                         JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.phenome_genotype_id) 
                          JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
                          JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                          JOIN sgn.marker_location USING(location_id) 
@@ -1313,7 +1313,7 @@ sub get_genotyped_indls {
     my $query = "SELECT DISTINCT(phenome_genotype.individual_id), individual.name
                         FROM phenome.phenome_genotype 
                         JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id)
-                        JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.genotype_id) 
+                        JOIN phenome.genotype_region ON (phenome_genotype.phenome_genotype_id = genotype_region.phenome_genotype_id) 
                         JOIN sgn.marker_alias ON (marker_alias.marker_id=marker_id_nn) 
                         JOIN sgn.marker_experiment ON (marker_alias.marker_id=marker_experiment.marker_id) 
                         JOIN sgn.marker_location USING(location_id) 
@@ -1322,7 +1322,7 @@ sub get_genotyped_indls {
                         WHERE genotype_experiment_id = (SELECT DISTINCT(genotype_experiment_id) 
                                    FROM phenome.genotype_experiment 
                                    JOIN phenome.phenome_genotype USING (genotype_experiment_id) 
-                                   JOIN phenome.individual ON (genotype.individual_id = individual.individual_id) 
+                                   JOIN phenome.individual ON (phenome_genotype.individual_id = individual.individual_id) 
                                    WHERE individual.population_id = $pop_id)  
                         AND map_version.map_version_id = (SELECT DISTINCT(map_version_id) FROM sgn.map_version 
                                    JOIN phenome.genotype_experiment ON (map_version.map_id = genotype_experiment.reference_map_id)                      
@@ -1821,7 +1821,7 @@ sub my_populations {
     my $sp_person_id = shift;
     my $dbh = CXGN::DB::Connection->new();
     my $sth = $dbh->prepare("SELECT  population_id
-                                     FROM phenome.population
+                                     FROM population
                                      WHERE sp_person_id = ?"
 	                   );
     $sth->execute($sp_person_id);
