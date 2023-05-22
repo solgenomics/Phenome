@@ -120,28 +120,19 @@ my $coderef = sub {
 	    } ) ;
   my $count = $locus_dbxref->count();
   print STDERR "Found $count locus annotations with obsolete cvterm $db_cvterm\n";
-  if ($new_dbxref && $count>0) {
-    #check if new annotation already exists
-    for my $ld ($locus_dbxref->all) {
-      my $exists = $phenome_schema->resultset('LocusDbxref')->find(
-        {
-          locus_id =>$ld->locus_id,
-          dbxref_id => $new_dbxref->dbxref_id
-        }
-      );
-      if ($exists) {
-        print STDERR "cvterm $file_cvterm is already associated with locus ". $ld->locus_id . " Deleting old annotation without an update\n";
-        $ld->delete();
-      } else {
-        print STDERR "Updating cvterm $db_cvterm to $file_cvterm\n";
 
-	      $ld->update(  { dbxref_id => $new_dbxref->dbxref_id }  );
-      }
+  for my $ld ($locus_dbxref->all) {
+        my $ld_id = $ld->get_column('locus_dbxref_id');
+        my $locus_dbxref_obj = CXGN::Phenome::LocusDbxref->new($dbh, $ld_id);
+
+        if ($new_dbxref && $count>0) {
+          #if a locus_dbxref already exists for the new dbxref - the old annotation will be obsolete
+          $locus_dbxref_obj->update_annotation($new_dbxref->dbxref_id);
+        } elsif (!$new_dbxref && $count>0) {
+          print STDERR "Obsoleting cvterm $db_cvterm from locus_dbxref\n";
+          $locus_dbxref_obj->obsolete();
+        }
     }
-  } elsif (!$new_dbxref && $count>0) {
-      print STDERR "Deleting cvterm $db_cvterm from locus_dbxref\n";
-      $locus_dbxref->delete();
-  }
   }
 };
 
