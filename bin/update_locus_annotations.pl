@@ -107,8 +107,9 @@ my $coderef = sub {
 	    {
 		      'db.name'          => $new_db_name,
           'accession' => $new_accession,
+          'cvterm.cvterm_id' => \("IS NOT NULL"),
 	    },
-	    { join => 'db'}
+	    { join => ['db', 'cvterm'] }
 	    );
       if ( !defined $new_dbxref ) {
     	    print STDERR "Cannot find cvterm $file_cvterm in the database! skipping\n";
@@ -118,6 +119,7 @@ my $coderef = sub {
   my $locus_dbxref = $phenome_schema->resultset('LocusDbxref')->search(
 	    {
 		      dbxref_id  => $old_dbxref->dbxref_id,
+          obsolete   => "0",
 	    } ) ;
   my $count = $locus_dbxref->count();
   print STDERR "Found $count locus annotations with obsolete cvterm $db_cvterm\n";
