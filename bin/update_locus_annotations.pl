@@ -147,7 +147,12 @@ try {
 
 if ($transaction_error || $opt_t) {
     $dbh->rollback;
-    print STDERR "Transaction error storing terms: $transaction_error\n";
+      if ($transaction_error) {
+        print STDERR "Transaction error storing terms: $transaction_error\n";
+      }
+      if ($opt_t ) {
+        print STDERR "Test mode: rolling back\n";
+      }
 } else {
     print STDERR "Committing updates.\n";
     $dbh->commit;
