@@ -125,10 +125,11 @@ my $coderef = sub {
   for my $ld ($locus_dbxref->all) {
         my $ld_id = $ld->get_column('locus_dbxref_id');
         my $locus_dbxref_obj = CXGN::Phenome::LocusDbxref->new($dbh, $ld_id);
-
+        print STDRRR "locus_dbxref_id = $ld_id\n\n";
         if ($new_dbxref && $count>0) {
           #if a locus_dbxref already exists for the new dbxref - the old annotation will be obsolete
           $locus_dbxref_obj->update_annotation($new_dbxref->dbxref_id);
+          print STDERR "Updating old ID $db_cvterm with new ID $file_cvterm\n";
         } elsif (!$new_dbxref && $count>0) {
           print STDERR "Obsoleting cvterm $db_cvterm from locus_dbxref\n";
           $locus_dbxref_obj->obsolete();
