@@ -69,7 +69,7 @@ my $excel_obj = $parser->parse($opt_i);
 my $dbh = CXGN::DB::InsertDBH->new({
 	dbhost=>$dbhost,
 	dbname=>$dbname,
-	dbargs => {AutoCommit => 1, RaiseError => 1}
+	dbargs => {AutoCommit => 0, RaiseError => 1}
 });
 
 my $schema= Bio::Chado::Schema->connect(  sub { $dbh->get_actual_dbh() } );
@@ -150,4 +150,5 @@ if ($transaction_error || $opt_t) {
     print STDERR "Transaction error storing terms: $transaction_error\n";
 } else {
     print STDERR "Committing updates.\n";
+    $dbh->commit;
 }
