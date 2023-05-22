@@ -38,6 +38,7 @@ use Spreadsheet::ParseExcel;
 use Spreadsheet::ParseXLSX;
 use Bio::Chado::Schema;
 use CXGN::Phenome::Schema;
+use CXGN::Phenome::LocusDbxref;
 use CXGN::DB::InsertDBH;
 use Try::Tiny;
 
